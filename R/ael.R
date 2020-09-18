@@ -1,5 +1,152 @@
-#' Check
+import::from(magrittr, "%>%")
+#' Download AEL File from Serv-U SFTP Site
+#'
+#' @param pattern A regular expression matching the desired filename in the AEL
+#'   folder. The default is today's date, but a more specific pattern may be
+#'   necessary if multiple files are found.
+#'
+#' @param usr Username for the Serv-U site. The default is to look for the
+#'   system environment variable "sftp_usr", as storing credentials in a script
+#'   is not recommended for security purposes.
+#'
+#' @param pwd Password for the Serv-U site. The default is to look for the
+#'   system environment variable "sftp_pwd", as storing credentials in a script
+#'   is not recommended for security purposes.
+#'
+#' @param tofolder Folder/directory to save the file to
+#'
+#' @return NULL
+#'
+#' @importFrom magrittr `%>%`
+
+download_ael <- function(
+  pattern = Sys.Date(),
+  usr = Sys.getenv("sftp_usr"),
+  pwd = Sys.getenv("sftp_pwd"),
+  tofolder = "V:/EPI DATA ANALYTICS TEAM/AEL Data/"
+) {
+
+  # Create SFTP connection details
+  sftp_con <- sftp::sftp_connect(
+    server = "xfer.shelbycountytn.gov",
+    folder = "AEL",
+    username = usr,
+    password = pwd
+  )
+
+  # Get files matching date
+  sftp:::sftp_listfiles(sftp_connection = sftp_con) %>%
+    dplyr::select(name) %>%
+    dplyr::filter(
+      stringr::str_detect(name, pattern = as.character(pattern))
+    ) %>%
+    .[[1]] ->
+  filename
+
+  # Check that exactly one matching file was found and take action
+  if (length(filename) == 0L) {
+    stop("No matching files were found.")
+  } else if (length(filename) > 1L) {
+    stop(
+      paste0(
+        "Multiple matching files were found. ",
+        "Please specify a unique 'pattern' from the filenames below:\n",
+        stringr::str_flatten(filename, collapse = "\n")
+      )
+    )
+  } else {
+    sftp::sftp_download(
+      file = filename,
+      tofolder = tofolder,
+      sftp_connection = sftp_con
+    )
+    # Return NULL
+    invisible(NULL)
+  }
+}
+
+#' Load, Clean, & Merge AEL Data Files for 2 Consecutive Days
+#'
+#' \code{get_ael} prepares AEL data for analysis. It imports the data,
+#' cleans name variables, restricts to our jurisdiction, and merges the files
+#' for use with NBS.
+#'
+#' @importFrom magrittr `%>%`
+get_ael <- function(
+  day1 = Sys.Date(),
+  dir_path = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
+  day2 = day1 - 1,
+  day1_file = NULL,
+  day2_file = NULL,
+  overwrite_names_1 = FALSE,
+  overwrite_names_2 = FALSE,
+  string_to_factor = FALSE,
+  encoding = TRUE,
+  check = TRUE
+) {
+
+  # Get path to day1 file, read data, and process name columns
+  message(paste0("Reading file for ", day1, "..."))
+
+  # File the file for day1
+  find_file(
+    day = day1,
+    dir_path = dir_path,
+    pattern = paste0(".*_", day1, "-.*xls.*"),
+    file_name = day1_file,
+    day_flag = "day1"
+  ) %>%
+    # Read the file - should handle data types automatically
+    coviData::read_ael(
+      string_to_factor = string_to_factor,
+      encoding = encoding
+    ) %>%
+    # Restrict to TN and blanks
+    dplyr::filter(PtState %in% c("TN", NA)) %>%
+    # Split name columns, if not already done
+    coviData::process_names(force = overwrite_names_1) %>%
+    # Add FileDate for sorting
+    dplyr::mutate(FileDate = day1) ->
+  day1_data
+
+  # Get path to day2 file, read data, and process name columns
+  message(paste0("Reading file for ", day2, "..."))
+
+  # Find the file for day2
+  find_file(
+    day = day2,
+    dir_path = dir_path,
+    pattern = paste0(".*_", day2, "-.*xls.*"),
+    file_name = day2_file,
+    day_flag = "day2"
+  ) %>%
+    # Read the file - should handle data types automatically
+    coviData::read_ael(
+      string_to_factor = string_to_factor,
+      encoding = encoding
+    ) %>%
+    # Restrict to TN and blanks
+    dplyr::filter(PtState %in% c("TN", NA)) %>%
+    # Split name columns, if not already done
+    coviData::process_names(force = overwrite_names_2) %>%
+    # Add FileDate for sorting
+    dplyr::mutate(FileDate = day2) ->
+  day2_data
+
+  # Combine files from both days
+  # Not restricting AuthDate - want to be able to handle AEL backlogs. Will
+  # still only show us new AEL data upon checking.
+  day1_data %>%
+    tibble::add_row(
+      day2_data
+    ) %>%
+    dplyr::arrange(dplyr::desc(FileDate)) %>%
+    dplyr::distinct(EpisodeNo, .keep_all = TRUE)
+}
+
+#' @importFrom magrittr `%>%`
 check_ael <- function(
+  .data = NULL,
   day1 = Sys.Date(),
   day2 = day1 - 1,
   dir_path = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
@@ -11,84 +158,111 @@ check_ael <- function(
   rtn_table = TRUE
 ) {
 
+  # If no data is passed, get AEL data
+  if (is.null(.data)) {
+
   # Create shorter day labels (MM/DD)
   day1_str <- as.character(day1, format = "%m/%d")
   day2_str <- as.character(day2, format = "%m/%d")
 
-  # Get path to day1 file, read data, and process name columns
-  message(paste0("Reading file for ", day1_str, "..."))
-  find_file(
-    day = day1,
-    dir_path = dir_path,
-    file_name = day1_file,
-    day_flag = "day1"
-  ) %>%
-    read_ael() %>%
-    process_names(force = overwrite_names_1, encoding = encoding) %>%
-    # Add label for the date of the file
-    mutate(FileDate = day1_str) ->
-  day1_data
+    # Get path to day1 file, read data, and process name columns
+    message(paste0("Reading file for ", day1_str, "..."))
+    coviData::find_file(
+      day = day1,
+      dir_path = dir_path,
+      file_name = day1_file,
+      day_flag = "day1"
+    ) %>%
+      coviData::read_ael(encoding = encoding) %>%
+      dplyr::filter(PtState %in% c("TN", NA, "")) %>%
+      coviData::process_names(force = overwrite_names_1) %>%
+      # Add label for the date of the file
+      dplyr::mutate(FileDate = day1_str) ->
+    day1_data
 
-  # Get path to day1 file, read data, and process name columns
-  message(paste0("Reading file for ", day2_str, "..."))
-  find_file(
-    day = day2,
-    dir_path = dir_path,
-    file_name = day2_file,
-    day_flag = "day2"
-  ) %>%
-    read_ael() %>%
-    process_names(force = overwrite_names_2, encoding = encoding) %>%
-    # Add label for the date of the file
-    mutate(FileDate = day2_str) ->
-  day2_data
+    # Get path to day1 file, read data, and process name columns
+    message(paste0("Reading file for ", day2_str, "..."))
+    coviData::find_file(
+      day = day2,
+      dir_path = dir_path,
+      file_name = day2_file,
+      day_flag = "day2"
+    ) %>%
+      coviData::read_ael(encoding = encoding) %>%
+      dplyr::filter(PtState %in% c("TN", NA, "")) %>%
+      coviData::process_names(force = overwrite_names_2) %>%
+      # Add label for the date of the file
+      dplyr::mutate(FileDate = day2_str) ->
+    day2_data
+
+    larger_day <- if (day1 > day2) day1_str else day2_str
+    smaller_day <- if (day1 > day2) day2_str else day1_str
+
+    # Bind and get rid of duplicates to get combined data
+    dplyr::bind_rows(day1_data, day2_data) %>%
+      dplyr::arrange(FileDate, AuthDate) ->
+    .data
+  }
 
   message("Summarizing data...")
 
-  larger_day <- if (day1 > day2) day1_str else day2_str
-  smaller_day <- if (day1 > day2) day2_str else day1_str
-
-  # Bind and get rid of duplicates to get combined data
-  bind_rows(day1_data, day2_data) %>%
+  .data %>%
     # Filter to only two days of interest
-    filter(AuthDate %in% c(day1, day2)) %>%
+    dplyr::filter(AuthDate %in% c(day1, day2)) %>%
     # Make factors from dates
-    mutate(
-      FileDate = factor(FileDate),
-      AuthDate = AuthDate %>% as.character(format = "%m/%d") %>% factor(),
-      Result = Result %>% addNA()
-    ) %>%
+    dplyr::mutate(
+      FileDate = factor(FileDate, levels = c("New Today", smaller_day, larger_day)),
+      AuthDate = AuthDate %>% as.character(format = "%m/%d") %>% factor(levels = c("New Today", smaller_day,larger_day)),
+      Result = Result %>%
+        forcats::fct_relevel("POSITIVE", "PRESUMPTIVE POSITIVE", "NEGATIVE", "INDETERMINATE") %>% addNA()
+    ) ->
+  .data
+
+  .data %>%
     # Count number of tests in each category
-    count(FileDate, AuthDate, Result, name = "Count", .drop = FALSE) %>%
-    ungroup() %>%
-    arrange(desc(FileDate), desc(AuthDate)) %>%
-    filter(!(FileDate == smaller_day & AuthDate == larger_day)) ->
+    dplyr::count(FileDate, AuthDate, Result, name = "Count") %>%
+    dplyr::ungroup() %>%
+    # Re-arrange
+    dplyr::filter(!(FileDate == smaller_day & AuthDate == larger_day)) ->
+  summary_all
+
+  # Deduplicated summary
+  .data %>%
+    dplyr::distinct(EpisodeNo, .keep_all = TRUE) %>%
+    # Count number of tests in each category
+    dplyr::filter(FileDate == larger_day) %>%
+    dplyr::count(FileDate, Result, name = "Count") %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(AuthDate = "New Today") ->
+  summary_distinct
+
+  summary_all %>%
+    tibble::add_row(summary_distinct) %>%
+    dplyr::arrange(desc(FileDate), desc(AuthDate), Result) ->
   summary_data
 
   message("Done.")
   if (rtn_table) {
     summary_data %>%
-      janitor::tabyl(FileDate, AuthDate, Result) %>%
-      janitor::adorn_totals(where = c("row", "col")) %>%
-    gt::gt() %>%
-      # gt::data_color(
-      #   columns = vars(FileDate, AuthDate),
-      #   colors = colorspace::sequential_hcl(
-      #     n = summary_data$FileDate %>% unique() %>% length(),
-      #     l = c(70, 90),
-      #     c1 = 70,
-      #     c2 = 100,
-      #     power = 1,
-      #     rev = TRUE
-      #   )
-      # ) %>%
-      # gt::data_color(
-      #   columns = vars(Result),
-      #   colors = c("orange", "green", "red", "pink", "grey"),
-      #   alpha = 0.5
-      # ) %>%
-      # gt::tab_header(title = "Test Counts by Day and Result") %>%
-      show()
+      gt::gt() %>%
+      gt::data_color(
+        columns = dplyr::vars(FileDate, AuthDate),
+        colors = colorspace::sequential_hcl(
+          n = 3,
+          l = c(70, 90),
+          c1 = 70,
+          c2 = 100,
+          power = 1,
+          rev = TRUE
+        )
+      ) %>%
+      gt::data_color(
+        columns = dplyr::vars(Result),
+        colors = c("red", "pink", "green", "orange", "grey"),
+        alpha = 0.5
+      ) %>%
+      gt::tab_header(title = "Test Counts by Day and Result") %>%
+      methods::show()
 
     invisible(summary_data)
   } else {
@@ -98,6 +272,7 @@ check_ael <- function(
 
 #' Add Updated Names Columns to AEL File and Replace Existing File
 #'
+#' @importFrom magrittr `%>%`
 replace_ael <- function(
   day = Sys.Date(),
   dir_path = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
@@ -109,14 +284,14 @@ replace_ael <- function(
 
   message(paste0("Reading file for ", day_str, "..."))
 
-  ael_file <- find_file(
+  ael_file <- coviData::find_file(
     day = day,
     dir_path = dir_path
   )
 
   ael_file %>%
-    read_ael(string_to_factor = FALSE, encoding = encoding) %>%
-    process_names(force = overwrite_names) ->
+    coviData::read_ael(string_to_factor = FALSE, encoding = encoding) %>%
+    coviData::process_names(force = overwrite_names) ->
   processed_data
 
   modified <- attr(processed_data, which = "modified")
@@ -155,7 +330,9 @@ replace_ael <- function(
 #' @return A tibble containing the input data plus standardized
 #'   \code{PatientLastName}, \code{PatientFirstName}, \code{PatientMiddleName},
 #'   and \code{PatientMidOthName} columns
-process_names <- function(data, force = FALSE, encoding = FALSE, rtn_mod_attr = FALSE) {
+#'
+#' @importFrom magrittr `%>%`
+process_names <- function(data, force = FALSE) {
 
   # Get column names in data and set reference columns
   col_names <- colnames(data)
@@ -171,8 +348,8 @@ process_names <- function(data, force = FALSE, encoding = FALSE, rtn_mod_attr = 
     all() ->
   std_exist
 
-  # Check that only one PatientMidOthName column exists
-  str_detect(col_names, pattern = "Patient.+Name.*") %>%
+  # Check that no more than the standardized columns exist
+  stringr::str_detect(col_names, pattern = "Patient.+Name.*") %>%
     sum() %>%
     (function(x) x == 4) ->
   only_std
@@ -186,8 +363,8 @@ process_names <- function(data, force = FALSE, encoding = FALSE, rtn_mod_attr = 
   # Find and delete any Patient...Name columns, then create standardized ones
   # and return the result
   data %>%
-    select(-matches("Patient.+Name.*")) %>%
-    split_names() ->
+    dplyr::select(-matches("Patient.+Name.*")) %>%
+    coviData::split_names() ->
   new_data
 
   attr(new_data, which = "modified") <- TRUE
@@ -195,76 +372,6 @@ process_names <- function(data, force = FALSE, encoding = FALSE, rtn_mod_attr = 
   new_data
 }
 
-#' Find AEL File for a Specified Date
-#'
-#' \code{file_ael_file} looks for an xls(x) file for the specified date in the
-#' specified folder
-find_file <- function(
-  day = Sys.Date(),
-  dir_path = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
-  pattern = paste0("*_", day, "-*"),
-  file_name = NULL,
-  day_flag = NULL
-) {
-  # Create pattern to match for the file
-  if (!is.null(file_name)) {
-    pattern <- file_name
-  }
-
-  file_name <- list.files(dir_path, pattern = pattern)
-
-  # Handle multiple or no matches
-
-  # If used in check_ael
-  if (!is.null(day_flag)) {
-    wrn1 <- paste0(
-      "'check_ael' found multiple files matching ", day_flag, "'s date ",
-      "(", day, "):\n\n  ",
-      file_name %>%
-        str_flatten(collapse = ";") %>%
-        str_replace_all(pattern = ";", replacement = "\n  "),
-      "\n\n  ",
-      "By default, the first file is used; to select another file, use the ",
-      "'", day_flag, "_file' argument."
-    )
-
-    stp1 <- paste0(
-      "\n  'check_ael' did not find a file matching ", day_flag, "'s date ",
-      "(", day, ") ",
-      "in the specified directory:\n",
-      dir_path
-    )
-  # If used elsewhere
-  } else {
-    wrn1 <- paste0(
-      "'check_ael' found multiple files matching this date ",
-      "(", day, "):\n\n  ",
-      file_name %>%
-        str_flatten(collapse = ";") %>%
-        str_replace_all(pattern = ";", replacement = "\n  "),
-      "\n\n  ",
-      "By default, the first file is used; to select another file, use the ",
-      "'file_name' argument."
-    )
-
-    stp1 <- paste0(
-      "'check_ael' did not find a file matching this date ",
-      "(", day, ") ",
-      "in the specified directory:\n",
-      dir_path
-    )
-  }
-
-  # Check and respond with warning or error
-  if (length(file_name) > 1) {
-    warning(wrn1)
-  } else if (length(file_name) == 0) {
-    stop(stp1)
-  }
-
-  # Return full path
-  paste0(dir_path, file_name[[1]])
-}
 
 #' Split Patient Names in AEL Data
 #'
@@ -278,16 +385,18 @@ find_file <- function(
 #'   \code{PatientLastName}, \code{PatientFirstName}, \code{PatientMiddleName},
 #'   \code{PatientMidOthName} inserted after \code{PatientName} (which is a
 #'   \code{\link[base]{factor}})
+#'
+#' @importFrom magrittr `%>%`
 split_names <- function(.data) {
   # Create character matrix holding last names and first + other names
   .data$PatientName %>%
     as.character() %>%
-    str_split_fixed(pattern = ",", n = 2) ->
+    stringr::str_split_fixed(pattern = ",", n = 2) ->
     pt_names
 
   # Create character matrix holding first, middle, and other middle names
   pt_names[,2] %>%
-    str_split_fixed(
+    stringr::str_split_fixed(
       pattern = " ",
       n = 3
     ) ->
@@ -295,29 +404,29 @@ split_names <- function(.data) {
 
   # Create new columns
   .data %>%
-    transmute(
+    dplyr::transmute(
       last = pt_names[,1] %>%
         as.vector() %>%
-        str_squish() %>%
+        stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
       first = pt_other_names[,1] %>%
         as.vector() %>%
-        str_squish() %>%
+        stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
       middle = pt_other_names[,2] %>%
         as.vector() %>%
-        str_squish() %>%
+        stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
       other = pt_other_names[,3] %>%
         as.vector() %>%
-        str_squish() %>%
+        stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA)
     ) ->
   new_names
 
   # Add to existing data
   .data %>%
-    add_column(
+    tibble::add_column(
       PatientLastName = new_names$last,
       PatientFirstName = new_names$first,
       PatientMiddleName = new_names$middle,
@@ -330,44 +439,67 @@ split_names <- function(.data) {
 #' Read AEL Data from Excel File
 #'
 #' \code{read_xl} reads in an xls(x) file, converts date columns to
-#' \code{Date} class, and converts \code{character} columns to \code{factor}
-#' class. \code{read_ael} uses all columns of a file to guess the column type.
-#' It is intended for reading an Excel file containing data sent from AEL to the
+#' \code{Date} class, and optionally converts \code{character} columns to
+#' \code{factor} columns. \code{read_ael} uses all rows of a file to guess the
+#' column type (technically, the first 21,478,836 rows on 64-bit R). It is
+#' intended for reading an Excel file containing data sent from AEL to the
 #' Shelby County Health Department.
 #'
 #' @param path The file path to the Excel file
 #'
+#' @param string_to_factor A logical indicating whether to encode character
+#'   columns as factors or leave as character
+#'
+#' @param encoding A logical indicating whether to convert the character
+#'  encoding, or a string indicating the encoding to convert to. If
+#'  \code{encoding == TRUE}, then characters are converted to 'UTF-8' encoding.
+#'
 #' @return A \code{\link[tibble]{tibble}} containing the contents of the Excel
 #'   file
-read_ael <- function(path, string_to_factor = TRUE, encoding = TRUE) {
+#'
+#' @importFrom magrittr `%>%`
+read_ael <- function(path, string_to_factor = FALSE, encoding = TRUE) {
   # Read Excel file
   readxl::read_excel(
     path,
     trim_ws = TRUE,
     guess_max = .Machine$integer.max %/% 100L,
-    progress = FALSE
+    progress = TRUE
   ) %>%
-    # Convert dates to 'Date' class
-    mutate(across(where(lubridate::is.POSIXt), lubridate::as_date)) ->
+    # Convert dates to 'Date' and datetimes to 'POSIXct'
+    dplyr::mutate(
+    dplyr::across(where(lubridate::is.Date), as.Date)) %>%
+    dplyr::mutate(
+      dplyr::across(where(lubridate::is.POSIXt), coviData::dttm_to_dt)) ->
   data
 
   if (string_to_factor) {
     # Convert character columns to factors
     data %>%
-      mutate(
-        across(
+      dplyr::mutate(
+        dplyr::across(
           where(is.character),
-          str_to_factor,
+          coviData::str_to_factor,
           encoding = encoding
         )
-      )
+      ) ->
+    data
   } else if (encoding != FALSE) {
+    # Convert encoding if string_to_factor == FALSE but encoding != FALSE
     encoding <- if (encoding == TRUE) "UTF-8" else encoding
     data %>%
-      mutate(across(where(is.character), str_conv, encoding = encoding))
-  } else {
+      dplyr::mutate(
+        dplyr::across(
+          where(is.character),
+          stringr::str_conv,
+          encoding = encoding
+        )
+      ) ->
     data
   }
+
+  # Return results
+  tibble::as_tibble(data)
 }
 
 #' Convert Character Strings to Factors
@@ -383,13 +515,15 @@ read_ael <- function(path, string_to_factor = TRUE, encoding = TRUE) {
 #'  \code{encoding == TRUE}, then characters are converted to 'UTF-8' encoding.
 #'
 #' @return A factor
+#'
+#' @importFrom magrittr `%>%`
 str_to_factor <- function(string, encoding = FALSE) {
   # Perform conversion without re-encoding
   if (encoding == FALSE) {
     string %>%
       stringr::str_to_upper() %>%
       stringr::str_squish() %>%
-      base::factor()
+      factor()
   # Perform conversion with re-encoding
   } else {
     if (encoding == TRUE) encoding <- "UTF-8"
@@ -397,7 +531,7 @@ str_to_factor <- function(string, encoding = FALSE) {
       stringr::str_conv(encoding = encoding) %>%
       stringr::str_to_upper() %>%
       stringr::str_squish() %>%
-      base::factor()
+      factor()
   }
 }
 
@@ -426,16 +560,18 @@ str_to_factor <- function(string, encoding = FALSE) {
 #'
 #' @return A data frame, tibble, etc. containing observations from the specified
 #'   region
+#'
+#' @importFrom magrittr `%>%`
 filter_region <- function(
   .data,
-  states = c("TN"),
+  states = "TN",
   zips = c("380", "381"),
   incl_msr = FALSE,
   incl_na = TRUE
 ) {
 
   # Convert inputs to standardized format
-  states <- str_to_upper(states)
+  states <- stringr::str_to_upper(states)
   zips <- as.character(zips)
 
   # Make sure MSR is included, if desired
@@ -463,5 +599,33 @@ filter_region <- function(
         PtState %in% states &
           stringr::str_starts(PtZipcode, pattern = zips)
       )
+  }
+}
+
+#' Assign Date Type to DateTime Variables
+#'
+#' \code{dttm_to_dt} is an opinionated formatter for dates and datetimes. It
+#' prefers simple dates to datetimes, and checks any datetime variables for
+#' additional information in the hour:minute:second portion of the variable. If
+#' it finds none, it converts the variable to a standard date.
+#'
+#' @importFrom magrittr `%>%`
+dttm_to_dt <- function(.x) {
+  # If .x is already Date type, return as-is
+  if (lubridate::is.Date(.x)) return(.x)
+
+  # Otherwise, check for any additional information in the variable
+  t <- (
+    lubridate::hour(.x) +
+    lubridate::minute(.x) / 60 +
+    lubridate::second(.x) / 3600
+  )
+  tol <- sqrt(.Machine$double.eps)
+  if (all(t == median(t, na.rm = TRUE) | is.na(t))) {
+    lubridate::as_date(.x)
+  } else if (lubridate::is.POSIXlt(.x)) {
+    lubridate::as_datetime(.x)
+  } else {
+
   }
 }
