@@ -126,7 +126,11 @@ clean_generic <- function(
 
 standardize_dates <- function(
   .data,
-  suffix = c("_dt", "_dob", "_date"),
+  suffix = c(
+    "_dt", "_dob", "_date",
+    "_DT", "_DOB", "_DATE",
+    "_Dt", "Dob", "_Date"
+  ),
   orders = c("dmy", "mdy", "ymd", "dmyT", "mdyT", "ymdT"),
   ...
 ) {

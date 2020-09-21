@@ -1,4 +1,3 @@
-import::from(magrittr, "%>%")
 #' Download AEL File from Serv-U SFTP Site
 #'
 #' @param pattern A regular expression matching the desired filename in the AEL

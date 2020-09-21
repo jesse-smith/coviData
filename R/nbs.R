@@ -1,6 +1,132 @@
 #' Download NBS Data for Regions Reports
-download_nbs() {
+#' @importFrom magrittr `%>%`
+download_nbs <- function(
+  day = Sys.Date(),
+  api_token = Sys.getenv("redcap_DFR_token"),
+  dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
+  fname = paste(day, " Final Data Pull.csv"),
+  force = FALSE
+) {
 
+  # Check to see if file is already in directory
+  existing_file <- find_file(
+    day = day,
+    pattern = paste(".*", day, ".*csv"),
+    dir_path = dir_path
+  )
+
+  # Don't run if file is already there
+  if (length(existing_file) != 0 & !force) {
+    error_exists <- paste(
+      "An existing file matches this date; download will not continue.",
+      "To download anyway, set 'force == TRUE'."
+    )
+    stop(error_exists)
+  }
+
+  # Create request params to check for new REDcap file
+  api_date_params <- list(
+    token        = api_token,
+    content      = "record",
+    format       = "json",
+    type         = "flat",
+    records      = "MSR",
+    fields       = "date_updated",
+    returnFormat = "json"
+  )
+
+  # Check date updated
+  httr::POST(api_uri, body = api_date_params) %>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON() %>%
+    purrr::as_vector() %>%
+    lubridate::as_date() ->
+  date_updated
+
+  # If not updated yet
+  if (date_updated < day) {
+    error_future <- paste(
+      "REDcap does not yet have data for",
+      Sys.Date(), ". Please check back later."
+    )
+    stop(error_future)
+  }
+
+  # If date updated is later than input date
+  if (date_updated > day) {
+    error_past <- paste0(
+      "REDcap's update date is more recent than the date specified in 'day'. ",
+      "To download REDcap's most recent data, please re-run with",
+      "'day == as.Date(", date_updated, ")'."
+    )
+    stop(error_past)
+  }
+
+  # Download NBS file
+
+  # Add form to get investigations data
+  api_nbs_params <- list(
+    token        = api_token,
+    content      = "file",
+    action       = "export",
+    record       = "MSR",
+    field        = "nbs_daily_upload",
+    returnFormat = "json"
+  )
+
+  # Create temporary directory for new files
+  if (!dir.exists("temp")) {
+    dir.create("temp")
+  } else {
+    files <- list.files("temp")
+    if (length(files) != 0) file.remove(list(files))
+  }
+
+  # Downloading most recent investigations file
+  httr::POST(
+    api_uri,
+    body = api_nbs_params,
+    httr::write_disk("temp/nbs.zip"),
+    httr::progress()
+  )
+
+  # Unzip new file
+  unzip("temp/nbs.zip")
+
+  # Move to specified directory and rename
+  nbs_file <- paste0(dir_path, fname)
+  file.rename(
+    from = "temp/MSR INVS.csv",
+    to = nbs_file
+  )
+
+  # Create xlsx filename
+  nbs_file %>%
+    stringr::str_split(
+      pattern = "[.]"
+    ) %>%
+    .[[1]] %>%
+    .[1] %>%
+    paste0(".xlsx") ->
+  nbs_xl_file
+
+  # Read CSV file and write to XLSX
+  data.table::fread(
+    nbs_file,
+    stringsAsFactors = FALSE,
+    verbose = TRUE,
+    colClasses = "character",
+    blank.lines.skip = TRUE,
+    showProgress = TRUE,
+    keepLeadingZeros = TRUE
+  ) %>%
+    tibble::as_tibble() %>%
+    readr::type_convert() %>%
+    coviData::standardize_dates() %>%
+    openxlsx::write.xlsx(
+      file = nbs_xl_file,
+      sheet = "Sheet1"
+    )
 }
 
 get_nbs <- function(
