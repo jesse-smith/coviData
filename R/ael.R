@@ -210,10 +210,24 @@ check_ael <- function(
     dplyr::filter(AuthDate %in% c(day1, day2)) %>%
     # Make factors from dates
     dplyr::mutate(
-      FileDate = factor(FileDate, levels = c("New Today", smaller_day, larger_day)),
-      AuthDate = AuthDate %>% as.character(format = "%m/%d") %>% factor(levels = c("New Today", smaller_day,larger_day)),
+      FileDate = factor(
+        FileDate,
+        levels = c("New Today", smaller_day, larger_day)),
+      AuthDate = AuthDate %>%
+        as.character(format = "%m/%d") %>%
+        factor(levels = c("New Today", smaller_day,larger_day)),
       Result = Result %>%
-        forcats::fct_relevel("POSITIVE", "PRESUMPTIVE POSITIVE", "NEGATIVE", "INDETERMINATE") %>% addNA()
+        as.character() %>%
+        stringr::str_to_title() %>%
+        factor(
+          levels = c(
+            "Positive",
+            "Presumptive Positive",
+            "Negative",
+            "Indeterminate"
+          )
+        ) %>%
+        addNA()
     ) ->
   .data
 

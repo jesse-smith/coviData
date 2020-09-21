@@ -19,12 +19,15 @@
 #'   functions
 #'
 #' @return A string containing the full path to the file that was found
+#'
+#' @importFrom magrittr `%>%`
 find_file <- function(
   day = Sys.Date(),
   pattern = paste0(".*", day, ".*"),
   dir_path = NULL,
   file_name = NULL,
-  day_flag = NULL
+  day_flag = NULL,
+  rtn_error = TRUE
 ) {
 
   # 'file_name' should override 'pattern' so that the file can be found directly
@@ -84,8 +87,10 @@ find_file <- function(
   # Check and respond with warning or error
   if (length(file_name) > 1) {
     warning(wrn1)
-  } else if (length(file_name) == 0) {
+  } else if (length(file_name) == 0 & rtn_error) {
     stop(stp1)
+  } else if (length(file_name) == 0) {
+    return(character())
   }
 
   # Return full path
@@ -98,6 +103,8 @@ find_file <- function(
 #' columns, converts variables to the appropriate data types (including oddly
 #' formatted dates/datetimes), removes empty or constant columns, and optionally converts
 #' strings to factors.
+#'
+#' @importFrom magrittr `%>%`
 clean_generic <- function(
   .data,
   date_suffix = c("_dt", "_dob", "_date"),
@@ -124,6 +131,7 @@ clean_generic <- function(
     }
 }
 
+#' @importFrom magrittr `%>%`
 standardize_dates <- function(
   .data,
   suffix = c(
@@ -155,6 +163,7 @@ standardize_dates <- function(
   .data
 }
 
+#' @importFrom magrittr `%>%`
 cols_to_keep <- function(.data, min_completion_rate = 0.5) {
 
   .factor_data <- dplyr::mutate(
@@ -185,6 +194,7 @@ not_factor_date <- function(x) {
   !(is.factor(x) | lubridate::is.POSIXt(x))
 }
 
+#' @importFrom magrittr `%>%`
 filter_geo <- function(
   .data,
   state_col = "patient_state",
@@ -237,6 +247,7 @@ filter_geo <- function(
   .data
 }
 
+#' @importFrom magrittr `%>%`
 check_state <- function(x, states, include_na) {
 
   # Make sure both are character vectors & upper case
@@ -271,6 +282,7 @@ check_state <- function(x, states, include_na) {
   as.logical(x_lgl)
 }
 
+#' @importFrom magrittr `%>%`
 check_county <- function(x, counties, include_na) {
   # Make sure both are character vectors & title case
   x <- as.character(x) %>% stringr::str_to_title()
@@ -297,6 +309,7 @@ check_county <- function(x, counties, include_na) {
   as.logical(x_lgl)
 }
 
+#' @importFrom magrittr `%>%`
 check_zip <- function(x, zips, include_na) {
   # Make sure both are character vectors
   x <- as.character(x)

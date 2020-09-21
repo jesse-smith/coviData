@@ -4,15 +4,18 @@ download_nbs <- function(
   day = Sys.Date(),
   api_token = Sys.getenv("redcap_DFR_token"),
   dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
-  fname = paste(day, " Final Data Pull.csv"),
+  fname = paste0(day, " Final Data Pull.csv"),
   force = FALSE
 ) {
+
+  # Step 1 - Check dir_path to make sure file isn't already there
 
   # Check to see if file is already in directory
   existing_file <- find_file(
     day = day,
-    pattern = paste(".*", day, ".*csv"),
-    dir_path = dir_path
+    pattern = fname,
+    dir_path = dir_path,
+    rtn_error = FALSE
   )
 
   # Don't run if file is already there
@@ -23,6 +26,11 @@ download_nbs <- function(
     )
     stop(error_exists)
   }
+
+  # Step 2 - Make sure REDcap's data matches the day requested
+
+  # Create URL base for API
+  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
 
   # Create request params to check for new REDcap file
   api_date_params <- list(
@@ -45,8 +53,8 @@ download_nbs <- function(
 
   # If not updated yet
   if (date_updated < day) {
-    error_future <- paste(
-      "REDcap does not yet have data for",
+    error_future <- paste0(
+      "REDcap does not yet have data for ",
       Sys.Date(), ". Please check back later."
     )
     stop(error_future)
@@ -62,9 +70,10 @@ download_nbs <- function(
     stop(error_past)
   }
 
-  # Download NBS file
+  # Step 3 - Download NBS file
+  message("Downloading NBS file...")
 
-  # Add form to get investigations data
+  # Create params to get NBS form
   api_nbs_params <- list(
     token        = api_token,
     content      = "file",
@@ -78,8 +87,8 @@ download_nbs <- function(
   if (!dir.exists("temp")) {
     dir.create("temp")
   } else {
-    files <- list.files("temp")
-    if (length(files) != 0) file.remove(list(files))
+    unlink("temp", recursive = TRUE)
+    dir.create("temp")
   }
 
   # Downloading most recent investigations file
@@ -90,43 +99,24 @@ download_nbs <- function(
     httr::progress()
   )
 
+  message("\nDone.")
+
   # Unzip new file
-  unzip("temp/nbs.zip")
+  message("Unzipping folder...", appendLF = FALSE)
+  unzip("temp/nbs.zip", exdir = "temp")
+  message(" Done.")
 
   # Move to specified directory and rename
+  message("Moving file and cleaning up...", appendLF = FALSE)
   nbs_file <- paste0(dir_path, fname)
   file.rename(
     from = "temp/MSR INVS.csv",
     to = nbs_file
   )
 
-  # Create xlsx filename
-  nbs_file %>%
-    stringr::str_split(
-      pattern = "[.]"
-    ) %>%
-    .[[1]] %>%
-    .[1] %>%
-    paste0(".xlsx") ->
-  nbs_xl_file
-
-  # Read CSV file and write to XLSX
-  data.table::fread(
-    nbs_file,
-    stringsAsFactors = FALSE,
-    verbose = TRUE,
-    colClasses = "character",
-    blank.lines.skip = TRUE,
-    showProgress = TRUE,
-    keepLeadingZeros = TRUE
-  ) %>%
-    tibble::as_tibble() %>%
-    readr::type_convert() %>%
-    coviData::standardize_dates() %>%
-    openxlsx::write.xlsx(
-      file = nbs_xl_file,
-      sheet = "Sheet1"
-    )
+  # Delete temp directory before exit
+  unlink("temp", recursive = TRUE)
+  message(" Done!")
 }
 
 get_nbs <- function(
@@ -178,14 +168,16 @@ read_nbs <- function(
 
   # The 'data.table::fread' function is designed to read large delimited files.
   # In this case, read_csv needs too much memory to store intermediate values;
-  # 'fread' avoids this by reading
+  # 'fread' avoids this.
   data.table::fread(
     path,
     header = TRUE,
-    # colClasses = "character",
+    colClasses = "character",
     blank.lines.skip = TRUE,
     nThread = nThread
-  )
+  ) %>%
+  as_tibble() %>%
+  readr::type_convert()
 }
 
 clean_nbs <- function(
