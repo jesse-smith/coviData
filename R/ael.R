@@ -197,7 +197,7 @@ check_ael <- function(
     larger_day <- if (day1 > day2) day1_str else day2_str
     smaller_day <- if (day1 > day2) day2_str else day1_str
 
-    # Bind and get rid of duplicates to get combined data
+    # Bind to get combined data
     dplyr::bind_rows(day1_data, day2_data) %>%
       dplyr::arrange(FileDate, AuthDate) ->
     .data
@@ -241,6 +241,7 @@ check_ael <- function(
 
   # Deduplicated summary
   .data %>%
+    dplyr::arrange(FileDate, AuthDate, EpisodeNo, Result) %>%
     dplyr::distinct(EpisodeNo, .keep_all = TRUE) %>%
     # Count number of tests in each category
     dplyr::filter(FileDate == larger_day) %>%

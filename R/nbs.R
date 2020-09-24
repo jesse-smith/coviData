@@ -270,3 +270,36 @@ find_dupes <- function(
     duplicated(na.rm = TRUE) %>%
     sum()
 }
+
+clean_nbs_id <- function(.nbs_id) {
+  .nbs_id %>%
+    # Coerce to character
+    as.character() %>%
+    # Remove whitespace
+    stringr::str_squish() %>%
+    # Remove leading and trailing patters
+    stringr::str_remove_all(pattern = "PSN1") %>%
+    stringr::str_remove_all(pattern = "PSN2") %>%
+    stringr::str_remove_all(pattern = "TN01") %>%
+    # Truncate from left if > 7 characters
+    stringr::str_trunc(width = 7, side = "left", ellipsis = "") %>%
+    # Pad from left if < 7 characters
+    stringr::str_pad(width = 7, side = "left", pad = "0")
+}
+
+clean_deaths <- function(
+  dir_path = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
+  r_file = "Working Copy Death  Epi.xlsx",
+  w_file = paste0("cleaned_copies/cleaned_deaths_", Sys.Date(), ".xlsx")
+) {
+  readxl::read_excel(
+    path = paste0(dir_path, r_file),
+    trim_ws = TRUE,
+    guess_max = .Machine$integer.max %/% 100L,
+    progress = TRUE
+  ) %>%
+    mutate(NBS = clean_nbs_id(NBS)) %>%
+    openxlsx::write.xlsx(
+      file = paste0(dir_path, w_file)
+    )
+}

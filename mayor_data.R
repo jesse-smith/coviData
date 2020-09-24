@@ -36,7 +36,7 @@ line_data %>%
   summarize(event_date = event_date, cases = n) %>%
   merge(
     y = tibble(
-      event_date = seq(min(data$event_date), max(data$event_date), 1)
+      event_date = seq(min(line_data$event_date, na.rm = TRUE), max(line_data$event_date, na.rm = TRUE), 1)
     ),
     all.y = T
   ) %>%
