@@ -116,7 +116,136 @@ download_nbs <- function(
 
   # Delete temp directory before exit
   unlink("temp", recursive = TRUE)
-  message(" Done!")
+  message(" Done.")
+
+  message("Opening in Excel for conversion...", appendLF = FALSE)
+  shell.exec(nbs_file)
+  message("Done!")
+}
+
+#' Download NBS Data for Regions Reports
+#' @importFrom magrittr `%>%`
+download_pcr <- function(
+  day = Sys.Date(),
+  api_token = Sys.getenv("redcap_DFR_token"),
+  dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
+  fname = paste0("MSR - All PCRs_", format(Sys.Date(), "%m%d%Y"), ".csv"),
+  force = FALSE
+) {
+
+  # Step 1 - Check dir_path to make sure file isn't already there
+
+  # Check to see if file is already in directory
+  existing_file <- find_file(
+    day = day,
+    pattern = fname,
+    dir_path = dir_path,
+    rtn_error = FALSE
+  )
+
+  # Don't run if file is already there
+  if (length(existing_file) != 0 & !force) {
+    error_exists <- paste(
+      "An existing file matches this date; download will not continue.",
+      "To download anyway, set 'force == TRUE'."
+    )
+    stop(error_exists)
+  }
+
+  # Step 2 - Make sure REDcap's data matches the day requested
+
+  # Create URL base for API
+  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
+
+  # Create request params to check for new REDcap file
+  api_date_params <- list(
+    token        = api_token,
+    content      = "record",
+    format       = "json",
+    type         = "flat",
+    records      = "MSR",
+    fields       = "date_updated",
+    returnFormat = "json"
+  )
+
+  # Check date updated
+  httr::POST(api_uri, body = api_date_params) %>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON() %>%
+    purrr::as_vector() %>%
+    lubridate::as_date() ->
+    date_updated
+
+  # If not updated yet
+  if (date_updated < day) {
+    error_future <- paste0(
+      "REDcap does not yet have data for ",
+      Sys.Date(), ". Please check back later."
+    )
+    stop(error_future)
+  }
+
+  # If date updated is later than input date
+  if (date_updated > day) {
+    error_past <- paste0(
+      "REDcap's update date is more recent than the date specified in 'day'. ",
+      "To download REDcap's most recent data, please re-run with",
+      "'day == as.Date(", date_updated, ")'."
+    )
+    stop(error_past)
+  }
+
+  # Step 3 - Download NBS file
+  message("Downloading PCR file...")
+
+  # Create params to get NBS form
+  api_nbs_params <- list(
+    token        = api_token,
+    content      = "file",
+    action       = "export",
+    record       = "MSR",
+    field        = "lab_pcr",
+    returnFormat = "json"
+  )
+
+  # Create temporary directory for new files
+  if (!dir.exists("temp")) {
+    dir.create("temp")
+  } else {
+    unlink("temp", recursive = TRUE)
+    dir.create("temp")
+  }
+
+  # Downloading most recent investigations file
+  httr::POST(
+    api_uri,
+    body = api_nbs_params,
+    httr::write_disk("temp/pcr.zip"),
+    httr::progress()
+  )
+
+  message("\nDone.")
+
+  # Unzip new file
+  message("Unzipping folder...", appendLF = FALSE)
+  unzip("temp/pcr.zip", exdir = "temp")
+  message(" Done.")
+
+  # Move to specified directory and rename
+  message("Moving file and cleaning up...", appendLF = FALSE)
+  pcr_file <- paste0(dir_path, fname)
+  file.rename(
+    from = "temp/MSR - All PCRs.csv",
+    to = pcr_file
+  )
+
+  # Delete temp directory before exit
+  unlink("temp", recursive = TRUE)
+  message(" Done.")
+
+  message("Opening in Excel for conversion...", appendLF = FALSE)
+  shell.exec(pcr_file)
+  message("Done!")
 }
 
 get_nbs <- function(
