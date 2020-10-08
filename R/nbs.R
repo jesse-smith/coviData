@@ -1,385 +1,125 @@
-#' Download NBS Data for Regions Reports
-#' @importFrom magrittr `%>%`
-download_nbs <- function(
-  day = Sys.Date(),
-  api_token = Sys.getenv("redcap_DFR_token"),
-  dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
-  fname = paste0(day, " Final Data Pull.csv"),
-  force = FALSE
-) {
-
-  # Step 1 - Check dir_path to make sure file isn't already there
-
-  # Check to see if file is already in directory
-  existing_file <- find_file(
-    day = day,
-    pattern = fname,
-    dir_path = dir_path,
-    rtn_error = FALSE
-  )
-
-  # Don't run if file is already there
-  if (length(existing_file) != 0 & !force) {
-    error_exists <- paste(
-      "An existing file matches this date; download will not continue.",
-      "To download anyway, set 'force == TRUE'."
-    )
-    stop(error_exists)
-  }
-
-  # Step 2 - Make sure REDcap's data matches the day requested
-
-  # Create URL base for API
-  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
-
-  # Create request params to check for new REDcap file
-  api_date_params <- list(
-    token        = api_token,
-    content      = "record",
-    format       = "json",
-    type         = "flat",
-    records      = "MSR",
-    fields       = "date_updated",
-    returnFormat = "json"
-  )
-
-  # Check date updated
-  httr::POST(api_uri, body = api_date_params) %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON() %>%
-    purrr::as_vector() %>%
-    lubridate::as_date() ->
-  date_updated
-
-  # If not updated yet
-  if (date_updated < day) {
-    error_future <- paste0(
-      "REDcap does not yet have data for ",
-      Sys.Date(), ". Please check back later."
-    )
-    stop(error_future)
-  }
-
-  # If date updated is later than input date
-  if (date_updated > day) {
-    error_past <- paste0(
-      "REDcap's update date is more recent than the date specified in 'day'. ",
-      "To download REDcap's most recent data, please re-run with",
-      "'day == as.Date(", date_updated, ")'."
-    )
-    stop(error_past)
-  }
-
-  # Step 3 - Download NBS file
-  message("Downloading NBS file...")
-
-  # Create params to get NBS form
-  api_nbs_params <- list(
-    token        = api_token,
-    content      = "file",
-    action       = "export",
-    record       = "MSR",
-    field        = "nbs_daily_upload",
-    returnFormat = "json"
-  )
-
-  # Create temporary directory for new files
-  if (!dir.exists("temp")) {
-    dir.create("temp")
-  } else {
-    unlink("temp", recursive = TRUE)
-    dir.create("temp")
-  }
-
-  # Downloading most recent investigations file
-  httr::POST(
-    api_uri,
-    body = api_nbs_params,
-    httr::write_disk("temp/nbs.zip"),
-    httr::progress()
-  )
-
-  message("\nDone.")
-
-  # Unzip new file
-  message("Unzipping folder...", appendLF = FALSE)
-  unzip("temp/nbs.zip", exdir = "temp")
-  message(" Done.")
-
-  # Move to specified directory and rename
-  message("Moving file and cleaning up...", appendLF = FALSE)
-  nbs_file <- paste0(dir_path, fname)
-  file.rename(
-    from = "temp/MSR INVS.csv",
-    to = nbs_file
-  )
-
-  # Delete temp directory before exit
-  unlink("temp", recursive = TRUE)
-  message(" Done.")
-
-  message("Opening in Excel for conversion...", appendLF = FALSE)
-  shell.exec(nbs_file)
-  message("Done!")
-}
-
-#' Download NBS Data for Regions Reports
-#' @importFrom magrittr `%>%`
-download_pcr <- function(
-  day = Sys.Date(),
-  api_token = Sys.getenv("redcap_DFR_token"),
-  dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
-  fname = paste0("MSR - All PCRs_", format(Sys.Date(), "%m%d%Y"), ".csv"),
-  force = FALSE
-) {
-
-  # Step 1 - Check dir_path to make sure file isn't already there
-
-  # Check to see if file is already in directory
-  existing_file <- find_file(
-    day = day,
-    pattern = fname,
-    dir_path = dir_path,
-    rtn_error = FALSE
-  )
-
-  # Don't run if file is already there
-  if (length(existing_file) != 0 & !force) {
-    error_exists <- paste(
-      "An existing file matches this date; download will not continue.",
-      "To download anyway, set 'force == TRUE'."
-    )
-    stop(error_exists)
-  }
-
-  # Step 2 - Make sure REDcap's data matches the day requested
-
-  # Create URL base for API
-  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
-
-  # Create request params to check for new REDcap file
-  api_date_params <- list(
-    token        = api_token,
-    content      = "record",
-    format       = "json",
-    type         = "flat",
-    records      = "MSR",
-    fields       = "date_updated",
-    returnFormat = "json"
-  )
-
-  # Check date updated
-  httr::POST(api_uri, body = api_date_params) %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON() %>%
-    purrr::as_vector() %>%
-    lubridate::as_date() ->
-    date_updated
-
-  # If not updated yet
-  if (date_updated < day) {
-    error_future <- paste0(
-      "REDcap does not yet have data for ",
-      Sys.Date(), ". Please check back later."
-    )
-    stop(error_future)
-  }
-
-  # If date updated is later than input date
-  if (date_updated > day) {
-    error_past <- paste0(
-      "REDcap's update date is more recent than the date specified in 'day'. ",
-      "To download REDcap's most recent data, please re-run with",
-      "'day == as.Date(", date_updated, ")'."
-    )
-    stop(error_past)
-  }
-
-  # Step 3 - Download NBS file
-  message("Downloading PCR file...")
-
-  # Create params to get NBS form
-  api_nbs_params <- list(
-    token        = api_token,
-    content      = "file",
-    action       = "export",
-    record       = "MSR",
-    field        = "lab_pcr",
-    returnFormat = "json"
-  )
-
-  # Create temporary directory for new files
-  if (!dir.exists("temp")) {
-    dir.create("temp")
-  } else {
-    unlink("temp", recursive = TRUE)
-    dir.create("temp")
-  }
-
-  # Downloading most recent investigations file
-  httr::POST(
-    api_uri,
-    body = api_nbs_params,
-    httr::write_disk("temp/pcr.zip"),
-    httr::progress()
-  )
-
-  message("\nDone.")
-
-  # Unzip new file
-  message("Unzipping folder...", appendLF = FALSE)
-  unzip("temp/pcr.zip", exdir = "temp")
-  message(" Done.")
-
-  # Move to specified directory and rename
-  message("Moving file and cleaning up...", appendLF = FALSE)
-  pcr_file <- paste0(dir_path, fname)
-  file.rename(
-    from = "temp/MSR - All PCRs.csv",
-    to = pcr_file
-  )
-
-  # Delete temp directory before exit
-  unlink("temp", recursive = TRUE)
-  message(" Done.")
-
-  message("Opening in Excel for conversion...", appendLF = FALSE)
-  shell.exec(pcr_file)
-  message("Done!")
-}
-
-get_nbs <- function(
-  day = Sys.Date(),
-  dir_path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
+#' @export
+load_and_process_nbs <- function(
+  date = Sys.Date(),
+  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
   file_name = NULL,
-  encoding = TRUE,
+  file_type = c("csv", "xlsx"),
   clean = TRUE,
-  min_completion_rate = 0.5,
-  clean_quietly = TRUE
+  min_completion_rate = 0.5
 ) {
 
   # We want to remind the user what date is being used
-  message(paste0("\nDate used: ", day, "\n"))
+  message(paste0("\nDate used: ", date, "\n"))
 
   # 'find_file' needs to match filenames like '...YYY-MM-DD...csv'
-  pattern <- paste0(".*", day, ".*", "csv")
+  pattern <- paste0(".*", date, ".*", file_type[[1]])
 
   # We're ready to find and read the NBS data
-  coviData::find_file(
-    day = day,
-    dir_path = dir_path,
+  find_file(
+    date = date,
+    directory = directory,
     pattern = pattern,
     file_name = file_name
   ) %>%
-    coviData::read_nbs() ->
+    read_file() ->
   data
 
   # Type, format, and value cleaning is optional, but "on" by default; either
   # return clean data or raw data (with the latter in character format)
   if (clean) {
-    coviData::clean_nbs(
+    clean_nbs(
       data,
-      min_completion_rate = min_completion_rate,
-      quiet = clean_quietly
+      min_completion_rate = min_completion_rate
     )
   } else {
     data
   }
 }
 
-read_nbs <- function(
-  path,
-  nThread = 4
-) {
-
-  # Reading takes a while; we want to let the user know something is happening
-  message("Reading NBS data file...")
-
-  # The 'data.table::fread' function is designed to read large delimited files.
-  # In this case, read_csv needs too much memory to store intermediate values;
-  # 'fread' avoids this.
-  data.table::fread(
-    path,
-    header = TRUE,
-    colClasses = "character",
-    blank.lines.skip = TRUE,
-    nThread = nThread
-  ) %>%
-  as_tibble() %>%
-  readr::type_convert()
-}
-
+#' @importFrom magrittr `%>%`
+#'
+#' @importFrom magrittr `%T>%`
 clean_nbs <- function(
   .nbs_data,
   min_completion_rate = 0.5,
-  quiet = TRUE
+  string_to_factor = FALSE
 ) {
 
-  message("\nCleaning variables and data types...", appendLF = FALSE)
-  cleaned_data <- coviData::clean_generic(.nbs_data)
-  message("Done.\n")
-
-  message("Factoring data for further wrangling...", appendLF = FALSE)
-  cleaned_data %>%
+  message("\nCleaning patient names...")
+  .nbs_data %>%
     dplyr::mutate(
-      dplyr::across(where(coviData::not_factor_date), factor)
-    ) ->
-  factor_data
-  message("Done.\n")
+      dplyr::across(
+        dplyr::matches(c("_name", "_nm")),
+        .fns = standardize_names
+      )
+    ) %T>%
+    {message("Done.")} %T>%
+    {message("\nCleaning variables and data types...", appendLF = FALSE)} %>%
+    clean_generic(string_to_factor = string_to_factor) %T>%
+    {message("Done.\n")} %T>%
+    {message("Factoring data for further wrangling...", appendLF = FALSE)} %>%
+    dplyr::mutate(
+      dplyr::across(where(not_factor_date), factor)
+    ) %T>%
+    {message("Done.\n")} ->
+  cleaner_data
 
   message("Finding informative variables in:")
 
   message("all data...")
-  factor_data %>%
-    coviData::cols_to_keep(min_completion_rate = min_completion_rate) ->
+  cleaner_data %>%
+    cols_to_keep(min_completion_rate = min_completion_rate) ->
   all_cols
 
   message("cases...")
-  factor_data %>%
+  cleaner_data %>%
     dplyr::filter(inv_case_status == "C" | inv_case_status == "P") %>%
-    coviData::cols_to_keep(min_completion_rate = min_completion_rate) ->
+    cols_to_keep(min_completion_rate = min_completion_rate) ->
   case_cols
 
   message("hospitalizations...")
-  factor_data %>%
+  cleaner_data %>%
     dplyr::filter(hsptlizd_ind == "Y") %>%
-    coviData::cols_to_keep(min_completion_rate = min_completion_rate) ->
+    cols_to_keep(min_completion_rate = min_completion_rate) ->
   hosp_cols
 
   message("deaths...")
-  factor_data %>%
+  cleaner_data %>%
     dplyr::filter(die_from_illness_ind == "Y") %>%
-    coviData::cols_to_keep(min_completion_rate = min_completion_rate) ->
+    cols_to_keep(min_completion_rate = min_completion_rate) ->
   death_cols
+
   message("Done.\n")
 
   message(
     "Removing uninformative variables and observations...",
     appendLF = FALSE
   )
+
   all_cols$info %>%
-    union(case_cols$info) %>%
-    union(hosp_cols$info) %>%
-    union(death_cols$info) %>%
-    union("inv_local_id") ->
+    generics::union(case_cols$info) %>%
+    generics::union(hosp_cols$info) %>%
+    generics::union(death_cols$info) %>%
+    generics::union("inv_local_id") ->
   keep_cols_info
 
   all_cols$missing %>%
-    union(case_cols$missing) %>%
-    union(hosp_cols$missing) %>%
-    union(death_cols$missing) %>%
-    union("inv_local_id") ->
+    generics::union(case_cols$missing) %>%
+    generics::union(hosp_cols$missing) %>%
+    generics::union(death_cols$missing) %>%
+    generics::union("inv_local_id") ->
   keep_cols_missing
 
-  keep_cols <- intersect(keep_cols_info, keep_cols_missing)
+  keep_cols <- generics::intersect(keep_cols_info, keep_cols_missing)
 
-  cleaned_data %>%
+  cleaner_data %>%
     dplyr::select(tidyselect::matches(keep_cols)) %>%
     janitor::remove_empty(which = "rows") %>%
-    tibble::as_tibble() %>%
-    (function(.nbs_data) {message("Done!"); return(.nbs_data)})
+    tibble::as_tibble() %T>%
+    {message("Done!\n")}
 }
 
+#' @importFrom magrittr `%>%`
 find_dupes <- function(
   data,
   col_names = c(
@@ -400,8 +140,9 @@ find_dupes <- function(
     sum()
 }
 
-clean_nbs_id <- function(.nbs_id) {
-  .nbs_id %>%
+#' @importFrom magrittr `%>%`
+standardize_nbs_id <- function(id) {
+  id %>%
     # Coerce to character
     as.character() %>%
     # Remove whitespace
@@ -416,19 +157,22 @@ clean_nbs_id <- function(.nbs_id) {
     stringr::str_pad(width = 7, side = "left", pad = "0")
 }
 
+#' @importFrom magrittr `%>%`
+#'
+#' @export
 clean_deaths <- function(
-  dir_path = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
+  directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
   r_file = "Working Copy Death  Epi.xlsx",
   w_file = paste0("cleaned_copies/cleaned_deaths_", Sys.Date(), ".xlsx")
 ) {
   readxl::read_excel(
-    path = paste0(dir_path, r_file),
+    path = paste0(directory, r_file),
     trim_ws = TRUE,
     guess_max = .Machine$integer.max %/% 100L,
     progress = TRUE
   ) %>%
-    mutate(NBS = clean_nbs_id(NBS)) %>%
+    dplyr::mutate(NBS = clean_nbs_id(NBS)) %>%
     openxlsx::write.xlsx(
-      file = paste0(dir_path, w_file)
+      file = paste0(directory, w_file)
     )
 }

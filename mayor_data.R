@@ -2,32 +2,33 @@ devtools::load_all()
 library(tidyverse)
 
 readxl::read_xlsx(
-  path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/COVID CASES_MAYORS DATA REQUEST/Positives09152020/Positives_9-15.xlsx",
-) ->
+  path = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/COVID CASES_MAYORS DATA REQUEST/Positives09152020/Positives_9-30.xlsx",
+) %>%
+  janitor::clean_names() ->
 mayor_data
 
 mayor_data %>%
-  select(event_date, PATIENT_CITY, PATIENT_AGE_REPORTED) %>%
+  select(event_date, patient_city, patient_age_reported) %>%
   type_convert() %>%
   mutate(across(where(is.character), factor)) %>%
   mutate(event_date = as.Date(event_date,origin = "1900-01-01")) %>%
   mutate(
-    PATIENT_CITY = PATIENT_CITY %>%
+    patient_city = patient_city %>%
     addNA() %>%
     forcats::fct_collapse(
       Arlington = c("Arlington", "ARLINGTON"),
       Bartlett = c("Barlett", "BARLETT", "Bartlet", "bartlett", "Bartlett", "BARTLETT", "Bartlette"),
       Collierville = c("COLLERVILLE", "COLLIERVIELLE", "Colliervile", "collierville", "Collierville", "COLLIERVILLE", "Collerville"),
-      # Cordova = c("Cardova", "CORDAVA", "CORDODA", "cordova", "Cordova", "CORDOVA", "CORDOVE", "Cordovva", "Corodva"),
       Germantown = c("Gemantown", "GER", "germantown", "Germantown", "GERMANTOWN", "Gernantown"),
       Lakeland = c("Lakeland", "LAKELAND", "LAKLAND"),
       Memphis = c("Meaphis", "MEM", "Mem[his", "Memhis", "MEMHIS", "Memphiis", "memphis", "Memphis", "MeMphis", "MEmphis", "MEMPHIS", "Memphis,", "Memphjis", "MEMPHS", "Memphsi", "Mempis", "MEMPIS", "Mempjhis", "Mempphis", "Mephis", "MEPHIS", "Mmephis", "MMEPHIS", "MPHS", "MPHS,", "Mtemphis", "MEMPHI", "Memphid", "MEMPHIS TN 3810", "Memphis, TN 38104"),
-      Millington = c("Millington", "MILLINGTON", "MILLINGTON TN", "Willington", "MILLINGTION"),
-      other_level = "Other/Unincorporated/Missing"
+      Millington = c("Millington", "MILLINGTON", "MILLINGTON TN", "Willington", "MILLINGTION")
+      # other_level = "Other/Unincorporated/Missing"
     )
-  ) %>%
-  janitor::clean_names() ->
+  ) ->
 line_data
+
+levels(line_data$patient_city)
 
 line_data %>%
   count(patient_city, event_date) %>%

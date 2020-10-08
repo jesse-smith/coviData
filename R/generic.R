@@ -1,102 +1,3 @@
-#' Find a File with the Specified Date + Pattern in the File Name
-#'
-#' \code{find_file} looks for a file in the folder \code{dir_path}
-#' with the date \code{day} in its name. It returns the path to that file; if
-#' more than one file is found, it returns the path to the first one and issues
-#' a warning.
-#'
-#' @param day A \code{Date} indicating the date in the filename
-#'
-#' @param pattern The pattern to match when searching for the filename. The
-#'   default is to look for any file with \code{day} in the name.
-#'
-#' @param dir_path The directory in which to search for the file.
-#'
-#' @param file_name If the search does not return a file known to exist,
-#'   \code{filename} can be used to specify the file directly
-#'
-#' @param day_flag A string used to print more informative messages in some
-#'   functions
-#'
-#' @return A string containing the full path to the file that was found
-#'
-#' @importFrom magrittr `%>%`
-find_file <- function(
-  day = Sys.Date(),
-  pattern = paste0(".*", day, ".*"),
-  dir_path = NULL,
-  file_name = NULL,
-  day_flag = NULL,
-  rtn_error = TRUE
-) {
-
-  # 'file_name' should override 'pattern' so that the file can be found directly
-  if (!is.null(file_name)) {
-    pattern <- file_name
-  }
-
-  file_name <- list.files(dir_path, pattern = pattern)
-
-  # The next section handles warnings (for multiple matches) and errors (for no
-  # matches)
-
-  # check_ael (and possibly other functions) use 'day_flag' to return more
-  # informative messages; we display the 'day_flag' in the message if it's given
-  if (!is.null(day_flag)) {
-    # A warning indicates that multiple matches were found, 'find_file' is
-    # returning the first one
-    wrn1 <- paste0(
-      "'find_file' found multiple files matching ", day_flag, "'s date ",
-      "(", day, "):\n\n  ",
-      file_name %>%
-        stringr::str_flatten(collapse = ";") %>%
-        stringr::str_replace_all(pattern = ";", replacement = "\n  "),
-      "\n\n  ",
-      "By default, the first file is used; to select another file, use the ",
-      "'", day_flag, "_file' argument."
-    )
-
-    # An error indicates that no matches were found
-    stp1 <- paste0(
-      "\n  'find_file' did not find a file matching ", day_flag, "'s date ",
-      "(", day, ") ",
-      "in the specified directory:\n",
-      dir_path
-    )
-    # If used elsewhere
-  } else {
-    wrn1 <- paste0(
-      "'find_file' found multiple files matching this date ",
-      "(", day, "):\n\n  ",
-      file_name %>%
-        stringr::str_flatten(collapse = ";") %>%
-        stringr::str_replace_all(pattern = ";", replacement = "\n  "),
-      "\n\n  ",
-      "By default, the first file is used; to select another file, use the ",
-      "'file_name' argument."
-    )
-
-    stp1 <- paste0(
-      "'find_file' did not find a file matching this date ",
-      "(", day, ") ",
-      "in the specified directory:\n",
-      dir_path
-    )
-  }
-
-  # Check and respond with warning or error
-  if (length(file_name) > 1) {
-    warning(wrn1)
-  } else if (length(file_name) == 0 & rtn_error) {
-    stop(stp1)
-  } else if (length(file_name) == 0) {
-    return(character())
-  }
-
-  # Return full path
-  paste0(dir_path, file_name[[1]])
-}
-
 #' Standardize Variables, Handle Dates, and Remove Bad Columns
 #'
 #' \code{clean_generic} standardizes column names, removes empty or constant
@@ -107,60 +8,88 @@ find_file <- function(
 #' @importFrom magrittr `%>%`
 clean_generic <- function(
   .data,
-  date_suffix = c("_dt", "_dob", "_date"),
-  date_orders = c("dmy", "mdy", "ymd", "dmyT", "mdyT", "ymdT"),
   string_to_factor = FALSE
 ) {
   suppressMessages(
     .data %>%
-      janitor::clean_names() %>%
+      janitor::clean_names(parsing_option = 1) %>%
       standardize_dates() %>%
-      type_convert() %>%
+      readr::type_convert() %>%
       janitor::remove_empty(which = "cols") %>%
       janitor::remove_constant(na.rm = TRUE) ->
     clean_data
   )
     if (string_to_factor) {
       clean_data %>%
-        mutate(across(where(is.character), str_to_factor, encoding = TRUE))
+        dplyr::mutate(dplyr::across(where(is.character), str_to_factor, encoding = TRUE))
     } else {
       clean_data %>%
-        mutate(
-          across(where(is.character), stringr::str_conv(encoding = "UTF-8"))
+        dplyr::mutate(
+          dplyr::across(where(is.character), stringr::str_conv, encoding = "UTF-8")
         )
     }
 }
 
 #' @importFrom magrittr `%>%`
+standardize_names <- function(.x) {
+
+  esc_msg <- paste0(
+    " substitute character(s) have been removed.",
+    " See warnings for more detail on which characters could not be encoded."
+  )
+
+  .x %>%
+    stringr::str_conv(encoding = "UTF-8") %T>%
+    detect_and_replace(pattern = "[\ufffd\u001a]", msg = esc_msg) %>%
+    stringr::str_remove_all(pattern = "['\"]") %>%
+    stringr::str_replace_all(pattern = "[^a-zA-Z0-9 ]", replacement = " ") %>%
+    stringr::str_squish() %>%
+    stringr::str_to_title()
+}
+
+#' @importFrom magrittr `%>%`
+#'
+#' @importFrom magrittr `%T>%`
+detect_and_replace <- function(
+  .x,
+  pattern,
+  replacement = "",
+  msg = " patterns replaced"
+) {
+  .x %>%
+    stringr::str_detect(pattern = pattern) %>%
+    sum(na.rm = TRUE) ->
+  n_patterns
+
+  if (n_patterns != 0) {
+    .x %>%
+      stringr::str_replace_all(
+        pattern = pattern,
+        replacement = replacement
+      ) %T>%
+      {message(paste0(n_patterns, msg))}
+  } else {
+    .x
+  }
+}
+
+#' @importFrom magrittr `%>%`
 standardize_dates <- function(
   .data,
-  suffix = c(
-    "_dt", "_dob", "_date",
-    "_DT", "_DOB", "_DATE",
-    "_Dt", "Dob", "_Date"
-  ),
+  suffix = c("_dt", "_dob", "_date"),
   orders = c("dmy", "mdy", "ymd", "dmyT", "mdyT", "ymdT"),
   ...
 ) {
   .data %>%
-    dplyr::select(tidyselect::ends_with(suffix)) ->
-    date_data
-
-  date_cols <- colnames(date_data)
-
-  date_data %>%
-    readr::type_convert() %>%
     dplyr::mutate(
       dplyr::across(
-        where(is.character),
-        lubridate::parse_date_time,
-        orders = orders,
-        ...
+        dplyr::ends_with(suffix, ignore.case = TRUE),
+        .fns = ~ .x %>%
+          as.character() %>%
+          lubridate::parse_date_time(orders = orders) %>%
+          dttm_to_dt()
       )
-    ) ->
-    .data[date_cols]
-
-  .data
+    )
 }
 
 #' @importFrom magrittr `%>%`
@@ -172,18 +101,18 @@ cols_to_keep <- function(.data, min_completion_rate = 0.5) {
   )
 
   .factor_data %>%
-    dplyr::summarize(dplyr::across(everything(), skimr::n_unique)) %>%
-    pivot_longer(cols = everything()) %>%
-    filter(value < NROW(.factor_data)) %>%
-    select(name) %>%
+    dplyr::summarize(dplyr::across(dplyr::everything(), skimr::n_unique)) %>%
+    tidyr::pivot_longer(cols = dplyr::everything()) %>%
+    dplyr::filter(value < NROW(.factor_data)) %>%
+    dplyr::select(name) %>%
     .[[1]] ->
     keep_cols_info
 
   .factor_data %>%
-    summarize(across(.fns = skimr::complete_rate)) %>%
-    pivot_longer(cols = everything()) %>%
-    filter(value >= min_completion_rate) %>%
-    select(name) %>%
+    dplyr::summarize(dplyr::across(.fns = skimr::complete_rate)) %>%
+    tidyr::pivot_longer(cols = dplyr::everything()) %>%
+    dplyr::filter(value >= min_completion_rate) %>%
+    dplyr::select(name) %>%
     .[[1]] ->
     keep_cols_missing
 
@@ -191,7 +120,7 @@ cols_to_keep <- function(.data, min_completion_rate = 0.5) {
 }
 
 not_factor_date <- function(x) {
-  !(is.factor(x) | lubridate::is.POSIXt(x))
+  !(is.factor(x) | lubridate::is.POSIXt(x) | lubridate::is.Date(x))
 }
 
 #' @importFrom magrittr `%>%`
@@ -213,7 +142,7 @@ filter_geo <- function(
   # Filter by state if column exists
   if (state_exists) {
     .data %>%
-      filter(
+      dplyr::filter(
         get(state_col) %>%
           check_state(states = states, include_na = include_na)
       ) ->
@@ -223,7 +152,7 @@ filter_geo <- function(
   # Filter by county if column exists
   if (county_exists) {
     .data %>%
-      filter(
+      dplyr::filter(
         get(county_col) %>%
           check_county(counties = counties, include_na = include_na)
       ) ->
@@ -233,7 +162,7 @@ filter_geo <- function(
   # Filter by ZIP if not NULL
   if (zip_exists) {
     .data %>%
-      filter(
+      dplyr::filter(
         get(zip_col) %>%
           check_zip(zips = zips, include_na = include_na)
       ) ->
@@ -340,4 +269,132 @@ check_zip <- function(x, zips, include_na) {
 
   # Return logical vector
   as.logical(x_lgl)
+}
+
+#' Assign Date Type to DateTime Variables
+#'
+#' \code{dttm_to_dt} is an opinionated formatter for dates and datetimes. It
+#' prefers simple dates to datetimes, and checks any datetime variables for
+#' additional information in the hour:minute:second portion of the variable. If
+#' it finds none, it converts the variable to a standard date.
+#'
+dttm_to_dt <- function(.x) {
+  # If .x is already Date type, return as-is
+  if (lubridate::is.Date(.x)) return(.x)
+
+  # Otherwise, check for any additional information in the variable
+  t <- (
+    lubridate::hour(.x) +
+      lubridate::minute(.x) / 60 +
+      lubridate::second(.x) / 3600
+  )
+
+  if (all(t == median(t, na.rm = TRUE) | is.na(t))) {
+    lubridate::as_date(.x)
+  } else if (lubridate::is.POSIXlt(.x)) {
+    lubridate::as_datetime(.x)
+  } else {
+    .x
+  }
+}
+
+#' Coalesce Rows by Columns in Data Frame
+#'
+#' @references
+#'   See Jon Harmon's solution to
+#'   \href{https://stackoverflow.com/questions/45515218/combine-rows-in-data-frame-containing-na-to-make-complete-row}{this question}
+#'   on Stack Overflow.
+coalesce_by_column <- function(x) {
+  if (length(x) > 1) {
+    dplyr::coalesce(!!!as.list(x))
+  } else {
+    x
+  }
+}
+
+#' Coalesce Information in Duplicate Rows
+#'
+#' \code{coalesce_dupes} sorts data, removes duplicates, and combines
+#' information in duplicate rows.
+#'
+#' \code{coalesce_dupes} can be thought of as an enhanced version of
+#' \code{\link[dplyr]{distinct}}. Like \code{distinct}, \code{coalesce_dupes}
+#' removes duplicates from a dataset based on a provided set of variables.
+#' Unlike distinct, it sorts the data on those variables by default using
+#' \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
+#' the first non-missing values in any duplicate rows using a modification of
+#' \code{\link[dplyr]{coalesce}}.
+#'
+#' @param .data A data frame, data frame extension (e.g. a tibble), or a lazy
+#'   data frame (e.g. from dbplyr or dtplyr)
+#'
+#' @param ... Variables to use for sorting and determining uniqueness. If there
+#'   are multiple rows for a given combination of inputs, only the first row
+#'   will be preserved. If omitted, simply calls \code{distinct} with
+#'   \code{.keep_all = TRUE}.
+#'
+#' @param sort A logical indicating whether to sort using the input variables.
+#'   If no input variables are given, no sorting is performed, and this
+#'   parameter is ignored.
+#'
+#' @export
+coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
+
+  # If no variables are provided, just call distinct() and exit
+  if (rlang::dots_n(...) == 0) {
+    message(
+      paste0(
+        "No variables provided; calling dplyr::distinct. ",
+        "If your data are large, this may take a while..."
+      ),
+      appendLF = FALSE
+    )
+    data %>%
+      dplyr::distinct(.keep_all = TRUE) %>%
+      return()
+    message("Done.")
+  }
+
+  # Prepare data by id-ing, arranging, grouping, and counting dupes
+  data %>%
+    dplyr::mutate(order_id = seq_len(NROW(data))) %>%
+    {if (pre_sort) dplyr::arrange(., ...) else .} %>%
+    dplyr::group_by(...) %>%
+    dplyr::add_count() ->
+  grouped_data
+
+  # Handle groups with duplicates
+  grouped_data %>%
+    dplyr::filter(n > 1) %>%
+    dplyr::select(-n) %>%
+    dplyr::summarize(
+      dplyr::across(.fns = coalesce_by_column),
+      .groups = "drop"
+    ) ->
+  coalesced_dupes
+
+  # Handle groups without duplicates
+  grouped_data %>%
+    dplyr::filter(n == 1) %>%
+    dplyr::select(-n) %>%
+    dplyr::ungroup() %>%
+    # Add coalesced groups back to data
+    tibble::add_row(coalesced_dupes) %>%
+    # Either sort by the given variables or by .id, then drop .id
+    {if (post_sort) dplyr::arrange(., ...) else dplyr::arrange(., order_id)} %>%
+    dplyr::select(-order_id)
+}
+
+
+guess_filetype <- function(path) {
+  switch(
+    fs::path_ext(path),
+    xlsx = "excel",
+    xls  = "excel",
+    csv  = "delimited",
+    prn  = "delimited",
+    tsv  = "delimited",
+    txt  = "delimited",
+    "unknown"
+  )
 }

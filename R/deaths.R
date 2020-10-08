@@ -1,3 +1,0 @@
-#' Read Deaths Linelist
-#'
-#'
