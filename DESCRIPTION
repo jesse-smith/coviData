@@ -1,35 +1,51 @@
 Package: coviData
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: COVID-19 Data Munging Tools for the Shelby County Health Department
+Version: 0.0.0.9001
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Jesse",
+           family = "Smith",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "jesse.smith@shelbycountytn.com",
+           comment = c(ORCID = "0000-0001-7375-2463"))
+Description: coviData is designed to help with ETL, munging, and basic analysis
+    of COVID-19 data within the Shelby County Health Department. It aims to 
+    provide a comprehensive framework for down/loading, cleaning, summarizing,
+    and reporting this data. The goal is to make human input when creativity is
+    needed and difficult when consistency is a priority.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
-    magrittr (>= 1.5),
+    assertthat (>= 0.2.1),
+    colorspace (>= 1.4.1),
     data.table (>= 1.13.0),
     dplyr (>= 1.0.1),
-    readr (>= 1.3.1),
-    lubridate (>= 1.7.9),
-    tidyselect (>= 1.1.0),
+    forcats (>= 0.5.0),
+    fs (>= 1.5.0),
+    generics (>= 0.0.2),
+    glue (>= 1.4.2),
+    gt (>= 0.2.2),
+    httr (>= 1.4.2),
     janitor (>= 2.0.1),
-    tibble (>= 3.0.3),
+    jsonlite (>= 1.7.1),
+    lubridate (>= 1.7.9),
+    magrittr (>= 1.5),
+    methods (>= 4.0.2),
+    openxlsx (>= 4.1.5),
+    purrr (>= 0.3.4),
+    readr (>= 1.3.1),
+    readxl (>= 1.3.1),
+    rlang (>= 0.4.7),
+    stats (>= 4.0.2),
+    sftp (>= 2.0.1),
     skimr (>= 2.1.2),
     stringr (>= 1.4.0),
-    gt (>= 0.2.2),
-    colorspace (>= 1.4.1),
-    openxlsx (>= 4.1.5),
-    httr (>= 1.4.2),
-    sftp (>= 2.0.1),
+    tibble (>= 3.0.3),
     tidyr (>= 1.1.2),
-    assertthat (>= 0.2.1),
-    fs (>= 1.5.0)
+    tidyselect (>= 1.1.0),
+    utils (>= 4.0.2),
+    xml2 (>= 1.3.2)
+Suggests: 
+    testthat

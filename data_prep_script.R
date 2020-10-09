@@ -4,6 +4,7 @@ download_nbs_snapshot(convert = TRUE)
 download_pcr_snapshot(convert = TRUE)
 download_ael(repair_name_cols = TRUE)
 
+download_ael_new(directory = "~")
 # Read data
 nbs <- load_nbs(Sys.Date())
 pcr <- load_pcr(Sys.Date())

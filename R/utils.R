@@ -1,4 +1,4 @@
-# AEL Functions ################################################################
+# AEL ##########################################################################
 
 #' Add Name Columns to AEL Excel File
 #'
@@ -38,13 +38,13 @@ process_names <- function(data, force = FALSE) {
   # Check that all standardized columns exist
   ifelse(ref_cols %in% col_names, yes = TRUE, no = FALSE) %>%
     all() ->
-  std_exist
+    std_exist
 
   # Check that no more than the standardized columns exist
   stringr::str_detect(col_names, pattern = "Patient.+Name.*") %>%
     sum() %>%
     (function(x) x == 4) ->
-  only_std
+    only_std
 
   # If the data passes both checks, return as-is (unless force == TRUE)
   if (std_exist & only_std & !force) {
@@ -57,7 +57,7 @@ process_names <- function(data, force = FALSE) {
   data %>%
     dplyr::select(-dplyr::matches("Patient.+Name.*")) %>%
     split_names() ->
-  new_data
+    new_data
 
   attr(new_data, which = "modified") <- TRUE
 
@@ -112,7 +112,7 @@ split_names <- function(.data) {
         stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA)
     ) ->
-  new_names
+    new_names
 
   # Add to existing data
   .data %>%
@@ -147,7 +147,7 @@ str_to_factor <- function(string, encoding = FALSE) {
       stringr::str_to_upper() %>%
       stringr::str_squish() %>%
       factor()
-  # Perform conversion with re-encoding
+    # Perform conversion with re-encoding
   } else {
     if (encoding == TRUE) encoding <- "UTF-8"
     string %>%
@@ -215,7 +215,7 @@ filter_region <- function(
         PtState %in% states &
           (stringr::str_starts(PtZipcode, pattern = zips) | is.na(PtZipcode))
       )
-  # Otherwise return matches to states and zips
+    # Otherwise return matches to states and zips
   } else {
     .data %>%
       dplyr::filter(
@@ -223,5 +223,153 @@ filter_region <- function(
           stringr::str_starts(PtZipcode, pattern = zips)
       )
   }
+}
+
+# NBS ##########################################################################
+filter_geo <- function(
+  .data,
+  state_col = "patient_state",
+  county_col = "alt_county",
+  zip_col = "patient_zip",
+  states = c("TN", "47"),
+  zips = c("380..", "381.."),
+  counties = "Shelby County",
+  include_na = TRUE
+) {
+
+  state_exists <- any(state_col %in% colnames(.data))
+  county_exists <- any(county_col %in% colnames(.data))
+  zip_exists <- any(zip_col %in% colnames(.data))
+
+  # Filter by state if column exists
+  if (state_exists) {
+    .data %>%
+      dplyr::filter(
+        get(state_col) %>%
+          check_state(states = states, include_na = include_na)
+      ) ->
+      .data
+  }
+
+  # Filter by county if column exists
+  if (county_exists) {
+    .data %>%
+      dplyr::filter(
+        get(county_col) %>%
+          check_county(counties = counties, include_na = include_na)
+      ) ->
+      .data
+  }
+
+  # Filter by ZIP if not NULL
+  if (zip_exists) {
+    .data %>%
+      dplyr::filter(
+        get(zip_col) %>%
+          check_zip(zips = zips, include_na = include_na)
+      ) ->
+      .data
+  }
+
+  if (all(!c(state_exists, county_exists, zip_exists))) {
+    warning("Returning input data; no columns were selected for filtering.")
+  }
+
+  .data
+}
+
+#' @importFrom magrittr `%>%`
+check_state <- function(x, states, include_na) {
+
+  # Make sure both are character vectors & upper case
+  x <- as.character(x) %>% stringr::str_to_upper()
+  states <- as.character(states) %>% stringr::str_to_upper()
+
+  # State codes must be 1 or 2 characters
+  # (If given by FIPS code, [01, ..., 09] will be converted to [1, ..., 9] by R)
+  x[!(stringr::str_length(x) %in% c(1L,2L))] <- NA
+
+  # Any improperly formatted entries in comparison vector are removed
+  states[!(stringr::str_length(states) %in% c(1L,2L))] <- NULL
+
+  # Handle NAs separately; shouldn't be in `states`
+  states[is.na(states)] <- NULL
+
+  # Initialize logical vector
+  x_lgl <- vector(length = length(x))
+
+  # Loop through `states` to compare with `x`
+  # Inefficient, but vectorizing would take much of my time
+  for (state in states) {
+    x_lgl <- x_lgl + stringr::str_detect(x, pattern = state)
+  }
+
+  # Add NA if `include_na` == TRUE
+  if (include_na) {
+    x_lgl[is.na(x_lgl)] <- TRUE
+  }
+
+  # Return logical vector
+  as.logical(x_lgl)
+}
+
+#' @importFrom magrittr `%>%`
+check_county <- function(x, counties, include_na) {
+  # Make sure both are character vectors & title case
+  x <- as.character(x) %>% stringr::str_to_title()
+  counties <- as.character(counties) %>% stringr::str_to_title()
+
+  # Handle NAs separately; shouldn't be in `counties`
+  counties[is.na(counties)] <- NULL
+
+  # Initialize logical vector
+  x_lgl <- vector(length = length(x))
+
+  # Loop through `counties` to compare with `x`
+  # Inefficient, but vectorizing would take much of my time
+  for (county in counties) {
+    x_lgl <- x_lgl + stringr::str_detect(x, pattern = county)
+  }
+
+  # Add NA if `include_na` == TRUE
+  if (include_na) {
+    x_lgl[is.na(x_lgl)] <- TRUE
+  }
+
+  # Return logical vector
+  as.logical(x_lgl)
+}
+
+#' @importFrom magrittr `%>%`
+check_zip <- function(x, zips, include_na) {
+  # Make sure both are character vectors
+  x <- as.character(x)
+  zips <- as.character(zips)
+
+  # ZIP codes must be 5 digits
+  x[stringr::str_length(x) != 5] <- NA
+
+  # Any improperly formatted entries in comparison vector are removed
+  zips[stringr::str_length(zips) != 5] <- NULL
+
+  # Handle NAs separately; shouldn't be in `zips`
+  zips[is.na(zips)] <- NULL
+
+  # Initialize logical vector
+  x_lgl <- vector(length = length(x))
+
+  # Loop through `zips` to compare with `x`
+  # Inefficient, but vectorizing would take too long
+  for (zipcode in zips) {
+    x_lgl <- x_lgl + stringr::str_detect(x, pattern = zip)
+  }
+
+  # Add NA if `include_na` == TRUE
+  if (include_na) {
+    x_lgl[is.na(x_lgl)] <- TRUE
+  }
+
+  # Return logical vector
+  as.logical(x_lgl)
 }
 

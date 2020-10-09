@@ -7,13 +7,13 @@
 coalesce_dupes(data, ..., pre_sort = TRUE, post_sort = FALSE)
 }
 \arguments{
+\item{data}{A data frame, data frame extension (e.g. a tibble), or a lazy
+data frame (e.g. from dbplyr or dtplyr)}
+
 \item{...}{Variables to use for sorting and determining uniqueness. If there
 are multiple rows for a given combination of inputs, only the first row
 will be preserved. If omitted, simply calls \code{distinct} with
 \code{.keep_all = TRUE}.}
-
-\item{.data}{A data frame, data frame extension (e.g. a tibble), or a lazy
-data frame (e.g. from dbplyr or dtplyr)}
 
 \item{sort}{A logical indicating whether to sort using the input variables.
 If no input variables are given, no sorting is performed, and this
