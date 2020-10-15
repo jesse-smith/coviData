@@ -2,9 +2,9 @@ library(coviData)
 # Download data
 download_nbs_snapshot(convert = TRUE)
 download_pcr_snapshot(convert = TRUE)
-download_ael(repair_name_cols = TRUE)
+download_ael()
+replace_ael()
 
-download_ael_new(directory = "~")
 # Read data
 nbs <- load_nbs(Sys.Date())
 pcr <- load_pcr(Sys.Date())
@@ -13,14 +13,11 @@ ael <- load_ael(Sys.Date())
 # Check AEL data
 check_ael()
 
-NobBS::NobBS(
-
-)
 # Next, merge with AEL
 
 merged_nbs %>%
   dplyr::mutate(
-    lab_result %<>% relevel_labs(),
+    lab_result %<>% relevel_pcr(),
     collect_date_join = lubridate::as_date(collect_date),
     patient_last_name %<>% as.character(),
     patient_first_name %<>% as.character(),
@@ -32,7 +29,7 @@ pre_mnbs
 
 ael %>%
   dplyr::mutate(
-    lab_result = relevel_labs(result),
+    lab_result = relevel_pcr(result),
     collect_date_join = lubridate::as_date(collect_date),
     patient_last_name %<>% as.character(),
     patient_first_name %<>% as.character(),

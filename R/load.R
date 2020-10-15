@@ -2,7 +2,7 @@
 load_ael <- function(
   date = Sys.Date(),
   directory = "V:/EPI DATA ANALYTICS TEAM/AEL DATA/",
-  ext = c("xlsx", "csv")
+  ext = "xlsx"
 ) {
   message("Loading AEL file:\n")
   load_data(
@@ -99,36 +99,6 @@ load_and_process_ael <- function(
     dplyr::distinct(episode_no, .keep_all = TRUE)
 }
 
-#' Load a Data File Using the Directory, Date, and Extension
-#'
-#' \code{load_data} is meant to find and load a delimited or Excel data file
-#' given the directory that it's in, the date of interest, and the file
-#' extension.
-#'
-#' @param
-#'
-#' @export
-load_data <- function(
-  date,
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
-  file_name = NULL,
-  ext = c("csv", "xlsx"),
-  pattern = paste0(".*", date, ".*", ext[[1]])
-) {
-
-  # We want to remind the user what date is being used
-  message(paste0("\nDate used: ", date, "\n"))
-
-  # We're ready to find and read the NBS data
-  find_file(
-    date = date,
-    directory = directory,
-    pattern = pattern,
-    file_name = file_name
-  ) %>%
-    read_file()
-}
-
 #' @export
 load_nbs <- function(
   date = Sys.Date(),
@@ -167,4 +137,36 @@ load_pcr <- function(
     ext = ext[[1]],
     pattern = paste0(".*", formatted_date, ".*", ext[[1]])
   )
+}
+
+#' Load Cleaned Data from SAS Program
+#'
+#' @param date A \code{Date} indicating the date of the file to read
+#'
+#' @param directory A string indicating the directory of the file to read
+#'
+#' @param category A string indicating which cateory of cleaned data to read.
+#'   Options are "Positive cases", "Negatives", "PCR_Positives", or
+#'   "PCR_Negatives"
+#'
+#' @param ext The file extension to search for - "csv" by default
+#'
+#' @export
+load_sas <- function(
+  date = Sys.Date(),
+  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
+  category = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
+  ext = c("csv", "xlsx")
+) {
+  message("Loading SAS cleaning results:\n")
+
+  formatted_date <- format(date, format = "%m-%d")
+
+  load_data(
+    date = date,
+    directory = directory,
+    ext = ext[[1]],
+    pattern = paste0(".*", category, ".*", formatted_date, ".*", ext[[1]])
+  ) %>%
+    preprocess()
 }

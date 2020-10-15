@@ -8,8 +8,7 @@ replace_ael(
   date = Sys.Date(),
   directory = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
   date_file = NULL,
-  overwrite_names = FALSE,
-  encoding = TRUE
+  overwrite_names = FALSE
 )
 }
 \description{

@@ -16,7 +16,7 @@ standardize_names <- function(.x) {
 
 standardize_dates <- function(
   .data,
-  suffix = c("_dt", "_dob", "_date"),
+  suffix = c("dt", "dob", "date"),
   orders = c("dmy", "mdy", "ymd", "dmyT", "mdyT", "ymdT"),
   ...
 ) {

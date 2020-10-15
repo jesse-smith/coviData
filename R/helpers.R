@@ -1,25 +1,4 @@
-detect_and_replace <- function(
-  .x,
-  pattern,
-  replacement = "",
-  msg = " patterns replaced"
-) {
-  .x %>%
-    stringr::str_detect(pattern = pattern) %>%
-    sum(na.rm = TRUE) ->
-  n_patterns
-
-  if (n_patterns != 0) {
-    .x %>%
-      stringr::str_replace_all(
-        pattern = pattern,
-        replacement = replacement
-      ) %T>%
-      {message(paste0(n_patterns, msg))}
-  } else {
-    .x
-  }
-}
+# Preprocess ###################################################################
 
 cols_to_keep <- function(data, min_completion_rate = 1/3) {
 
@@ -51,13 +30,31 @@ not_factor_date <- function(x) {
   !(is.factor(x) | lubridate::is.POSIXt(x) | lubridate::is.Date(x))
 }
 
-#' Assign Date Type to DateTime Variables
-#'
-#' \code{dttm_to_dt} is an opinionated formatter for dates and datetimes. It
-#' prefers simple dates to datetimes, and checks any datetime variables for
-#' additional information in the hour:minute:second portion of the variable. If
-#' it finds none, it converts the variable to a standard date.
-#'
+# Standardize ##################################################################
+
+detect_and_replace <- function(
+  .x,
+  pattern,
+  replacement = "",
+  msg = " patterns replaced"
+) {
+  .x %>%
+    stringr::str_detect(pattern = pattern) %>%
+    sum(na.rm = TRUE) ->
+    n_patterns
+
+  if (n_patterns != 0) {
+    .x %>%
+      stringr::str_replace_all(
+        pattern = pattern,
+        replacement = replacement
+      ) %T>%
+      {message(paste0(n_patterns, msg))}
+  } else {
+    .x
+  }
+}
+
 dttm_to_dt <- function(.x) {
   # If .x is already Date type, return as-is
   if (lubridate::is.Date(.x)) return(.x)
@@ -69,7 +66,7 @@ dttm_to_dt <- function(.x) {
       lubridate::second(.x) / 3600
   )
 
-  if (all(t == stats::na.omit(t)[[1]] | is.na(t))) {
+  if (all(t == stats::median(t, na.rm = TRUE) | is.na(t))) {
     lubridate::as_date(.x)
   } else if (lubridate::is.POSIXlt(.x)) {
     lubridate::as_datetime(.x)
@@ -78,20 +75,7 @@ dttm_to_dt <- function(.x) {
   }
 }
 
-#' Coalesce Rows by Columns in Data Frame
-#'
-#' @references
-#'   See Jon Harmon's solution to
-#'   \href{https://stackoverflow.com/questions/45515218/combine-rows-in-data-frame-containing-na-to-make-complete-row}{this question}
-#'   on Stack Overflow.
-coalesce_by_column <- function(x) {
-  if (length(x) > 1) {
-    dplyr::coalesce(!!!as.list(x))
-  } else {
-    x
-  }
-}
-
+# Join #########################################################################
 #' Coalesce Information in Duplicate Rows
 #'
 #' \code{coalesce_dupes} sorts data, removes duplicates, and combines
@@ -141,7 +125,7 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     {if (pre_sort) dplyr::arrange(., ...) else .} %>%
     dplyr::group_by(...) %>%
     dplyr::add_count() ->
-  grouped_data
+    grouped_data
 
   # Handle groups with duplicates
   grouped_data %>%
@@ -151,7 +135,7 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
       dplyr::across(.fns = coalesce_by_column),
       .groups = "drop"
     ) ->
-  coalesced_dupes
+    coalesced_dupes
 
   # Handle groups without duplicates
   grouped_data %>%
@@ -165,16 +149,16 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     dplyr::select(-order_id)
 }
 
-
-guess_filetype <- function(path) {
-  switch(
-    fs::path_ext(path),
-    xlsx = "excel",
-    xls  = "excel",
-    csv  = "delimited",
-    prn  = "delimited",
-    tsv  = "delimited",
-    txt  = "delimited",
-    "unknown"
-  )
+#' Coalesce Rows by Columns in Data Frame
+#'
+#' @references
+#'   See Jon Harmon's solution to
+#'   \href{https://stackoverflow.com/questions/45515218/combine-rows-in-data-frame-containing-na-to-make-complete-row}{this question}
+#'   on Stack Overflow.
+coalesce_by_column <- function(x) {
+  if (length(x) > 1) {
+    dplyr::coalesce(!!!as.list(x))
+  } else {
+    x
+  }
 }

@@ -44,8 +44,6 @@ download_redcap_file <- function(
   ) %>% length()
 
   # Don't run if any are found
-
-
   assertthat::assert_that(
     n_existing == 0 | force,
     msg = paste(
@@ -154,7 +152,7 @@ download_redcap_file <- function(
     length(file_temp) == 1,
     msg = paste0(
       "Expected 1 file when unzipping the response from REDcap, but got ",
-      length(files_temp), "."
+      length(file_temp), "."
     )
   )
 
@@ -173,6 +171,122 @@ download_redcap_file <- function(
 
   if (convert) {
     # Optional Step 5 - Convert to xlsx
+    message("Opening in Excel for conversion...", appendLF = FALSE)
+    shell.exec(file_new)
+    message("Done.")
+  }
+}
+
+download_redcap_report <- function(
+  date = Sys.Date(),
+  api_token,
+  report_id,
+  directory,
+  new_file,
+  convert = FALSE,
+  force = FALSE
+) {
+
+  # Step 1 - Check directory to make sure file isn't already there
+
+  # Get matching files from directory
+  n_existing <- find_file(
+    date = date,
+    pattern = new_file,
+    directory = directory,
+    rtn_error = FALSE
+  ) %>% length()
+
+  # Don't run if any are found
+  assertthat::assert_that(
+    n_existing == 0 | force,
+    msg = paste(
+      "An existing file matches this date; download will not continue.",
+      "To download anyway, set 'force == TRUE'."
+    )
+  )
+
+  # Step 2 - Download
+  message("Downloading REDcap report...")
+
+  # URL base for API
+  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
+
+  # Create params to get
+  api_nbs_params <- list(
+    token               = api_token,
+    content             = "report",
+    format              = "csv",
+    report_id           = report_id,
+    rawOrLabel          = "label",
+    rawOrLabelHeaders   = "label",
+    exportCheckboxLabel = "true",
+    returnFormat        = "json"
+  )
+
+  # Create temp folder and file names
+  dir_temp <- fs::path_temp() %>% paste0("/redcap_temp")
+  zip_temp <- paste0(dir_temp, "/redcap_file.csv")
+
+  # Delete existing temp folder if it exists and create new one
+  if (fs::dir_exists(dir_temp)) fs::dir_delete(dir_temp)
+  fs::dir_create(dir_temp)
+
+  # Make sure that things are cleaned up when this function exits, whether
+  # normally or as a result of an error
+  on.exit(fs::dir_delete(dir_temp))
+
+  # Download file
+  httr::POST(
+    api_uri,
+    body = api_nbs_params,
+    httr::write_disk(zip_temp),
+    httr::progress()
+  )
+
+  message("\nDone.")
+
+  # Step 3 - Unzip, Move, and Rename
+  # Unzip new file in temporary directory
+  # message("Unzipping folder...", appendLF = FALSE)
+  # utils::unzip(zip_temp, exdir = dir_temp)
+  # fs::file_delete(zip_temp)
+  # message("Done.")
+
+  # Move to specified directory and rename
+  message(
+    "Moving file and cleaning up; this may take a while...",
+    appendLF = FALSE
+  )
+
+  # Find the result of unzipping
+  file_temp <- fs::dir_ls(dir_temp)
+  print(file_temp)
+  # Make sure there's only one file
+  assertthat::assert_that(
+    length(file_temp) == 1,
+    msg = paste0(
+      "Expected 1 file when unzipping the response from REDcap, but got ",
+      length(file_temp), "."
+    )
+  )
+
+  file_new <- directory %>%
+    fs::path_real() %>%
+    fs::path_split() %>%
+    .[[1]] %>%
+    append(new_file) %>%
+    fs::path_join()
+  print(file_new)
+  # Move the file to the chosen directory with the chosen file name
+  fs::file_move(
+    path = file_temp,
+    new_path = file_new
+  )
+  message("Done.")
+
+  if (convert) {
+    # Optional Step 4 - Convert to xlsx
     message("Opening in Excel for conversion...", appendLF = FALSE)
     shell.exec(file_new)
     message("Done.")

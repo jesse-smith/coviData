@@ -148,9 +148,12 @@ read_file <- function(
       file = path,
       header = TRUE,
       colClasses = "character",
-      blank.lines.skip = TRUE
+      blank.lines.skip = TRUE,
+      fill = TRUE,
+      showProgress = TRUE
     ) %>%
       tibble::as_tibble() %>%
+      standardize_dates() %>%
       readr::type_convert() %T>%
       {message("Done.")}
 
@@ -165,4 +168,35 @@ read_file <- function(
     ) %T>%
       {message("Done.")}
   }
+}
+
+is_open <- function(path) {
+
+  # Clean path
+  path %<>% fs::path_tidy()
+
+  # Check that file exists - if not, can't be open, so return FALSE
+  if (!fs::file_exists(path)) return(FALSE)
+
+  suppressWarnings(
+    try(
+      withr::with_connection(list(c = file(path, open = "a")), code = ""),
+      silent = TRUE
+    ) %>%
+      class() %>%
+      {any(. == "try-error")}
+  )
+}
+
+guess_filetype <- function(path) {
+  switch(
+    fs::path_ext(path),
+    xlsx = "excel",
+    xls  = "excel",
+    csv  = "delimited",
+    prn  = "delimited",
+    tsv  = "delimited",
+    txt  = "delimited",
+    "unknown"
+  )
 }

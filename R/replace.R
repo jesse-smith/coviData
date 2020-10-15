@@ -5,8 +5,7 @@ replace_ael <- function(
   date = Sys.Date(),
   directory = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
   date_file = NULL,
-  overwrite_names = FALSE,
-  encoding = TRUE
+  overwrite_names = FALSE
 ) {
   date_str <- as.character(date, format = "%m/%d")
 
@@ -17,8 +16,9 @@ replace_ael <- function(
     directory = directory
   )
 
-  ael_file %>%
-    read_ael(string_to_factor = FALSE, encoding = encoding) %>%
+  load_ael(date = date, directory = directory) %>%
+    standardize_dates() %>%
+    # dplyr::mutate(AuthDate = lubridate::as_date(AuthDate)) %>%
     process_names(force = overwrite_names) ->
     processed_data
 
@@ -41,7 +41,7 @@ replace_deaths_id <- function(
   file = "Working Copy Death  Epi.xlsx",
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
   id = NBS,
-  save_as = paste0("cleaned_copies/cleaned_surveillance_copy", Sys.Date(), ".xlsx")
+  save_as = paste0("sas_data/cleaned_surveillance_copy.xlsx")
 ) {
 
   # Convert id to symbol to use as data-variable
@@ -53,6 +53,7 @@ replace_deaths_id <- function(
     fs::path_split() %>%
     .[[1]] %>%
     append(file) %>%
+    fs::path_join() %>%
     fs::path_tidy()
 
   # Read file
@@ -72,10 +73,16 @@ replace_deaths_id <- function(
       fs::path_split() %>%
       .[[1]] %>%
       append(save_as) %>%
+      fs::path_join() %>%
       fs::path_tidy()
+
+    if (!fs::dir_exists(fs::path_dir(s_path))) {
+      fs::dir_create(fs::path_dir(s_path))
+    }
 
     openxlsx::write.xlsx(data, file = s_path)
 
     invisible(data)
   }
+
 }

@@ -9,9 +9,9 @@ Authors@R:
            comment = c(ORCID = "0000-0001-7375-2463"))
 Description: coviData is designed to help with ETL, munging, and basic analysis
     of COVID-19 data within the Shelby County Health Department. It aims to 
-    provide a comprehensive framework for down/loading, cleaning, summarizing,
-    and reporting this data. The goal is to make human input when creativity is
-    needed and difficult when consistency is a priority.
+    provide a complete framework for down/loading, cleaning, and summarizing
+    this data. The goal is to make human input easy when creativity is needed 
+    and difficult when consistency is the priority.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -46,6 +46,7 @@ Imports:
     tidyr (>= 1.1.2),
     tidyselect (>= 1.1.0),
     utils (>= 4.0.2),
+    withr (>= 2.3.0),
     xml2 (>= 1.3.2)
 Suggests: 
     testthat

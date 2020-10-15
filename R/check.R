@@ -188,17 +188,6 @@ check_deaths <- function(
     fs::path_join() %>%
     fs::path_tidy()
 
-  # Create path to surveillance deaths copy file
-  s_path_copy <- directory %>%
-    fs::path_expand() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(
-      paste0("surveillance_file_copy.", fs::path_ext(surveillance_file))
-    ) %>%
-    fs::path_join() %>%
-    fs::path_tidy()
-
   # Create path to NBS deaths file
   n_path <- directory %>%
     fs::path_expand() %>%
@@ -208,37 +197,14 @@ check_deaths <- function(
     fs::path_join() %>%
     fs::path_tidy()
 
-  # Create path to surveillance deaths file
-  n_path_copy <- directory %>%
-    fs::path_expand() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(
-      paste0("nbs_file_copy.", fs::path_ext(nbs_file))
-    ) %>%
-    fs::path_join() %>%
-    fs::path_tidy()
-
   # Create path to file with missing ids
   unmatched_ids_path <- directory %>%
     fs::path_expand() %>%
     fs::path_split() %>%
     .[[1]] %>%
-    append("unmatched_nbs_ids.xlsx") %>%
+    append("Missing IDs.xlsx") %>%
     fs::path_join() %>%
     fs::path_tidy()
-
-  # # Make copy of files to work around someone having it open
-  # fs::file_copy(
-  #   path = c(s_path, n_path),
-  #   new_path = c(s_path_copy, n_path_copy)
-  # )
-  #
-  # # Clean up on exit
-  # on.exit(
-  #   fs::file_delete(c(s_path_copy, n_path_copy)),
-  #   add = TRUE
-  # )
 
   # Read surveillance deaths file
   readxl::read_excel(
@@ -262,7 +228,7 @@ check_deaths <- function(
 
   # If that fails, try reading as html
   if (!tibble::is_tibble(nbs_data)) {
-    nbs_data <- load_nbs_deaths_as_html("V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/NBSDeathLineList.xls")
+    nbs_data <- load_nbs_deaths_as_html(n_path)
   }
 
   # Standardize NBS ID in NBS file
@@ -316,6 +282,14 @@ check_deaths <- function(
   unmatched_ids
 
   if (save) {
+
+    if (is_open(unmatched_ids_path)) {
+      ext <- fs::path_ext(unmatched_ids_path)
+      unmatched_ids_path %<>%
+        fs::path_ext_remove() %>%
+        paste0(" - temp (please copy this data to original file)") %>%
+        fs::path_ext_set(ext = ext)
+    }
     openxlsx::write.xlsx(unmatched_ids, file = unmatched_ids_path)
   }
 
