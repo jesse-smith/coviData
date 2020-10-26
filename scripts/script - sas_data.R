@@ -32,7 +32,7 @@ merge(
   by = "date",
   all.y = TRUE
 ) %>%
-  tibble::as_tibble() %>%
+  dplyr::as_tibble() %>%
   dplyr::mutate(
     smth = cases %>%
       {.[1:(NROW(.)-4)]} %>%

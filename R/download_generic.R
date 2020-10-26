@@ -219,7 +219,7 @@ download_redcap_report <- function(
     format              = "csv",
     report_id           = report_id,
     rawOrLabel          = "label",
-    rawOrLabelHeaders   = "label",
+    rawOrLabelHeaders   = "raw",
     exportCheckboxLabel = "true",
     returnFormat        = "json"
   )
@@ -261,7 +261,7 @@ download_redcap_report <- function(
 
   # Find the result of unzipping
   file_temp <- fs::dir_ls(dir_temp)
-  print(file_temp)
+
   # Make sure there's only one file
   assertthat::assert_that(
     length(file_temp) == 1,
@@ -277,7 +277,7 @@ download_redcap_report <- function(
     .[[1]] %>%
     append(new_file) %>%
     fs::path_join()
-  print(file_new)
+
   # Move the file to the chosen directory with the chosen file name
   fs::file_move(
     path = file_temp,

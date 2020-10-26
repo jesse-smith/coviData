@@ -6,15 +6,17 @@
 #'
 #' @export
 load_data <- function(
-  date,
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
+  date = NULL,
+  directory,
   file_name = NULL,
   ext = c("csv", "xlsx"),
   pattern = paste0(".*", date, ".*", ext[[1]])
 ) {
 
   # We want to remind the user what date is being used
-  message(paste0("\nDate used: ", date, "\n"))
+  if (!is.null(date)) {
+    message(paste0("\nDate used: ", date, "\n"))
+  }
 
   # We're ready to find and read the NBS data
   find_file(

@@ -45,9 +45,9 @@ join_nbs_pcr <- function(
     ) %>%
     # Remove redundant columns
     dplyr::select(
-      -tidyselect::contains(c("_from_pcr", "from_nbs")),
-      -tidyselect::contains("result_desc"),
-      -tidyselect::contains("_test_cd"),
+      -dplyr::contains(c("_from_pcr", "from_nbs")),
+      -dplyr::contains("result_desc"),
+      -dplyr::contains("_test_cd"),
       -spec_date_only
     ) %>%
     # Make sure the dedup variables are in the correct format
