@@ -152,7 +152,7 @@ read_file <- function(
       fill = TRUE,
       showProgress = TRUE
     ) %>%
-      tibble::as_tibble() %>%
+      dplyr::as_tibble() %>%
       standardize_dates() %>%
       readr::type_convert() %T>%
       {message("Done.")}
@@ -199,4 +199,26 @@ guess_filetype <- function(path) {
     txt  = "delimited",
     "unknown"
   )
+}
+
+#' @export
+create_path <- function(directory, file_name, ext = NULL) {
+  directory %>%
+    fs::path_real() %>%
+    fs::path_tidy() %>%
+    fs::path_split() %>%
+    .[[1]] %>%
+    append(file_name) %>%
+    fs::path_join() ->
+  new_path
+
+  if (!rlang::is_empty(ext)) {
+    ext <- stringr::str_remove_all(ext[[1]], pattern = "[.]")
+
+    new_path %>%
+      fs::path_ext_remove() %>%
+      fs::path_ext_set(ext = ext)
+  } else {
+    new_path
+  }
 }
