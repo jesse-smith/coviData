@@ -8,7 +8,7 @@ preprocess_nbs <- function(
     dplyr::mutate(
       dplyr::across(
         dplyr::matches(c("_name", "_nm")),
-        .fns = standardize_string
+        .fns = standardize_names
       )
     ) %T>%
     {message("Done.")} %T>%
@@ -55,24 +55,24 @@ preprocess_nbs <- function(
   )
 
   all_cols$info %>%
-    dplyr::union(case_cols$info) %>%
-    dplyr::union(hosp_cols$info) %>%
-    dplyr::union(death_cols$info) %>%
-    dplyr::union("inv_local_id") ->
+    generics::union(case_cols$info) %>%
+    generics::union(hosp_cols$info) %>%
+    generics::union(death_cols$info) %>%
+    generics::union("inv_local_id") ->
     keep_cols_info
 
   all_cols$missing %>%
-    dplyr::union(case_cols$missing) %>%
-    dplyr::union(hosp_cols$missing) %>%
-    dplyr::union(death_cols$missing) %>%
-    dplyr::union("inv_local_id") ->
+    generics::union(case_cols$missing) %>%
+    generics::union(hosp_cols$missing) %>%
+    generics::union(death_cols$missing) %>%
+    generics::union("inv_local_id") ->
     keep_cols_missing
 
-  keep_cols <- dplyr::intersect(keep_cols_info, keep_cols_missing)
+  keep_cols <- generics::intersect(keep_cols_info, keep_cols_missing)
 
   cleaner_data %>%
-    dplyr::select(dplyr::matches(keep_cols)) %>%
+    dplyr::select(tidyselect::matches(keep_cols)) %>%
     janitor::remove_empty(which = "rows") %>%
-    dplyr::as_tibble() %T>%
+    tibble::as_tibble() %T>%
     {message("Done!\n")}
 }

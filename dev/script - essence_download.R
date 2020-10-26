@@ -35,7 +35,7 @@ httr::GET(
   httr::content(as = "text") %>%
   jsonlite::fromJSON() %>%
   .[["timeSeriesData"]] %>%
-  dplyr::as_tibble() %>%
+  tibble::as_tibble() %>%
   dplyr::transmute(
     date = as.Date(date),
     count = as.integer(count)

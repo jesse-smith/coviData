@@ -1,50 +1,12 @@
 #' How to Access Sensitive Information Non-Interactively with Renviron
 #'
-#' When writing code that might be shared, it's bad practice to hard-code
-#' sensitive information in a script (or package, obviously). For data that
-#' doesn't need to be shared, but doesn't necessarily need encryption,
-#' \emph{.Renviron} files provide a way to store and retrieve information.
-#'
-#' A \emph{.Renviron} file is a special file that you can use to store
-#' \code{link[base]{environment variables}}, which are just variables that are
-#' available using the \code{\link[base]{Sys.getenv}} function. They're
-#' particularly useful for storing information that you don't want to leave
-#' your computer, like API keys. You can also store usernames and passwords in
-#' this file; it's better than entering them directly, but note that they
-#' \strong{will not be encrypted}. A better solution for usernames, passwords,
-#' and other things that should be encrypted is the
-#' \href{https://github.com/r-lib/keyring}{keyring} package. \code{coviData}
-#' follows this convention; see \code{using_keyring} for details on username/
-#' password setup \strong{(not yet implemented)}.
-#'
-#' To use the \emph{.Renviron} file with \code{coviData}, follow these steps:
-#'
-#' \enumerate{
-#'   \item Check your \code{R_USER} directory by typing
-#'   \code{Sys.getenv(R_USER)} into the console. We will use the user-level
-#'   \emph{.Renviron} file for storage; it lives here.
-#'   \item Go to the \code{R_USER} directory in Windows Explorer and create a
-#'   new text file \strong{(right-click -> New -> Text Document)}. Name this
-#'   file \strong{".Renviron"} and delete the \strong{.txt} extension.
-#'   \item Open this file using Notepad or another text/code editor
-#'   \item Enter the variables you'd like to store in \code{key=value} format.
-#'   For example, if I wanted to store an API key in the environment variable
-#'   \code{api_key}, I would enter \code{api_key="some_key_to_save"} to store it
-#'   as a string.
-#'   \item Save and exit. Once your restart \strong{R}, these variables will be
-#'   available using \code{Sys.env()}.
-#'   \item (optional) You can hide the \emph{.Renviron} file in Windows Explorer
-#'   \strong{(right-click -> Properties -> Hidden -> OK)} to avoid clutter
-#' }
-#'
-#' \code{coviData} currently uses the \emph{.Renviron} file for REDcap API
-#' tokens, but may expand to ESSENCE and NBS tokens as well in the future.
+#' This will show how to set up an Renviron file in your home directory.
 #'
 #' @export
 using_Renviron <- function() {
   message(
     paste0(
-      "This function exists to provide documention on setting up .Renviron",
+      "This function exists to provide documention on setting up your Renviron",
       "file; type `?coviData::using_Renviron` for details."
     )
   )

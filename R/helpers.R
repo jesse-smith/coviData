@@ -143,7 +143,7 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     dplyr::select(-n) %>%
     dplyr::ungroup() %>%
     # Add coalesced groups back to data
-    dplyr::add_row(coalesced_dupes) %>%
+    tibble::add_row(coalesced_dupes) %>%
     # Either sort by the given variables or by .id, then drop .id
     {if (post_sort) dplyr::arrange(., ...) else dplyr::arrange(., order_id)} %>%
     dplyr::select(-order_id)

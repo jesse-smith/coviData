@@ -114,7 +114,7 @@ check_ael <- function(
     summary_distinct
 
   summary_all %>%
-    dplyr::add_row(summary_distinct) %>%
+    tibble::add_row(summary_distinct) %>%
     dplyr::arrange(dplyr::desc(FileDate), dplyr::desc(AuthDate), Result) ->
     summary_data
 
@@ -138,7 +138,14 @@ check_ael <- function(
       gt::gt() %>%
       gt::data_color(
         columns = dplyr::vars(FileDate, AuthDate),
-        colors = c("#C3DCFF", "#ACC1FF", "#96A7F7")
+        colors = colorspace::sequential_hcl(
+          n = 3,
+          l = c(70, 90),
+          c1 = 70,
+          c2 = 100,
+          power = 1,
+          rev = TRUE
+        )
       ) %>%
       gt::data_color(
         columns = dplyr::vars(Result),
@@ -220,7 +227,7 @@ check_deaths <- function(
   )
 
   # If that fails, try reading as html
-  if (!is.data.frame(nbs_data)) {
+  if (!tibble::is_tibble(nbs_data)) {
     nbs_data <- load_nbs_deaths_as_html(n_path)
   }
 
@@ -266,11 +273,11 @@ check_deaths <- function(
   nbs_only
 
   nbs_only %>%
-    dplyr::add_row(surveillance_only) %>%
+    tibble::add_row(surveillance_only) %>%
     dplyr::mutate(
       original_nbs_id = dplyr::coalesce(!!surveillance_file_id, !!nbs_file_id)
     ) %>%
-    dplyr::select(in_linelist, original_nbs_id, dplyr::everything()) %>%
+    dplyr::select(in_linelist, original_nbs_id, tidyselect::everything()) %>%
     dplyr::select(-!!surveillance_file_id, -!!nbs_file_id) ->
   unmatched_ids
 

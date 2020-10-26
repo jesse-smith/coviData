@@ -51,8 +51,8 @@ load_and_process_ael <- function(
     preprocess() %>%
     dplyr::mutate(
       dplyr::across(
-        dplyr::ends_with("name", ignore.case = TRUE),
-        standardize_string
+        tidyselect::ends_with("name", ignore.case = TRUE),
+        standardize_names
       )
     ) %>%
     # Add FileDate for sorting
@@ -80,8 +80,8 @@ load_and_process_ael <- function(
     preprocess() %>%
     dplyr::mutate(
       dplyr::across(
-        dplyr::ends_with("name", ignore.case = TRUE),
-        standardize_string
+        tidyselect::ends_with("name", ignore.case = TRUE),
+        standardize_names
       )
     ) %>%
     # Add FileDate for sorting
@@ -92,53 +92,11 @@ load_and_process_ael <- function(
   # Not restricting AuthDate - want to be able to handle AEL backlogs. Will
   # still only show us new AEL data upon checking.
   date1_data %>%
-    dplyr::add_row(
+    tibble::add_row(
       date2_data
     ) %>%
     dplyr::arrange(dplyr::desc(file_date)) %>%
     dplyr::distinct(episode_no, .keep_all = TRUE)
-}
-
-#' Load Data from the Integrated Data Tool REDcap Project
-#'
-#' \code{load_integrated_data} loads data from the Integrated Data Tool REDcap
-#' project. It is designed to be used in conjuction with
-#' \link{download_integrated_data}.
-#'
-#' @param date A \code{Date} object indicating the date of the data file to load
-#'
-#' @param directory A string specifying the directory in which to search for
-#'   files containing \code{date}
-#'
-#' @param ext The file type to search for
-#'
-#' @return A \code{link[tibble]{tibble}} containing the data from the specified
-#'   file
-#'
-#' @export
-load_integrated_data <- function(
-  date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/",
-  ext = "csv"
-) {
-  message("Loading Integrated Data...")
-  load_data(
-    date = date,
-    directory = directory,
-    ext = ext[[1]],
-    pattern = paste0(".*", date, ".*", ext[[1]])
-  )
-}
-
-#' @export
-load_limited <- function(
-  directory = "C:/Users/Jesse.Smith/Documents/Rt_estimates/data/",
-  file_name = "status.xlsx"
-) {
-  load_data(
-    directory = directory,
-    file_name = file_name
-  )
 }
 
 #' @export
@@ -160,7 +118,7 @@ load_nbs_deaths_as_html <- function(path) {
   xml2::read_html(path) %>%
     rvest::html_table() %>%
     .[[2]] %>%
-    dplyr::as_tibble()
+    tibble::as_tibble()
 }
 
 #' @export
@@ -195,30 +153,20 @@ load_pcr <- function(
 #'
 #' @export
 load_sas <- function(
+  date = Sys.Date(),
   directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
-  dataset = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
+  category = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
   ext = c("csv", "xlsx")
 ) {
   message("Loading SAS cleaning results:\n")
 
-  file <- directory %>%
-    fs::path_real() %>%
-    fs::path_tidy() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(dataset[[1]]) %>%
-    fs::path_join() %>%
-    fs::path_ext_remove() %>%
-    fs::path_ext_set(ext[[1]])
-
-  date_modified <- as.Date(fs::file_info(file)$modification_time)
+  formatted_date <- format(date, format = "%m-%d")
 
   load_data(
-    date = date_modified,
+    date = date,
     directory = directory,
     ext = ext[[1]],
-    file_name = fs::path_file(file)
+    pattern = paste0(".*", category, ".*", formatted_date, ".*", ext[[1]])
   ) %>%
     preprocess()
 }
-

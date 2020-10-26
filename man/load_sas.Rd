@@ -5,21 +5,22 @@
 \title{Load Cleaned Data from SAS Program}
 \usage{
 load_sas(
+  date = Sys.Date(),
   directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
-  dataset = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
+  category = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
   ext = c("csv", "xlsx")
 )
 }
 \arguments{
-\item{directory}{A string indicating the directory of the file to read}
-
-\item{ext}{The file extension to search for - "csv" by default}
-
 \item{date}{A \code{Date} indicating the date of the file to read}
+
+\item{directory}{A string indicating the directory of the file to read}
 
 \item{category}{A string indicating which cateory of cleaned data to read.
 Options are "Positive cases", "Negatives", "PCR_Positives", or
 "PCR_Negatives"}
+
+\item{ext}{The file extension to search for - "csv" by default}
 }
 \description{
 Load Cleaned Data from SAS Program

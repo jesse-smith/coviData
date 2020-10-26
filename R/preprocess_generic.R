@@ -31,6 +31,6 @@ preprocess <- function(data) {
         )
       ) %>%
       # Make sure output is tibble
-      dplyr::as_tibble()
+      tibble::as_tibble()
   )
 }

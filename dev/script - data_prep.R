@@ -2,16 +2,16 @@ library(coviData)
 # Download data
 download_nbs_snapshot(convert = TRUE)
 download_pcr_snapshot(convert = TRUE)
-download_antigen_snapshot(convert = FALSE)
-download_serology_snapshot(convert = FALSE)
 download_ael()
 replace_ael()
-check_ael()
 
 # Read data
 nbs <- load_nbs(Sys.Date())
 pcr <- load_pcr(Sys.Date())
 ael <- load_ael(Sys.Date())
+
+# Check AEL data
+check_ael()
 
 # Next, merge with AEL
 

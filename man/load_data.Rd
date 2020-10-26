@@ -5,8 +5,8 @@
 \title{Load a Data File Using the Directory, Date, and Extension}
 \usage{
 load_data(
-  date = NULL,
-  directory,
+  date,
+  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
   file_name = NULL,
   ext = c("csv", "xlsx"),
   pattern = paste0(".*", date, ".*", ext[[1]])

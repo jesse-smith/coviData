@@ -144,7 +144,7 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     dplyr::select(-n) %>%
     dplyr::ungroup() %>%
     # Add coalesced groups back to data
-    dplyr::add_row(coalesced_dupes) %>%
+    tibble::add_row(coalesced_dupes) %>%
     # Either sort by the given variables or by .id, then drop .id
     {if (post_sort) dplyr::arrange(., ...) else dplyr::arrange(., order_id)} %>%
     dplyr::select(-order_id)
@@ -284,7 +284,7 @@ split_names <- function(.data) {
 
   # Add to existing data
   .data %>%
-    dplyr::mutate(
+    tibble::add_column(
       PatientLastName = new_names$last,
       PatientFirstName = new_names$first,
       PatientMiddleName = new_names$middle,
@@ -568,7 +568,7 @@ relevel_pcr <- function(x) {
     {
       levels(.) %>%
         {.[!. %in% c("C", "P", "N", "I")]} %>%
-        paste0(collapse = "\t") %>%
+        glue::glue_collapse(sep = "\t") %>%
         message()
     } %>%
     forcats::fct_expand("S") %>%
@@ -592,8 +592,7 @@ fill_dates <- function(
   data,
   date_col,
   start = NULL,
-  end = NULL,
-  fill_na = NA
+  end = NULL
 ) {
 
   # Quote date_col for later evaluation
@@ -624,47 +623,11 @@ fill_dates <- function(
   # Join
   dplyr::full_join(
     # Reference dates
-    x = dplyr::tibble(join_date = seq(start, end, by = 1)),
+    x = tibble::tibble(join_date = seq(start, end, by = 1)),
     # Input data
     y = dplyr::mutate(data, join_date = !!date_col),
     by = "join_date"
   ) %>%
     dplyr::mutate(!!date_col := dplyr::coalesce(!!date_col, join_date)) %>%
-    dplyr::select(-dplyr::matches("join_date"))
-}
-
-# | Factor #####################################################################
-denoise_factor <- function(
-  .f,
-  ...,
-  dist = 3,
-  method = "osa",
-  other_level = NULL,
-  na_to_other = FALSE
-) {
-  # Levels to match
-  lvls <- rlang::enexprs(...) %>% purrr::map_chr(rlang::as_string)
-
-  # Create and clean character vector from .f
-  chr <- standardize_string(.f)
-
-  # Find closest match
-  stringdist::amatch(
-    chr,
-    table = lvls,
-    maxDist = dist,
-    method = method,
-    p = 0.1
-  ) %>%
-    purrr::map2_chr(chr, .f = ~ ifelse(is.na(.x), yes = .y, no = lvls[.x])) %>%
-    factor() ->
-    new_f
-
-  new_lvls <- dplyr::intersect(lvls, levels(new_f))
-
-  if (!is.null(other_level)) {
-    forcats::fct_other(new_f, keep = new_lvls, other_level = other_level)
-  } else {
-    new_f
-  }
+    dplyr::select(-tidyselect::matches("join_date"))
 }
