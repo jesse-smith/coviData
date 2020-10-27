@@ -1,4 +1,5 @@
-# coviData
+# dplyr <a href='https://github.com/jesse-smith/coviData/blob/master/hex-coviData.png' align="right" height="139" /></a>
+
 coviData is designed to help with ETL, munging, and basic analysis of COVID-19 data within the Shelby County Health Department. It aims to provide a complete framework for down/loading, cleaning, and summarizing this data. The goal is to make human input easy when creativity is needed and difficult when consistency is the priority.
 
 ## Installation
