@@ -1,3 +1,4 @@
+#' @export
 standardize_string <- function(.x, case_fn = stringr::str_to_title) {
 
   esc_msg <- paste0(
