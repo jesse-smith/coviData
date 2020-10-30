@@ -1,9 +1,8 @@
 <!-- badges: start -->
   [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-  <!-- badges: end -->
-  
-![](https://github.com/jesse-smith/coviData/blob/master/hex-covidata(1).png)
-# coviData
+<!-- badges: end -->
+ 
+# coviData </a><img src='hex-covidata(1).png' align="right" height="139" /></a>
 
 coviData is designed to help with ETL, munging, and basic analysis of COVID-19
 data within the Shelby County Health Department. It aims to provide a complete
