@@ -325,7 +325,7 @@ download_servu <- function(
   local_dir %<>% fs::path_real() %>% fs::path_tidy()
 
   # Create SFTP connection details
-  sftp_con <- sftp::sftp_connect(
+  sftp_con <- sftp_connect(
     server = "xfer.shelbycountytn.gov",
     folder = remote_dir,
     username = usr,
@@ -333,7 +333,7 @@ download_servu <- function(
   )
 
   # Get files matching date
-  sftp::sftp_listfiles(sftp_connection = sftp_con) %>%
+  sftp_listfiles(sftp_connection = sftp_con) %>%
     dplyr::select(name) %>%
     dplyr::filter(
       stringr::str_detect(name, pattern = as.character(date))
@@ -353,7 +353,7 @@ download_servu <- function(
       )
     )
   } else {
-    sftp::sftp_download(
+    sftp_download(
       file = filename,
       tofolder = local_dir,
       sftp_connection = sftp_con
