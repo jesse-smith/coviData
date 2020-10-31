@@ -48,4 +48,5 @@ Imports:
     stringdist (>= 0.9.6.3),
     tidytext (>= 0.2.6)
 Suggests: 
-    testthat
+    testthat,
+    covr

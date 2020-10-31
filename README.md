@@ -1,5 +1,7 @@
 <!-- badges: start -->
   [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Codecov test coverage](https://codecov.io/gh/jesse-smith/coviData/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/coviData?branch=master)
+[![R build status](https://github.com/jesse-smith/coviData/workflows/R-CMD-check/badge.svg)](https://github.com/jesse-smith/coviData/actions)
 <!-- badges: end -->
  
 # coviData </a><img src='hex-covidata(1).png' align="right" height="139" /></a>
