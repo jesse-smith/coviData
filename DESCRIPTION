@@ -36,6 +36,7 @@ Imports:
     rlang (>= 0.4.7),
     rvest (>= 0.3.6),
     sftp (>= 2.0.1),
+    stats (>= 4.0.2),
     skimr (>= 2.1.2),
     stats (>= 4.0.2),
     stringdist (>= 0.9.6.3),
