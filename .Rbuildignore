@@ -1,6 +1,6 @@
 ^coviData\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^scripts$
+^scripts.*$
 ^codecov\.yml$
 ^\.github$
