@@ -84,22 +84,26 @@ dttm_to_dt <- function(.x) {
 #' \code{coalesce_dupes} can be thought of as an enhanced version of
 #' \code{\link[dplyr]{distinct}}. Like \code{distinct}, \code{coalesce_dupes}
 #' removes duplicates from a dataset based on a provided set of variables.
-#' Unlike distinct, it sorts the data on those variables by default using
+#' Unlike distinct, it sorts the data on those variables (by default) using
 #' \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
 #' the first non-missing values in any duplicate rows using a modification of
 #' \code{\link[dplyr]{coalesce}}.
 #'
 #' @param data A data frame, data frame extension (e.g. a tibble), or a lazy
 #'   data frame (e.g. from dbplyr or dtplyr)
-#'
 #' @param ... Variables to use for sorting and determining uniqueness. If there
 #'   are multiple rows for a given combination of inputs, only the first row
 #'   will be preserved. If omitted, simply calls \code{distinct} with
 #'   \code{.keep_all = TRUE}.
-#'
-#' @param sort A logical indicating whether to sort using the input variables.
-#'   If no input variables are given, no sorting is performed, and this
-#'   parameter is ignored.
+#' @param pre_sort A logical indicating whether to sort using the input
+#'   variables prior to coalescing. For candidate rows with multiple possible
+#'   values for coalescing, this determines which value is chosen. If no input
+#'   variables are given, no sorting is performed, and this parameter is
+#'   ignored.
+#' @param post_sort A logical indicating whether to sort using the input
+#'   variables after coalescing; in other words, should the result be arranged
+#'   according to the input data (the default) or the specified variables (if
+#'   \code{post_sort = TRUE}).
 #'
 #' @export
 coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {

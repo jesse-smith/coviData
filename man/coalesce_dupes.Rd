@@ -17,6 +17,17 @@ are multiple rows for a given combination of inputs, only the first row
 will be preserved. If omitted, simply calls \code{distinct} with
 \code{.keep_all = TRUE}.}
 
+\item{pre_sort}{A logical indicating whether to sort using the input
+variables prior to coalescing. For candidate rows with multiple possible
+values for coalescing, this determines which value is chosen. If no input
+variables are given, no sorting is performed, and this parameter is
+ignored.}
+
+\item{post_sort}{A logical indicating whether to sort using the input
+variables after coalescing; in other words, should the result be arranged
+according to the input data (the default) or the specified variables (if
+\code{post_sort = TRUE}).}
+
 \item{sort}{A logical indicating whether to sort using the input variables.
 If no input variables are given, no sorting is performed, and this
 parameter is ignored.}
@@ -32,7 +43,7 @@ information in duplicate rows.
 \code{coalesce_dupes} can be thought of as an enhanced version of
 \code{\link[dplyr]{distinct}}. Like \code{distinct}, \code{coalesce_dupes}
 removes duplicates from a dataset based on a provided set of variables.
-Unlike distinct, it sorts the data on those variables by default using
+Unlike distinct, it sorts the data on those variables (by default) using
 \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
 the first non-missing values in any duplicate rows using a modification of
 \code{\link[dplyr]{coalesce}}.

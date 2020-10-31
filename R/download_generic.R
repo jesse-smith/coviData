@@ -246,13 +246,6 @@ download_redcap_report <- function(
 
   message("\nDone.")
 
-  # Step 3 - Unzip, Move, and Rename
-  # Unzip new file in temporary directory
-  # message("Unzipping folder...", appendLF = FALSE)
-  # utils::unzip(zip_temp, exdir = dir_temp)
-  # fs::file_delete(zip_temp)
-  # message("Done.")
-
   # Move to specified directory and rename
   message(
     "Moving file and cleaning up; this may take a while...",

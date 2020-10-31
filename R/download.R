@@ -207,8 +207,6 @@ download_ael <- function(
 #' @return NULL
 #'
 #' @importFrom magrittr `%>%`
-#'
-#' @export
 
 download_and_replace_ael <- function(
   pattern = Sys.Date(),

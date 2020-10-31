@@ -78,7 +78,9 @@ sftp_connect <- function(server   = "",
   url       <- paste0(protocol, server, "/", folder, "/")
   url_port  <- paste0(protocol, server, ":", port, "/", folder, "/")
   login_url <- paste0(protocol, userpass, "@", server, "/", folder, "/")
-  login_url_port <- paste0(protocol, userpass, "@", server,  ":", port, "/", folder, "/")
+  login_url_port <- paste0(
+    protocol, userpass, "@", server,  ":", port, "/", folder, "/"
+  )
 
   sftp_connection <- list(protocol       = protocol,
                           server         = server,
@@ -144,11 +146,20 @@ sftp_list <- function(sftp_connection = sftp_con,
 
   allowed_type_values_file <- c("f", "file")
   allowed_type_values_dir  <- c("d", "dir", "directory")
-  allowed_type_values <- c(allowed_type_values_file, allowed_type_values_dir, "all")
+  allowed_type_values <- c(
+    allowed_type_values_file,
+    allowed_type_values_dir,
+    "all"
+  )
 
-  if (!(type %in% allowed_type_values ) ) {
-    message(paste("The value of the 'type' argument is invalid:", type) )
-    message(paste("Argument 'type' must be one of", paste(allowed_type_values, collapse = " ")) )
+  if (!(type %in% allowed_type_values)) {
+    message(paste("The value of the 'type' argument is invalid:", type))
+    message(
+      paste(
+        "Argument 'type' must be one of",
+        paste(allowed_type_values, collapse = " ")
+      )
+    )
     return(F)
   }
 

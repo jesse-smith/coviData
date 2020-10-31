@@ -78,7 +78,7 @@ check_ael <- function(
         levels = c("New Todate", smaller_date, larger_date)),
       AuthDate = AuthDate %>%
         as.character(format = "%m/%d") %>%
-        factor(levels = c("New Todate", smaller_date,larger_date)),
+        factor(levels = c("New Todate", smaller_date, larger_date)),
       Result = Result %>%
         as.character() %>%
         stringr::str_to_title() %>%

@@ -1,5 +1,7 @@
 #' How to Access Sensitive Information Non-Interactively with Renviron
 #'
+#' @description
+#'
 #' When writing code that might be shared, it's bad practice to hard-code
 #' sensitive information in a script (or package, obviously). For data that
 #' doesn't need to be shared, but doesn't necessarily need encryption,
@@ -40,12 +42,6 @@
 #' \code{coviData} currently uses the \emph{.Renviron} file for REDcap API
 #' tokens, but may expand to ESSENCE and NBS tokens as well in the future.
 #'
-#' @export
-using_Renviron <- function() {
-  message(
-    paste0(
-      "This function exists to provide documention on setting up .Renviron",
-      "file; type `?coviData::using_Renviron` for details."
-    )
-  )
-}
+#' @md
+#' @name using-Reviron
+NULL
