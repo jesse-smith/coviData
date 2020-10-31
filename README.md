@@ -17,3 +17,8 @@ is the priority.
 install.packages("devtools")
 devtools::install_github("https://github.com/jesse-smith/coviData")
 ```
+
+## Code of Conduct
+
+Please note that the coviData project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By 
+contributing to this project, you agree to abide by its terms.
