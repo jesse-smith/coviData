@@ -1,7 +1,5 @@
 #' How to Access Sensitive Information Non-Interactively with Renviron
 #'
-#' @description
-#'
 #' When writing code that might be shared, it's bad practice to hard-code
 #' sensitive information in a script (or package, obviously). For data that
 #' doesn't need to be shared, but doesn't necessarily need encryption,
@@ -43,5 +41,6 @@
 #' tokens, but may expand to ESSENCE and NBS tokens as well in the future.
 #'
 #' @md
-#' @name using-Reviron
-NULL
+#'
+#' @export
+using_Renviron <- function() NULL

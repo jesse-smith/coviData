@@ -1,7 +1,11 @@
-#' @importFrom magrittr `%>%`
+#' coviData: COVID-19 Data Munging Tools for the Shelby County Health Department
+#'
+#' @importFrom magrittr `%>%` `%T>%` `%$%` `%<>%`
 #' @importFrom magrittr `%T>%`
 #' @importFrom magrittr `%$%`
 #' @importFrom magrittr `%<>%`
+#' @docType package
+#' @name coviData-package
 #' @keywords internal
 "_PACKAGE"
 

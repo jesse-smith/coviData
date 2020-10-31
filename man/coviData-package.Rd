@@ -4,8 +4,7 @@
 \name{coviData-package}
 \alias{coviData}
 \alias{coviData-package}
-\title{coviData: COVID-19 Data Munging Tools for the Shelby County Health
-    Department}
+\title{coviData: COVID-19 Data Munging Tools for the Shelby County Health Department}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
