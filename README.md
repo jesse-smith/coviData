@@ -4,7 +4,7 @@
 [![R build status](https://github.com/jesse-smith/coviData/workflows/R-CMD-check/badge.svg)](https://github.com/jesse-smith/coviData/actions)
 <!-- badges: end -->
  
-# coviData </a><img src='hex-covidata(1).png' align="right" height="139" /></a>
+# coviData <img src='man/figures/logo.png' align="right" height="139" />
 
 coviData is designed to help with ETL, munging, and basic analysis of COVID-19
 data within the Shelby County Health Department. It aims to provide a complete
