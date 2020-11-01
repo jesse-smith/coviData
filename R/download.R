@@ -219,7 +219,7 @@ download_and_replace_ael <- function(
 ) {
 
   # Create SFTP connection details
-  sftp_con <- sftp::sftp_connect(
+  sftp_con <- sftp_connect(
     server = "xfer.shelbycountytn.gov",
     folder = "AEL",
     username = usr,
@@ -227,7 +227,7 @@ download_and_replace_ael <- function(
   )
 
   # Get files matching date
-  sftp::sftp_listfiles(sftp_connection = sftp_con) %>%
+  sftp_listfiles(sftp_connection = sftp_con) %>%
     dplyr::select(name) %>%
     dplyr::filter(
       stringr::str_detect(name, pattern = as.character(pattern))
@@ -247,7 +247,7 @@ download_and_replace_ael <- function(
       )
     )
   } else {
-    sftp::sftp_download(
+    sftp_download(
       file = filename,
       tofolder = tofolder,
       sftp_connection = sftp_con
