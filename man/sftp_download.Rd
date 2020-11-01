@@ -12,27 +12,29 @@ sftp_download(
 )
 }
 \arguments{
-\item{file}{A character vector of file names. If the wildcard "*" is used, then
-all files on the SFTP url will be downloaded. NOTE! Folders (directories) will not
-be downloaded.}
+\item{file}{A character vector of file names. If the wildcard "*" is used,
+then all files on the SFTP url will be downloaded. NOTE! Folders
+(directories) will not be downloaded.}
 
 \item{tofolder}{A string containing a valid path - relative or absolute - to
 the folder where the files will be saved. Default is the working directory.
 If the folder does not exist it will be created.}
 
-\item{sftp_connection}{A list object created with \code{link{sftp_connect}}. Default is 'sftp_con'.}
+\item{sftp_connection}{A list object created with \code{\link{sftp_connect}}.
+Default is 'sftp_con'.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE.}
 }
 \value{
-The function returns the number of files downloaded, following successful download.
+The function returns the number of files downloaded, following
+successful download.
 }
 \description{
 This function is used for downloading files from an SFTP account.
 The function uses connection credentials from a list object
 created by calling \link{sftp_connect}. The files will be downloaded from
-the SFTP account folder where you are currently "standing" as specified in the
-connection list object.
+the SFTP account folder where you are currently "standing" as specified in
+the connection list object.
 }
 \examples{
 

@@ -12,7 +12,7 @@ sftp_makedir(
 )
 }
 \arguments{
-\item{foldername}{A character vector of length 1 or more, containing the names
+\item{foldername}{A character vector of length 1 or more containing the names
 of folders you want to create. The folder(s) will be created below the folder
 where you are currently standing according to the sftp connection list
 object you are using (default 'stfp_con'). A folder with subfolder and
@@ -24,8 +24,8 @@ Default is \code{sftp_con}.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console form curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console form
+curlPerform. Default is FALSE.}
 }
 \value{
 The function returns the number of new folders created.

@@ -13,18 +13,19 @@ sftp_delete(
 }
 \arguments{
 \item{file}{A vector of one or more file names that exist on the SFTP url.
-Wildcard is not supported in order to minimize the risk of accidental deletion.
-When a large portion of the files currently on the SFTP url needs to be deleted, you can create
-an input value for \code{file} by using \link{sftp_listfiles}.
-Note! Folders (directories) cannot be deleted. See instead \link{sftp_removedir}}
+Wildcard is not supported in order to minimize the risk of accidental
+deletion. When a large portion of the files currently on the SFTP url needs
+to be deleted, you can create an input value for \code{file} by using
+\code{\link{sftp_listfiles}}. Note! Folders (directories) cannot be deleted.
+See instead \code{\link{sftp_removedir}}.}
 
 \item{sftp_connection}{A list object created by calling \link{sftp_connect}.
 Default is 'sftp_con'.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console form curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console form
+curlPerform. Default is FALSE.}
 }
 \value{
 The function returns the number of files deleted.

@@ -13,27 +13,30 @@ sftp_rename(
 )
 }
 \arguments{
-\item{from}{A single name of an existing file or folder. If a vector of names is supplied, only
-the first value will be used, and there will be a warning.}
+\item{from}{A single name of an existing file or folder. If a vector of names
+is supplied, only the first value will be used, and there will be a
+warning.}
 
-\item{to}{A single name of an existing file or folder. If a vector of names is supplied, only
-the first value will be used, and there will be a warning.}
+\item{to}{A single name of an existing file or folder. If a vector of names
+is supplied, only the first value will be used, and there will be a
+warning.}
 
 \item{sftp_connection}{A list object created by calling \link{sftp_connect}.
 Default is \code{sftp_con}.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console form curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console form
+curlPerform. Default is FALSE.}
 }
 \value{
 The function returns TRUE if successful.
 }
 \description{
-Specify a current name and a new name, for a file or folder existing in an SFTP account.
-While folders must be empty when using \link{sftp_removedir}, that is not the case with
-\code{sftp_rename} - non-empty folders can be renamed.
+Specify a current name and a new name, for a file or folder existing in an
+SFTP account. While folders must be empty when using
+\code{\link{sftp_removedir}}, that is not the case with \code{sftp_rename} -
+non-empty folders can be renamed.
 }
 \examples{
 

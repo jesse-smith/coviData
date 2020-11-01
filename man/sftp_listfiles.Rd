@@ -17,8 +17,8 @@ Default value is "sftp_con".}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE.}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console from RCurl::curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console from
+\code{\link[RCurl]{curlPerform}}. Default is FALSE.}
 
 \item{recurse}{Logical. Recurse directories? Default is FALSE.}
 }

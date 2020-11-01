@@ -12,22 +12,22 @@ sftp_changedir(
 )
 }
 \arguments{
-\item{tofolder}{A character vector of length 1 containing the name
-of a folder to where you want to go. The folder(s) will be looked for below the folder
-where you are currently standing according to the sftp connection list
-object you are using (default 'stfp_con'). A subfolder or a sub-subfolder etc
-can be specified in one single operation by supplying a path,
-like "folder1/folder2/folder3". To move up one level in the folder hierarchy, use ".."
-To go to the root folder, use "root".}
+\item{tofolder}{A character vector of length 1 containing the name of a
+folder to where you want to go. The folder(s) will be looked for below the
+folder where you are currently standing according to the sftp connection
+list object you are using (default 'stfp_con'). A subfolder (or a
+sub-subfolder, etc.) can be specified in one single operation by supplying
+a path, like "folder1/folder2/folder3". To move up one level in the folder
+hierarchy, use \code{"../"}. To go to the root folder, use "root".}
 
-\item{current_connection_name}{A string giving the name of the SFTP connection
-list object currently used, created  by calling \link{sftp_connect}.
-Default is \code{"sftp_con"}.}
+\item{current_connection_name}{A string giving the name of the SFTP
+connection list object currently used, created  by calling
+\code{\link{sftp_connect}}. Default is \code{"sftp_con"}.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console form curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console form
+curlPerform. Default is FALSE.}
 }
 \value{
 The function returns TRUE after successful change of directory.

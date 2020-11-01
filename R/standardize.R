@@ -80,8 +80,14 @@ standardize_cities <- function(x) {
         stringr::str_remove_all(pattern = "( [Tt][Nn])|([0-9]{5})") %>%
         stringr::str_replace(pattern = "^Arl$", replacement = "Arlington") %>%
         stringr::str_replace(pattern = "^Bart?$", replacement = "Bartlett") %>%
-        stringr::str_replace(pattern = "^Coll?$", replacement = "Collierville") %>%
-        stringr::str_replace(pattern = "^Germ?$", replacement = "Germantown") %>%
+        stringr::str_replace(
+          pattern = "^Coll?$",
+          replacement = "Collierville"
+        ) %>%
+        stringr::str_replace(
+          pattern = "^Germ?$",
+          replacement = "Germantown"
+        ) %>%
         stringr::str_replace(pattern = "^Lake?$", replacement = "Lakeland") %>%
         stringr::str_replace(pattern = "^Mem$", replacement = "Memphis") %>%
         stringr::str_replace(pattern = "^Mill?$", replacement = "Millington")
@@ -96,10 +102,17 @@ standardize_cities <- function(x) {
     mutate(
       suggested = token %>%
         hunspell::hunspell_check(dict = city_dict) %>%
-        ifelse(yes = token, no = hunspell::hunspell_suggest(token, dict = city_dict)) %>%
+        ifelse(
+          yes = token,
+          no = hunspell::hunspell_suggest(token, dict = city_dict)
+        ) %>%
         purrr::map_chr(~ unlist(.x)[[1]]),
       osa_dist = stringdist::stringdist(token, suggested, method = "osa"),
-      soundex_dist = stringdist::stringdist(token, suggested, method = "soundex"),
+      soundex_dist = stringdist::stringdist(
+        token,
+        suggested,
+        method = "soundex"
+      ),
       in_cities = suggested %in% cities,
       suggested_start = stringr::str_trunc(
         suggested,
@@ -132,7 +145,10 @@ standardize_cities <- function(x) {
           dist = 3,
           other_level = "Other/Unincorporated Shelby"
         ) %>%
-        fct_other(drop = "Covington", other_level = "Other/Unincorporated Shelby") %>%
+        fct_other(
+          drop = "Covington",
+          other_level = "Other/Unincorporated Shelby"
+        ) %>%
         addNA() %>%
         fct_recode(c(Missing = NA_character_))
     ) %>%

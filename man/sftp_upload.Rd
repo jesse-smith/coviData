@@ -13,28 +13,33 @@ sftp_upload(
 )
 }
 \arguments{
-\item{file}{A character vector of file names. If the wildcard "*" is used, then
-all files in \code{fromfolder} will be uploaded. NOTE! Names of folders (directories)
-cannot be part of \code{file}. To create folders on the SFTP server, please see \link{sftp_makedir}}
+\item{file}{A character vector of file names. If the wildcard "*" is used,
+then all files in \code{fromfolder} will be uploaded. NOTE! Names of folders
+(directories) cannot be part of \code{file}. To create folders on the SFTP
+server, please see \code{\link{sftp_makedir}}.}
 
-\item{fromfolder}{A string containing a valid path - relative or absolute - to
-the folder where the files in \code{file} can be found. Default is the working directory.}
+\item{fromfolder}{A string containing a valid path - relative or absolute -
+to the folder where the files in \code{file} can be found. Default is the
+working directory.}
 
-\item{sftp_connection}{A list object created with \code{link{sftp_connect}}. Default is \code{sftp_con}.}
+\item{sftp_connection}{A list object created with \code{link{sftp_connect}}.
+Default is \code{"sftp_con"}.}
 
-\item{log_file}{Valid path to a text file (.txt, .csv, .log etc) including filename and file extension.}
+\item{log_file}{Valid path to a text file (.txt, .csv, .log etc) including
+filename and file extension.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE.}
 }
 \value{
-The function returns the number of files uploaded, following successful upload.
+The function returns the number of files uploaded, following
+successful upload.
 }
 \description{
 This function is used for uploading files to an SFTP account.
 The function uses connection credentials from a list object
 created by calling \link{sftp_connect}. The files will be uploaded to
-the SFTP account folder where you are currently "standing" as specified in the
-connection list object.
+the SFTP account folder where you are currently "standing" as specified in
+the connection list object.
 }
 \examples{
 

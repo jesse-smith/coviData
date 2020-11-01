@@ -12,21 +12,22 @@ sftp_removedir(
 )
 }
 \arguments{
-\item{foldername}{A character vector of length 1 or more, containing the names
-of folders you want to remove. The folder(s) will be looked for below the folder
-where you are currently standing according to the sftp connection list
-object you are using (default 'stfp_con'). A subfolder or a subsubfolder etc
-can be removed in one single operation by supplying a path,
-like "folder1/folder2/folder3". That will remove the last folder in the path, in
-this case "folder3". NOTE! Non-empty directories cannot be removed.}
+\item{foldername}{A character vector of length 1 or more, containing the
+names of folders you want to remove. The folder(s) will be looked for below
+the folder where you are currently standing according to the sftp
+connection list object you are using (default \code{"stfp_con"}). A
+subfolder (or a sub-subfolder, etc.) can be removed in one single operation
+by supplying a path, like "folder1/folder2/folder3". That will remove the
+last folder in the path, in this case "folder3". NOTE! Non-empty
+directories cannot be removed.}
 
 \item{sftp_connection}{A list object created  by calling \link{sftp_connect}.
 Default is \code{sftp_con}.}
 
 \item{verbose}{Logical. Turn on messages to console. Default is TRUE}
 
-\item{curlPerformVerbose}{Logical. Turn on messages to console form curlPerform.
-Default is FALSE.}
+\item{curlPerformVerbose}{Logical. Turn on messages to console form
+curlPerform. Default is FALSE.}
 }
 \value{
 The function returns the number folders deleted.
