@@ -53,6 +53,8 @@
 #' )
 #' }
 #'
+#' @noRd
+#'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_connect <- function(server   = "",
                          folder   = "",
@@ -133,6 +135,8 @@ sftp_connect <- function(server   = "",
 #' }
 #'
 #' @seealso \code{\link{sftp_listfiles}}, \code{\link{sftp_listdirs}}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_list <- function(sftp_connection = sftp_con,
@@ -250,6 +254,8 @@ sftp_list <- function(sftp_connection = sftp_con,
 #'
 #' @seealso \link{sftp_listdirs}, \link{sftp_list}
 #'
+#' @noRd
+#'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_listfiles <- function(sftp_connection = sftp_con,
                            verbose = TRUE,
@@ -293,6 +299,8 @@ sftp_listfiles <- function(sftp_connection = sftp_con,
 #' }
 #'
 #' @seealso \link{sftp_listfiles}, \link{sftp_list}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_listdirs <- function(sftp_connection = sftp_con,
@@ -343,6 +351,8 @@ sftp_listdirs <- function(sftp_connection = sftp_con,
 #' }
 #'
 #' @seealso \link{sftp_upload}, \link{sftp_delete}, \link{sftp_rename}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_download <- function(file,
@@ -420,6 +430,8 @@ sftp_download <- function(file,
 #'
 #'
 #' @seealso \link{sftp_download}, \link{sftp_delete}, \link{sftp_rename}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_upload <- function(file,
@@ -514,6 +526,8 @@ sftp_upload <- function(file,
 #'
 #' @seealso \link{sftp_download}, \link{sftp_upload}, \link{sftp_rename}
 #'
+#' @noRd
+#'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_delete <- function(file,
                         sftp_connection = sftp_con,
@@ -581,6 +595,8 @@ sftp_delete <- function(file,
 #' }
 #'
 #' @seealso \link{sftp_download}, \link{sftp_upload}, \link{sftp_delete}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_rename <- function(from,
@@ -677,6 +693,8 @@ sftp_rename <- function(from,
 #'
 #' @seealso \link{sftp_removedir}, \link{sftp_rename}, \link{sftp_changedir}
 #'
+#' @noRd
+#'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_makedir <- function(foldername,
                          sftp_connection = sftp_con,
@@ -751,6 +769,8 @@ sftp_makedir <- function(foldername,
 #' }
 #'
 #' @seealso \link{sftp_makedir}, \link{sftp_rename}, \link{sftp_changedir}
+#'
+#' @noRd
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_removedir <- function(foldername,
@@ -828,6 +848,8 @@ sftp_removedir <- function(foldername,
 #'
 #' @seealso \link{sftp_makedir}, \link{sftp_removedir}, \link{sftp_rename}
 #'
+#' @noRd
+#'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_changedir <- function(tofolder,
                            current_connection_name = "sftp_con",
@@ -887,7 +909,7 @@ sftp_changedir <- function(tofolder,
   return(TRUE)
 }
 
-# | Internal Functions #########################################################
+# | Undocumented Functions #####################################################
 sftp_log <- function(message,
                      log_file) {
   readr::write_lines(x = paste(Sys.time(), message, "\r"), path = log_file, append = T)

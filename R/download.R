@@ -2,15 +2,16 @@
 #'
 #' \code{download_integrated_data} connects to the Integrated Data Tool REDcap
 #' project via an API token and downloads the data currently available in the
-#' \emph{case interviews} report.
+#' \strong{case interviews} report.
 #'
 #' \code{download_integrated_data} downloads data as above and saves to the file
 #' directory and file specified in \code{directory} and \code{new_file} (by
 #' default, it saves to directory
-#' \code{V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/}
+#' \code{"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data
+#' tool Case Interviews/"}
 #' and file \code{integrated_data_YYYY-MM-DD.csv}.) Only change this if you're
-#' doing some custom analysis; by default, \link{load_integrated_data} will look
-#' here for data to import.
+#' doing some custom analysis; by default, \code{\link{load_integrated_data}}
+#' will look here for data to import.
 #'
 #' To use \code{download_integrated_data} you'll need an API access key for the
 #' associated REDcap project. Please contact
@@ -44,10 +45,13 @@
 download_integrated_data <- function(
   date = Sys.Date(),
   api_token = Sys.getenv("redcap_IDT_token"),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/",
-  new_file  = paste0("integrated_data_", date, ".csv"),
-  convert   = FALSE,
-  force     = FALSE
+  directory = paste0(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+     "Integrated data tool Case Interviews/"
+  ),
+  new_file = paste0("integrated_data_", date, ".csv"),
+  convert = FALSE,
+  force = FALSE
 ) {
   message("Starting Integrated Data download...\n")
   download_redcap_report(
