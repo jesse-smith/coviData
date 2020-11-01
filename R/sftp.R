@@ -894,7 +894,6 @@ sftp_log <- function(message,
 }
 
 trim_slashes <- function(string) {
-  #string <- gsub("^/{1,2}", "", string) # remove any leading slash
   string <- gsub("/{1,2}$", "", string) # remove any trailing slash
   return(string)
 }
