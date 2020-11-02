@@ -21,22 +21,6 @@
 #' @param ... Additional parameters to pass to \code{case_fn}
 #'
 #' @return A character vector of the same length as \code{string}
-#'
-#' @examples
-#' 
-#' \dontrun {
-#' # Convert a messy name
-#' standardize_string(" Jesse_smITh!!")
-#'
-#' # Spacing is respected
-#' standardize_string("j esse smith")
-#'
-#' # Numbers are replaced with a space
-#' standardize_string("j3sse sm1th")
-#'
-#' # So are special characters
-#' standardize_string("'Jesse.Smith?'")
-#' }
 #' 
 #' @export
 standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
