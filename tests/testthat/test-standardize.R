@@ -9,7 +9,7 @@ test_that("spacing is respected", {
   expect_equal(standardize_string("J Esse Smith"), "J Esse Smith")
 })
 
-test_that("numbers are replaced with space", {
+test_that("numbers are replaced with space (before casing)", {
   expect_equal(standardize_string("J3ss3 Sm1th"), "J Ss Sm Th")
 })
 
