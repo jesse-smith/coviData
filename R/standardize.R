@@ -24,6 +24,7 @@
 #'
 #' @examples
 #' 
+#' \dontrun {
 #' # Convert a messy name
 #' standardize_string(" Jesse_smITh!!")
 #'
@@ -35,6 +36,7 @@
 #'
 #' # So are special characters
 #' standardize_string("'Jesse.Smith?'")
+#' }
 #' 
 #' @export
 standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
