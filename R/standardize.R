@@ -23,7 +23,7 @@
 #' @return A character vector of the same length as \code{string}
 #'
 #' @examples
-#'
+#' 
 #' # Convert a messy name
 #' standardize_string(" Jesse_smITh!!")
 #'
@@ -35,6 +35,8 @@
 #'
 #' # So are special characters
 #' standardize_string("'Jesse.Smith?'")
+#' 
+#' @export
 standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
 
   esc_msg <- paste0(
