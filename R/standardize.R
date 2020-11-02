@@ -1,18 +1,56 @@
-standardize_string <- function(.x, case_fn = stringr::str_to_title) {
+#' Standardize String Formatting
+#'
+#' \code{standardize_string} ensures that the input string (or character vector)
+#' follows a consistent structure. It coerces the input to type
+#' \code{character}; converts characters to \code{UTF-8} encoding; replaces
+#' non-alphabetical symbols with a space; removes excess whitespace; and
+#' converts to the desired case (title, by default). It also informs the user if
+#' any characters could not be converted to \code{UTF-8}.
+#'
+#' This functions is primarily intended to standardize proper nouns (such as
+#' names of persons) into a common format; it doesn't necessarily \emph{correct}
+#' the strings. For more general string standardization of this type, see
+#' the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
+#'
+#' @param string The string or character vector to standardize
+#'
+#' @param case_fn A function for converting to the desired case. Note that
+#'   \code{case_fn} is simply the last transformation applied to \code{string}
+#'   and may technically perform operations other than case conversion.
+#'
+#' @param ... Additional parameters to pass to \code{case_fn}
+#'
+#' @return A character vector of the same length as \code{string}
+#'
+#' @examples
+#'
+#' # Convert a messy name
+#' standardize_string(" Jesse_smITh!!")
+#'
+#' # Spacing is respected
+#' standardize_string("j esse smith")
+#'
+#' # Numbers are replaced with a space
+#' standardize_string("j3sse sm1th")
+#'
+#' # So are special characters
+#' standardize_string("'Jesse.Smith?'")
+standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
 
   esc_msg <- paste0(
-    " substitute character(s) have been removed.",
-    " See warnings for more detail on which characters could not be encoded."
+    " substitute character(s) have been removed; ",
+    "these are characters that could not be converted to UTF-8. ",
+    "See warnings for more detail on which characters could not be encoded."
   )
 
-  .x %>%
+  string %>%
     as.character() %>%
     stringr::str_conv(encoding = "UTF-8") %T>%
     detect_and_replace(pattern = "[\ufffd\u001a]", msg = esc_msg) %>%
     stringr::str_remove_all(pattern = "['\"]") %>%
     stringr::str_replace_all(pattern = "[^a-zA-Z ]", replacement = " ") %>%
     stringr::str_squish() %>%
-    case_fn()
+    case_fn(...)
 }
 
 standardize_dates <- function(
