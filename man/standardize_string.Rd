@@ -32,17 +32,3 @@ names of persons) into a common format; it doesn't necessarily \emph{correct}
 the strings. For more general string standardization of this type, see
 the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
 }
-\examples{
-
-# Convert a messy name
-standardize_string(" Jesse_smITh!!")
-
-# Spacing is respected
-standardize_string("j esse smith")
-
-# Numbers are replaced with a space
-standardize_string("j3sse sm1th")
-
-# So are special characters
-standardize_string("'Jesse.Smith?'")
-}
