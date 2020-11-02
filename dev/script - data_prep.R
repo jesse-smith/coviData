@@ -1,8 +1,7 @@
 library(coviData)
-
 # Download data
-download_nbs_snapshot(convert = TRUE, force = TRUE)
-download_pcr_snapshot(convert = TRUE, force = TRUE)
+download_nbs_snapshot(convert = TRUE)
+download_pcr_snapshot(convert = TRUE)
 download_antigen_snapshot(convert = FALSE)
 download_serology_snapshot(convert = FALSE)
 download_ael()
