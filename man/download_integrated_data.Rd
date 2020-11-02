@@ -39,7 +39,7 @@ Invisibly returns \code{NULL}
 \description{
 \code{download_integrated_data} connects to the Integrated Data Tool REDcap
 project via an API token and downloads the data currently available in the
-\emph{case interviews} report.
+\strong{case interviews} report.
 }
 \details{
 \code{download_integrated_data} downloads data as above and saves to the file

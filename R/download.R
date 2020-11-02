@@ -2,7 +2,7 @@
 #'
 #' \code{download_integrated_data} connects to the Integrated Data Tool REDcap
 #' project via an API token and downloads the data currently available in the
-#' \emph{case interviews} report.
+#' \strong{case interviews} report.
 #'
 #' \code{download_integrated_data} downloads data as above and saves to the file
 #' directory and file specified in \code{directory} and \code{new_file} (by
@@ -46,11 +46,11 @@ download_integrated_data <- function(
   api_token = Sys.getenv("redcap_IDT_token"),
   directory = paste0(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
-    "Integrated data tool Case Interviews/"
+     "Integrated data tool Case Interviews/"
   ),
-  new_file  = paste0("integrated_data_", date, ".csv"),
-  convert   = FALSE,
-  force     = FALSE
+  new_file = paste0("integrated_data_", date, ".csv"),
+  convert = FALSE,
+  force = FALSE
 ) {
   message("Starting Integrated Data download...\n")
   download_redcap_report(
