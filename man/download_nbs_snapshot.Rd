@@ -8,8 +8,8 @@ download_nbs_snapshot(
   date = Sys.Date(),
   api_token = Sys.getenv("redcap_DFR_token"),
   redcap_file = "nbs_daily_upload",
- 
-    directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
+  directory = paste0("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Sandbox data pull Final/"),
   new_file = paste0(date, " Final Data Pull.csv"),
   convert = FALSE,
   force = FALSE

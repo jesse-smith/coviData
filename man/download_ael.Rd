@@ -11,6 +11,17 @@ download_ael(
   directory = "V:/EPI DATA ANALYTICS TEAM/AEL Data/"
 )
 }
+\arguments{
+\item{date}{The creation date of the Serv-U file}
+
+\item{usr}{The username for Serv-U; the default pulls from a ".Renviron" file
+and is the recommended setup}
+
+\item{pwd}{The password for Serv-U; the default pulls from a ".Renviron" file
+and is the recommended setup}
+
+\item{directory}{The directory in which the new file will be saved}
+}
 \description{
 \code{download_ael} finds and download the AEL data for the input date and
 saves it to a folder of your choice. To make the best use of this function,

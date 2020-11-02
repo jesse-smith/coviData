@@ -123,7 +123,9 @@ read_file <- function(
   path %<>% fs::path_tidy() %>% fs::path_expand()
 
   # Clean up the file_type argument
-  file_type %<>% stringr::str_squish() %>% stringr::str_to_lower() %>% .[[1]]
+  file_type <- file_type[[1]] %>%
+    stringr::str_squish() %>%
+    stringr::str_to_lower()
 
   # Guess the file type if file_type == "auto"
   if (file_type == "auto") file_type <- guess_filetype(path)
@@ -185,7 +187,8 @@ is_open <- function(path) {
       silent = TRUE
     ) %>%
       class() %>%
-      {any(. == "try-error")}
+      magrittr::equals("try-error") %>%
+      any()
   )
 }
 

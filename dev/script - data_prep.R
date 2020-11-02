@@ -18,13 +18,13 @@ ael <- load_ael(Sys.Date())
 
 merged_nbs %>%
   dplyr::mutate(
-    lab_result %<>% relevel_pcr(),
+    lab_result = relevel_pcr(lab_result),
     collect_date_join = lubridate::as_date(collect_date),
-    patient_last_name %<>% as.character(),
-    patient_first_name %<>% as.character(),
-    patient_dob %<>% lubridate::as_date(),
-    patient_street_addr_1 %<>% as.character(),
-    patient_zip %<>% as.character()
+    patient_last_name =  as.character(patient_last_name),
+    patient_first_name = as.character(patient_first_name),
+    patient_dob = lubridate::as_date(patient_dob),
+    patient_street_addr_1 = as.character(patient_street_addr_1),
+    patient_zip = as.character(patient_zip)
   ) ->
 pre_mnbs
 
@@ -32,8 +32,8 @@ ael %>%
   dplyr::mutate(
     lab_result = relevel_pcr(result),
     collect_date_join = lubridate::as_date(collect_date),
-    patient_last_name %<>% as.character(),
-    patient_first_name %<>% as.character(),
+    patient_last_name = as.character(patient_last_name),
+    patient_first_name = as.character(patient_first_name),
     patient_dob = lubridate::as_date(pt_dob),
     patient_street_addr_1 = as.character(pt_add1),
     patient_zip = as.character(pt_zipcode)
