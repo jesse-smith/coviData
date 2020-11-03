@@ -3,7 +3,6 @@
 export(check_ael)
 export(check_deaths)
 export(coalesce_dupes)
-export(create_path)
 export(download_ael)
 export(download_antigen_snapshot)
 export(download_integrated_data)

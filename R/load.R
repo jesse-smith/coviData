@@ -209,15 +209,7 @@ load_sas <- function(
 ) {
   message("Loading SAS cleaning results:\n")
 
-  file <- directory %>%
-    fs::path_real() %>%
-    fs::path_tidy() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(dataset[[1]]) %>%
-    fs::path_join() %>%
-    fs::path_ext_remove() %>%
-    fs::path_ext_set(ext[[1]])
+  file <- create_path(directory, dataset[[1]], ext[[1]])
 
   date_modified <- as.Date(fs::file_info(file)$modification_time)
 

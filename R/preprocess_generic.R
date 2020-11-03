@@ -6,10 +6,14 @@
 #'
 #' @param data A dataframe(-like) object
 #'
+#' @param na_constant Should \code{NA} values be considered when deciding
+#'   whether a column is constant? The default is \code{TRUE}, which will
+#'   keep columns that only have 1 unique non-missing value.
+#'
 #' @return A processed tibble
 #'
 #' @export
-preprocess <- function(data) {
+preprocess <- function(data, na_constant = TRUE) {
   suppressMessages(
     data %>%
       # Convert variable names to snake case
@@ -21,7 +25,7 @@ preprocess <- function(data) {
       # Get rid of empty columns
       janitor::remove_empty(which = "cols") %>%
       # Get rid of constant columns
-      janitor::remove_constant(na.rm = TRUE) %>%
+      janitor::remove_constant(na.rm = !constant_na) %>%
       # Convert characters to UTF-8
       dplyr::mutate(
         dplyr::across(

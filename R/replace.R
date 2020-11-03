@@ -45,13 +45,7 @@ replace_deaths_id <- function(
 ) {
 
   # Create path
-  path <- directory %>%
-    fs::path_real() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(file) %>%
-    fs::path_join() %>%
-    fs::path_tidy()
+  path <- create_path(directory, file)
 
   # Read file
   surveillance_data <- readxl::read_excel(
@@ -75,13 +69,7 @@ replace_deaths_id <- function(
 
   # Save
   if (save_as != FALSE) {
-    s_path <- directory %>%
-      fs::path_real() %>%
-      fs::path_split() %>%
-      .[[1]] %>%
-      append(save_as) %>%
-      fs::path_join() %>%
-      fs::path_tidy()
+    s_path <- create_path(directory, file)
 
     if (!fs::dir_exists(fs::path_dir(s_path))) {
       fs::dir_create(fs::path_dir(s_path))

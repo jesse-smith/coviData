@@ -264,12 +264,7 @@ download_redcap_report <- function(
     )
   )
 
-  file_new <- directory %>%
-    fs::path_real() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(new_file) %>%
-    fs::path_join()
+  file_new <- create_path(directory, new_file)
 
   # Move the file to the chosen directory with the chosen file name
   fs::file_move(
@@ -314,8 +309,8 @@ download_servu <- function(
 ) {
 
   # Standardize paths
-  remote_dir %<>% fs::path_tidy()
-  local_dir %<>% fs::path_real() %>% fs::path_tidy()
+  remote_dir %<>% fs::path_norm() %>% fs::path_tidy()
+  local_dir %<>% fs::path_expand() %>% fs::path_norm() %>% fs::path_tidy()
 
   # Create SFTP connection details
   sftp_con <- sftp_connect(

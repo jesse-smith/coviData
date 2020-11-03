@@ -165,31 +165,13 @@ check_deaths <- function(
 ) {
 
   # Create path to surveillance deaths file
-  s_path <- directory %>%
-    fs::path_expand() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(surveillance_file) %>%
-    fs::path_join() %>%
-    fs::path_tidy()
+  s_path <- create_path(directory, surveillance_file)
 
   # Create path to NBS deaths file
-  n_path <- directory %>%
-    fs::path_expand() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(nbs_file) %>%
-    fs::path_join() %>%
-    fs::path_tidy()
+  n_path <- create_path(directory, nbs_file)
 
   # Create path to file with missing ids
-  unmatched_ids_path <- directory %>%
-    fs::path_expand() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append("Missing IDs.xlsx") %>%
-    fs::path_join() %>%
-    fs::path_tidy()
+  unmatched_ids_path <- create_path(directory, "Missing IDs.xlsx")
 
   # Read surveillance deaths file
   surveillance_data <- readxl::read_excel(
