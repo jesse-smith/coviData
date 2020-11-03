@@ -25,7 +25,7 @@ preprocess <- function(data, na_constant = TRUE) {
       # Get rid of empty columns
       janitor::remove_empty(which = "cols") %>%
       # Get rid of constant columns
-      janitor::remove_constant(na.rm = !constant_na) %>%
+      janitor::remove_constant(na.rm = !na_constant) %>%
       # Convert characters to UTF-8
       dplyr::mutate(
         dplyr::across(
