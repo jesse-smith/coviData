@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess • coviData</title>
+<title>Guess the Filetype of a Data File — guess_filetype • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess" />
-<meta property="og:description" content="preprocess standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns." />
+<meta property="og:title" content="Guess the Filetype of a Data File — guess_filetype" />
+<meta property="og:description" content="guess_filetype attempts to guess the encoding of a data file from the
+file's extension. If the extension is not recognized, it returns
+&quot;unknown&quot;." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -113,37 +113,31 @@ removes empty or constant columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Standardize Variables, Handle Dates, and Remove Bad Columns</h1>
+    <h1>Guess the Filetype of a Data File</h1>
     
-    <div class="hidden name"><code>preprocess.Rd</code></div>
+    <div class="hidden name"><code>guess_filetype.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>preprocess</code> standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns.</p>
+    <p><code>guess_filetype</code> attempts to guess the encoding of a data file from the
+file's extension. If the extension is not recognized, it returns
+<code>"unknown"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>preprocess</span><span class='op'>(</span><span class='va'>data</span>, na_constant <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>guess_filetype</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe(-like) object</p></td>
-    </tr>
-    <tr>
-      <th>na_constant</th>
-      <td><p>Should <code>NA</code> values be considered when deciding
-whether a column is constant? The default is <code>TRUE</code>, which will
-keep columns that only have 1 unique non-missing value.</p></td>
+      <th>path</th>
+      <td><p>The path to the data file</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A processed tibble</p>
+    <p>One of <code>"excel"</code>, <code>"delimited"</code>, <code>"unknown"</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

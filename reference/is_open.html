@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess • coviData</title>
+<title>Test Whether a File is Open — is_open • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess" />
-<meta property="og:description" content="preprocess standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns." />
+<meta property="og:title" content="Test Whether a File is Open — is_open" />
+<meta property="og:description" content="is_open tests whether access to a file is currently being blocked by
+another program." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -113,37 +112,30 @@ removes empty or constant columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Standardize Variables, Handle Dates, and Remove Bad Columns</h1>
+    <h1>Test Whether a File is Open</h1>
     
-    <div class="hidden name"><code>preprocess.Rd</code></div>
+    <div class="hidden name"><code>is_open.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>preprocess</code> standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns.</p>
+    <p><code>is_open</code> tests whether access to a file is currently being blocked by
+another program.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>preprocess</span><span class='op'>(</span><span class='va'>data</span>, na_constant <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>is_open</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe(-like) object</p></td>
-    </tr>
-    <tr>
-      <th>na_constant</th>
-      <td><p>Should <code>NA</code> values be considered when deciding
-whether a column is constant? The default is <code>TRUE</code>, which will
-keep columns that only have 1 unique non-missing value.</p></td>
+      <th>path</th>
+      <td><p>The path to the file in question</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A processed tibble</p>
+    <p><code>Logical</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

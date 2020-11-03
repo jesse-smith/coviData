@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess • coviData</title>
+<title>Create a Tidy Path from Directory + File + Extension — create_path • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Standardize Variables, Handle Dates, and Remove Bad Columns — preprocess" />
-<meta property="og:description" content="preprocess standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns." />
+<meta property="og:title" content="Create a Tidy Path from Directory + File + Extension — create_path" />
+<meta property="og:description" content="create_path combines a directory, filename, and file extension into
+an expanded and tidied path." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -113,37 +112,42 @@ removes empty or constant columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Standardize Variables, Handle Dates, and Remove Bad Columns</h1>
+    <h1>Create a Tidy Path from Directory + File + Extension</h1>
     
-    <div class="hidden name"><code>preprocess.Rd</code></div>
+    <div class="hidden name"><code>create_path.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>preprocess</code> standardizes column names, converts variables to the
-appropriate data types (including oddly formatted dates/datetimes), and
-removes empty or constant columns.</p>
+    <p><code>create_path</code> combines a directory, filename, and file extension into
+an expanded and tidied path.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>preprocess</span><span class='op'>(</span><span class='va'>data</span>, na_constant <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>create_path</span><span class='op'>(</span><span class='va'>directory</span>, file_name <span class='op'>=</span> <span class='cn'>NULL</span>, ext <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe(-like) object</p></td>
+      <th>directory</th>
+      <td><p>The path to a directory; optionally, the full path can be
+supplied here, in which case <code>create_path</code> will simply expand and
+tidy the given file path.</p></td>
     </tr>
     <tr>
-      <th>na_constant</th>
-      <td><p>Should <code>NA</code> values be considered when deciding
-whether a column is constant? The default is <code>TRUE</code>, which will
-keep columns that only have 1 unique non-missing value.</p></td>
+      <th>file_name</th>
+      <td><p>The name of the file of interest; may be left <code>NULL</code> if
+this is included in <code>directory</code></p></td>
+    </tr>
+    <tr>
+      <th>ext</th>
+      <td><p>The file extension to add to the path; may be left <code>NULL</code> if
+included in <code>file_name</code> or <code>directory</code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A processed tibble</p>
+    <p>A tidy path, which is a character vector with additional attributes</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
