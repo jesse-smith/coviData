@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -124,7 +124,7 @@ appropriate data types (including oddly formatted dates/datetimes), and
 removes empty or constant columns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>preprocess</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>preprocess</span><span class='op'>(</span><span class='va'>data</span>, na_constant <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +132,12 @@ removes empty or constant columns.</p>
     <tr>
       <th>data</th>
       <td><p>A dataframe(-like) object</p></td>
+    </tr>
+    <tr>
+      <th>na_constant</th>
+      <td><p>Should <code>NA</code> values be considered when deciding
+whether a column is constant? The default is <code>TRUE</code>, which will
+keep columns that only have 1 unique non-missing value.</p></td>
     </tr>
     </table>
 

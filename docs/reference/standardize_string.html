@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Split Patient Names in AEL Data — split_names • coviData</title>
+<title>Standardize String Formatting — standardize_string • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,13 @@
 
 
 
-<meta property="og:title" content="Split Patient Names in AEL Data — split_names" />
-<meta property="og:description" content="split_names creates columns for the last, first, first-middle, and
-other-middle names of patients in AEL data" />
+<meta property="og:title" content="Standardize String Formatting — standardize_string" />
+<meta property="og:description" content="standardize_string ensures that the input string (or character vector)
+follows a consistent structure. It coerces the input to type
+character; converts characters to UTF-8 encoding; replaces
+non-alphabetical symbols with a space; removes excess whitespace; and
+converts to the desired case (title, by default). It also informs the user if
+any characters could not be converted to UTF-8." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -112,34 +116,50 @@ other-middle names of patients in AEL data" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Split Patient Names in AEL Data</h1>
+    <h1>Standardize String Formatting</h1>
     
-    <div class="hidden name"><code>split_names.Rd</code></div>
+    <div class="hidden name"><code>standardize_string.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>split_names</code> creates columns for the last, first, first-middle, and
-other-middle names of patients in AEL data</p>
+    <p><code>standardize_string</code> ensures that the input string (or character vector)
+follows a consistent structure. It coerces the input to type
+<code>character</code>; converts characters to <code>UTF-8</code> encoding; replaces
+non-alphabetical symbols with a space; removes excess whitespace; and
+converts to the desired case (title, by default). It also informs the user if
+any characters could not be converted to <code>UTF-8</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>split_names</span><span class='op'>(</span><span class='va'>.data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>standardize_string</span><span class='op'>(</span><span class='va'>string</span>, case_fn <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='va'><a href='https://stringr.tidyverse.org/reference/case.html'>str_to_title</a></span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>A data frame or data frame extension (e.g. a
-<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code>)</p></td>
+      <th>string</th>
+      <td><p>The string or character vector to standardize</p></td>
+    </tr>
+    <tr>
+      <th>case_fn</th>
+      <td><p>A function for converting to the desired case. Note that
+<code>case_fn</code> is simply the last transformation applied to <code>string</code>
+and may technically perform operations other than case conversion.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional parameters to pass to <code>case_fn</code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The original data frame, tibble, etc. with character columns for
-<code>PatientLastName</code>, <code>PatientFirstName</code>, <code>PatientMiddleName</code>,
-<code>PatientMidOthName</code> inserted after <code>PatientName</code> (which is a
-<code><a href='https://rdrr.io/r/base/factor.html'>factor</a></code>)</p>
+    <p>A character vector of the same length as <code>string</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This functions is primarily intended to standardize proper nouns (such as
+names of persons) into a common format; it doesn't necessarily <em>correct</em>
+the strings. For more general string standardization of this type, see
+the <a href='https://tazinho.github.io/snakecase/'>snakecase</a> package.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

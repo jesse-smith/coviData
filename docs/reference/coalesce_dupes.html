@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -48,8 +48,6 @@
 
 <meta property="og:title" content="Coalesce Information in Duplicate Rows — coalesce_dupes" />
 <meta property="og:description" content="coalesce_dupes sorts data, removes duplicates, and combines
-information in duplicate rows.
-coalesce_dupes sorts data, removes duplicates, and combines
 information in duplicate rows." />
 <meta property="og:image" content="/logo.png" />
 
@@ -122,13 +120,9 @@ information in duplicate rows." />
     <div class="ref-description">
     <p><code>coalesce_dupes</code> sorts data, removes duplicates, and combines
 information in duplicate rows.</p>
-<p><code>coalesce_dupes</code> sorts data, removes duplicates, and combines
-information in duplicate rows.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>TRUE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>TRUE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>TRUE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,21 +140,6 @@ will be preserved. If omitted, simply calls <code>distinct</code> with
 <code>.keep_all = TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>pre_sort</th>
-      <td><p>A logical indicating whether to sort using the input
-variables prior to coalescing. For candidate rows with multiple possible
-values for coalescing, this determines which value is chosen. If no input
-variables are given, no sorting is performed, and this parameter is
-ignored.</p></td>
-    </tr>
-    <tr>
-      <th>post_sort</th>
-      <td><p>A logical indicating whether to sort using the input
-variables after coalescing; in other words, should the result be arranged
-according to the input data (the default) or the specified variables (if
-<code>post_sort = TRUE</code>).</p></td>
-    </tr>
-    <tr>
       <th>sort</th>
       <td><p>A logical indicating whether to sort using the input variables.
 If no input variables are given, no sorting is performed, and this
@@ -171,13 +150,6 @@ parameter is ignored.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>coalesce_dupes</code> can be thought of as an enhanced version of
-<code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct</code>, <code>coalesce_dupes</code>
-removes duplicates from a dataset based on a provided set of variables.
-Unlike distinct, it sorts the data on those variables (by default) using
-<code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code>. It also tries to replace missing values with
-the first non-missing values in any duplicate rows using a modification of
-<code><a href='https://dplyr.tidyverse.org/reference/coalesce.html'>coalesce</a></code>.</p>
-<p><code>coalesce_dupes</code> can be thought of as an enhanced version of
 <code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct</code>, <code>coalesce_dupes</code>
 removes duplicates from a dataset based on a provided set of variables.
 Unlike distinct, it sorts the data on those variables by default using

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Split Patient Names in AEL Data — split_names • coviData</title>
+<title>Guess the Filetype of a Data File — guess_filetype • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,10 @@
 
 
 
-<meta property="og:title" content="Split Patient Names in AEL Data — split_names" />
-<meta property="og:description" content="split_names creates columns for the last, first, first-middle, and
-other-middle names of patients in AEL data" />
+<meta property="og:title" content="Guess the Filetype of a Data File — guess_filetype" />
+<meta property="og:description" content="guess_filetype attempts to guess the encoding of a data file from the
+file's extension. If the extension is not recognized, it returns
+&quot;unknown&quot;." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -112,34 +113,31 @@ other-middle names of patients in AEL data" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Split Patient Names in AEL Data</h1>
+    <h1>Guess the Filetype of a Data File</h1>
     
-    <div class="hidden name"><code>split_names.Rd</code></div>
+    <div class="hidden name"><code>guess_filetype.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>split_names</code> creates columns for the last, first, first-middle, and
-other-middle names of patients in AEL data</p>
+    <p><code>guess_filetype</code> attempts to guess the encoding of a data file from the
+file's extension. If the extension is not recognized, it returns
+<code>"unknown"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>split_names</span><span class='op'>(</span><span class='va'>.data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>guess_filetype</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>A data frame or data frame extension (e.g. a
-<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code>)</p></td>
+      <th>path</th>
+      <td><p>The path to the data file</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The original data frame, tibble, etc. with character columns for
-<code>PatientLastName</code>, <code>PatientFirstName</code>, <code>PatientMiddleName</code>,
-<code>PatientMidOthName</code> inserted after <code>PatientName</code> (which is a
-<code><a href='https://rdrr.io/r/base/factor.html'>factor</a></code>)</p>
+    <p>One of <code>"excel"</code>, <code>"delimited"</code>, <code>"unknown"</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
