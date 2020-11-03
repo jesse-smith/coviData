@@ -40,12 +40,9 @@ replace_ael <- function(
 replace_deaths_id <- function(
   file = "Working Copy Death  Epi.xlsx",
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
-  id = NBS,
+  id = NULL,
   save_as = paste0("sas_data/cleaned_surveillance_copy.xlsx")
 ) {
-
-  # Convert id to symbol to use as data-variable
-  id <- rlang::enexpr(id) %>% rlang::as_name() %>% rlang::sym()
 
   # Create path
   path <- directory %>%
@@ -57,11 +54,21 @@ replace_deaths_id <- function(
     fs::path_tidy()
 
   # Read file
-  readxl::read_excel(
+  surveillance_data <- readxl::read_excel(
     path = path,
     trim_ws = TRUE,
     guess_max = .Machine$integer.max %/% 100L
-  ) %>%
+  )
+
+  # Get `id` if NULL
+  if (rlang::quo_is_null(rlang::enquo(id))) {
+    id <- colnames(surveillance_data[1]) %>% rlang::sym()
+  } else {
+    # Convert to symbol
+    id <- rlang::enexpr(id) %>% rlang::as_name() %>% rlang::sym()
+  }
+
+  surveillance_data %>%
     # Clean PSN Number
     dplyr::mutate(std_nbs_id = standardize_nbs_id(!!id), .after = !!id) ->
   data

@@ -1,7 +1,7 @@
-# || By Verb || ######################################################################
+# || By Verb || ################################################################
 # | Preprocess #################################################################
 
-cols_to_keep <- function(data, min_completion_rate = 1/3) {
+cols_to_keep <- function(data, min_completion_rate) {
 
   factor_data <- dplyr::mutate(
     data,
@@ -50,7 +50,7 @@ detect_and_replace <- function(
         pattern = pattern,
         replacement = replacement
       ) %T>%
-      {message(paste0(n_patterns, msg))}
+      {message(n_patterns, msg)}
   } else {
     .x
   }
@@ -123,7 +123,7 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
   # Prepare data by id-ing, arranging, grouping, and counting dupes
   data %>%
     dplyr::mutate(order_id = seq_len(NROW(data))) %>%
-    {if (pre_sort) dplyr::arrange(., ...) else .} %>%
+    purrr::when(rlang::is_true(pre_sort) ~ dplyr::arrange(., ...), ~ .) %>%
     dplyr::group_by(...) %>%
     dplyr::add_count() ->
     grouped_data
@@ -146,7 +146,10 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     # Add coalesced groups back to data
     dplyr::add_row(coalesced_dupes) %>%
     # Either sort by the given variables or by .id, then drop .id
-    {if (post_sort) dplyr::arrange(., ...) else dplyr::arrange(., order_id)} %>%
+    purrr::when(
+      rlang::is_true(post_sort) ~ dplyr::arrange(., ...),
+      ~ dplyr::arrange(., order_id)
+    ) %>%
     dplyr::select(-order_id)
 }
 
@@ -253,7 +256,7 @@ split_names <- function(.data) {
     pt_names
 
   # Create character matrix holding first, middle, and other middle names
-  pt_names[,2] %>%
+  pt_names[, 2] %>%
     stringr::str_split_fixed(
       pattern = " ",
       n = 3
@@ -263,19 +266,19 @@ split_names <- function(.data) {
   # Create new columns
   .data %>%
     dplyr::transmute(
-      last = pt_names[,1] %>%
+      last = pt_names[, 1] %>%
         as.vector() %>%
         stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
-      first = pt_other_names[,1] %>%
+      first = pt_other_names[, 1] %>%
         as.vector() %>%
         stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
-      middle = pt_other_names[,2] %>%
+      middle = pt_other_names[, 2] %>%
         as.vector() %>%
         stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA),
-      other = pt_other_names[,3] %>%
+      other = pt_other_names[, 3] %>%
         as.vector() %>%
         stringr::str_squish() %>%
         gsub(pattern = "^$", replacement = NA)
@@ -455,10 +458,10 @@ check_state <- function(x, states, include_na) {
 
   # State codes must be 1 or 2 characters
   # (If given by FIPS code, [01, ..., 09] will be converted to [1, ..., 9] by R)
-  x[!(stringr::str_length(x) %in% c(1L,2L))] <- NA
+  x[!(stringr::str_length(x) %in% c(1L, 2L))] <- NA
 
   # Any improperly formatted entries in comparison vector are removed
-  states[!(stringr::str_length(states) %in% c(1L,2L))] <- NULL
+  states[!(stringr::str_length(states) %in% c(1L, 2L))] <- NULL
 
   # Handle NAs separately; shouldn't be in `states`
   states[is.na(states)] <- NULL
@@ -567,7 +570,7 @@ relevel_pcr <- function(x) {
     {message("Levels collapsed to 'U' in relevel_labs:")} %T>%
     {
       levels(.) %>%
-        {.[!. %in% c("C", "P", "N", "I")]} %>%
+        stringr::str_subset(pattern = c("C", "P", "N", "I"), negate = TRUE) %>%
         paste0(collapse = "\t") %>%
         message()
     } %>%
@@ -580,7 +583,10 @@ relevel_pcr <- function(x) {
       S = "S",
       other_level = "U"
     ) %>%
-    {if (!"U" %in% levels(.)) forcats::fct_expand(., "U") else .} %>%
+    purrr::when(
+      (!"U" %in% levels(.)) ~ forcats::fct_expand(., "U"),
+      ~ .
+    ) %>%
     forcats::fct_relevel("C", "P", "N", "I", "S", "U")
 }
 

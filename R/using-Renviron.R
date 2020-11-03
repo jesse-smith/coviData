@@ -40,12 +40,7 @@
 #' \code{coviData} currently uses the \emph{.Renviron} file for REDcap API
 #' tokens, but may expand to ESSENCE and NBS tokens as well in the future.
 #'
+#' @md
+#'
 #' @export
-using_Renviron <- function() {
-  message(
-    paste0(
-      "This function exists to provide documention on setting up .Renviron",
-      "file; type `?coviData::using_Renviron` for details."
-    )
-  )
-}
+using_Renviron <- function() NULL

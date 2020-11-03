@@ -78,7 +78,7 @@ check_ael <- function(
         levels = c("New Todate", smaller_date, larger_date)),
       AuthDate = AuthDate %>%
         as.character(format = "%m/%d") %>%
-        factor(levels = c("New Todate", smaller_date,larger_date)),
+        factor(levels = c("New Todate", smaller_date, larger_date)),
       Result = Result %>%
         as.character() %>%
         stringr::str_to_title() %>%
@@ -159,18 +159,10 @@ check_deaths <- function(
   surveillance_file = "Working Copy Death  Epi.xlsx",
   nbs_file = "NBSDeathLineList.xls",
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
-  surveillance_file_id = NBS,
+  surveillance_file_id = NULL,
   nbs_file_id = PATIENT_LOCAL_ID,
   save = FALSE
 ) {
-
-  # Make sure IDs are symbols
-  surveillance_file_id <- rlang::enexpr(surveillance_file_id) %>%
-    rlang::as_name() %>%
-    rlang::sym()
-  nbs_file_id <- rlang::enexpr(nbs_file_id) %>%
-    rlang::as_name() %>%
-    rlang::sym()
 
   # Create path to surveillance deaths file
   s_path <- directory %>%
@@ -200,14 +192,11 @@ check_deaths <- function(
     fs::path_tidy()
 
   # Read surveillance deaths file
-  readxl::read_excel(
+  surveillance_data <- readxl::read_excel(
     path = s_path,
     trim_ws = TRUE,
     guess_max = .Machine$integer.max %/% 100L
-  ) %>%
-    # Clean PSN Number
-    dplyr::mutate(std_nbs_id = standardize_nbs_id(!!surveillance_file_id)) ->
-  surveillance_data
+  )
 
   # Try to read NBS file as an excel file
   nbs_data <- try(
@@ -224,10 +213,26 @@ check_deaths <- function(
     nbs_data <- load_nbs_deaths_as_html(n_path)
   }
 
+  # Make sure IDs are symbols
+  if (rlang::quo_is_null(rlang::enquo(surveillance_file_id))) {
+    surveillance_file_id <- colnames(surveillance_data[1]) %>% rlang::sym()
+  } else {
+    surveillance_file_id <- rlang::ensym(surveillance_file_id)
+  }
+
+  if (rlang::quo_is_null(rlang::enquo(nbs_file_id))) {
+    nbs_file_id <- colnames(nbs_data[1]) %>% rlang::sym()
+  } else {
+    nbs_file_id <- rlang::ensym(nbs_file_id)
+  }
+
+  # Standardize NBS ID in surveillance file
+  surveillance_data %<>%
+    dplyr::mutate(std_nbs_id = standardize_nbs_id(!!surveillance_file_id))
+
   # Standardize NBS ID in NBS file
-  nbs_data %>%
-    dplyr::mutate(std_nbs_id = standardize_nbs_id(!!nbs_file_id)) ->
-  nbs_data
+  nbs_data %<>%
+    dplyr::mutate(std_nbs_id = standardize_nbs_id(!!nbs_file_id))
 
   # Get entries in surveillance file not in NBS
   dplyr::anti_join(

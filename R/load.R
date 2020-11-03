@@ -118,7 +118,10 @@ load_and_process_ael <- function(
 #' @export
 load_integrated_data <- function(
   date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/",
+  directory = paste0(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Integrated data tool Case Interviews/"
+  ),
   ext = "csv"
 ) {
   message("Loading Integrated Data...")
@@ -144,7 +147,10 @@ load_limited <- function(
 #' @export
 load_nbs <- function(
   date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
+  directory = paste0(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Sandbox data pull Final/"
+  ),
   ext = c("csv", "xlsx")
 ) {
   message("Loading NBS file:\n")
@@ -195,7 +201,9 @@ load_pcr <- function(
 #'
 #' @export
 load_sas <- function(
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
+  directory =
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"
+  ,
   dataset = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
   ext = c("csv", "xlsx")
 ) {
@@ -221,4 +229,3 @@ load_sas <- function(
   ) %>%
     preprocess()
 }
-

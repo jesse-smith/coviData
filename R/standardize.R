@@ -1,18 +1,44 @@
-standardize_string <- function(.x, case_fn = stringr::str_to_title) {
+#' Standardize String Formatting
+#'
+#' \code{standardize_string} ensures that the input string (or character vector)
+#' follows a consistent structure. It coerces the input to type
+#' \code{character}; converts characters to \code{UTF-8} encoding; replaces
+#' non-alphabetical symbols with a space; removes excess whitespace; and
+#' converts to the desired case (title, by default). It also informs the user if
+#' any characters could not be converted to \code{UTF-8}.
+#'
+#' This functions is primarily intended to standardize proper nouns (such as
+#' names of persons) into a common format; it doesn't necessarily \emph{correct}
+#' the strings. For more general string standardization of this type, see
+#' the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
+#'
+#' @param string The string or character vector to standardize
+#'
+#' @param case_fn A function for converting to the desired case. Note that
+#'   \code{case_fn} is simply the last transformation applied to \code{string}
+#'   and may technically perform operations other than case conversion.
+#'
+#' @param ... Additional parameters to pass to \code{case_fn}
+#'
+#' @return A character vector of the same length as \code{string}
+#' 
+#' @export
+standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
 
   esc_msg <- paste0(
-    " substitute character(s) have been removed.",
-    " See warnings for more detail on which characters could not be encoded."
+    " substitute character(s) have been removed; ",
+    "these are characters that could not be converted to UTF-8. ",
+    "See warnings for more detail on which characters could not be encoded."
   )
 
-  .x %>%
+  string %>%
     as.character() %>%
     stringr::str_conv(encoding = "UTF-8") %T>%
     detect_and_replace(pattern = "[\ufffd\u001a]", msg = esc_msg) %>%
     stringr::str_remove_all(pattern = "['\"]") %>%
     stringr::str_replace_all(pattern = "[^a-zA-Z ]", replacement = " ") %>%
     stringr::str_squish() %>%
-    case_fn()
+    case_fn(...)
 }
 
 standardize_dates <- function(
@@ -80,8 +106,14 @@ standardize_cities <- function(x) {
         stringr::str_remove_all(pattern = "( [Tt][Nn])|([0-9]{5})") %>%
         stringr::str_replace(pattern = "^Arl$", replacement = "Arlington") %>%
         stringr::str_replace(pattern = "^Bart?$", replacement = "Bartlett") %>%
-        stringr::str_replace(pattern = "^Coll?$", replacement = "Collierville") %>%
-        stringr::str_replace(pattern = "^Germ?$", replacement = "Germantown") %>%
+        stringr::str_replace(
+          pattern = "^Coll?$",
+          replacement = "Collierville"
+        ) %>%
+        stringr::str_replace(
+          pattern = "^Germ?$",
+          replacement = "Germantown"
+        ) %>%
         stringr::str_replace(pattern = "^Lake?$", replacement = "Lakeland") %>%
         stringr::str_replace(pattern = "^Mem$", replacement = "Memphis") %>%
         stringr::str_replace(pattern = "^Mill?$", replacement = "Millington")
@@ -96,10 +128,17 @@ standardize_cities <- function(x) {
     mutate(
       suggested = token %>%
         hunspell::hunspell_check(dict = city_dict) %>%
-        ifelse(yes = token, no = hunspell::hunspell_suggest(token, dict = city_dict)) %>%
+        ifelse(
+          yes = token,
+          no = hunspell::hunspell_suggest(token, dict = city_dict)
+        ) %>%
         purrr::map_chr(~ unlist(.x)[[1]]),
       osa_dist = stringdist::stringdist(token, suggested, method = "osa"),
-      soundex_dist = stringdist::stringdist(token, suggested, method = "soundex"),
+      soundex_dist = stringdist::stringdist(
+        token,
+        suggested,
+        method = "soundex"
+      ),
       in_cities = suggested %in% cities,
       suggested_start = stringr::str_trunc(
         suggested,
@@ -132,7 +171,10 @@ standardize_cities <- function(x) {
           dist = 3,
           other_level = "Other/Unincorporated Shelby"
         ) %>%
-        fct_other(drop = "Covington", other_level = "Other/Unincorporated Shelby") %>%
+        fct_other(
+          drop = "Covington",
+          other_level = "Other/Unincorporated Shelby"
+        ) %>%
         addNA() %>%
         fct_recode(c(Missing = NA_character_))
     ) %>%

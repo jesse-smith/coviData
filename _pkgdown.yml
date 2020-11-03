@@ -1,0 +1,10 @@
+template:
+  params:
+    bootswatch: materia
+reference:
+- title: "Downloading Data from Source"
+  desc: >
+    Functions for downloading data from REDcap projects and the Serv-U lab
+    results repository
+- contents:
+  - starts_with("download_")

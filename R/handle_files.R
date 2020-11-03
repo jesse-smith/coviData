@@ -39,7 +39,8 @@ find_file <- function(
   # matches)
 
   # check_ael (and possibly other functions) use 'date_flag' to return more
-  # informative messages; we display the 'date_flag' in the message if it's given
+  # informative messages; we display the 'date_flag' in the message if it's
+  # given
   if (!is.null(date_flag)) {
     # A warning indicates that multiple matches were found, 'find_file' is
     # returning the first one
@@ -122,7 +123,9 @@ read_file <- function(
   path %<>% fs::path_tidy() %>% fs::path_expand()
 
   # Clean up the file_type argument
-  file_type %<>% stringr::str_squish() %>% stringr::str_to_lower() %>% .[[1]]
+  file_type <- file_type[[1]] %>%
+    stringr::str_squish() %>%
+    stringr::str_to_lower()
 
   # Guess the file type if file_type == "auto"
   if (file_type == "auto") file_type <- guess_filetype(path)
@@ -133,8 +136,8 @@ read_file <- function(
     msg = paste0(
       "File type is unknown or unsupported.\n",
       "If this is a delimited text file with column separators in [,\t |;:], ",
-      "please specify 'file_type = 'delimited''. If this is an xls or xlsx file, ",
-      "please specify 'file_type = 'excel''.\n",
+      "please specify 'file_type = 'delimited''. ",
+      "If this is an xls or xlsx file, please specify 'file_type = 'excel''.\n",
       "Other file types are not supported."
     )
   )
@@ -184,7 +187,8 @@ is_open <- function(path) {
       silent = TRUE
     ) %>%
       class() %>%
-      {any(. == "try-error")}
+      magrittr::equals("try-error") %>%
+      any()
   )
 }
 
