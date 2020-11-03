@@ -1,6 +1,6 @@
 template:
   params:
-    bootswatch: materia
+    bootswatch: paper
 reference:
 - title: "Downloading Data from Source"
   desc: >
