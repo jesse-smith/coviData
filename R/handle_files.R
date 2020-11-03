@@ -208,7 +208,8 @@ guess_filetype <- function(path) {
 #' @export
 create_path <- function(directory, file_name, ext = NULL) {
   directory %>%
-    fs::path_real() %>%
+    fs::path_expand() %>%
+    fs::path_norm() %>%
     fs::path_tidy() %>%
     fs::path_split() %>%
     .[[1]] %>%
