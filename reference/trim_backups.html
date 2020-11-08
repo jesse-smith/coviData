@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coalesce Information in Duplicate Rows — coalesce_dupes • coviData</title>
+<title>Remove Files from Directory Based on Date Created — trim_backups • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,11 @@
 
 
 
-<meta property="og:title" content="Coalesce Information in Duplicate Rows — coalesce_dupes" />
-<meta property="og:description" content="coalesce_dupes() sorts data, removes duplicates, and combines
-information in duplicate rows." />
+<meta property="og:title" content="Remove Files from Directory Based on Date Created — trim_backups" />
+<meta property="og:description" content="trim_backups() deletes old backup files from a directory. More
+specifically, it identifies files in a directory with a common naming
+pattern and it keeps the most recent n_recent of those files
+(deleting the rest)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -112,50 +114,42 @@ information in duplicate rows." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coalesce Information in Duplicate Rows</h1>
+    <h1>Remove Files from Directory Based on Date Created</h1>
     
-    <div class="hidden name"><code>coalesce_dupes.Rd</code></div>
+    <div class="hidden name"><code>trim_backups.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>coalesce_dupes()</code> sorts data, removes duplicates, and combines
-information in duplicate rows.</p>
+    <p><code>trim_backups()</code> deletes old backup files from a directory. More
+specifically, it identifies files in a <code>directory</code> with a common naming
+<code>pattern</code> and it keeps the most recent <code>n_recent</code> of those files
+(deleting the rest).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>TRUE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>trim_backups</span><span class='op'>(</span><span class='va'>directory</span>, pattern <span class='op'>=</span> <span class='cn'>NULL</span>, n_recent <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A data frame, data frame extension (e.g. a tibble), or a lazy
-data frame (e.g. from dbplyr or dtplyr)</p></td>
+      <th>directory</th>
+      <td><p>The path to the backup directory</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Variables to use for sorting and determining uniqueness. If there
-are multiple rows for a given combination of inputs, only the first row
-will be preserved. If omitted, simply calls <code>distinct()</code> with
-<code>.keep_all = TRUE</code>.</p></td>
+      <th>pattern</th>
+      <td><p>The naming pattern of the backup files, as a regular
+expression. This allows maintenance of backups when other files are also
+present in the <code>directory</code> (though this is not recommended).</p></td>
     </tr>
     <tr>
-      <th>sort</th>
-      <td><p>A logical indicating whether to sort using the input variables.
-If no input variables are given, no sorting is performed, and this
-parameter is ignored.</p></td>
+      <th>n_recent</th>
+      <td><p>The number of most recent files to keep</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>coalesce_dupes()</code> can be thought of as an enhanced version of
-<code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct()</code>, <code>coalesce_dupes()</code>
-removes duplicates from a dataset based on a provided set of variables.
-Unlike <code>distinct()</code>, it sorts the data on those variables by default using
-<code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code>. It also tries to replace missing values with
-the first non-missing values in any duplicate rows using a modification of
-<code><a href='https://dplyr.tidyverse.org/reference/coalesce.html'>coalesce</a></code>.</p>
+    <p>The deleted paths (invisibly)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
