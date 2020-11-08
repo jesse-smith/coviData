@@ -36,7 +36,22 @@ replace_ael <- function(
   invisible(processed_data)
 }
 
-#' @export
+#' Replace NBS ID in Surveillance Deaths Linelist with Standardized ID
+#'
+#' `replace_deaths_id()` facilitates comparison of the surveillance deaths
+#' linelist with the one exported from NBS by standardizing patient IDs. It
+#' saves the result in the file specified in `save_as`.
+#'
+#' @param file The name of the surveillance linelist file
+#'
+#' @param directory The directory containing the linelist
+#'
+#' @param id The name of the column specifying the NBS ID in the linelist; if
+#'   `NULL`, assumes that this is the first column
+#'
+#' @param save_as The file path specifying where to save the results
+#'
+#' @return The cleaned data as a \code{\link[tibble]{tibble}} (invisibly)
 replace_deaths_id <- function(
   file = "Working Copy Death  Epi.xlsx",
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
@@ -69,7 +84,7 @@ replace_deaths_id <- function(
 
   # Save
   if (save_as != FALSE) {
-    s_path <- create_path(directory, file)
+    s_path <- create_path(directory, save_as)
 
     if (!fs::dir_exists(fs::path_dir(s_path))) {
       fs::dir_create(fs::path_dir(s_path))
