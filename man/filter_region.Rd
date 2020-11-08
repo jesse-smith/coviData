@@ -13,7 +13,7 @@ filter_region(
 )
 }
 \arguments{
-\item{.data}{A data frame or data frame extention (e.g. a tibble)}
+\item{.data}{A data frame or data frame extension (e.g. a tibble)}
 
 \item{states}{Two-letter codes for the states to include in the output}
 
@@ -31,7 +31,7 @@ A data frame, tibble, etc. containing observations from the specified
 region
 }
 \description{
-\code{filter_region} takes a data frame from \code{link{read_ael}} & removes
+\code{filter_region} takes a data frame from \code{\link{load_ael}} & removes
 observations not in the region specified by \code{states} and \code{zips}.
 The default is to keep Shelby County residents and missing values;
 \code{incl_msr} ensures that the entire Memphis Statistical Region is

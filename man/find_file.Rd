@@ -14,7 +14,7 @@ find_file(
 )
 }
 \arguments{
-\item{date}{A \code{Date} indicating the date in the filename}
+\item{date}{A \code{Date} indicating the date to look for in the filename (if any)}
 
 \item{pattern}{The pattern to match when searching for the filename. The
 default is to look for any file with \code{date} in the name.}
@@ -22,7 +22,7 @@ default is to look for any file with \code{date} in the name.}
 \item{directory}{The directory in which to search for the file.}
 
 \item{file_name}{If the search does not return a file known to exist,
-\code{filename} can be used to specify the file directly}
+\code{file_name} can be used to specify the file directly}
 
 \item{date_flag}{A string used to print more informative messages in some
 functions}

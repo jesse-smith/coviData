@@ -8,7 +8,7 @@ create_path(directory, file_name = NULL, ext = NULL)
 }
 \arguments{
 \item{directory}{The path to a directory; optionally, the full path can be
-supplied here, in which case \code{create_path} will simply expand and
+supplied here, in which case \code{create_path()} will simply expand and
 tidy the given file path.}
 
 \item{file_name}{The name of the file of interest; may be left \code{NULL} if
@@ -18,9 +18,9 @@ this is included in \code{directory}}
 included in \code{file_name} or \code{directory}}
 }
 \value{
-A tidy path, which is a character vector with additional attributes
+An \code{fs_path}, which is a character vector with additional attributes
 }
 \description{
-\code{create_path} combines a directory, filename, and file extension into
+\code{create_path()} combines a directory, filename, and file extension into
 an expanded and tidied path.
 }

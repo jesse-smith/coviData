@@ -12,8 +12,25 @@ load_data(
   pattern = paste0(".*", date, ".*", ext[[1]])
 )
 }
+\arguments{
+\item{date}{The \code{Date} to look for in the file name}
+
+\item{directory}{The directory to search in using \code{\link{find_file}}}
+
+\item{file_name}{Optionally, the name of the file to load; this is useful
+if searching for non-standard files}
+
+\item{ext}{The extension of the file to load}
+
+\item{pattern}{A regular expression combining \code{directory}, \code{date}, \code{ext}, and
+(possibly) other pieces of the file to load}
+}
+\value{
+A \code{\link[tibble]{tibble}} containing the loaded data
+}
 \description{
 \code{load_data} is meant to find and load a delimited or Excel data file
-given the directory that it's in, the date of interest, and the file
-extension.
+given the directory that it's in, the date used in the file name, and the
+file extension. It is essentially a wrapper around \code{\link{find_file}}
+and \code{\link{read_file}}.
 }

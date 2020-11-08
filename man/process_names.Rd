@@ -9,7 +9,7 @@ process_names(data, force = FALSE)
 \arguments{
 \item{data}{A data frame or tibble containing AEL data from one date}
 
-\item{force}{A logical; if \code{force == TRUE}, the data is (re-)processed
+\item{force}{A logical; if \code{force = TRUE}, the data is (re-)processed
 regardless of whether it passes the above checks}
 }
 \value{

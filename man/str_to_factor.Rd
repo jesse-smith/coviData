@@ -11,7 +11,7 @@ str_to_factor(string, encoding = FALSE)
 
 \item{encoding}{A logical indicating whether to convert the character
 encoding, or a string indicating the encoding to convert to. If
-\code{encoding == TRUE}, then characters are converted to 'UTF-8' encoding.}
+\code{encoding = TRUE}, then characters are converted to 'UTF-8' encoding.}
 }
 \value{
 A factor

@@ -10,10 +10,10 @@ is_open(path)
 \item{path}{The path to the file in question}
 }
 \value{
-\code{Logical}
+\code{TRUE} or \code{FALSE}
 }
 \description{
-\code{is_open} tests whether access to a file is currently being blocked by
+\code{is_open()} tests whether access to a file is currently being blocked by
 another program.
 }
 \keyword{internal}
