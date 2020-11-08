@@ -1,3 +1,11 @@
+#' Load AEL Data from Disk
+#'
+#' `load_ael()` loads AEL data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to AEL data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_ael <- function(
   date = Sys.Date(),
@@ -120,7 +128,7 @@ load_integrated_data <- function(
   date = Sys.Date(),
   directory = paste0(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
-    "Integrated data tool Case Interviews/"
+    "Integrated data tool Case Interviews/data/"
   ),
   ext = "csv"
 ) {
@@ -133,7 +141,15 @@ load_integrated_data <- function(
   )
 }
 
-#' @export
+#' Load Limited Dataset Sent by David
+#'
+#' @inheritParams load_data
+#'
+#' @inherit load_data return
+#'
+#' @noRd
+#'
+#' @keywords internal
 load_limited <- function(
   directory = "C:/Users/Jesse.Smith/Documents/Rt_estimates/data/",
   file_name = "status.xlsx"
@@ -144,6 +160,14 @@ load_limited <- function(
   )
 }
 
+#' Load NBS Data from Disk
+#'
+#' `load_nbs()` loads NBS data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to NBS data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_nbs <- function(
   date = Sys.Date(),
@@ -169,6 +193,14 @@ load_nbs_deaths_as_html <- function(path) {
     dplyr::as_tibble()
 }
 
+#' Load AEL Data from Disk
+#'
+#' `load_pcr()` loads PCR data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to PCR data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_pcr <- function(
   date = Sys.Date(),
