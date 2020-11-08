@@ -79,13 +79,13 @@ dttm_to_dt <- function(.x) {
 # | Join #######################################################################
 #' Coalesce Information in Duplicate Rows
 #'
-#' \code{coalesce_dupes} sorts data, removes duplicates, and combines
+#' `coalesce_dupes()` sorts data, removes duplicates, and combines
 #' information in duplicate rows.
 #'
-#' \code{coalesce_dupes} can be thought of as an enhanced version of
-#' \code{\link[dplyr]{distinct}}. Like \code{distinct}, \code{coalesce_dupes}
+#' `coalesce_dupes()` can be thought of as an enhanced version of
+#' \code{\link[dplyr]{distinct}}. Like `distinct()`, `coalesce_dupes()`
 #' removes duplicates from a dataset based on a provided set of variables.
-#' Unlike distinct, it sorts the data on those variables by default using
+#' Unlike `distinct()`, it sorts the data on those variables by default using
 #' \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
 #' the first non-missing values in any duplicate rows using a modification of
 #' \code{\link[dplyr]{coalesce}}.
@@ -95,8 +95,8 @@ dttm_to_dt <- function(.x) {
 #'
 #' @param ... Variables to use for sorting and determining uniqueness. If there
 #'   are multiple rows for a given combination of inputs, only the first row
-#'   will be preserved. If omitted, simply calls \code{distinct} with
-#'   \code{.keep_all = TRUE}.
+#'   will be preserved. If omitted, simply calls `distinct()` with
+#'   `.keep_all = TRUE`.
 #'
 #' @param sort A logical indicating whether to sort using the input variables.
 #'   If no input variables are given, no sorting is performed, and this
@@ -170,7 +170,7 @@ coalesce_by_column <- function(x) {
 # | Load #######################################################################
 #' Read a Tabular Data File
 #'
-#' \code{read_file} reads delimited- and Excel-type data files. The backend for
+#' `read_file` reads delimited- and Excel-type data files. The backend for
 #' delimited files is \code{\link[data.table]{fread}}; the backend for Excel
 #' files is \code{\link[readxl]{read_excel}}.
 #'
@@ -249,13 +249,13 @@ read_file <- function(
 
 #' Guess the Filetype of a Data File
 #'
-#' \code{guess_filetype} attempts to guess the encoding of a data file from the
+#' `guess_filetype` attempts to guess the encoding of a data file from the
 #' file's extension. If the extension is not recognized, it returns
-#' \code{"unknown"}.
+#' `"unknown"`.
 #'
 #' @param path The path to the data file
 #'
-#' @return One of \code{"excel"}, \code{"delimited"}, \code{"unknown"}
+#' @return One of `"excel"`, `"delimited"`, `"unknown"`
 #'
 #' @keywords internal
 guess_filetype <- function(path) {
@@ -277,28 +277,26 @@ guess_filetype <- function(path) {
 
 #' Add Name Columns to AEL Excel File
 #'
-#' \code{process_names} creates standardized \code{PatientLastName},
-#' \code{PatientFirstName}, \code{PatientMiddleName}, and
-#' \code{PatientMidOthName} columns in AEL data, if they do not already exist.
+#' `process_names` creates standardized `PatientLastName`,
+#' `PatientFirstName`, `PatientMiddleName`, and
+#' `PatientMidOthName` columns in AEL data, if they do not already exist.
 #'
-#' \code{process_names} first checks the input data for the above columns, as
-#' well as any additional \code{PatientMidOthName} columns. If any of the
+#' `process_names` first checks the input data for the above columns, as
+#' well as any additional `PatientMidOthName` columns. If any of the
 #' standardized columns do not exist, or non-standard \code{Patient...Name}
 #' columns exist, the function deletes any previously created
 #' \code{Patient...Name} columns and adds standardized ones using
 #' \code{\link{split_names}}. If the data contains the standardized columns and
-#' no additional \code{PatientMidOthName} columns, the data is returned as-is.
+#' no additional `PatientMidOthName` columns, the data is returned as-is.
 #'
 #' @param data A data frame or tibble containing AEL data from one date
 #'
-#' @param force A logical; if \code{force == TRUE}, the data is (re-)processed
+#' @param force A logical; if `force = TRUE`, the data is (re-)processed
 #'   regardless of whether it passes the above checks
 #'
 #' @return A tibble containing the input data plus standardized
-#'   \code{PatientLastName}, \code{PatientFirstName}, \code{PatientMiddleName},
-#'   and \code{PatientMidOthName} columns
-#'
-#' @importFrom magrittr `%>%`
+#'   `PatientLastName`, `PatientFirstName`, `PatientMiddleName`,
+#'   and `PatientMidOthName` columns
 process_names <- function(data, force = FALSE) {
 
   # Get column names in data and set reference columns
@@ -349,8 +347,8 @@ process_names <- function(data, force = FALSE) {
 #'   \code{\link[tibble]{tibble}})
 #'
 #' @return The original data frame, tibble, etc. with character columns for
-#'   \code{PatientLastName}, \code{PatientFirstName}, \code{PatientMiddleName},
-#'   \code{PatientMidOthName} inserted after \code{PatientName} (which is a
+#'   `PatientLastName`, `PatientFirstName`, `PatientMiddleName`,
+#'   `PatientMidOthName` inserted after `PatientName` (which is a
 #'   \code{\link[base]{factor}})
 split_names <- function(.data) {
   # Create character matrix holding last names and first + other names
@@ -402,7 +400,7 @@ split_names <- function(.data) {
 
 #' Convert Character Strings to Factors
 #'
-#' \code{str_to_factor} converts a character (string) vector to a factor after
+#' `str_to_factor` converts a character (string) vector to a factor after
 #' removing extra whitespace, converting to title case, and (optionally)
 #' converting the encoding a specified standard.
 #'
@@ -410,11 +408,9 @@ split_names <- function(.data) {
 #'
 #' @param encoding A logical indicating whether to convert the character
 #'  encoding, or a string indicating the encoding to convert to. If
-#'  \code{encoding == TRUE}, then characters are converted to 'UTF-8' encoding.
+#'  `encoding = TRUE`, then characters are converted to 'UTF-8' encoding.
 #'
 #' @return A factor
-#'
-#' @importFrom magrittr `%>%`
 str_to_factor <- function(string, encoding = FALSE) {
   # Perform conversion without re-encoding
   if (encoding == FALSE) {
@@ -435,15 +431,15 @@ str_to_factor <- function(string, encoding = FALSE) {
 
 #' Filter Dataframe from an AEL File to Memphis Area
 #'
-#' \code{filter_region} takes a data frame from \code{link{read_ael}} & removes
-#' observations not in the region specified by \code{states} and \code{zips}.
+#' `filter_region` takes a data frame from \code{\link{load_ael}} & removes
+#' observations not in the region specified by `states` and `zips`.
 #' The default is to keep Shelby County residents and missing values;
-#' \code{incl_msr} ensures that the entire Memphis Statistical Region is
-#' included (as well as any other regions specified). Note that \code{zips}
-#' match to starting values of \code{PtZipcode}; if a 5-digit code is specified,
+#' `incl_msr` ensures that the entire Memphis Statistical Region is
+#' included (as well as any other regions specified). Note that `zips`
+#' match to starting values of `PtZipcode`; if a 5-digit code is specified,
 #' this is equivalent to matching an entire ZIP code.
 #'
-#' @param .data A data frame or data frame extention (e.g. a tibble)
+#' @param .data A data frame or data frame extension (e.g. a tibble)
 #'
 #' @param states Two-letter codes for the states to include in the output
 #'
@@ -458,8 +454,6 @@ str_to_factor <- function(string, encoding = FALSE) {
 #'
 #' @return A data frame, tibble, etc. containing observations from the specified
 #'   region
-#'
-#' @importFrom magrittr `%>%`
 filter_region <- function(
   .data,
   states = "TN",
@@ -553,7 +547,6 @@ filter_geo <- function(
   .data
 }
 
-#' @importFrom magrittr `%>%`
 check_state <- function(x, states, include_na) {
 
   # Make sure both are character vectors & upper case
@@ -588,7 +581,6 @@ check_state <- function(x, states, include_na) {
   as.logical(x_lgl)
 }
 
-#' @importFrom magrittr `%>%`
 check_county <- function(x, counties, include_na) {
   # Make sure both are character vectors & title case
   x <- as.character(x) %>% stringr::str_to_title()
@@ -615,7 +607,6 @@ check_county <- function(x, counties, include_na) {
   as.logical(x_lgl)
 }
 
-#' @importFrom magrittr `%>%`
 check_zip <- function(x, zips, include_na) {
   # Make sure both are character vectors
   x <- as.character(x)
@@ -697,7 +688,6 @@ relevel_pcr <- function(x) {
 # || By Data Type || ###########################################################
 
 # | Timeseries #################################################################
-#' @export
 fill_dates <- function(
   data,
   date_col,
@@ -787,15 +777,15 @@ denoise_factor <- function(
 #' more than one file is found, it returns the path to the first one and issues
 #' a warning.
 #'
-#' @param date A \code{Date} indicating the date in the filename
+#' @param date A `Date` indicating the date to look for in the filename (if any)
 #'
 #' @param pattern The pattern to match when searching for the filename. The
-#'   default is to look for any file with \code{date} in the name.
+#'   default is to look for any file with `date` in the name.
 #'
 #' @param directory The directory in which to search for the file.
 #'
 #' @param file_name If the search does not return a file known to exist,
-#'   \code{filename} can be used to specify the file directly
+#'   `file_name` can be used to specify the file directly
 #'
 #' @param date_flag A string used to print more informative messages in some
 #'   functions
@@ -882,12 +872,12 @@ find_file <- function(
 
 #' Test Whether a File is Open
 #'
-#' \code{is_open} tests whether access to a file is currently being blocked by
+#' `is_open()` tests whether access to a file is currently being blocked by
 #' another program.
 #'
 #' @param path The path to the file in question
 #'
-#' @return \code{Logical}
+#' @return `TRUE` or `FALSE`
 #'
 #' @keywords internal
 is_open <- function(path) {
@@ -911,20 +901,20 @@ is_open <- function(path) {
 
 #' Create a Tidy Path from Directory + File + Extension
 #'
-#' \code{create_path} combines a directory, filename, and file extension into
+#' `create_path()` combines a directory, filename, and file extension into
 #' an expanded and tidied path.
 #'
 #' @param directory The path to a directory; optionally, the full path can be
-#'   supplied here, in which case \code{create_path} will simply expand and
+#'   supplied here, in which case `create_path()` will simply expand and
 #'   tidy the given file path.
 #'
-#' @param file_name The name of the file of interest; may be left \code{NULL} if
-#'   this is included in \code{directory}
+#' @param file_name The name of the file of interest; may be left `NULL` if
+#'   this is included in `directory`
 #'
-#' @param ext The file extension to add to the path; may be left \code{NULL} if
-#'   included in \code{file_name} or \code{directory}
+#' @param ext The file extension to add to the path; may be left `NULL` if
+#'   included in `file_name` or `directory`
 #'
-#' @return A tidy path, which is a character vector with additional attributes
+#' @return An `fs_path`, which is a character vector with additional attributes
 create_path <- function(directory, file_name = NULL, ext = NULL) {
   directory %>%
     fs::path_expand() %>%
@@ -945,5 +935,88 @@ create_path <- function(directory, file_name = NULL, ext = NULL) {
       fs::path_tidy()
   } else {
     fs::path_tidy(new_path)
+  }
+}
+
+#' Remove Files from Directory Based on Date Created
+#'
+#' `trim_backups()` deletes old backup files from a directory. More
+#' specifically, it identifies files in a `directory` with a common naming
+#' `pattern` and it keeps the most recent of those files. To be deleted, a file
+#' not be one of the `min_backups` newest files, \emph{and} it must be older
+#' than `min_date`. This ensures that at least `min_backups` backups
+#' are always retained while keeping any additional backups created on or after
+#' `min_date`. The defaults are chosen so that at least 7 backups over at least
+#' the past 7 days are kept.
+#'
+#' @param directory The path to the backup directory
+#'
+#' @param pattern The naming pattern of the backup files, as a regular
+#'   expression. This allows maintenance of backups when other files are also
+#'   present in the `directory` (though this is not recommended).
+#'
+#' @param min_backups The minimum number of backups to keep
+#'
+#' @param min_date The date after which to keep all backups. The default is set
+#'   to keep files for `min_backups` days.
+#'
+#' @return The deleted paths (invisibly)
+trim_backups <- function(
+  directory,
+  pattern = NULL,
+  min_backups = 7,
+  min_date = Sys.Date() - min_backups + 1
+) {
+
+  # Expand and clean directory path
+  directory <- create_path(directory)
+
+  # Coerce min_backups to integer
+  min_backups <- as.integer(min_backups)
+
+  # Coerce min_date to Date
+  min_date <- lubridate::as_date(min_date)
+
+  # Check that min_backups is > 0
+  assertthat::assert_that(
+    min_backups > 0,
+    msg = paste0(
+      "Setting `min_backups` < 1 could delete all identified files, ",
+      "which is not the purpose of this function. ",
+      "Please choose min_backups >= 1."
+    )
+  )
+
+  # Check that min_date is <= Sys.Date()
+  assertthat::validate_that(
+    min_date <= Sys.Date(),
+    msg = rlang::warn(
+      message = paste0(
+        "Setting `min_date` greater than today's date does not make sense.\n",
+        "The effect is identical to `min_date = Sys.Date()`; ",
+        "please consider revising your code for clarity."
+      )
+    )
+  )
+
+  # Get file info
+  fs::dir_info(directory, regexp = pattern) %>%
+    dplyr::arrange(dplyr::desc(birth_time)) ->
+  backups
+
+  # No files will be deleted if n_recent >= the number of returned files, so
+  # no point in carrying out the operation.
+  if (min_backups >= NROW(backups)) {
+    character() %>%
+      fs::path_tidy() %>%
+      invisible()
+  } else {
+    backups %>%
+      dplyr::filter(
+        birth_time < birth_time[[min_backups]],
+        lubridate::as_date(birth_time) < recent_date
+      ) %>%
+      dplyr::pull(path) %>%
+      fs::file_delete()
   }
 }

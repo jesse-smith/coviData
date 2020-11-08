@@ -1,3 +1,33 @@
+#' Check Two AEL Data Files for New or Removed Results
+#'
+#' `check_ael` reads two AEL data files and checks for results in each that are
+#' not in the other. This is primarily useful if the files are sequential.
+#'
+#' @param .data If data has already been read into R, supply here (not used yet)
+#'
+#' @param date1 The `Date` corresponding to the first file
+#'
+#' @param date2 The `Date` corresponding to the second file
+#'
+#' @param directory The directory to look for AEL data in
+#'
+#' @param date1_file Optionally, the name of the first file; useful if searching
+#'   for a file with non-standard naming
+#'
+#' @param date2_file Optionally, the name of the second file; useful if
+#'   searching for a file with non-standard naming
+#'
+#' @param overwrite_names_1 Should the patient names in the first file be
+#'   pre-processed with \code{\link{process_names}}?
+#'
+#' @param overwrite_names_2 Should the patient names in the second file be
+#'   pre-processed with \code{\link{process_names}}?
+#'
+#' @param encoding Should character encoding be converted to \code{UFT-8}?
+#'
+#' @param rtn_table Should a \code{\link[gt]{gt}} table be returned for the
+#'   first file?
+#'
 #' @export
 check_ael <- function(
   .data = NULL,
@@ -154,10 +184,26 @@ check_ael <- function(
   }
 }
 
+#' Compare Linelists from NBS and Surveillance Team and Report Differences
+#'
+#' @param surveillance_file The name of the file containing the surveillance
+#'   team linelist
+#'
+#' @param nbs_file The name of the file containing the NBS exported linelist
+#'
+#' @param directory The path to the directory containing both linelists
+#'
+#' @param surveillance_file_id The NBS ID column in the surveillance file. If
+#'   `NULL`, `check_deaths()` assumes that this is the first column in the file.
+#'
+#' @param nbs_file_id The NBS ID column in the NBS linelist.
+#'
+#' @param save Should the results be saved to a file?
+#'
 #' @export
 check_deaths <- function(
   surveillance_file = "Working Copy Death  Epi.xlsx",
-  nbs_file = "NBSDeathLineList.xls",
+  nbs_file = "NBSDeathLineList.xlsx",
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
   surveillance_file_id = NULL,
   nbs_file_id = PATIENT_LOCAL_ID,
@@ -171,7 +217,9 @@ check_deaths <- function(
   n_path <- create_path(directory, nbs_file)
 
   # Create path to file with missing ids
-  unmatched_ids_path <- create_path(directory, "Missing IDs.xlsx")
+  unmatched_dir  <- create_path(directory, "Missing IDs/")
+  unmatched_name <- paste0("missing_ids_", Sys.Date(), ".xlsx")
+  unmatched_ids_path <- create_path(unmatched_dir, unmatched_name)
 
   # Read surveillance deaths file
   surveillance_data <- readxl::read_excel(
@@ -262,14 +310,6 @@ check_deaths <- function(
   unmatched_ids
 
   if (save) {
-
-    if (is_open(unmatched_ids_path)) {
-      ext <- fs::path_ext(unmatched_ids_path)
-      unmatched_ids_path %<>%
-        fs::path_ext_remove() %>%
-        paste0(" - temp (please copy this data to original file)") %>%
-        fs::path_ext_set(ext = ext)
-    }
     openxlsx::write.xlsx(unmatched_ids, file = unmatched_ids_path)
   }
 
