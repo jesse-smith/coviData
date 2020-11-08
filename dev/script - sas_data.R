@@ -1,4 +1,5 @@
-ppl_pos <- coviData::load_sas(date = Sys.Date() - 1, category = "positive_ppl")
+library(tidyverse)
+ppl_pos <- coviData::load_sas(dataset = "positive_ppl")
 ppl_neg <- load_sas(date = Sys.Date() - 1, category = "negative_ppl")
 pcr_pos <- coviData::load_sas(date = Sys.Date() - 1, category = "positive_pcr")
 pcr_neg <- load_sas(date = Sys.Date() - 1, category = "negative_pcr")
@@ -36,9 +37,9 @@ merge(
   dplyr::mutate(
     smth = cases %>%
       {.[1:(NROW(.)-4)]} %>%
-      logCp(C = 100) %>%
+      log1p() %>%
       extract_trend(dates = date %>% {.[1:(NROW(.)-4)]} %>% as.Date()) %>%
-      expmC(C = 100) %>%
+      expm1() %>%
       (function(x) {x[x < 0] <- sqrt(.Machine$double.eps); x}) %>%
       c(.,rep(NA, 4))
   ) ->
@@ -48,7 +49,7 @@ cases
 
 ggplot2::ggplot(cases, ggplot2::aes(x = date)) +
   ggplot2::geom_area(ggplot2::aes(y = cases), width = 1, fill = "cornflowerblue", alpha = 0.8) +
-  ggplot2::geom_line(ggplot2::aes(y = smth), color = "navy", size = 1.5) +
+  # ggplot2::geom_line(ggplot2::aes(y = smth), color = "navy", size = 1.5) +
   ggplot2::scale_x_date(
     name = "Date",
     breaks = seq(as.Date("2020-03-01"), as.Date("2030-01-01"), by = 7),
