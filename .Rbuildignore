@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^dev.*$
+^scripts.*$
 ^codecov\.yml$
 ^\.github$
 ^_pkgdown\.yml$
