@@ -1020,3 +1020,39 @@ trim_backups <- function(
       fs::file_delete()
   }
 }
+
+# | Printing Output ############################################################
+
+#' Leak a Message from a Pipeline
+#'
+#' `leaky` creates a "leaky" version of a function; that is, the function takes
+#' `.` as its first argument and simply returns that data when finished. This
+#' is useful for performing actions inside a pipeline that do not depend on the
+#' data in that pipeline; for example, \code{\link{leak_info}} is a leaky
+#' version of \code{\link[rlang]{inform}} that passes data forward.
+leaky <- function(
+  .fn
+) {
+
+  args <- list(. = rlang::missing_arg()) %>% append(rlang::fn_fmls(.fn))
+  body <- rlang::expr({
+      do.call(
+        !!.fn,
+        args = rlang::fn_fmls_names(!!.fn),
+        envir = rlang::fn_env(!!.fn)
+      )
+      return(.)
+  })
+
+  env <- rlang::fn_env(.fn)
+
+
+  rlang::new_function(
+    args = args,
+    body = body,
+    env  = env
+  )
+}
+
+
+leak_info <- leaky(rlang::inform)
