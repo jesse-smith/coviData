@@ -8,3 +8,7 @@ reference:
     results repository
 - contents:
   - starts_with("download_")
+navbar:
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/jesse-smith/coviData
