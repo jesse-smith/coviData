@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compare Linelists from NBS and Surveillance Team and Report Differences — check_deaths • coviData</title>
+<title>Create new_subclass() or validate_subclass() Functions — covidata-subclass-creators • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,12 @@
 
 
 
-<meta property="og:title" content="Compare Linelists from NBS and Surveillance Team and Report Differences — check_deaths" />
-<meta property="og:description" content="Compare Linelists from NBS and Surveillance Team and Report Differences" />
+<meta property="og:title" content="Create new_subclass() or validate_subclass() Functions — covidata-subclass-creators" />
+<meta property="og:description" content="new_covidata_subclass() creates a function for constructing a class
+object.
+validate_covidata_subclass() creates a function for validating a class
+object.
+See covidata-subclasses for more." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -116,55 +120,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compare Linelists from NBS and Surveillance Team and Report Differences</h1>
+    <h1>Create <code>new_subclass()</code> or <code>validate_subclass()</code> Functions</h1>
     
-    <div class="hidden name"><code>check_deaths.Rd</code></div>
+    <div class="hidden name"><code>covidata-subclass-creators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compare Linelists from NBS and Surveillance Team and Report Differences</p>
+    <p><code>new_covidata_subclass()</code> creates a function for constructing a <code>class</code>
+object.</p>
+<p><code>validate_covidata_subclass()</code> creates a function for validating a <code>class</code>
+object.</p>
+<p>See <code>covidata-subclasses</code> for more.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_deaths</span><span class='op'>(</span>
-  surveillance_file <span class='op'>=</span> <span class='st'>"Working Copy Death  Epi.xlsx"</span>,
-  nbs_file <span class='op'>=</span> <span class='st'>"NBSDeathLineList.xlsx"</span>,
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/"</span>,
-  surveillance_file_id <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nbs_file_id <span class='op'>=</span> <span class='va'>PATIENT_LOCAL_ID</span>,
-  save <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>new_covidata_subclass</span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span>
+
+<span class='fu'>validate_covidata_subclass</span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>surveillance_file</th>
-      <td><p>The name of the file containing the surveillance
-team linelist</p></td>
-    </tr>
-    <tr>
-      <th>nbs_file</th>
-      <td><p>The name of the file containing the NBS exported linelist</p></td>
-    </tr>
-    <tr>
-      <th>directory</th>
-      <td><p>The path to the directory containing both linelists</p></td>
-    </tr>
-    <tr>
-      <th>surveillance_file_id</th>
-      <td><p>The NBS ID column in the surveillance file. If
-<code>NULL</code>, <code>check_deaths()</code> assumes that this is the first column in the file.</p></td>
-    </tr>
-    <tr>
-      <th>nbs_file_id</th>
-      <td><p>The NBS ID column in the NBS linelist.</p></td>
-    </tr>
-    <tr>
-      <th>save</th>
-      <td><p>Should the results be saved to a file?</p></td>
+      <th>class</th>
+      <td><p>A new <code>covidata</code> subclass</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A function for creating or validating a <code>covidata</code> subclass</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

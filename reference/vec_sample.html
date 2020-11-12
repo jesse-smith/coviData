@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compare Linelists from NBS and Surveillance Team and Report Differences — check_deaths • coviData</title>
+<title>Re-implementation of base::sample() Using the vctrs Package — vec_sample • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,12 @@
 
 
 
-<meta property="og:title" content="Compare Linelists from NBS and Surveillance Team and Report Differences — check_deaths" />
-<meta property="og:description" content="Compare Linelists from NBS and Surveillance Team and Report Differences" />
+<meta property="og:title" content="Re-implementation of base::sample() Using the vctrs Package — vec_sample" />
+<meta property="og:description" content="sample() behaves unexpectedly when called on
+objects other than atomic vectors. This re-implementation has identical logic
+but uses the vctrs package to generalize to
+other inputs. Parameters are modeled after
+slice_sample()." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -116,52 +120,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compare Linelists from NBS and Surveillance Team and Report Differences</h1>
+    <h1>Re-implementation of <code>base::sample()</code> Using the vctrs Package</h1>
     
-    <div class="hidden name"><code>check_deaths.Rd</code></div>
+    <div class="hidden name"><code>vec_sample.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compare Linelists from NBS and Surveillance Team and Report Differences</p>
+    <p><code><a href='https://rdrr.io/r/base/sample.html'>sample()</a></code> behaves unexpectedly when called on
+objects other than atomic vectors. This re-implementation has identical logic
+but uses the <a href='https://vctrs.r-lib.org'>vctrs</a> package to generalize to
+other inputs. Parameters are modeled after
+<code><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice_sample()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_deaths</span><span class='op'>(</span>
-  surveillance_file <span class='op'>=</span> <span class='st'>"Working Copy Death  Epi.xlsx"</span>,
-  nbs_file <span class='op'>=</span> <span class='st'>"NBSDeathLineList.xlsx"</span>,
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/"</span>,
-  surveillance_file_id <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nbs_file_id <span class='op'>=</span> <span class='va'>PATIENT_LOCAL_ID</span>,
-  save <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>vec_sample</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>, weight_by <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>surveillance_file</th>
-      <td><p>The name of the file containing the surveillance
-team linelist</p></td>
+      <th>x</th>
+      <td><p>The data to sample</p></td>
     </tr>
     <tr>
-      <th>nbs_file</th>
-      <td><p>The name of the file containing the NBS exported linelist</p></td>
+      <th>n</th>
+      <td><p>The number of samples to return</p></td>
     </tr>
     <tr>
-      <th>directory</th>
-      <td><p>The path to the directory containing both linelists</p></td>
+      <th>replace</th>
+      <td><p>Should sampling be performed with (<code>TRUE</code>) or without
+(<code>FALSE</code>, the default) replacement?</p></td>
     </tr>
     <tr>
-      <th>surveillance_file_id</th>
-      <td><p>The NBS ID column in the surveillance file. If
-<code>NULL</code>, <code>check_deaths()</code> assumes that this is the first column in the file.</p></td>
-    </tr>
-    <tr>
-      <th>nbs_file_id</th>
-      <td><p>The NBS ID column in the NBS linelist.</p></td>
-    </tr>
-    <tr>
-      <th>save</th>
-      <td><p>Should the results be saved to a file?</p></td>
+      <th>weight_by</th>
+      <td><p>Sampling weights. This must evaluate to a vector of
+non-negative numbers the same length as the input. Weights are
+automatically standardised to sum to 1.</p></td>
     </tr>
     </table>
 

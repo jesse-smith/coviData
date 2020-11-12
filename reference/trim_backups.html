@@ -49,8 +49,12 @@
 <meta property="og:title" content="Remove Files from Directory Based on Date Created — trim_backups" />
 <meta property="og:description" content="trim_backups() deletes old backup files from a directory. More
 specifically, it identifies files in a directory with a common naming
-pattern and it keeps the most recent n_recent of those files
-(deleting the rest)." />
+pattern and it keeps the most recent of those files. To be deleted, a file
+not be one of the min_backups newest files, and it must be older
+than min_date. This ensures that at least min_backups backups
+are always retained while keeping any additional backups created on or after
+min_date. The defaults are chosen so that at least 7 backups over at least
+the past 7 days are kept." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -127,11 +131,20 @@ pattern and it keeps the most recent n_recent of those files
     <div class="ref-description">
     <p><code>trim_backups()</code> deletes old backup files from a directory. More
 specifically, it identifies files in a <code>directory</code> with a common naming
-<code>pattern</code> and it keeps the most recent <code>n_recent</code> of those files
-(deleting the rest).</p>
+<code>pattern</code> and it keeps the most recent of those files. To be deleted, a file
+not be one of the <code>min_backups</code> newest files, <em>and</em> it must be older
+than <code>min_date</code>. This ensures that at least <code>min_backups</code> backups
+are always retained while keeping any additional backups created on or after
+<code>min_date</code>. The defaults are chosen so that at least 7 backups over at least
+the past 7 days are kept.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>trim_backups</span><span class='op'>(</span><span class='va'>directory</span>, pattern <span class='op'>=</span> <span class='cn'>NULL</span>, n_recent <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>trim_backups</span><span class='op'>(</span>
+  <span class='va'>directory</span>,
+  pattern <span class='op'>=</span> <span class='cn'>NULL</span>,
+  min_backups <span class='op'>=</span> <span class='fl'>7</span>,
+  min_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>min_backups</span> <span class='op'>+</span> <span class='fl'>1</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +160,13 @@ expression. This allows maintenance of backups when other files are also
 present in the <code>directory</code> (though this is not recommended).</p></td>
     </tr>
     <tr>
-      <th>n_recent</th>
-      <td><p>The number of most recent files to keep</p></td>
+      <th>min_backups</th>
+      <td><p>The minimum number of backups to keep</p></td>
+    </tr>
+    <tr>
+      <th>min_date</th>
+      <td><p>The date after which to keep all backups. The default is set
+to keep files for <code>min_backups</code> days.</p></td>
     </tr>
     </table>
 
