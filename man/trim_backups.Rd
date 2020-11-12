@@ -4,7 +4,12 @@
 \alias{trim_backups}
 \title{Remove Files from Directory Based on Date Created}
 \usage{
-trim_backups(directory, pattern = NULL, n_recent = 7)
+trim_backups(
+  directory,
+  pattern = NULL,
+  min_backups = 7,
+  min_date = Sys.Date() - min_backups + 1
+)
 }
 \arguments{
 \item{directory}{The path to the backup directory}
@@ -13,7 +18,10 @@ trim_backups(directory, pattern = NULL, n_recent = 7)
 expression. This allows maintenance of backups when other files are also
 present in the \code{directory} (though this is not recommended).}
 
-\item{n_recent}{The number of most recent files to keep}
+\item{min_backups}{The minimum number of backups to keep}
+
+\item{min_date}{The date after which to keep all backups. The default is set
+to keep files for \code{min_backups} days.}
 }
 \value{
 The deleted paths (invisibly)
@@ -21,6 +29,10 @@ The deleted paths (invisibly)
 \description{
 \code{trim_backups()} deletes old backup files from a directory. More
 specifically, it identifies files in a \code{directory} with a common naming
-\code{pattern} and it keeps the most recent \code{n_recent} of those files
-(deleting the rest).
+\code{pattern} and it keeps the most recent of those files. To be deleted, a file
+not be one of the \code{min_backups} newest files, \emph{and} it must be older
+than \code{min_date}. This ensures that at least \code{min_backups} backups
+are always retained while keeping any additional backups created on or after
+\code{min_date}. The defaults are chosen so that at least 7 backups over at least
+the past 7 days are kept.
 }
