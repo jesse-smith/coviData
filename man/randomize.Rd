@@ -8,13 +8,13 @@ randomize(.data, n = NULL, .groups = NULL)
 }
 \arguments{
 \item{.data}{A data frame or data frame extension (e.g. a
-\code{\link[tibble:tbl_df]{tibble}})}
+\code{\link[tibble:tbl_df-class]{tibble}})}
 
 \item{n}{The desired number of observations in the returned dataset; the
 default is the number of observations in the input}
 
 \item{.groups}{How to handle grouping variables; see the \code{.groups} parameter
-documentation in \code{\link[dplyr:summarize]{summarize()}} for more
+documentation in \code{\link[dplyr:summarise]{summarize()}} for more
 information}
 }
 \value{
@@ -26,8 +26,8 @@ of a data frame and returns the randomized data. This destroys all
 statistical information in the dataset, both univariate and multivariate.
 However, since the set of possible output values is the same as the input
 values, the minimum and maximum of numeric columns will be the same, as will
-the unique values of all columns if \code{n} is larger than the number of
-observations.
+the unique values of all columns (if \code{n} is larger than the number of
+observations).
 }
 \details{
 \code{randomize()} can perform up- and down-sampling of the input data.
@@ -39,12 +39,13 @@ equal to the number of observations in the data.
 
 A stratified version that restricts randomization to occur \emph{within} strata
 can be obtained by grouping the data using
-\code{\link[dplyr:group_by]{group_by}} prior to calling \code{randomize()}. In
+\code{\link[dplyr:group_by]{group_by()}} prior to calling \code{randomize()}. In
 this case, the relative proportions of the groups within the dataset remain
 the same; this allows the user to retain portions of the data's structure
 while destroying the remaining information.
 
-Note that the above is not an implementation of differential privacy and
-that, when groups are defined, information both \emph{within and between} grouping
+Note that the above only provides anonymity when the number of unique values for
+quasi-identifiers (within each group) is large and unique idenfiers are handled separately.
+Also note that when groups are defined, information both \emph{within and between} grouping
 variables \emph{will not be modified}.
 }

@@ -28,13 +28,13 @@
 #' variables *will not be modified*.
 #'
 #' @param .data A data frame or data frame extension (e.g. a
-#'   \code{\link[tibble:tbl_df]{tibble}})
+#'   \code{\link[tibble:tbl_df-class]{tibble}})
 #'
 #' @param n The desired number of observations in the returned dataset; the
 #'   default is the number of observations in the input
 #'
 #' @param .groups How to handle grouping variables; see the `.groups` parameter
-#'   documentation in \code{\link[dplyr:summarize]{summarize()}} for more
+#'   documentation in \code{\link[dplyr:summarise]{summarize()}} for more
 #'   information
 #'
 #' @return A `tibble` containing the randomized test data
@@ -54,7 +54,7 @@ randomize <- function(.data, n = NULL, .groups = NULL) {
   if (rlang::is_empty(n)) {
     n <- n_data
   }
-  
+
   assertthat::assert_that(
     n[[1]] >= 0 & rlang::is_scalar_integerish(n),
     msg = "`n` must be a non-negative scalar integer"
@@ -86,7 +86,7 @@ randomize <- function(.data, n = NULL, .groups = NULL) {
 #' switch from sampling with replacement to sampling without replacement once
 #' the sample size is larger than the number of observations.
 #'
-#' @param x The data to sample
+#' @param .x The data to sample
 #'
 #' @param n The number of samples to return
 #'
@@ -99,7 +99,7 @@ sample_unique <- function(.x, n) {
     n[[1]] >= 0 & rlang::is_scalar_integerish(n),
     msg = "`n` must be a non-negative scalar integer"
   )
-  
+
   unique_x <- vctrs::vec_unique(.x)
   unique_n <- vctrs::vec_unique_count(.x)
 
@@ -121,9 +121,9 @@ sample_unique <- function(.x, n) {
 #' objects other than atomic vectors. This re-implementation has identical logic
 #' but uses the \href{https://vctrs.r-lib.org}{vctrs} package to generalize to
 #' other inputs. Parameters are modeled after
-#' \code{\link[dplyr:slice_sample]{slice_sample()}}.
+#' \code{\link[dplyr:slice]{slice_sample()}}.
 #'
-#' @param x The data to sample
+#' @param .x The data to sample
 #'
 #' @param n The number of samples to return
 #'
@@ -141,7 +141,7 @@ vec_sample <- function(.x, n, replace = FALSE, weight_by = NULL) {
     n[[1]] >= 0 & rlang::is_scalar_integerish(n),
     msg = "`n` must be a non-negative scalar integer"
   )
-  
+
   wt_null <- is.null(weight_by)
   wt_empty <- vctrs::vec_is_empty(weight_by)
   if (wt_empty & !wt_null) {

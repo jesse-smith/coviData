@@ -4,7 +4,7 @@
 #'
 #' @description
 #' Creates or validates a subclass of `covidata`, which is just a
-#' \code{\link[tibble:tbl_df]{tibble}} with a `date_stamp` attribute.
+#' \code{\link[tibble:tbl_df-class]{tibble}} with a `date_stamp` attribute.
 #'
 #' `new_covidata()` creates a new object as a subclass of `covidata`,
 #' `tbl_df`, `tbl`, and `data.frame`. This function is optimized for
@@ -271,11 +271,11 @@ pcr <- covidata_helper("pcr")
 #' Coerce Lists, Matrices, and More to Source-Specific Data Frames
 #'
 #' The \code{as_*} family of functions turns existing objects, such as a data
-#' frame or matrix, into a \code{\link[tibble]{tbl_df}} of class `ael`, `nbs`,
-#' or `pcr`. This is in contrast to the `ael()`, `nbs()`, and `pcr()` functions,
-#' which build tibbles from individual columns. Recall that `tibble` subclasses
-#' in coviData have a `.date` attribute, which assists in handling data made
-#' available at different times.
+#' frame or matrix, into a \code{\link[tibble:tbl_df-class]{tibble}} of class
+#' `ael`, `nbs`, or `pcr`. This is in contrast to the `ael()`, `nbs()`, and
+#' `pcr()` functions, which build tibbles from individual columns. Recall that
+#' `tibble` subclasses in coviData have a `.date` attribute, which assists in
+#' handling data made available at different times.
 #'
 #' These functions are thin wrappers around the \code{\link[tibble]{as_tibble}}
 #' function; see there for details.

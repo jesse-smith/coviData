@@ -4,10 +4,10 @@
 \alias{vec_sample}
 \title{Re-implementation of \code{base::sample()} Using the vctrs Package}
 \usage{
-vec_sample(x, n, replace = FALSE, weight_by = NULL)
+vec_sample(.x, n, replace = FALSE, weight_by = NULL)
 }
 \arguments{
-\item{x}{The data to sample}
+\item{.x}{The data to sample}
 
 \item{n}{The number of samples to return}
 
@@ -23,5 +23,5 @@ automatically standardised to sum to 1.}
 objects other than atomic vectors. This re-implementation has identical logic
 but uses the \href{https://vctrs.r-lib.org}{vctrs} package to generalize to
 other inputs. Parameters are modeled after
-\code{\link[dplyr:slice_sample]{slice_sample()}}.
+\code{\link[dplyr:slice]{slice_sample()}}.
 }

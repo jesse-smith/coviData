@@ -4,10 +4,10 @@
 \alias{sample_unique}
 \title{Sample from Unique Values of Data}
 \usage{
-sample_unique(x, n)
+sample_unique(.x, n)
 }
 \arguments{
-\item{x}{The data to sample}
+\item{.x}{The data to sample}
 
 \item{n}{The number of samples to return}
 }

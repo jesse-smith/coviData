@@ -1014,7 +1014,7 @@ trim_backups <- function(
     backups %>%
       dplyr::filter(
         birth_time < birth_time[[min_backups]],
-        lubridate::as_date(birth_time) < recent_date
+        lubridate::as_date(birth_time) < min_date
       ) %>%
       dplyr::pull(path) %>%
       fs::file_delete()
