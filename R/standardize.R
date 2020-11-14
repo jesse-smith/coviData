@@ -7,10 +7,10 @@
 #' converts to the desired case (title, by default). It also informs the user if
 #' any characters could not be converted to \code{UTF-8}.
 #'
-#' This functions is primarily intended to standardize proper nouns (such as
-#' names of persons) into a common format; it doesn't necessarily \emph{correct}
-#' the strings. For more general string standardization of this type, see
-#' the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
+#' This function is primarily intended to \emph{standardize} proper nouns (such
+#' as names of persons) into a common format; it doesn't necessarily
+#' \emph{correct} the strings. For more general string standardization of this
+#' type, see the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
 #'
 #' @param string The string or character vector to standardize
 #'
@@ -21,7 +21,7 @@
 #' @param ... Additional parameters to pass to \code{case_fn}
 #'
 #' @return A character vector of the same length as \code{string}
-#' 
+#'
 #' @export
 standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
 

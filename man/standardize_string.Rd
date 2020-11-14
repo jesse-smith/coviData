@@ -27,8 +27,8 @@ converts to the desired case (title, by default). It also informs the user if
 any characters could not be converted to \code{UTF-8}.
 }
 \details{
-This functions is primarily intended to standardize proper nouns (such as
-names of persons) into a common format; it doesn't necessarily \emph{correct}
-the strings. For more general string standardization of this type, see
-the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
+This function is primarily intended to \emph{standardize} proper nouns (such
+as names of persons) into a common format; it doesn't necessarily
+\emph{correct} the strings. For more general string standardization of this
+type, see the \href{https://tazinho.github.io/snakecase/}{snakecase} package.
 }
