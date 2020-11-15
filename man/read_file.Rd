@@ -7,6 +7,7 @@
 read_file(
   path,
   file_type = c("auto", "delimited", "excel"),
+  type_convert = TRUE,
   msg = "Reading file..."
 )
 }
@@ -17,6 +18,12 @@ if necessary}
 \item{file_type}{A string indicating the type of file to read; only
 "delimited" and "excel" files are supported. The default is "auto", which
 determines the file type from the file extension.}
+
+\item{type_convert}{Should \code{read_file()} attempt to guess the data type of
+the columns after reading?
+
+\emph{Note: The default is \code{TRUE} for compatibility; want to transition to
+\code{vroom::vroom()} as backend and swap default to \code{FALSE}.}}
 
 \item{msg}{A message to be displayed prior to beginning a file read; for use
 inside other functions}
