@@ -13,7 +13,7 @@ make human input easy when creativity is needed and difficult when consistency
 is the priority.
 
 ## Installation
-```
+``` r
 install.packages("devtools")
 devtools::install_github("https://github.com/jesse-smith/coviData")
 ```
