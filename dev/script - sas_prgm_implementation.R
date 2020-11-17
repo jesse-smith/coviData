@@ -11,7 +11,7 @@ missings <- c(NA_character_, "Na", "", " ")
 # Filter today's file
 ael_today %>%
   preprocess() %>%
-  # Filter by state - matches SAS on 2020-11-09
+  # Filter by state and date - matches SAS on 2020-11-15
   dplyr::filter(
     standardize_string(pt_state) %in% c("47", "Tn", missings),
     dplyr::between(auth_date, Sys.Date() - 1, Sys.Date())
@@ -21,34 +21,62 @@ ael_today_processed
 # Filter yesterday's file
 ael_yesterday %>%
   preprocess() %>%
-  # Filter by state - matches SAS on 2020-11-09
+  # Filter by state and date - matches SAS on 2020-11-15
   dplyr::filter(
     standardize_string(pt_state) %in% c("47", "Tn", missings),
     dplyr::between(auth_date, Sys.Date() - 1, Sys.Date())
   ) ->
 ael_yesterday_processed
 
-# Merge and remove indeterminate
+# Merge and remove indeterminate - matches SAS on 2020-11-15
 dplyr::anti_join(
   ael_today_processed,
   ael_yesterday_processed,
   by = "episode_no"
 ) %>%
   dplyr::filter(standardize_string(result) != "Indeterminate") %>%
+  # Standardize names
+  # TODO: switch to `standardize_string()`
   dplyr::mutate(
-    patient_last_name = standardize_string(patient_last_name),
-    patient_first_name = standardize_string(patient_first_name),
-    patient_middle_name = standardize_string(patient_middle_name)
+    patient_last_name = patient_last_name %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+"),
+    patient_first_name = patient_first_name %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+"),
+    patient_middle_name = patient_middle_name %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+")
   ) %>%
+  # Standardize location data (assign to new variables matching NBS names)
   dplyr::mutate(
     patient_zip = pt_zipcode %>%
       as.character() %>%
       stringr::str_trunc(width = 5, ellipsis = "") %>%
       factor(),
-    patient_street_addr = pt_add_1 %>% snakecase::to_title_case(sep_out = " ")
+    patient_street_addr = pt_add1 %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+")
   ) %>%
-  dplyr::select(-pt_zipcode, -pt_add_1)
+  # Standardize dates
+  dplyr::mutate(
+    patient_dob = lubridate::as_date(pt_dob)
+  ) %>%
+  dplyr::select(-pt_zipcode, -pt_add1) ->
 ael_merged
+
+# Filter non-distinct episode_no - matches SAS on 2020-11-15
+ael_merged %>%
+  dplyr::arrange(episode_no, dplyr::desc(result)) %>%
+  dplyr::distinct(episode_no, .keep_all = TRUE) ->
+ael_distinct
+
+# Filter non-distinct people - matches SAS on 2020-11-15
+ael_merged %>%
+  dplyr::arrange(patient_last_name, patient_first_name, patient_dob, dplyr::desc(result)) %>%
+  dplyr::distinct(patient_last_name, patient_first_name, patient_dob, .keep_all = TRUE) ->
+ael_ppl
+
 
 # TODO: Move antijoin to top, remove auth_date filter, apply remaining to both
 
@@ -56,58 +84,259 @@ ael_merged
 
 nbs %>%
   # Filter to only our jurisdiction and county
-  # Jurisdiction should get dropped as a constant, so handle it flexibly
+  # Jurisdiction should get dropped as a constant during pre-processing, so
+  # handle it flexibly
+  # Matches SAS on 2020-11-15
   dplyr::filter(
     dplyr::across(
       dplyr::contains("jurisdiction_nm"),
-      ~ standardize_string(.x) == "Memphis Shelby County"
+      ~ .x == "Memphis Shelby County"
     ),
-    standardize_string(alt_county) %in% c("Shelby County", missings)
-  ) %>%
-  # We can approximate missing ages using a few different dates
-  # TODO: Discuss changing order of preference and adding dates
-  dplyr::mutate(
-    # The lubridate package is the go-to for handling dates and times.
-    # Generally, prefer `Interval` if possible, because it contains the most
-    # information (start, end, and time between). Since we don't know the start
-    # or end values for `age_in_years`, I'm transforming it to a `Duration`,
-    # which is just a length of time measured in seconds.
-    current_age = lubridate::interval(patient_dob, lubridate::today()),
-    spcol_age = lubridate::interval(patient_dob, specimen_coll_dt),
-    reported_age = lubridate::ddays(patient_age_reported),
-    # inv_start_age = lubridate::interval(patient_dob, inv_start_dt),
-    # onset_age = lubridate::interval(patient_dob, illness_onset_dt),
-    # age_in_years = lubridate::dyears(age_in_years),
+    alt_county %in% c("Shelby County", missings)
+  ) ->
+nbs_shelby
 
-    # This step casts all of the above to the same type (a `Period` in years)
-    # and sets negative values to missing. I like `Period` because it lets you
-    # do math like a regular number in your unit of choice.
-    dplyr::across(
-      c(age_in_years, dplyr::ends_with("_age")),
-      ~ .x %>%
-        lubridate::as.period(unit = "year") %>%
-        purrr::when(. < lubridate::years(0) ~ lubridate::years(NA), ~ .)
-    ),
-    # Combining columns in dplyr is done with `coalesce()`; it takes the first
-    # non-missing value it finds for each observation
-    age = dplyr::coalesce(age_in_years, spcol_age, current_age)
+# Check case status - matches SAS on 2020-11-15
+nbs_shelby %>%
+  janitor::tabyl(inv_case_status) %>%
+  janitor::adorn_totals() %>%
+  dplyr::as_tibble()
+
+# Check probable deaths - matches SAS on 2020-11-15
+nbs_shelby %>%
+  janitor::tabyl(inv_case_status, die_from_illness_ind) %>%
+  janitor::adorn_totals(where = c("row", "col")) %>%
+  dplyr::as_tibble() %>%
+  dplyr::select(inv_case_status, Deaths = Y, Total) %>%
+  dplyr::filter(inv_case_status == "P")
+
+# Filter to patients in our state - matches SAS on 2020-11-15
+# Note: This gets rid of records missing `alt_county` AND `patient_state`
+nbs_shelby %>%
+  dplyr::filter(
+    alt_county == "Shelby County" |
+      as.numeric(patient_state) %in% c(47, NA)
   ) %>%
-  # coviData has a function for cleaning up names called `standardize_string()`
-  # Type `?coviData::standardize_string()` to see more about it.
   dplyr::mutate(
-    patient_last_name = standardize_string(patient_last_name),
-    patient_first_name = standardize_string(patient_first_name),
-    patient_middle_name = standardize_string(patient_middle_name)
+    patient_last_name = patient_last_name %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+"),
+    patient_first_name = patient_first_name %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+")
   ) %>%
-  # Just re-implementing SAS code for addresses; want to try using the
-  # postmastr package for this
   dplyr::mutate(
-    patient_zip = patient_zip %>%
-      as.character() %>%
-      stringr::str_trunc(width = 5, ellipsis = "") %>%
-      factor(),
-    patient_street_addr = patient_street_addr %>%
-      snakecase::to_title_case(sep_out = " ")
+    patient_street_addr = patient_street_addr_1 %>%
+      stringr::str_to_upper() %>%
+      stringr::str_remove_all(pattern = "[ \t\n\r]+"),
+    patient_zip = patient_zip %>% stringr::str_trunc(width = 5, ellipsis = "")
+  ) ->
+nbs_shelby_tn
+
+# Filter to confirmed and probable cases - matches SAS on 2020-11-15
+nbs_shelby_tn %>%
+  dplyr::filter(inv_case_status %in% c("C", "P")) ->
+nbs_positive
+
+# Check confirmed and probable - matches SAS on 2020-11-15
+nbs_positive %>%
+  janitor::tabyl(inv_case_status) %>%
+  janitor::adorn_totals() %>%
+  dplyr::as_tibble()
+
+nbs_positive %>%
+  # Check that inv_local_id is unique - matches SAS on 2020-11-15
+  dplyr::arrange(inv_local_id) %>%
+  dplyr::distinct(inv_local_id, .keep_all = TRUE) %>%
+  # Filter any non-distinct patient_local_ids - matches SAS on 2020-11-15
+  dplyr::arrange(patient_local_id, inv_case_status) %>%
+  dplyr::distinct(patient_local_id, .keep_all = TRUE) ->
+nbs_distinct1
+
+# Filter non-distinct people based on name and DOB - matches SAS on 2020-11-15
+# SAS code standardizes case and removes whitespace
+# TODO: Switch to `standardize_string()`
+nbs_distinct1 %>%
+  dplyr::arrange(patient_last_name, patient_first_name, patient_dob, inv_case_status) %>%
+  dplyr::distinct(patient_last_name, patient_first_name, patient_dob, .keep_all = TRUE) ->
+nbs_cases
+
+# Check case status after dedup - matches SAS on 2020-11-15
+nbs_cases %>%
+  janitor::tabyl(inv_case_status) %>%
+  janitor::adorn_totals() %>%
+  dplyr::as_tibble()
+
+# Merge NBS and AEL - matches SAS on 2020-11-15
+dplyr::inner_join(
+  nbs_cases,
+  ael_ppl,
+  by = c("patient_last_name", "patient_first_name", "patient_dob")
+) %>%
+  NROW()
+
+merged <- dplyr::full_join(
+  nbs_cases,
+  ael_ppl,
+  by = c("patient_last_name", "patient_first_name", "patient_dob"),
+  suffix = c("_nbs", "_ael")
+)
+
+NROW(merged)
+
+dplyr::anti_join(
+  nbs_cases,
+  ael_ppl,
+  by = c("patient_last_name", "patient_first_name", "patient_dob")
+) %>%
+  NROW()
+
+dplyr::anti_join(
+  ael_ppl,
+  nbs_cases,
+  by = c("patient_last_name", "patient_first_name", "patient_dob")
+) %>%
+  NROW()
+
+# Filter to positive cases - matches SAS on 2020-11-15
+merged %>%
+  dplyr::filter(
+    inv_case_status %in% c("C", "P") | result == "Positive"
+  ) ->
+cases
+
+# Get status breakdown - matches SAS on 2020-11-15
+cases %>%
+  janitor::tabyl(inv_case_status) %>%
+  janitor::adorn_totals() %>%
+  dplyr::as_tibble()
+
+# Negatives ####################################################################
+
+ael_ppl %>%
+  # Filter AEL to negatives - matches SAS on 2020-11-15
+  dplyr::filter(result == "Negative") %>%
+  # Filter non-distinct episode numbers - matches SAS on 2020-11-15
+  dplyr::arrange(episode_no) %>%
+  dplyr::distinct(episode_no, .keep_all = TRUE) %>%
+  # Filter non-distinct addresses and people - matches SAS on 2020-11-15
+  dplyr::arrange(
+    patient_last_name,
+    patient_first_name,
+    patient_dob,
+    patient_street_addr,
+    patient_zip
+  ) %>%
+  dplyr::distinct(
+    patient_last_name,
+    patient_first_name,
+    patient_dob,
+    patient_street_addr,
+    patient_zip
+  ) ->
+ael_negative_ppl
+
+
+
+nbs_shelby_tn %>%
+  # Filter to negatives - matches SAS on 2020-11-15
+  dplyr::filter(inv_case_status == "N") %>%
+  # Filter non-distinct patient_ids - matches SAS on 2020-11-15
+  dplyr::arrange(patient_local_id) %>%
+  dplyr::distinct(patient_local_id, .keep_all = TRUE) %>%
+  # Filter non-distinct addresses and people - matches SAS on 2020-11-15
+  dplyr::arrange(
+    patient_last_name,
+    patient_first_name,
+    patient_dob,
+    patient_street_addr,
+    patient_zip
+  ) %>%
+  dplyr::distinct(
+    patient_last_name,
+    patient_first_name,
+    patient_dob,
+    patient_street_addr,
+    patient_zip,
+    .keep_all = TRUE
+  ) ->
+nbs_negative_ppl
+
+# Merge negative ppl - matches SAS on 2020-11-15
+dplyr::inner_join(
+  nbs_negative_ppl,
+  ael_negative_ppl,
+  by = c(
+    "patient_last_name",
+    "patient_first_name",
+    "patient_dob",
+    "patient_street_addr",
+    "patient_zip"
   )
+)
 
-# Stopped on line 1174 of sas program - starting race recoding
+negative_ppl <- dplyr::full_join(
+  nbs_negative_ppl,
+  ael_negative_ppl,
+  by = c(
+    "patient_last_name",
+    "patient_first_name",
+    "patient_dob",
+    "patient_street_addr",
+    "patient_zip"
+  ),
+  suffix = c("_nbs", "_ael")
+)
+NROW(negative_ppl)
+
+dplyr::anti_join(
+  nbs_negative_ppl,
+  ael_negative_ppl,
+  by = c(
+    "patient_last_name",
+    "patient_first_name",
+    "patient_dob",
+    "patient_street_addr",
+    "patient_zip"
+  )
+)
+
+dplyr::anti_join(
+  ael_negative_ppl,
+  nbs_negative_ppl,
+  by = c(
+    "patient_last_name",
+    "patient_first_name",
+    "patient_dob",
+    "patient_street_addr",
+    "patient_zip"
+  )
+)
+
+# PCR Positives ################################################################
+
+# Merge PCR with AEL+NBS - matches SAS on 2020-11-15
+dplyr::inner_join(
+  cases,
+  pcr,
+  by = "inv_local_id"
+) %>%
+  # Filter to positive - matches SAS on 2020-11-15
+  dplyr::filter(lab_result %in% c("Positive", "Presumptive Positive")) ->
+positive_pcr
+
+# PCR Negatives ################################################################
+
+# Merge PCR with AEL+NBS - matches SAS on 2020-11-15
+dplyr::inner_join(
+  negative_ppl,
+  pcr,
+  by = "inv_local_id"
+) %>%
+  # Filter to negative - matches SAS on 2020-11-15
+  dplyr::filter(lab_result == "Negative") ->
+negative_pcr
+
+# That's a wrap!!!
+
+# On to analysis - and the associated data munging

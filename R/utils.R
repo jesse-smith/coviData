@@ -181,6 +181,12 @@ coalesce_by_column <- function(x) {
 #'   "delimited" and "excel" files are supported. The default is "auto", which
 #'   determines the file type from the file extension.
 #'
+#' @param type_convert Should `read_file()` attempt to guess the data type of
+#'   the columns after reading?
+#'
+#'   \emph{Note: The default is `TRUE` for compatibility; want to transition to
+#'   `vroom::vroom()` as backend and swap default to `FALSE`.}
+#'
 #' @param msg A message to be displayed prior to beginning a file read; for use
 #'  inside other functions
 #'
@@ -190,6 +196,7 @@ coalesce_by_column <- function(x) {
 read_file <- function(
   path,
   file_type = c("auto", "delimited", "excel"),
+  type_convert = TRUE,
   msg = "Reading file..."
 ) {
 
@@ -221,6 +228,22 @@ read_file <- function(
     # Display 'msg' to console
     message(msg, appendLF = TRUE)
     # Read, convert to tibble, and attempt to guess column types
+    # vroom::vroom(
+    #   file = path,
+    #   col_types = vroom::cols(.default = vroom::col_character()),
+    #   na = c("", "NA", "N/A"),
+    #   altrep = TRUE,
+    #   progress = TRUE
+    # ) %>%
+    #   standardize_dates() %>%
+    # purrr::when(
+        # rlang::is_true(type_convert) ~ . %>%
+        #   standardize_dates() %>%
+        #   readr::type_convert(),
+    #   ~ .
+    # ) %T>%
+    #   {message("Done.")}
+
     data.table::fread(
       file = path,
       header = TRUE,
@@ -230,8 +253,12 @@ read_file <- function(
       showProgress = TRUE
     ) %>%
       dplyr::as_tibble() %>%
-      standardize_dates() %>%
-      readr::type_convert() %T>%
+      purrr::when(
+        rlang::is_true(type_convert) ~ eval(.) %>%
+          standardize_dates() %>%
+          readr::type_convert(),
+        ~ .
+      ) %T>%
       {message("Done.")}
 
   } else if (file_type == "excel") {
