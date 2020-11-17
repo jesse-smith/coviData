@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -132,6 +132,7 @@ files is <code><a href='https://readxl.tidyverse.org/reference/read_excel.html'>
     <pre class="usage"><span class='fu'>read_file</span><span class='op'>(</span>
   <span class='va'>path</span>,
   file_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"auto"</span>, <span class='st'>"delimited"</span>, <span class='st'>"excel"</span><span class='op'>)</span>,
+  type_convert <span class='op'>=</span> <span class='cn'>TRUE</span>,
   msg <span class='op'>=</span> <span class='st'>"Reading file..."</span>
 <span class='op'>)</span></pre>
 
@@ -148,6 +149,13 @@ if necessary</p></td>
       <td><p>A string indicating the type of file to read; only
 "delimited" and "excel" files are supported. The default is "auto", which
 determines the file type from the file extension.</p></td>
+    </tr>
+    <tr>
+      <th>type_convert</th>
+      <td><p>Should <code>read_file()</code> attempt to guess the data type of
+the columns after reading?</p>
+<p><em>Note: The default is <code>TRUE</code> for compatibility; want to transition to
+<code>vroom::vroom()</code> as backend and swap default to <code>FALSE</code>.</em></p></td>
     </tr>
     <tr>
       <th>msg</th>
