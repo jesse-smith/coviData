@@ -15,6 +15,14 @@ coviData is designed to help with ETL,
     human input easy when creativity is needed and difficult when
     consistency is the priority.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://jesse-smith.github.io/covidata/}
+  \item \url{https://github.com/jesse-smith/coviData}
+}
+
+}
 \author{
 \strong{Maintainer}: Jesse Smith \email{jesse.smith@shelbycountytn.com} (\href{https://orcid.org/0000-0001-7375-2463}{ORCID})
 

@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -51,7 +51,7 @@
 with the date date in its name. It returns the path to that file; if
 more than one file is found, it returns the path to the first one and issues
 a warning." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -83,7 +83,7 @@ a warning." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -100,7 +100,12 @@ a warning." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -115,7 +120,7 @@ a warning." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Find a File with the Specified Date + Pattern in the File Name</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>find_file.Rd</code></div>
     </div>
 
@@ -140,7 +145,7 @@ a warning.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>date</th>
-      <td><p>A <code>Date</code> indicating the date in the filename</p></td>
+      <td><p>A <code>Date</code> indicating the date to look for in the filename (if any)</p></td>
     </tr>
     <tr>
       <th>pattern</th>
@@ -154,7 +159,7 @@ default is to look for any file with <code>date</code> in the name.</p></td>
     <tr>
       <th>file_name</th>
       <td><p>If the search does not return a file known to exist,
-<code>filename</code> can be used to specify the file directly</p></td>
+<code>file_name</code> can be used to specify the file directly</p></td>
     </tr>
     <tr>
       <th>date_flag</th>

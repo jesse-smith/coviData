@@ -24,8 +24,6 @@
 #' @name covidata-class
 #'
 #' @aliases new_covidata validate_covidata
-#'
-#' @keywords internal
 NULL
 
 #' @rdname covidata-class
@@ -211,14 +209,14 @@ validate_pcr <- validate_covidata_subclass("pcr")
 #'
 #' @seealso \code{\link[tibble:tibble]{tibble()}}
 #'
-#' @name covidata-helpers
+#' @name covidata-build
 #'
 #' @aliases ael nbs pcr
 NULL
 
 #' Create a Helper Function for a `covidata` Subclass
 #'
-#' `covidata_helper` creates helper functions for a `covidata` subclass. It
+#' `covidata_builder` creates helper functions for a `covidata` subclass. It
 #' requires \code{new_mysubclass()} and \code{validate_mysubclass()} functions
 #' to be defined and available for the class \code{mysubclass}.
 #'
@@ -227,7 +225,7 @@ NULL
 #' @return A user-friendly helper function for constructing objects of `class`
 #'
 #' @keywords internal
-covidata_helper <- function(class) {
+covidata_builder <- function(class) {
   function(
     ...,
     .date = NULL,
@@ -250,32 +248,39 @@ covidata_helper <- function(class) {
   }
 }
 
-#' @rdname covidata-helpers
+#' @rdname covidata-build
 #'
 #' @inheritParams tibble::tibble
-ael <- covidata_helper("ael")
+#'
+#' @export
+ael <- covidata_builder("ael")
 
 
-#' @rdname covidata-helpers
+#' @rdname covidata-build
 #'
 #' @inheritParams tibble::tibble
-nbs <- covidata_helper("nbs")
+#'
+#' @export
+nbs <- covidata_builder("nbs")
 
-#' @rdname covidata-helpers
+#' @rdname covidata-build
 #'
 #' @inheritParams tibble::tibble
-pcr <- covidata_helper("pcr")
+#'
+#' @export
+pcr <- covidata_builder("pcr")
 
 # `as_class` Functions #########################################################
 
-#' Coerce Lists, Matrices, and More to Source-Specific Data Frames
+#' Cast Lists, Matrices, and More to Source-Specific Data Frames
 #'
 #' The \code{as_*} family of functions turns existing objects, such as a data
 #' frame or matrix, into a \code{\link[tibble:tbl_df-class]{tibble}} of class
 #' `ael`, `nbs`, or `pcr`. This is in contrast to the `ael()`, `nbs()`, and
 #' `pcr()` functions, which build tibbles from individual columns. Recall that
 #' `tibble` subclasses in coviData have a `.date` attribute, which assists in
-#' handling data made available at different times.
+#' handling data made available at different times; you'll need to supply this
+#' when using `as_ael()`, `as_nbs()`, or `as_pcr()`.
 #'
 #' These functions are thin wrappers around the \code{\link[tibble]{as_tibble}}
 #' function; see there for details.
@@ -284,10 +289,10 @@ pcr <- covidata_helper("pcr")
 #'
 #' @inheritParams ael
 #'
-#' @seealso \code{\link[tibble]{as_tibble}}; \code{\link{ael}{ael()}}, `nbs()`,
-#'   and `pcr()`
+#' @seealso \code{\link[tibble]{as_tibble}}; \code{\link{ael}{ael()}},
+#'   \code{\link{nbs}{nbs()}}, and \code{\link{pcr}{pcr()}}
 #'
-#' @name as_covidata
+#' @name covidata-cast
 #'
 #' @aliases as_ael as_nbs as_pcr
 NULL
@@ -297,6 +302,8 @@ NULL
 #' Create a coercion function for a `covidata` subclass.
 #'
 #' @inheritParams covidata-subclass-creators
+#'
+#' @keywords internal
 coerce_covidata <- function(class) {
 
   # The new_* and validate_* functions for the class will be dynamically
@@ -329,17 +336,17 @@ coerce_covidata <- function(class) {
   }
 }
 
-#' @rdname as_covidata
+#' @rdname covidata-cast
 #'
 #' @export
 as_ael <- coerce_covidata("ael")
 
-#' @rdname as_covidata
+#' @rdname covidata-cast
 #'
 #' @export
 as_nbs <- coerce_covidata("nbs")
 
-#' @rdname as_covidata
+#' @rdname covidata-cast
 #'
 #' @export
 as_pcr <- coerce_covidata("pcr")

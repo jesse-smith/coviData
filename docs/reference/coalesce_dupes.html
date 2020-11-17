@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Coalesce Information in Duplicate Rows — coalesce_dupes" />
-<meta property="og:description" content="coalesce_dupes sorts data, removes duplicates, and combines
+<meta property="og:description" content="coalesce_dupes() sorts data, removes duplicates, and combines
 information in duplicate rows." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -81,7 +81,7 @@ information in duplicate rows." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -98,7 +98,12 @@ information in duplicate rows." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -113,12 +118,12 @@ information in duplicate rows." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Coalesce Information in Duplicate Rows</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>coalesce_dupes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>coalesce_dupes</code> sorts data, removes duplicates, and combines
+    <p><code>coalesce_dupes()</code> sorts data, removes duplicates, and combines
 information in duplicate rows.</p>
     </div>
 
@@ -136,7 +141,7 @@ data frame (e.g. from dbplyr or dtplyr)</p></td>
       <th>...</th>
       <td><p>Variables to use for sorting and determining uniqueness. If there
 are multiple rows for a given combination of inputs, only the first row
-will be preserved. If omitted, simply calls <code>distinct</code> with
+will be preserved. If omitted, simply calls <code>distinct()</code> with
 <code>.keep_all = TRUE</code>.</p></td>
     </tr>
     <tr>
@@ -149,10 +154,10 @@ parameter is ignored.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>coalesce_dupes</code> can be thought of as an enhanced version of
-<code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct</code>, <code>coalesce_dupes</code>
+    <p><code>coalesce_dupes()</code> can be thought of as an enhanced version of
+<code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct()</code>, <code>coalesce_dupes()</code>
 removes duplicates from a dataset based on a provided set of variables.
-Unlike distinct, it sorts the data on those variables by default using
+Unlike <code>distinct()</code>, it sorts the data on those variables by default using
 <code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code>. It also tries to replace missing values with
 the first non-missing values in any duplicate rows using a modification of
 <code><a href='https://dplyr.tidyverse.org/reference/coalesce.html'>coalesce</a></code>.</p>

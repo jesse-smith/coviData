@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -96,7 +96,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -124,8 +129,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-downloading-data-from-source" class="hasAnchor"><a href="#section-downloading-data-from-source" class="anchor"></a>Downloading Data from Source</h2>
-          <p class="section-desc"><p>Functions for downloading data from REDcap projects and the Serv-U lab results repository</p></p>
+          <h2 id="section-download" class="hasAnchor"><a href="#section-download" class="anchor"></a>Download</h2>
+          <p class="section-desc"><p>Downloading data from source</p></p>
         </th>
       </tr>
       
@@ -142,18 +147,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="download_antigen_snapshot.html">download_antigen_snapshot()</a></code> </p>
-        </td>
-        <td><p>Download Snapshot of NBS PCR Test Data Posted on REDcap</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="download_integrated_data.html">download_integrated_data()</a></code> </p>
-        </td>
-        <td><p>Download Data from the Integrated Data Tool REDcap Project</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="download_nbs_snapshot.html">download_nbs_snapshot()</a></code> </p>
         </td>
         <td><p>Download Snapshot of NBS Data Posted on REDcap</p></td>
@@ -166,9 +159,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="download_redcap_file.html">download_redcap_file()</a></code> </p>
+          <p><code><a href="download_antigen_snapshot.html">download_antigen_snapshot()</a></code> </p>
         </td>
-        <td><p>Download REDcap File from TN REDcap</p></td>
+        <td><p>Download Snapshot of NBS PCR Test Data Posted on REDcap</p></td>
       </tr><tr>
         
         <td>
@@ -178,9 +171,121 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="download_servu.html">download_servu()</a></code> </p>
+          <p><code><a href="download_integrated_data.html">download_integrated_data()</a></code> </p>
         </td>
-        <td><p>Download Lab File from Serv-U</p></td>
+        <td><p>Download Data from the Integrated Data Tool REDcap Project</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-load" class="hasAnchor"><a href="#section-load" class="anchor"></a>Load</h2>
+          <p class="section-desc"><p>Loading data into R</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="load_ael.html">load_ael()</a></code> </p>
+        </td>
+        <td><p>Load AEL Data from Disk</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_nbs.html">load_nbs()</a></code> </p>
+        </td>
+        <td><p>Load NBS Data from Disk</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_pcr.html">load_pcr()</a></code> </p>
+        </td>
+        <td><p>Load AEL Data from Disk</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_integrated_data.html">load_integrated_data()</a></code> </p>
+        </td>
+        <td><p>Load Data from the Integrated Data Tool REDcap Project</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-preprocess" class="hasAnchor"><a href="#section-preprocess" class="anchor"></a>Preprocess</h2>
+          <p class="section-desc"><p>Preparing data for analysis</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="preprocess.html">preprocess()</a></code> </p>
+        </td>
+        <td><p>Standardize Variables, Handle Dates, and Remove Bad Columns</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-sample" class="hasAnchor"><a href="#section-sample" class="anchor"></a>Sample</h2>
+          <p class="section-desc"><p>Sampling from vector-like R objects</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="vec_sample.html">vec_sample()</a></code> </p>
+        </td>
+        <td><p>Re-implementation of <code>base::sample()</code> Using the vctrs Package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sample_unique.html">sample_unique()</a></code> </p>
+        </td>
+        <td><p>Sample from Unique Values of Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="randomize.html">randomize()</a></code> </p>
+        </td>
+        <td><p>Create Column-Wise Randomized Test Data for Non-Statistical Validation</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-specific-classes" class="hasAnchor"><a href="#section-data-specific-classes" class="anchor"></a>Data-Specific Classes</h2>
+          <p class="section-desc"><p>Functions for creating S3 classes that handle data from a specific source and (possibly) reporting date</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="covidata-build.html">ael()</a></code> <code><a href="covidata-build.html">nbs()</a></code> <code><a href="covidata-build.html">pcr()</a></code> </p>
+        </td>
+        <td><p>Build a Source-Specific Data Frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="covidata-cast.html">as_ael()</a></code> <code><a href="covidata-cast.html">as_nbs()</a></code> <code><a href="covidata-cast.html">as_pcr()</a></code> </p>
+        </td>
+        <td><p>Cast Lists, Matrices, and More to Source-Specific Data Frames</p></td>
       </tr>
     </tbody>
     </table>

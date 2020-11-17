@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -50,7 +50,7 @@
 <meta property="og:description" content="download_integrated_data connects to the Integrated Data Tool REDcap
 project via an API token and downloads the data currently available in the
 case interviews report." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -82,7 +82,7 @@ case interviews report." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -99,7 +99,12 @@ case interviews report." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,7 +119,7 @@ case interviews report." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Download Data from the Integrated Data Tool REDcap Project</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/download.R'><code>R/download.R</code></a></small>
     <div class="hidden name"><code>download_integrated_data.Rd</code></div>
     </div>
 
@@ -128,7 +133,7 @@ project via an API token and downloads the data currently available in the
   date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
   api_token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"redcap_IDT_token"</span><span class='op'>)</span>,
   directory <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class='st'>"Integrated data tool Case Interviews/"</span><span class='op'>)</span>,
+    <span class='st'>"Integrated data tool Case Interviews/data/"</span><span class='op'>)</span>,
   new_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"integrated_data_"</span>, <span class='va'>date</span>, <span class='st'>".csv"</span><span class='op'>)</span>,
   convert <span class='op'>=</span> <span class='cn'>FALSE</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>

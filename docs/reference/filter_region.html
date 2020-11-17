@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -47,14 +47,14 @@
 
 
 <meta property="og:title" content="Filter Dataframe from an AEL File to Memphis Area — filter_region" />
-<meta property="og:description" content="filter_region takes a data frame from link{read_ael} &amp;amp; removes
+<meta property="og:description" content="filter_region takes a data frame from load_ael &amp;amp; removes
 observations not in the region specified by states and zips.
 The default is to keep Shelby County residents and missing values;
 incl_msr ensures that the entire Memphis Statistical Region is
 included (as well as any other regions specified). Note that zips
 match to starting values of PtZipcode; if a 5-digit code is specified,
 this is equivalent to matching an entire ZIP code." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -86,7 +86,7 @@ this is equivalent to matching an entire ZIP code." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -103,7 +103,12 @@ this is equivalent to matching an entire ZIP code." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -118,12 +123,12 @@ this is equivalent to matching an entire ZIP code." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Filter Dataframe from an AEL File to Memphis Area</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>filter_region.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>filter_region</code> takes a data frame from <code>link{read_ael}</code> &amp; removes
+    <p><code>filter_region</code> takes a data frame from <code><a href='load_ael.html'>load_ael</a></code> &amp; removes
 observations not in the region specified by <code>states</code> and <code>zips</code>.
 The default is to keep Shelby County residents and missing values;
 <code>incl_msr</code> ensures that the entire Memphis Statistical Region is
@@ -145,7 +150,7 @@ this is equivalent to matching an entire ZIP code.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A data frame or data frame extention (e.g. a tibble)</p></td>
+      <td><p>A data frame or data frame extension (e.g. a tibble)</p></td>
     </tr>
     <tr>
       <th>states</th>
