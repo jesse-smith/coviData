@@ -36,3 +36,4 @@ are always retained while keeping any additional backups created on or after
 \code{min_date}. The defaults are chosen so that at least 7 backups over at least
 the past 7 days are kept.
 }
+\keyword{internal}

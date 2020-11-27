@@ -27,7 +27,7 @@ information in duplicate rows.
 \code{coalesce_dupes()} can be thought of as an enhanced version of
 \code{\link[dplyr]{distinct}}. Like \code{distinct()}, \code{coalesce_dupes()}
 removes duplicates from a dataset based on a provided set of variables.
-Unlike \code{distinct()}, it sorts the data on those variables by default using
+Unlike \code{distinct()}, it sorts the data on those variables (by default) using
 \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
 the first non-missing values in any duplicate rows using a modification of
 \code{\link[dplyr]{coalesce}}.

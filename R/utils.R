@@ -76,7 +76,30 @@ dttm_to_dt <- function(.x) {
   }
 }
 
-# | Join #######################################################################
+# | Coalesce ###################################################################
+
+#' Coalesce with \strong{tidyselect} Semantics
+#'
+#' Given a set of data frame columns (potentially using
+#' \code{\link[dplyr:dplyr_tidy_select]{<tidy-select>}}), `coalesce_across()`
+#' finds the first non-missing value at each position.
+#'
+#' `coalesce_across()` is a wrapper around
+#' \code{\link[dplyr:coalesce]{coalesce()}} that allows specification of columns
+#' using \code{<tidy-select>} semantics. It does this using
+#' \code{\link[dplyr:across]{across()}}, which means it is only designed to work
+#' inside \strong{dplyr} verbs. In other cases, just use `coalesce()`.
+#'
+#' @inheritParams dplyr::across
+#'
+#' @inherit dplyr::coalesce return
+#'
+#' @export
+coalesce_across <- function(.cols) {
+  .cols <- rlang::enquo(.cols)
+  dplyr::coalesce(rlang::splice(dplyr::across(!!.cols)))
+}
+
 #' Coalesce Information in Duplicate Rows
 #'
 #' `coalesce_dupes()` sorts data, removes duplicates, and combines
@@ -85,7 +108,7 @@ dttm_to_dt <- function(.x) {
 #' `coalesce_dupes()` can be thought of as an enhanced version of
 #' \code{\link[dplyr]{distinct}}. Like `distinct()`, `coalesce_dupes()`
 #' removes duplicates from a dataset based on a provided set of variables.
-#' Unlike `distinct()`, it sorts the data on those variables by default using
+#' Unlike `distinct()`, it sorts the data on those variables (by default) using
 #' \code{\link[dplyr]{arrange}}. It also tries to replace missing values with
 #' the first non-missing values in any duplicate rows using a modification of
 #' \code{\link[dplyr]{coalesce}}.
@@ -168,111 +191,6 @@ coalesce_by_column <- function(x) {
 }
 
 # | Load #######################################################################
-#' Read a Tabular Data File
-#'
-#' `read_file` reads delimited- and Excel-type data files. The backend for
-#' delimited files is \code{\link[data.table]{fread}}; the backend for Excel
-#' files is \code{\link[readxl]{read_excel}}.
-#'
-#' @param path A string indicating the path to the data file; will be expanded
-#'   if necessary
-#'
-#' @param file_type A string indicating the type of file to read; only
-#'   "delimited" and "excel" files are supported. The default is "auto", which
-#'   determines the file type from the file extension.
-#'
-#' @param type_convert Should `read_file()` attempt to guess the data type of
-#'   the columns after reading?
-#'
-#'   \emph{Note: The default is `TRUE` for compatibility; want to transition to
-#'   `vroom::vroom()` as backend and swap default to `FALSE`.}
-#'
-#' @param msg A message to be displayed prior to beginning a file read; for use
-#'  inside other functions
-#'
-#' @return A tibble containing the read data
-#'
-#' @keywords internal
-read_file <- function(
-  path,
-  file_type = c("auto", "delimited", "excel"),
-  type_convert = TRUE,
-  msg = "Reading file..."
-) {
-
-  # Sanitize, tidy, and expand the given path
-  path %<>% fs::path_tidy() %>% fs::path_expand()
-
-  # Clean up the file_type argument
-  file_type <- file_type[[1]] %>%
-    stringr::str_squish() %>%
-    stringr::str_to_lower()
-
-  # Guess the file type if file_type == "auto"
-  if (file_type == "auto") file_type <- guess_filetype(path)
-
-  # Make sure that file_type is supported
-  assertthat::assert_that(
-    file_type %in% c("excel", "delimited"),
-    msg = paste0(
-      "File type is unknown or unsupported.\n",
-      "If this is a delimited text file with column separators in [,\t |;:], ",
-      "please specify 'file_type = 'delimited''. ",
-      "If this is an xls or xlsx file, please specify 'file_type = 'excel''.\n",
-      "Other file types are not supported."
-    )
-  )
-
-  # Use data.table::fread or readxl::read_excel, depending on type
-  if (file_type == "delimited") {
-    # Display 'msg' to console
-    message(msg, appendLF = TRUE)
-    # Read, convert to tibble, and attempt to guess column types
-    # vroom::vroom(
-    #   file = path,
-    #   col_types = vroom::cols(.default = vroom::col_character()),
-    #   na = c("", "NA", "N/A"),
-    #   altrep = TRUE,
-    #   progress = TRUE
-    # ) %>%
-    #   standardize_dates() %>%
-    # purrr::when(
-        # rlang::is_true(type_convert) ~ . %>%
-        #   standardize_dates() %>%
-        #   readr::type_convert(),
-    #   ~ .
-    # ) %T>%
-    #   {message("Done.")}
-
-    data.table::fread(
-      file = path,
-      header = TRUE,
-      colClasses = "character",
-      blank.lines.skip = TRUE,
-      fill = TRUE,
-      showProgress = TRUE
-    ) %>%
-      dplyr::as_tibble() %>%
-      purrr::when(
-        rlang::is_true(type_convert) ~ eval(.) %>%
-          standardize_dates() %>%
-          readr::type_convert(),
-        ~ .
-      ) %T>%
-      {message("Done.")}
-
-  } else if (file_type == "excel") {
-    # Display 'msg' to console
-    message(msg, appendLF = FALSE)
-    # Read as tibble and attempt to guess column types (using all columns)
-    readxl::read_excel(
-      path,
-      trim_ws = TRUE,
-      guess_max = .Machine$integer.max %/% 100L
-    ) %T>%
-      {message("Done.")}
-  }
-}
 
 #' Guess the Filetype of a Data File
 #'
@@ -296,6 +214,77 @@ guess_filetype <- function(path) {
     txt  = "delimited",
     "unknown"
   )
+}
+
+# | Validate ###################################################################
+#' Do One or More Columns Actually Exist?
+#'
+#' `cols_exist()` is a pipeline validation function that checks whether
+#' specified columns exist in the input data. It is inspired by
+#' `pointblank::col_exists()` but allows tidy selection of columns.
+#'
+#' @param .data A data frame or data frame extension (e.g. a
+#'   \code{\link[tibble:tbl_df-class]{tibble}})
+#'
+#' @param ... \code{\link[dplyr:dplyr_tidy_select]{<tidy-select>}} One or more
+#'   columns from the data, separated by commas. These can be specified as
+#'   unquoted names or using tidy selection helpers; if the latter,
+#'   `cols_exist()` will check that \emph{at least one} column matches each
+#'   provided \code{<tidy-select>} expression.
+#'
+#' @param action The action to perform if one or more columns do not exist; one
+#'   of \code{\link[rlang:abort]{abort()}} (the default),
+#'   \code{\link[rlang:abort]{warn()}}, or \code{\link[rlang:abort]{inform()}}.
+#'
+#' @return The input data frame
+#'
+#' @export
+cols_exist <- function(.data, ..., action = rlang::abort) {
+
+  assertthat::assert_that(
+    is.data.frame(.data),
+    msg = "`.data` must be a data frame"
+  )
+
+  .ptype <- vctrs::vec_ptype(.data)
+
+  rlang::enexprs(...) %>%
+    purrr::map(
+      ~ dplyr::select(.ptype, !!.x) %>%
+        purrr::when(
+          NCOL(.) > 0 ~ NULL,
+          ~ rlang::expr_label(.x)
+        )
+    ) %>%
+    purrr::flatten_chr() ->
+    cols_missing
+
+  if (vctrs::vec_size(cols_missing) > 0) {
+
+    assertthat::assert_that(
+      any(
+        identical(rlang::abort, action),
+        identical(rlang::warn, action),
+        identical(rlang::inform, action)
+      ),
+      msg = paste0(
+        "`action` must be one of `rlang::abort()`, `rlang::warn()`, ",
+        "or `rlang::inform()`"
+      )
+    )
+
+    msg <- paste0(
+      "\n",
+      "No columns were found that match the following selections:\n",
+      "* ", glue::glue_collapse(cols_missing, sep = "\n * "), "\n\n",
+      "Did you misspecify a column selection, or were the data not what you ",
+      "expected?\n"
+    )
+    action(message = msg, class = "cols_do_not_exist")
+
+  } else {
+    .data
+  }
 }
 
 # || By Dataset || #############################################################
@@ -931,6 +920,9 @@ is_open <- function(path) {
 #' `create_path()` combines a directory, filename, and file extension into
 #' an expanded and tidied path.
 #'
+#' `create_path()` is now in the questioning stage. It will likely be deprecated
+#' in favor of \code{\link[fs:path]{path()}} in the future.
+#'
 #' @param directory The path to a directory; optionally, the full path can be
 #'   supplied here, in which case `create_path()` will simply expand and
 #'   tidy the given file path.
@@ -942,6 +934,8 @@ is_open <- function(path) {
 #'   included in `file_name` or `directory`
 #'
 #' @return An `fs_path`, which is a character vector with additional attributes
+#'
+#' @export
 create_path <- function(directory, file_name = NULL, ext = NULL) {
   directory %>%
     fs::path_expand() %>%
@@ -988,6 +982,10 @@ create_path <- function(directory, file_name = NULL, ext = NULL) {
 #'   to keep files for `min_backups` days.
 #'
 #' @return The deleted paths (invisibly)
+#'
+#' @keywords internal
+#'
+#' @export
 trim_backups <- function(
   directory,
   pattern = NULL,
@@ -1046,4 +1044,91 @@ trim_backups <- function(
       dplyr::pull(path) %>%
       fs::file_delete()
   }
+}
+
+# | Functions ##################################################################
+assert_dots_used <- function(
+  env = rlang::caller_fn(),
+  fn = NULL,
+  action = rlang::abort
+) {
+
+  objs <- rlang::env_get_list(
+    env = env,
+    nms = rlang::env_names(env),
+    default = rlang::missing_arg()
+  )
+
+  # dots <- rlang::list2()
+  #
+  # dots_names <- rlang::names2(dots)
+  #
+  # dots_used <- dots_names %in% rlang::fn_fmls_names(arg_fn)
+  #
+  # if (any(!dots_used)) {
+  #
+  #   fn_name <- rlang::call_fn(arg_fn) %>% rlang::expr_label()
+  #
+  #   msg = paste0(
+  #     sum(!dots_used), " components of `...` were not used.",
+  #     "\n\n",
+  #     "We detected these problematic arguments:",
+  #     "\n",
+  #     paste0("* `", dots_names[!dots_used], "`", collapse = "\n"),
+  #     "\n\n",
+  #     "Did you misspecify an argument?"
+  #   )
+  #
+  #   .action(message = msg)
+  # }
+}
+
+get_fns <- function(fn, string = "x") {
+
+  name_regex <- "([A-Za-z.]+[A-Za-z0-9._]*)"
+
+  fun_regex <- paste0(name_regex, "[(].*[)]")
+
+  inner_regex <- paste0("[(](?!", name_regex, "[(].*[)])[A-Za-z0-9._]*[)]")
+
+  rlang::fn_body(fn) %>%
+    rlang::expr_text() %>%
+    stringr::str_extract_all(pattern = fun_regex) %>%
+    purrr::flatten_chr()
+    # stringr::str_remove_all(pattern = "[(].*[)]") %>%
+    # unique()
+}
+
+check_suggested <- function(..., msg_end = NULL) {
+  pkgs <- rlang::exprs(...) %>% purrr::map_chr(~ rlang::expr_name(.x))
+
+  installed <- purrr::map_lgl(pkgs, ~ rlang::is_installed(.x))
+
+  if (all(installed)) return(installed)
+
+  is_are <- if (NROW(pkgs[!installed]) <= 1) "is" else "are"
+
+  not_installed <- paste0(pkgs[!installed],  collapse = "', '")
+
+  error_msg <- paste0(
+    "Suggested package(s) '", not_installed, "' ", is_are,
+    " required for this function but not installed.",
+    " Please install these packages to use this function.",
+    if (rlang::is_empty(msg_end)) "" else paste0("\n\n", msg_end)
+  )
+
+  rlang::abort(error_msg)
+
+}
+
+#' Check Whether \strong{R} is Running in Windows
+#'
+#' `is_windows()` checks whether \strong{R} is running on Windows. There are
+#' several functions in coviData that will only work on Windows.
+#'
+#' @keywords internal
+is_windows <- function() {
+  osVersion %>%
+    stringr::str_to_lower() %>%
+    stringr::str_detect("windows|microsoft")
 }
