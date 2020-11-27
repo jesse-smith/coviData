@@ -18,7 +18,6 @@ replace_ael <- function(
 
   load_ael(date = date, directory = directory) %>%
     standardize_dates() %>%
-    # dplyr::mutate(AuthDate = lubridate::as_date(AuthDate)) %>%
     process_names(force = overwrite_names) ->
     processed_data
 
