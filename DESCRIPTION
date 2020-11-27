@@ -48,7 +48,8 @@ Imports:
     RCurl (>= 1.98.1.2),
     tibble (>= 3.0.4),
     vctrs (>= 0.3.4),
-    waldo (>= 0.2.2)
+    waldo (>= 0.2.2),
+    lifecycle
 Suggests: 
     covr,
     testthat,
@@ -58,3 +59,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+RdMacros: lifecycle

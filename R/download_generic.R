@@ -1,4 +1,8 @@
-#' Download REDcap File from TN REDcap
+#' Download a File from the Data for Regions REDcap Project
+#'
+#' `download_redcap_file()` downloads a file posted on the Data for Regions
+#' project. You'll need API access to the project (and an API token for it) to
+#' use this function.
 #'
 #' @param date A \code{Date} indicating the date of the file to download
 #'
@@ -18,13 +22,14 @@
 #'
 #' @param force A logical indicating whether to ignore existing files with
 #'   the given date already in the directory
-download_redcap_file <- function(
+#'
+#' @keywords internal
+download_data_for_regions <- function(
   date = Sys.Date(),
   api_token,
   redcap_file,
   directory,
   new_file,
-  convert = FALSE,
   force = FALSE
 ) {
 
@@ -109,8 +114,9 @@ download_redcap_file <- function(
   )
 
   # Create temp folder and file names
-  dir_temp <- fs::path_temp() %>% paste0("/redcap_temp")
-  zip_temp <- paste0(dir_temp, "/redcap_file.zip")
+  directory %<>% create_path()
+  dir_temp <- fs::file_temp(".temp_redcap_", tmp_dir = directory)
+  zip_temp <- create_path(dir_temp, "redcap_file", ".zip")
 
   # Delete existing temp folder if it exists and create new one
   if (fs::dir_exists(dir_temp)) fs::dir_delete(dir_temp)
@@ -156,11 +162,7 @@ download_redcap_file <- function(
     )
   )
 
-  file_new <- directory %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(new_file) %>%
-    fs::path_join()
+  file_new <- create_path(directory, new_file)
 
   # Move the file to the chosen directory with the chosen file name
   fs::file_move(
@@ -168,22 +170,25 @@ download_redcap_file <- function(
     new_path = file_new
   )
   message("Done.")
-
-  if (convert) {
-    # Optional Step 5 - Convert to xlsx
-    message("Opening in Excel for conversion...", appendLF = FALSE)
-    shell.exec(file_new)
-    message("Done.")
-  }
 }
 
-download_redcap_report <- function(
+#' Download a Report from the Integrated Data Tool REDcap Project
+#'
+#' `download_interview_report()` downloads a report from the Integrated Data
+#' Tool project. You'll need API access to the project (and an API token for it)
+#' to use this function.
+#'
+#' @inheritParams download_data_for_regions
+#'
+#' @param report_id The ID of the report to download
+#'
+#' @keywords internal
+download_interview_report <- function(
   date = Sys.Date(),
   api_token,
   report_id,
   directory,
   new_file,
-  convert = FALSE,
   force = FALSE
 ) {
 
@@ -225,16 +230,19 @@ download_redcap_report <- function(
   )
 
   # Create temp folder and file names
-  dir_temp <- fs::path_temp() %>% paste0("/redcap_temp")
-  zip_temp <- paste0(dir_temp, "/redcap_file.csv")
+  directory %<>% create_path()
+  dir_temp <- fs::file_temp(".temp_redcap_", tmp_dir = directory)
+  zip_temp <- create_path(dir_temp, "redcap_file.csv")
 
-  # Delete existing temp folder if it exists and create new one
+  # Delete existing temp folder if it exists
   if (fs::dir_exists(dir_temp)) fs::dir_delete(dir_temp)
-  fs::dir_create(dir_temp)
 
   # Make sure that things are cleaned up when this function exits, whether
   # normally or as a result of an error
   on.exit(fs::dir_delete(dir_temp))
+
+  # Create temp directory
+  fs::dir_create(dir_temp)
 
   # Download file
   httr::POST(
@@ -272,13 +280,6 @@ download_redcap_report <- function(
     new_path = file_new
   )
   message("Done.")
-
-  if (convert) {
-    # Optional Step 4 - Convert to xlsx
-    message("Opening in Excel for conversion...", appendLF = FALSE)
-    shell.exec(file_new)
-    message("Done.")
-  }
 }
 
 #' Download Lab File from Serv-U

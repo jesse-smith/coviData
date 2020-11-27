@@ -53,7 +53,7 @@ download_integrated_data <- function(
   force = FALSE
 ) {
   message("Starting Integrated Data download...\n")
-  download_redcap_report(
+  download_interview_report(
     date = date,
     api_token = api_token,
     report_id = "12314",
@@ -66,6 +66,8 @@ download_integrated_data <- function(
 }
 
 #' Download Snapshot of NBS Data Posted on REDcap
+#'
+#' @inheritParams download_data_for_regions
 #'
 #' @export
 download_nbs_snapshot <- function(
@@ -81,7 +83,7 @@ download_nbs_snapshot <- function(
   force = FALSE
 ) {
   message("Starting NBS snapshot download...\n")
-  download_redcap_file(
+  download_data_for_regions(
     date = date,
     api_token = api_token,
     redcap_file = redcap_file,
@@ -106,7 +108,7 @@ download_pcr_snapshot <- function(
   force = FALSE
 ) {
   message("Starting PCR snapshot download...\n")
-  download_redcap_file(
+  download_data_for_regions(
     date = date,
     api_token = api_token,
     redcap_file = redcap_file,
@@ -139,7 +141,7 @@ download_antigen_snapshot <- function(
   force = FALSE
 ) {
   message("Starting antigen snapshot download...\n")
-  download_redcap_file(
+  download_data_for_regions(
     date = date,
     api_token = api_token,
     redcap_file = redcap_file,
@@ -170,7 +172,7 @@ download_serology_snapshot <- function(
   force = FALSE
 ) {
   message("Starting serology snapshot download...\n")
-  download_redcap_file(
+  download_data_for_regions(
     date = date,
     api_token = api_token,
     redcap_file = redcap_file,
