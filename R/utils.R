@@ -917,9 +917,13 @@ is_open <- function(path) {
 
 #' Create a Tidy Path from Directory + File + Extension
 #'
+#' @description
+#' \lifecycle{questioning}
+#'
 #' `create_path()` combines a directory, filename, and file extension into
 #' an expanded and tidied path.
 #'
+#' @details
 #' `create_path()` is now in the questioning stage. It will likely be deprecated
 #' in favor of \code{\link[fs:path]{path()}} in the future.
 #'
