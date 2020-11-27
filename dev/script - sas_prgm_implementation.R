@@ -151,12 +151,12 @@ nbs_positive %>%
   # Filter any non-distinct patient_local_ids - matches SAS on 2020-11-15
   dplyr::arrange(patient_local_id, inv_case_status) %>%
   dplyr::distinct(patient_local_id, .keep_all = TRUE) ->
-nbs_distinct1
+nbs_distinct
 
 # Filter non-distinct people based on name and DOB - matches SAS on 2020-11-15
 # SAS code standardizes case and removes whitespace
 # TODO: Switch to `standardize_string()`
-nbs_distinct1 %>%
+nbs_distinct %>%
   dplyr::arrange(patient_last_name, patient_first_name, patient_dob, inv_case_status) %>%
   dplyr::distinct(patient_last_name, patient_first_name, patient_dob, .keep_all = TRUE) ->
 nbs_cases
@@ -167,7 +167,7 @@ nbs_cases %>%
   janitor::adorn_totals() %>%
   dplyr::as_tibble()
 
-# Merge NBS and AEL - matches SAS on 2020-11-15
+# Merge NBS and AEL - matches SAS on 2020-11-15 ################################
 dplyr::inner_join(
   nbs_cases,
   ael_ppl,
