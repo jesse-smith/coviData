@@ -17,9 +17,6 @@
 #' @param html Should the `body` be treated as plain text or HTML? The default
 #'   is plain text (`FALSE`).
 #'
-#' @param importance The importance (priority, etc) to attach to the email. The
-#'   default is `"Normal"`; alternatives are `"Low"` or `"High"`.
-#'
 #' @keywords internal
 #'
 #' @export
@@ -28,8 +25,7 @@ notify <- function(
   subject,
   body = NULL,
   cc = NULL,
-  html = FALSE,
-  importance = c("Normal", "Low", "High")
+  html = FALSE
 ) {
 
   # Withr and RDCOMClient are suggested for coviData but necessary for
@@ -84,17 +80,73 @@ notify <- function(
       email[["body"]] <- body
     }
 
-    email[["importance"]] <- purrr::when(
-      standardize_string(importance[[1]]),
-      . == "Low" ~ "1",
-      . == "High" ~ "3",
-      ~ "2"
-    )
-
     email$Send()
 
     remove(outlook, email)
   })
 
   withr::with_namespace("RDCOMClient", eval(send_email), warn.conflicts = FALSE)
+}
+
+#' Send an Email Notification on Error
+#'
+#' `error_notify()` generates an error handler that sends an email notification
+#' when an expression generates an error. It relies on
+#' \code{\link[notify]{notify()}} and can optionally avoid terminating the
+#' larger expression it was called from. This is useful for running scripts with
+#' independent components.
+#'
+#' @inheritParams notify
+#'
+#' @param abort Should execution terminate after reporting the error?
+#'
+#' @return The input error condition, with a backtrace
+#'
+#' @keywords internal
+#'
+#' @export
+error_notify <- function(
+  abort = TRUE,
+  to = "jesse.smith@shelbycountytn.gov",
+  operation = "An Operation",
+  subject = paste(operation, "failed at", format(Sys.time(), "%H:%M on %Y-%m-%d")),
+  body = NULL,
+  cc = NULL,
+  html = FALSE
+) {
+
+  purrr::walk(rlang::fn_fmls_syms(), ~ force(.x))
+
+  args <- rlang::fn_fmls() %>% extract(rlang::fn_fmls_names(notify))
+
+  force(args)
+
+  function(.error) {
+
+    br <- if (rlang::is_true(html)) "<br>" else "\n"
+
+    if (is.null(args$body)) {
+      args$body <- paste0(
+        "The following error occurred while executing ", operation, ":", br, br,
+        .error$message, br, br,
+        "See the associated log for details."
+      )
+    }
+
+    eval(rlang::call2(notify, !!!args))
+
+    generate_error <- rlang::expr({
+      if (rlang::is_true(abort)) {
+        rlang::cnd_signal(.error)
+      } else {
+        try(rlang::cnd_signal(.error))
+      }
+    })
+
+    withr::with_options(
+      list(rlang_backtrace_on_error = "branch", error = rlang::entrace),
+      eval(generate_error)
+    )
+
+  }
 }
