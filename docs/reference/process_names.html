@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -50,7 +50,7 @@
 <meta property="og:description" content="process_names creates standardized PatientLastName,
 PatientFirstName, PatientMiddleName, and
 PatientMidOthName columns in AEL data, if they do not already exist." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -82,7 +82,7 @@ PatientMidOthName columns in AEL data, if they do not already exist." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -99,7 +99,12 @@ PatientMidOthName columns in AEL data, if they do not already exist." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,7 +119,7 @@ PatientMidOthName columns in AEL data, if they do not already exist." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add Name Columns to AEL Excel File</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>process_names.Rd</code></div>
     </div>
 
@@ -135,7 +140,7 @@ PatientMidOthName columns in AEL data, if they do not already exist." />
     </tr>
     <tr>
       <th>force</th>
-      <td><p>A logical; if <code>force == TRUE</code>, the data is (re-)processed
+      <td><p>A logical; if <code>force = TRUE</code>, the data is (re-)processed
 regardless of whether it passes the above checks</p></td>
     </tr>
     </table>

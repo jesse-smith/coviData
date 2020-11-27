@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@ character; converts characters to UTF-8 encoding; replaces
 non-alphabetical symbols with a space; removes excess whitespace; and
 converts to the desired case (title, by default). It also informs the user if
 any characters could not be converted to UTF-8." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -85,7 +85,7 @@ any characters could not be converted to UTF-8." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -102,7 +102,12 @@ any characters could not be converted to UTF-8." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -117,7 +122,7 @@ any characters could not be converted to UTF-8." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Standardize String Formatting</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/standardize.R'><code>R/standardize.R</code></a></small>
     <div class="hidden name"><code>standardize_string.Rd</code></div>
     </div>
 
@@ -156,10 +161,10 @@ and may technically perform operations other than case conversion.</p></td>
     <p>A character vector of the same length as <code>string</code></p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This functions is primarily intended to standardize proper nouns (such as
-names of persons) into a common format; it doesn't necessarily <em>correct</em>
-the strings. For more general string standardization of this type, see
-the <a href='https://tazinho.github.io/snakecase/'>snakecase</a> package.</p>
+    <p>This function is primarily intended to <em>standardize</em> proper nouns (such
+as names of persons) into a common format; it doesn't necessarily
+<em>correct</em> the strings. For more general string standardization of this
+type, see the <a href='https://tazinho.github.io/snakecase/'>snakecase</a> package.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

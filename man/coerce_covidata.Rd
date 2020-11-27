@@ -12,3 +12,4 @@ coerce_covidata(class)
 \description{
 Create a coercion function for a \code{covidata} subclass.
 }
+\keyword{internal}

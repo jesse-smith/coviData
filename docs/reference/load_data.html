@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -48,9 +48,10 @@
 
 <meta property="og:title" content="Load a Data File Using the Directory, Date, and Extension — load_data" />
 <meta property="og:description" content="load_data is meant to find and load a delimited or Excel data file
-given the directory that it's in, the date of interest, and the file
-extension." />
-<meta property="og:image" content="/logo.png" />
+given the directory that it's in, the date used in the file name, and the
+file extension. It is essentially a wrapper around find_file
+and read_file." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -82,7 +83,7 @@ extension." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -99,7 +100,12 @@ extension." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/jesse-smith/coviData">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,14 +120,15 @@ extension." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Load a Data File Using the Directory, Date, and Extension</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load_generic.R'><code>R/load_generic.R</code></a></small>
     <div class="hidden name"><code>load_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><code>load_data</code> is meant to find and load a delimited or Excel data file
-given the directory that it's in, the date of interest, and the file
-extension.</p>
+given the directory that it's in, the date used in the file name, and the
+file extension. It is essentially a wrapper around <code><a href='find_file.html'>find_file</a></code>
+and <code><a href='read_file.html'>read_file</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>load_data</span><span class='op'>(</span>
@@ -132,7 +139,36 @@ extension.</p>
   pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>".*"</span>, <span class='va'>date</span>, <span class='st'>".*"</span>, <span class='va'>ext</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>date</th>
+      <td><p>The <code>Date</code> to look for in the file name</p></td>
+    </tr>
+    <tr>
+      <th>directory</th>
+      <td><p>The directory to search in using <code><a href='find_file.html'>find_file</a></code></p></td>
+    </tr>
+    <tr>
+      <th>file_name</th>
+      <td><p>Optionally, the name of the file to load; this is useful
+if searching for non-standard files</p></td>
+    </tr>
+    <tr>
+      <th>ext</th>
+      <td><p>The extension of the file to load</p></td>
+    </tr>
+    <tr>
+      <th>pattern</th>
+      <td><p>A regular expression combining <code>directory</code>, <code>date</code>, <code>ext</code>, and
+(possibly) other pieces of the file to load</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code> containing the loaded data</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -37,4 +37,3 @@ an error.
 \seealso{
 \code{\link[tibble]{new_tibble}}
 }
-\keyword{internal}
