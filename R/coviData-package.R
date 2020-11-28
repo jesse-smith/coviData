@@ -1,6 +1,5 @@
 #' coviData: COVID-19 Data Munging Tools for the Shelby County Health Department
 #'
-#' @importFrom magrittr `%>%` `%T>%` `%$%` `%<>%`
 #' @docType package
 #' @name coviData-package
 #' @keywords internal
@@ -9,6 +8,5 @@
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
-#' @importFrom lifecycle deprecate_soft
 ## usethis namespace: end
 NULL
