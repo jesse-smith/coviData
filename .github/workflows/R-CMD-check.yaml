@@ -22,6 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
       - name: Install dependencies
         run: |
+          Sys.setenv(`_R_CHECK_FORCE_SUGGESTS_` = FALSE)
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps()
         shell: Rscript {0}
