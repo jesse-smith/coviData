@@ -63,8 +63,6 @@ Suggests:
     testthat
 RdMacros: 
     lifecycle
-Remotes:
-    url::http://www.omegahat.org/R
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
