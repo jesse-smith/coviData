@@ -4,10 +4,14 @@
 \alias{preprocess}
 \title{Standardize Variables, Handle Dates, and Remove Bad Columns}
 \usage{
-preprocess(data)
+preprocess(data, na_constant = TRUE)
 }
 \arguments{
 \item{data}{A dataframe(-like) object}
+
+\item{na_constant}{Should \code{NA} values be considered when deciding
+whether a column is constant? The default is \code{TRUE}, which will
+keep columns that only have 1 unique non-missing value.}
 }
 \value{
 A processed tibble

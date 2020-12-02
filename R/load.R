@@ -1,3 +1,11 @@
+#' Load AEL Data from Disk
+#'
+#' `load_ael()` loads AEL data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to AEL data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_ael <- function(
   date = Sys.Date(),
@@ -118,7 +126,10 @@ load_and_process_ael <- function(
 #' @export
 load_integrated_data <- function(
   date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/",
+  directory = paste0(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Integrated data tool Case Interviews/data/"
+  ),
   ext = "csv"
 ) {
   message("Loading Integrated Data...")
@@ -130,7 +141,15 @@ load_integrated_data <- function(
   )
 }
 
-#' @export
+#' Load Limited Dataset Sent by David
+#'
+#' @inheritParams load_data
+#'
+#' @inherit load_data return
+#'
+#' @noRd
+#'
+#' @keywords internal
 load_limited <- function(
   directory = "C:/Users/Jesse.Smith/Documents/Rt_estimates/data/",
   file_name = "status.xlsx"
@@ -141,10 +160,21 @@ load_limited <- function(
   )
 }
 
+#' Load NBS Data from Disk
+#'
+#' `load_nbs()` loads NBS data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to NBS data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_nbs <- function(
   date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Sandbox data pull Final/",
+  directory = paste0(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Sandbox data pull Final/"
+  ),
   ext = c("csv", "xlsx")
 ) {
   message("Loading NBS file:\n")
@@ -163,6 +193,14 @@ load_nbs_deaths_as_html <- function(path) {
     dplyr::as_tibble()
 }
 
+#' Load AEL Data from Disk
+#'
+#' `load_pcr()` loads PCR data from a file into a \code{\link[tibble]{tibble}}.
+#' It is essentially a wrapper around \code{\link{load_data}} with defaults
+#' specific to PCR data.
+#'
+#' @inherit load_data params return
+#'
 #' @export
 load_pcr <- function(
   date = Sys.Date(),
@@ -195,21 +233,15 @@ load_pcr <- function(
 #'
 #' @export
 load_sas <- function(
-  directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
+  directory =
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"
+  ,
   dataset = c("positive_ppl", "negative_ppl", "positive_pcr", "negative_pcr"),
   ext = c("csv", "xlsx")
 ) {
   message("Loading SAS cleaning results:\n")
 
-  file <- directory %>%
-    fs::path_real() %>%
-    fs::path_tidy() %>%
-    fs::path_split() %>%
-    .[[1]] %>%
-    append(dataset[[1]]) %>%
-    fs::path_join() %>%
-    fs::path_ext_remove() %>%
-    fs::path_ext_set(ext[[1]])
+  file <- create_path(directory, dataset[[1]], ext[[1]])
 
   date_modified <- as.Date(fs::file_info(file)$modification_time)
 
@@ -221,4 +253,3 @@ load_sas <- function(
   ) %>%
     preprocess()
 }
-

@@ -1,4 +1,10 @@
 ^coviData\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^scripts$
+^dev.*$
+^scripts.*$
+^codecov\.yml$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

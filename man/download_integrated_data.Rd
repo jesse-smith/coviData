@@ -7,48 +7,44 @@
 download_integrated_data(
   date = Sys.Date(),
   api_token = Sys.getenv("redcap_IDT_token"),
- 
-    directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/",
+  directory = paste0("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "Integrated data tool Case Interviews/data/"),
   new_file = paste0("integrated_data_", date, ".csv"),
-  convert = FALSE,
   force = FALSE
 )
 }
 \arguments{
-\item{date}{The date with which to name \code{new_file}}
+\item{date}{A \code{Date} indicating the date of the file to download}
 
-\item{api_token}{The API access token for the Integrated Data Tool REDcap
-project. This should be stored in a \emph{.Renviron} file; see
-\link{using_Renviron} for details.}
+\item{api_token}{The API token for accessing the Data for Regions REDcap
+project. This should be stored in an \emph{.Renviron} file; see
+\link{using-renviron} for details.}
 
-\item{directory}{A string specifying the directory in which to save the data;
-this should usually be left alone}
+\item{directory}{A string specifying the save directory; this should usually
+be left alone}
 
-\item{new_file}{A string specifying the file name to save the data under;
-this should always end in \emph{.csv} and should usually be left alone}
+\item{new_file}{A string specifying the save file name; this should always
+end in \emph{.csv} and should usually be left alone}
 
-\item{convert}{A logical indicating whether to open in Excel for conversion
-to \emph{.xlsx} format (or another file format)}
-
-\item{force}{A logical indicating whether to overwrite an existing file with
-the same date; the default is \code{FALSE} and should usually be left alone}
+\item{force}{A logical indicating whether to ignore any existing files
+matching \code{date} and \code{directory}}
 }
 \value{
-Invisibly returns \code{NULL}
+Invisibly returns the path to the new data file
 }
 \description{
 \code{download_integrated_data} connects to the Integrated Data Tool REDcap
 project via an API token and downloads the data currently available in the
-\emph{case interviews} report.
+\strong{case interviews} report.
 }
 \details{
 \code{download_integrated_data} downloads data as above and saves to the file
 directory and file specified in \code{directory} and \code{new_file} (by
 default, it saves to directory
-\code{V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data tool Case Interviews/}
-and file \code{integrated_data_YYYY-MM-DD.csv}.) Only change this if you're
-doing some custom analysis; by default, \link{load_integrated_data} will look
-here for data to import.
+\code{V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Integrated data
+tool Case Interviews/} and file \code{integrated_data_YYYY-MM-DD.csv}.) Only
+change this if you're doing some custom analysis; by default,
+\code{\link{load_integrated_data}} will look here for data to import.
 
 To use \code{download_integrated_data} you'll need an API access key for the
 associated REDcap project. Please contact
@@ -56,5 +52,5 @@ associated REDcap project. Please contact
 \email{umar.kabir@shelbycountytn.gov} for more information.
 
 Best practice is to save this API access token in a separate file; see
-\link{using_Renviron} for details.
+\link{using-renviron} for details.
 }
