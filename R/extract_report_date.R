@@ -10,6 +10,8 @@
 #'
 #' @return A `tibble` containing the data files paths, creation (birth) date,
 #'   and archive file paths for newly created archive data
+#'
+#' @export
 archive_report_date <- function(
   data_dir = path_create(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
@@ -126,6 +128,8 @@ to_report_date_fst <- function(path, birth_date, save_as) {
 #'   "inv_local_id"
 #'
 #' @return A `tibble` containing the `id` column and a `report_date` column
+#'
+#' @export
 coalesce_report_date <- function(
   archive_dir = path_create(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
@@ -248,7 +252,9 @@ reduce_fst_report_dates <- function(
 #'
 #' @param .from_file A file path to the NBS data with the desired specimen
 #'   collection dates; if only a directory is provided, the most recently
-#'   created NBS file download will be read in
+#'   created NBS file download will be read
+#'
+#' @export
 add_collection_date <- function(
   .data,
   .from_col = "specimen_coll_dt",
@@ -341,6 +347,8 @@ add_collection_date <- function(
 #' @param save_as The write path to the new `fst` file
 #'
 #' @return The input data (invisibly)
+#'
+#' @export
 save_report_date <- function(
   .data,
   save_as = path_create(
@@ -376,6 +384,8 @@ save_report_date <- function(
 #' @param path The path to a file created by `save_report_date()`
 #'
 #' @return An `fst_tbl` object
+#'
+#' @export
 load_report_date <- function(
   path = path_create(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
