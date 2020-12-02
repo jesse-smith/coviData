@@ -444,7 +444,7 @@ str_to_factor <- function(string, encoding = FALSE) {
   # Perform conversion without re-encoding
   if (encoding == FALSE) {
     string %>%
-      stringr::str_to_upper() %>%
+      stringr::str_to_title() %>%
       stringr::str_squish() %>%
       factor()
     # Perform conversion with re-encoding
@@ -452,7 +452,7 @@ str_to_factor <- function(string, encoding = FALSE) {
     if (encoding == TRUE) encoding <- "UTF-8"
     string %>%
       stringr::str_conv(encoding = encoding) %>%
-      stringr::str_to_upper() %>%
+      stringr::str_to_title() %>%
       stringr::str_squish() %>%
       factor()
   }
