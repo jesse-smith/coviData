@@ -58,13 +58,10 @@ Imports:
     tidylog (>= 1.0.2)
 Suggests: 
     covr,
-    RDCOMClient (>= 0.94.0),
     roxygen2,
     testthat
 RdMacros: 
     lifecycle
-Remotes:
-    url::http://www.omegahat.org/R
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
