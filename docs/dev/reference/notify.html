@@ -118,7 +118,7 @@ is installed on your machine and that you've already set up an account." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Send an Email Notification with Outlook</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/email.R'><code>R/email.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/notify.R'><code>R/notify.R</code></a></small>
     <div class="hidden name"><code>notify.Rd</code></div>
     </div>
 
@@ -127,14 +127,7 @@ is installed on your machine and that you've already set up an account." />
 is installed on your machine and that you've already set up an account.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>notify</span><span class='op'>(</span>
-  <span class='va'>to</span>,
-  <span class='va'>subject</span>,
-  body <span class='op'>=</span> <span class='cn'>NULL</span>,
-  cc <span class='op'>=</span> <span class='cn'>NULL</span>,
-  html <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  importance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Normal"</span>, <span class='st'>"Low"</span>, <span class='st'>"High"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>notify</span><span class='op'>(</span><span class='va'>to</span>, <span class='va'>subject</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, cc <span class='op'>=</span> <span class='cn'>NULL</span>, html <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,11 +153,6 @@ this will be parsed as HTML. Optional.</p></td>
       <th>html</th>
       <td><p>Should the <code>body</code> be treated as plain text or HTML? The default
 is plain text (<code>FALSE</code>).</p></td>
-    </tr>
-    <tr>
-      <th>importance</th>
-      <td><p>The importance (priority, etc) to attach to the email. The
-default is <code>"Normal"</code>; alternatives are <code>"Low"</code> or <code>"High"</code>.</p></td>
     </tr>
     </table>
 

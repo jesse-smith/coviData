@@ -24,12 +24,21 @@ read_dir %>%
   transmute(path, birth_date = as_date(birth_time)) %>%
   arrange(desc(birth_date)) %>%
   coalesce_dupes(birth_date, pre_sort = FALSE) %>%
-  mutate(save_as = path(data_dir, glue("nbs_data_{birth_date}.fst"))) ->
+  dplyr::mutate(
+    save_as = path_create(
+      data_dir,
+      paste0("nbs_data_", birth_date),
+      ext = "fst"
+    )
+  ) ->
 read_files
 
 data_dir %>%
-  dir_info() %>%
-  transmute(
+  dir_ls() %>%
+  fs::path_tidy() %>%
+  dplyr::as_tibble() %>%
+  dplyr::rename(path = value) %>%
+  dplyr::mutate(
     path,
     birth_date = path %>%
       path_file() %>%

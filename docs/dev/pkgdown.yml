@@ -1,8 +1,8 @@
-pandoc: 2.7.2
+pandoc: 2.11.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2020-11-17T22:23Z
+last_built: 2020-12-02T03:00Z
 urls:
   reference: https://jesse-smith.github.io/covidata//reference
   article: https://jesse-smith.github.io/covidata//articles

@@ -36,6 +36,11 @@ reference:
   contents:
     - covidata-build
     - covidata-cast
+- title: "Help Setting Up"
+  desc: >
+    Help pages for setting up your environment to work best with coviData
+  contents:
+    - using-renviron
 navbar:
   right:
   - icon: fa-github fa-lg

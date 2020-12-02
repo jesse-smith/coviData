@@ -6,8 +6,8 @@
 #' \emph{.Renviron} files provide a way to store and retrieve information.
 #'
 #' A \emph{.Renviron} file is a special file that you can use to store
-#' \code{link[base]{environment variables}}, which are just variables that are
-#' available using the \code{\link[base]{Sys.getenv}} function. They're
+#' \code{\link[base:EnvVar]{environment variables}}, which are just variables that are
+#' available using the \code{\link[base:Sys.getenv]{Sys.getenv()}} function. They're
 #' particularly useful for storing information that you don't want to leave
 #' your computer, like API keys. You can also store usernames and passwords in
 #' this file; it's better than entering them directly, but note that they
@@ -42,5 +42,5 @@
 #'
 #' @md
 #'
-#' @export
-using_Renviron <- function() NULL
+#' @name using-renviron
+NULL

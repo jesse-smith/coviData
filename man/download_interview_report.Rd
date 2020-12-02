@@ -10,28 +10,29 @@ download_interview_report(
   report_id,
   directory,
   new_file,
-  convert = FALSE,
   force = FALSE
 )
 }
 \arguments{
 \item{date}{A \code{Date} indicating the date of the file to download}
 
-\item{api_token}{The API token for the REDcap project to access. Ideally,
-this should be stored in Renviron and not in a script.}
+\item{api_token}{The API token for accessing the Data for Regions REDcap
+project. This should be stored in an \emph{.Renviron} file; see
+\link{using-renviron} for details.}
 
 \item{report_id}{The ID of the report to download}
 
-\item{directory}{A string indicating the directory to save the file in}
+\item{directory}{A string specifying the save directory; this should usually
+be left alone}
 
-\item{new_file}{A string indicating the name to save the file under}
+\item{new_file}{A string specifying the save file name; this should always
+end in \emph{.csv} and should usually be left alone}
 
-\item{convert}{A logical indicating whether the user would like to convert
-the file to another format. If so, the file will open in Excel after
-downloading.}
-
-\item{force}{A logical indicating whether to ignore existing files with
-the given date already in the directory}
+\item{force}{A logical indicating whether to ignore any existing files
+matching \code{date} and \code{directory}}
+}
+\value{
+Invisibly returns the path to the new data file
 }
 \description{
 \code{download_interview_report()} downloads a report from the Integrated Data

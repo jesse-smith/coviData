@@ -47,7 +47,10 @@
 
 
 <meta property="og:title" content="Coalesce Rows by Columns in Data Frame — coalesce_by_column" />
-<meta property="og:description" content="Coalesce Rows by Columns in Data Frame" />
+<meta property="og:description" content="coalesce_by_column() is the workhorse behind coalesce_dupes(); when
+combined with group_by() and
+summarize(), it allows coalescing of data
+frame rows." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -122,11 +125,22 @@
     </div>
 
     <div class="ref-description">
-    <p>Coalesce Rows by Columns in Data Frame</p>
+    <p><code>coalesce_by_column()</code> is the workhorse behind <code><a href='coalesce_dupes.html'>coalesce_dupes()</a></code>; when
+combined with <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code> and
+<code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize()</a></code>, it allows coalescing of data
+frame <em>rows</em>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>coalesce_by_column</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A grouped data frame</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

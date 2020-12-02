@@ -4,7 +4,7 @@
 \alias{coalesce_dupes}
 \title{Coalesce Information in Duplicate Rows}
 \usage{
-coalesce_dupes(data, ..., pre_sort = TRUE, post_sort = FALSE)
+coalesce_dupes(data, ..., pre_sort = FALSE, post_sort = FALSE)
 }
 \arguments{
 \item{data}{A data frame, data frame extension (e.g. a tibble), or a lazy
@@ -15,9 +15,13 @@ are multiple rows for a given combination of inputs, only the first row
 will be preserved. If omitted, simply calls \code{distinct()} with
 \code{.keep_all = TRUE}.}
 
-\item{sort}{A logical indicating whether to sort using the input variables.
-If no input variables are given, no sorting is performed, and this
-parameter is ignored.}
+\item{pre_sort}{A logical indicating whether to sort using the input
+variables prior to coalescing. If no input variables are given, no sorting
+is performed, and this parameter is ignored.}
+
+\item{post_sort}{A logical indicating whether to sort using the input
+variables after coalescing. If no input variables are given, no sorting
+is performed, and this parameter is ignored.}
 }
 \description{
 \code{coalesce_dupes()} sorts data, removes duplicates, and combines

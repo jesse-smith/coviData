@@ -135,7 +135,6 @@ project via an API token and downloads the data currently available in the
   directory <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
     <span class='st'>"Integrated data tool Case Interviews/data/"</span><span class='op'>)</span>,
   new_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"integrated_data_"</span>, <span class='va'>date</span>, <span class='st'>".csv"</span><span class='op'>)</span>,
-  convert <span class='op'>=</span> <span class='cn'>FALSE</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -144,39 +143,34 @@ project via an API token and downloads the data currently available in the
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>date</th>
-      <td><p>The date with which to name <code>new_file</code></p></td>
+      <td><p>A <code>Date</code> indicating the date of the file to download</p></td>
     </tr>
     <tr>
       <th>api_token</th>
-      <td><p>The API access token for the Integrated Data Tool REDcap
-project. This should be stored in a <em>.Renviron</em> file; see
-<a href='using_Renviron.html'>using_Renviron</a> for details.</p></td>
+      <td><p>The API token for accessing the Data for Regions REDcap
+project. This should be stored in an <em>.Renviron</em> file; see
+<a href='using-renviron.html'>using-renviron</a> for details.</p></td>
     </tr>
     <tr>
       <th>directory</th>
-      <td><p>A string specifying the directory in which to save the data;
-this should usually be left alone</p></td>
+      <td><p>A string specifying the save directory; this should usually
+be left alone</p></td>
     </tr>
     <tr>
       <th>new_file</th>
-      <td><p>A string specifying the file name to save the data under;
-this should always end in <em>.csv</em> and should usually be left alone</p></td>
-    </tr>
-    <tr>
-      <th>convert</th>
-      <td><p>A logical indicating whether to open in Excel for conversion
-to <em>.xlsx</em> format (or another file format)</p></td>
+      <td><p>A string specifying the save file name; this should always
+end in <em>.csv</em> and should usually be left alone</p></td>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>A logical indicating whether to overwrite an existing file with
-the same date; the default is <code>FALSE</code> and should usually be left alone</p></td>
+      <td><p>A logical indicating whether to ignore any existing files
+matching <code>date</code> and <code>directory</code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns <code>NULL</code></p>
+    <p>Invisibly returns the path to the new data file</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>download_integrated_data</code> downloads data as above and saves to the file
@@ -191,7 +185,7 @@ associated REDcap project. Please contact
 <a href='mailto:jesse.smith@shelbycountytn.gov'>jesse.smith@shelbycountytn.gov</a> or
 <a href='mailto:umar.kabir@shelbycountytn.gov'>umar.kabir@shelbycountytn.gov</a> for more information.</p>
 <p>Best practice is to save this API access token in a separate file; see
-<a href='using_Renviron.html'>using_Renviron</a> for details.</p>
+<a href='using-renviron.html'>using-renviron</a> for details.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

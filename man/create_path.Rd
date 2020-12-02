@@ -21,6 +21,15 @@ included in \code{file_name} or \code{directory}}
 An \code{fs_path}, which is a character vector with additional attributes
 }
 \description{
+\lifecycle{soft-deprecated}
+
 \code{create_path()} combines a directory, filename, and file extension into
 an expanded and tidied path.
+}
+\details{
+\code{create_path()} is now soft-deprecated in favor of
+\code{\link[coviData:path_create]{path_create()}}, which is a re-implementation that
+follows fs naming conventions, allows both \strong{User}- and \strong{R}-
+based home directories, and relies on \code{\link[fs:path]{path()}} to
+combine arbitrary path components given in \code{...}.
 }

@@ -119,7 +119,7 @@ files is read_excel." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read a Tabular Data File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/read.R'><code>R/read.R</code></a></small>
     <div class="hidden name"><code>read_file.Rd</code></div>
     </div>
 
@@ -155,7 +155,7 @@ determines the file type from the file extension.</p></td>
       <td><p>Should <code>read_file()</code> attempt to guess the data type of
 the columns after reading?</p>
 <p><em>Note: The default is <code>TRUE</code> for compatibility; want to transition to
-<code>vroom::vroom()</code> as backend and swap default to <code>FALSE</code>.</em></p></td>
+<code><a href='https://vroom.r-lib.org/reference/vroom.html'>vroom::vroom()</a></code> as backend and swap default to <code>FALSE</code>.</em></p></td>
     </tr>
     <tr>
       <th>msg</th>

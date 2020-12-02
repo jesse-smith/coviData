@@ -6,8 +6,14 @@
 \usage{
 coalesce_by_column(x)
 }
+\arguments{
+\item{x}{A grouped data frame}
+}
 \description{
-Coalesce Rows by Columns in Data Frame
+\code{coalesce_by_column()} is the workhorse behind \code{coalesce_dupes()}; when
+combined with \code{\link[dplyr:group_by]{group_by()}} and
+\code{\link[dplyr:summarise]{summarize()}}, it allows coalescing of data
+frame \emph{rows}.
 }
 \references{
 See Jon Harmon's solution to

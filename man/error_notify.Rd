@@ -35,8 +35,8 @@ The input error condition, with a backtrace
 \description{
 \code{error_notify()} generates an error handler that sends an email notification
 when an expression generates an error. It relies on
-\code{\link[notify]{notify()}} and can optionally avoid terminating the
-larger expression it was called from. This is useful for running scripts with
-independent components.
+\code{\link[coviData:notify]{notify()}} and can optionally avoid terminating
+the larger expression it was called from. This is useful for running scripts
+with independent components.
 }
 \keyword{internal}

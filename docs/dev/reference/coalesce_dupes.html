@@ -127,7 +127,7 @@ information in duplicate rows." />
 information in duplicate rows.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>TRUE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>coalesce_dupes</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span>, pre_sort <span class='op'>=</span> <span class='cn'>FALSE</span>, post_sort <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,10 +145,16 @@ will be preserved. If omitted, simply calls <code>distinct()</code> with
 <code>.keep_all = TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>sort</th>
-      <td><p>A logical indicating whether to sort using the input variables.
-If no input variables are given, no sorting is performed, and this
-parameter is ignored.</p></td>
+      <th>pre_sort</th>
+      <td><p>A logical indicating whether to sort using the input
+variables prior to coalescing. If no input variables are given, no sorting
+is performed, and this parameter is ignored.</p></td>
+    </tr>
+    <tr>
+      <th>post_sort</th>
+      <td><p>A logical indicating whether to sort using the input
+variables after coalescing. If no input variables are given, no sorting
+is performed, and this parameter is ignored.</p></td>
     </tr>
     </table>
 
@@ -157,7 +163,7 @@ parameter is ignored.</p></td>
     <p><code>coalesce_dupes()</code> can be thought of as an enhanced version of
 <code><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></code>. Like <code>distinct()</code>, <code>coalesce_dupes()</code>
 removes duplicates from a dataset based on a provided set of variables.
-Unlike <code>distinct()</code>, it sorts the data on those variables by default using
+Unlike <code>distinct()</code>, it sorts the data on those variables (by default) using
 <code><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></code>. It also tries to replace missing values with
 the first non-missing values in any duplicate rows using a modification of
 <code><a href='https://dplyr.tidyverse.org/reference/coalesce.html'>coalesce</a></code>.</p>

@@ -1,29 +1,31 @@
 #' Download a File from the Data for Regions REDcap Project
 #'
-#' `download_redcap_file()` downloads a file posted on the Data for Regions
-#' project. You'll need API access to the project (and an API token for it) to
-#' use this function.
+#' `download_data_for_regions()` is the workhorse behind the
+#' `download_*_snapshot()` functions.
 #'
 #' @param date A \code{Date} indicating the date of the file to download
 #'
-#' @param api_token The API token for the REDcap project to access. Ideally,
-#'   this should be stored in Renviron and not in a script.
+#' @param api_token The API token for accessing the Data for Regions REDcap
+#'   project. This should be stored in an \emph{.Renviron} file; see
+#'   \link{using-renviron} for details.
 #'
 #' @param redcap_file A string indicating the name of the file to download from
 #'   REDcap
 #'
-#' @param directory A string indicating the directory to save the file in
+#' @param directory A string specifying the save directory; this should usually
+#'   be left alone
 #'
-#' @param new_file A string indicating the name to save the file under
+#' @param new_file A string specifying the save file name; this should always
+#'   end in \emph{.csv} and should usually be left alone
 #'
-#' @param convert A logical indicating whether the user would like to convert
-#'   the file to another format. If so, the file will open in Excel after
-#'   downloading.
+#' @param force A logical indicating whether to ignore any existing files
+#'   matching `date` and `directory`
 #'
-#' @param force A logical indicating whether to ignore existing files with
-#'   the given date already in the directory
+#' @return Invisibly returns the path to the new data file
 #'
 #' @keywords internal
+#'
+#' @export
 download_data_for_regions <- function(
   date = Sys.Date(),
   api_token,
@@ -170,6 +172,8 @@ download_data_for_regions <- function(
     new_path = file_new
   )
   message("Done.")
+
+  invisible(path_create(directory, new_file))
 }
 
 #' Download a Report from the Integrated Data Tool REDcap Project
@@ -178,7 +182,7 @@ download_data_for_regions <- function(
 #' Tool project. You'll need API access to the project (and an API token for it)
 #' to use this function.
 #'
-#' @inheritParams download_data_for_regions
+#' @inherit download_data_for_regions params return
 #'
 #' @param report_id The ID of the report to download
 #'
@@ -280,6 +284,8 @@ download_interview_report <- function(
     new_path = file_new
   )
   message("Done.")
+
+  invisible(path_create(directory, new_file))
 }
 
 #' Download Lab File from Serv-U

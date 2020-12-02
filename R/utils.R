@@ -121,18 +121,22 @@ coalesce_across <- function(.cols) {
 #'   will be preserved. If omitted, simply calls `distinct()` with
 #'   `.keep_all = TRUE`.
 #'
-#' @param sort A logical indicating whether to sort using the input variables.
-#'   If no input variables are given, no sorting is performed, and this
-#'   parameter is ignored.
+#' @param pre_sort A logical indicating whether to sort using the input
+#'   variables prior to coalescing. If no input variables are given, no sorting
+#'   is performed, and this parameter is ignored.
+#'
+#' @param post_sort A logical indicating whether to sort using the input
+#'   variables after coalescing. If no input variables are given, no sorting
+#'   is performed, and this parameter is ignored.
 #'
 #' @export
-coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
+coalesce_dupes <- function(data, ..., pre_sort = FALSE, post_sort = FALSE) {
 
   # If no variables are provided, just call distinct() and exit
   if (rlang::dots_n(...) == 0) {
     message(
       paste0(
-        "No variables provided; calling dplyr::distinct. ",
+        "No variables provided; calling `dplyr::distinct()`. ",
         "If your data are large, this may take a while..."
       ),
       appendLF = FALSE
@@ -150,6 +154,8 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
     dplyr::group_by(...) %>%
     dplyr::add_count() ->
     grouped_data
+
+  remove(data)
 
   # Handle groups with duplicates
   grouped_data %>%
@@ -177,6 +183,13 @@ coalesce_dupes <- function(data, ..., pre_sort = TRUE, post_sort = FALSE) {
 }
 
 #' Coalesce Rows by Columns in Data Frame
+#'
+#' `coalesce_by_column()` is the workhorse behind `coalesce_dupes()`; when
+#' combined with \code{\link[dplyr:group_by]{group_by()}} and
+#' \code{\link[dplyr:summarise]{summarize()}}, it allows coalescing of data
+#' frame \emph{rows}.
+#'
+#' @param x A grouped data frame
 #'
 #' @references
 #'   See Jon Harmon's solution to
@@ -276,7 +289,7 @@ cols_exist <- function(.data, ..., action = rlang::abort) {
     msg <- paste0(
       "\n",
       "No columns were found that match the following selections:\n",
-      "* ", glue::glue_collapse(cols_missing, sep = "\n * "), "\n\n",
+      rlang::format_error_bullets(cols_missing), "\n\n",
       "Did you misspecify a column selection, or were the data not what you ",
       "expected?\n"
     )
@@ -918,14 +931,18 @@ is_open <- function(path) {
 #' Create a Tidy Path from Directory + File + Extension
 #'
 #' @description
-#' \lifecycle{questioning}
+#' \lifecycle{soft-deprecated}
 #'
 #' `create_path()` combines a directory, filename, and file extension into
 #' an expanded and tidied path.
 #'
 #' @details
-#' `create_path()` is now in the questioning stage. It will likely be deprecated
-#' in favor of \code{\link[fs:path]{path()}} in the future.
+#' `create_path()` is now soft-deprecated in favor of
+#' \code{\link[coviData:path_create]{path_create()}}, which is a re-implementation that
+#' follows fs naming conventions, allows both \strong{User}- and \strong{R}-
+#' based home directories, and relies on \code{\link[fs:path]{path()}} to
+#' combine arbitrary path components given in `...`.
+#'
 #'
 #' @param directory The path to a directory; optionally, the full path can be
 #'   supplied here, in which case `create_path()` will simply expand and
@@ -946,21 +963,85 @@ create_path <- function(directory, file_name = NULL, ext = NULL) {
     fs::path_norm() %>%
     fs::path_tidy() %>%
     fs::path_split() %>%
-    .[[1]] %>%
+    extract2(1) %>%
     append(file_name) %>%
     fs::path_join() ->
     new_path
 
   if (!rlang::is_empty(ext)) {
-    ext <- stringr::str_remove_all(ext[[1]], pattern = "[.]")
+    ext <- stringr::str_remove(ext[[1]], pattern = "[.]")
 
     new_path %>%
       fs::path_ext_remove() %>%
       fs::path_ext_set(ext = ext) %>%
       fs::path_tidy()
   } else {
-    fs::path_tidy(new_path)
+    new_path %>% fs::path_tidy()
   }
+}
+
+#' Clean a Path with the fs Package
+#'
+#' `path_clean()` is wrapper around \code{\link[fs:path_tidy]{path_tidy()}},
+#' \code{\link[fs:path_expand_r]{path_expand_r()}}
+#' (or \code{\link[fs:path_expand]{path_expand()}}), and
+#' \code{\link[fs:path_norm]{path_norm()}}. It tidies, then expands, then
+#' normalizes the given path(s).
+#'
+#' @inheritParams fs::path_tidy
+#'
+#' @param home The home directory definition to use when expanding a path. The
+#'   default is to use \strong{R}'s definition, but the system definition of the
+#'   user's home directory can also be used. These are equivalent to calling
+#'   `path_expand_r()` or `path_expand()`, respectively.
+#'
+#' @return The cleaned path(s) in an `fs_path` object, which is a character
+#'   vector that also has class `fs_path`
+path_clean <- function(path, home = c("r", "user")) {
+
+  home %<>%
+    stringr::str_to_lower() %>%
+    stringr::str_remove_all("[ \n\t\r]")
+
+  home <- rlang::arg_match(home)[[1]]
+
+  if (home == "r") {
+    fs_path_expand <- fs::path_expand_r
+  } else {
+    fs_path_expand <- fs::path_expand
+  }
+
+  path %>%
+    fs::path_tidy() %>%
+    fs_path_expand() %>%
+    fs::path_norm()
+
+}
+
+#' Create a Path from Components
+#'
+#' `path_create()` creates a cleaned path from the components specified in `...`
+#' and an optional file extension (`ext`). The path is automatically expanded
+#' using either the \strong{R} or system definition of the home directory.
+#'
+#' @inheritParams fs::path
+#'
+#' @inheritParams path_clean
+#'
+#' @return The combined and cleaned path in an `fs_path` object, which is a
+#'   character vector that also has class `fs_path`
+path_create <- function(..., ext = NULL, home = c("r", "user")) {
+
+  if (rlang::is_null(ext)) {
+    ext <- ""
+  } else {
+    ext %<>%
+      stringr::str_remove_all("[ \n\t\r]") %>%
+      stringr::str_remove("^[.]")
+  }
+
+  fs::path(..., ext = ext) %>% path_clean(home = home)
+
 }
 
 #' Remove Files from Directory Based on Date Created

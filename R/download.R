@@ -18,27 +18,9 @@
 #' \email{umar.kabir@@shelbycountytn.gov} for more information.
 #'
 #' Best practice is to save this API access token in a separate file; see
-#' \link{using_Renviron} for details.
+#' \link{using-renviron} for details.
 #'
-#' @param date The date with which to name \code{new_file}
-#'
-#' @param api_token The API access token for the Integrated Data Tool REDcap
-#'   project. This should be stored in a \emph{.Renviron} file; see
-#'   \link{using_Renviron} for details.
-#'
-#' @param directory A string specifying the directory in which to save the data;
-#' this should usually be left alone
-#'
-#' @param new_file A string specifying the file name to save the data under;
-#' this should always end in \emph{.csv} and should usually be left alone
-#'
-#' @param convert A logical indicating whether to open in Excel for conversion
-#'   to \emph{.xlsx} format (or another file format)
-#'
-#' @param force A logical indicating whether to overwrite an existing file with
-#'   the same date; the default is \code{FALSE} and should usually be left alone
-#'
-#' @return Invisibly returns \code{NULL}
+#' @inherit download_interview_report params return
 #'
 #' @export
 download_integrated_data <- function(
@@ -49,7 +31,6 @@ download_integrated_data <- function(
      "Integrated data tool Case Interviews/data/"
   ),
   new_file = paste0("integrated_data_", date, ".csv"),
-  convert = FALSE,
   force = FALSE
 ) {
   message("Starting Integrated Data download...\n")
@@ -59,15 +40,46 @@ download_integrated_data <- function(
     report_id = "12314",
     directory = directory,
     new_file = new_file,
-    convert = convert,
     force = force
   )
   message("Finished Integrated Data download.")
+
+  invisible(path_create(directory, new_file))
 }
 
-#' Download Snapshot of NBS Data Posted on REDcap
+#' Download a File from the Data for Regions REDcap Project
 #'
-#' @inheritParams download_data_for_regions
+#' @description
+#' These functions downloads a file posted on the Data for Regions
+#' project. You'll need API access to the project (and an API token for it) to
+#' use this function.
+#'
+#' `download_nbs_snapshot()` downloads the current snapshot of NBS
+#' investigation data (if posted).
+#'
+#' `download_pcr_snapshot()` downloads the current snapshot of PCR testing data
+#' (if posted).
+#'
+#' `download_antigen_snapshot()` downloads the current snapshot of antigen
+#' testing data (if posted).
+#'
+#' `download_serology_snapshot()` downloads the current snapshot of serology
+#' testing data (if posted).
+#'
+#' @inherit download_data_for_regions params return
+#'
+#' @aliases download_nbs_snapshot download_pcr_snapshot
+#'   download_antigen_snapshot download_serology_snapshot
+#'
+#' @md
+#'
+#' @name data-for-regions-snapshots
+#'
+#' @aliases download_nbs_snapshot download_pcr_snapshot
+#'   download_antigen_snapshot download_serology_snapshot
+NULL
+
+#' @rdname data-for-regions-snapshots
 #'
 #' @export
 download_nbs_snapshot <- function(
@@ -79,7 +91,6 @@ download_nbs_snapshot <- function(
     "Sandbox data pull Final/"
   ),
   new_file = paste0(date, " Final Data Pull.csv"),
-  convert = FALSE,
   force = FALSE
 ) {
   message("Starting NBS snapshot download...\n")
@@ -89,13 +100,14 @@ download_nbs_snapshot <- function(
     redcap_file = redcap_file,
     directory = directory,
     new_file = new_file,
-    convert = convert,
     force = force
   )
   message("\nFinished NBS snapshot download.")
+
+  invisible(path_create(directory, new_file))
 }
 
-#' Download Snapshot of NBS PCR Test Data Posted on REDcap
+#' @rdname data-for-regions-snapshots
 #'
 #' @export
 download_pcr_snapshot <- function(
@@ -104,7 +116,6 @@ download_pcr_snapshot <- function(
   redcap_file = "lab_pcr",
   directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
   new_file = paste0("MSR - All PCRs_", format(Sys.Date(), "%m%d%Y"), ".csv"),
-  convert = FALSE,
   force = FALSE
 ) {
   message("Starting PCR snapshot download...\n")
@@ -114,15 +125,15 @@ download_pcr_snapshot <- function(
     redcap_file = redcap_file,
     directory = directory,
     new_file = new_file,
-    convert = convert,
     force = force
   )
   message("\nFinished PCR snapshot download.")
 
-  invisible(NULL)
+  invisible(path_create(directory, new_file))
 }
 
-#' Download Snapshot of NBS PCR Test Data Posted on REDcap
+
+#' @rdname data-for-regions-snapshots
 #'
 #' @export
 download_antigen_snapshot <- function(
@@ -137,7 +148,6 @@ download_antigen_snapshot <- function(
     format(Sys.Date(), "%m%d%Y"),
     ".csv"
   ),
-  convert = FALSE,
   force = FALSE
 ) {
   message("Starting antigen snapshot download...\n")
@@ -147,13 +157,14 @@ download_antigen_snapshot <- function(
     redcap_file = redcap_file,
     directory = directory,
     new_file = new_file,
-    convert = convert,
     force = force
   )
   message("\nFinished antigen snapshot download.")
+
+  invisible(path_create(directory, new_file))
 }
 
-#' Download Snapshot of NBS PCR Test Data Posted on REDcap
+#' @rdname data-for-regions-snapshots
 #'
 #' @export
 download_serology_snapshot <- function(
@@ -168,7 +179,6 @@ download_serology_snapshot <- function(
     format(Sys.Date(), "%m%d%Y"),
     ".csv"
   ),
-  convert = FALSE,
   force = FALSE
 ) {
   message("Starting serology snapshot download...\n")
@@ -178,10 +188,11 @@ download_serology_snapshot <- function(
     redcap_file = redcap_file,
     directory = directory,
     new_file = new_file,
-    convert = convert,
     force = force
   )
   message("\nFinished serology snapshot download.")
+
+  invisible(path_create(directory, new_file))
 }
 
 #' Download AEL File from Serv-U SFTP Site

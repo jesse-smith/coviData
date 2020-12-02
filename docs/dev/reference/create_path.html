@@ -47,7 +47,8 @@
 
 
 <meta property="og:title" content="Create a Tidy Path from Directory + File + Extension — create_path" />
-<meta property="og:description" content="create_path() combines a directory, filename, and file extension into
+<meta property="og:description" content="
+create_path() combines a directory, filename, and file extension into
 an expanded and tidied path." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
@@ -123,7 +124,8 @@ an expanded and tidied path." />
     </div>
 
     <div class="ref-description">
-    <p><code>create_path()</code> combines a directory, filename, and file extension into
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
+<p><code>create_path()</code> combines a directory, filename, and file extension into
 an expanded and tidied path.</p>
     </div>
 
@@ -153,6 +155,13 @@ included in <code>file_name</code> or <code>directory</code></p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An <code>fs_path</code>, which is a character vector with additional attributes</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>create_path()</code> is now soft-deprecated in favor of
+<code><a href='path_create.html'>path_create()</a></code>, which is a re-implementation that
+follows fs naming conventions, allows both <strong>User</strong>- and <strong>R</strong>-
+based home directories, and relies on <code><a href='http://fs.r-lib.org/reference/path.html'>path()</a></code> to
+combine arbitrary path components given in <code>...</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

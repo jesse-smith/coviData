@@ -13,9 +13,12 @@ make human input easy when creativity is needed and difficult when consistency
 is the priority.
 
 ## Installation
+
+You can install the development version of the package using devtools:
+
 ``` r
-install.packages("devtools")
-devtools::install_github("https://github.com/jesse-smith/coviData")
+# install.packages("devtools")
+devtools::install_github("jesse-smith/coviData")
 ```
 
 ## Code of Conduct
