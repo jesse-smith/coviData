@@ -23,7 +23,7 @@ to use as an ID variable}
 
 \item{.from_file}{A file path to the NBS data with the desired specimen
 collection dates; if only a directory is provided, the most recently
-created NBS file download will be read in}
+created NBS file download will be read}
 }
 \description{
 \code{add_collection_date()} reads the specimen collection date column from an
