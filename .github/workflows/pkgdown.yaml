@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE, repos = c(getOptions("repos"), "http://www.omegahat.org/R"))
+          remotes::install_deps()
           install.packages("pkgdown", type = "binary")
         shell: Rscript {0}
 
