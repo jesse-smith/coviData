@@ -58,7 +58,6 @@ Imports:
     tidylog (>= 1.0.2)
 Suggests: 
     covr,
-    RDCOMClient (>= 0.94.0),
     roxygen2,
     testthat
 RdMacros: 
