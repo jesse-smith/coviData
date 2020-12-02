@@ -24,3 +24,4 @@ Sys.sleep(3) # Give R enough time to delete temporary files (3 seconds)
 
 # Check AEL as last step
 check_ael()
+
