@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join Report Dates from fst Files — reduce_fst_report_dates • coviData</title>
+<title>Check Update Date in Data for Regions REDcap Project — check_date_updated • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,10 @@
 
 
 
-<meta property="og:title" content="Join Report Dates from fst Files — reduce_fst_report_dates" />
-<meta property="og:description" content="reduce_fst_report_dates() is the workhorse of coalesce_report_date(). It
-performs the reduce() operations that sequentially convert fst objects to
-tibbles, left join the result, and coalesce the report_date columns in each
-to a single column. The column from .next gets preference in the
-coalesce() operation." />
+<meta property="og:title" content="Check Update Date in Data for Regions REDcap Project — check_date_updated" />
+<meta property="og:description" content="check_date_updated() checks whether the supplied date
+(today, by default) matches the date_updated record for the specified
+region in the Data for Regions REDcap project." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,48 +118,63 @@ coalesce() operation." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join Report Dates from <code>fst</code> Files</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/report_date.R'><code>R/report_date.R</code></a></small>
-    <div class="hidden name"><code>reduce_fst_report_dates.Rd</code></div>
+    <h1>Check Update Date in Data for Regions REDcap Project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/download_generic.R'><code>R/download_generic.R</code></a></small>
+    <div class="hidden name"><code>check_date_updated.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>reduce_fst_report_dates()</code> is the workhorse of <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code>. It
-performs the <code>reduce()</code> operations that sequentially convert fst objects to
-tibbles, left join the result, and coalesce the <code>report_date</code> columns in each
-to a single column. The column from <code>.next</code> gets preference in the
-<code>coalesce()</code> operation.</p>
+    <p><code>check_date_updated()</code> checks whether the supplied <code>date</code>
+(today, by default) matches the <code>date_updated</code> record for the specified
+region in the Data for Regions REDcap project.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reduce_fst_report_dates</span><span class='op'>(</span><span class='va'>.accumulated</span>, <span class='va'>.next</span>, <span class='va'>.by</span>, .pb <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>check_date_updated</span><span class='op'>(</span>
+  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
+  api_token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"redcap_DFR_token"</span><span class='op'>)</span>,
+  region <span class='op'>=</span> <span class='st'>"MSR"</span>,
+  date_updated <span class='op'>=</span> <span class='st'>"date_updated"</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.accumulated</th>
-      <td><p>The accumulated results from <code>reduce()</code></p></td>
+      <th>date</th>
+      <td><p>The date to check against; defaults to <code><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date()</a></code>, which is
+probably what you want</p></td>
     </tr>
     <tr>
-      <th>.next</th>
-      <td><p>The next data set to reduce</p></td>
+      <th>api_token</th>
+      <td><p>The API token for accessing the Data for Regions REDcap
+project. This should be stored in an <em>.Renviron</em> file; see
+<a href='using-renviron.html'>using-renviron</a> for details.</p></td>
     </tr>
     <tr>
-      <th>.by</th>
-      <td><p>The name of the column to use when joining data; defaults to
-"inv_local_id"</p></td>
+      <th>region</th>
+      <td><p>The region to check for; exists to aid internal implementation
+and should probably not be changed from default</p></td>
     </tr>
     <tr>
-      <th>.pb</th>
-      <td><p>An optional progress bar object created by
-<code><a href='https://rdrr.io/pkg/progress/man/progress_bar.html'>progress_bar</a></code>; will be incremented after each
-reduction step</p></td>
+      <th>date_updated</th>
+      <td><p>The name of the record containing the date updated in
+REDcap; this exists to aid internal implementation and should probably not
+be changed from default</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>By default, warnings are issued if date does not match, and a
+message is issued if it does; should these be silenced?</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The reduced and coalesced data as a <code>tibble</code></p>
+    <p><code>TRUE</code> if dates match, <code>FALSE</code> otherwise</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='data-for-regions-snapshots.html'>data-for-regions-snapshots</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
