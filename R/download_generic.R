@@ -358,3 +358,82 @@ download_servu <- function(
     invisible(NULL)
   }
 }
+
+#' Check Update Date in Data for Regions REDcap Project
+#'
+#' `check_date_updated()` checks whether the supplied `date`
+#' (today, by default) matches the `date_updated` record for the specified
+#' region in the Data for Regions REDcap project.
+#'
+#' @inheritParams download_data_for_regions
+#'
+#' @param date The date to check against; defaults to `Sys.Date()`, which is
+#'   probably what you want
+#'
+#' @param region The region to check for; exists to aid internal implementation
+#'   and should probably not be changed from default
+#'
+#' @param date_updated The name of the record containing the date updated in
+#'   REDcap; this exists to aid internal implementation and should probably not
+#'   be changed from default
+#'
+#' @param quiet By default, warnings are issued if date does not match, and a
+#'   message is issued if it does; should these be silenced?
+#'
+#' @return `TRUE` if dates match, `FALSE` otherwise
+#'
+#' @seealso \code{\link{data-for-regions-snapshots}}
+#'
+#' @export
+check_date_updated <- function(
+  date = Sys.Date(),
+  api_token = Sys.getenv("redcap_DFR_token"),
+  region = "MSR",
+  date_updated = "date_updated",
+  quiet = FALSE
+) {
+  # URL base for API
+  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
+
+  # Create request params for REDcap update date
+  api_date_params <- list(
+    token        = api_token,
+    content      = "record",
+    format       = "json",
+    type         = "flat",
+    records      = region,
+    fields       = date_updated,
+    returnFormat = "json"
+  )
+
+  # Get date_updated
+  httr::POST(api_uri, body = api_date_params) %>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON() %>%
+    purrr::as_vector() %>%
+    lubridate::as_date() ->
+    date_updated
+
+  # Make sure that date_updated is at least as current as input date
+
+  not_yet_warning <- paste0(
+    "REDcap does not yet have data for ",
+    date, ". Please check back later."
+  )
+
+  too_late_warning <- paste0(
+    "REDcap's update date is more recent than the date specified in 'date'. ",
+    "To download REDcap's most recent data, please re-run with",
+    "'date == as.Date(", date_updated, ")'."
+  )
+  if (!quiet) {
+    purrr::when(
+      date_updated,
+      . < date ~ rlang::warn(not_yet_warning, class = "warning_not_yet"),
+      . > date ~ rlang::warn(too_late_warning, class = "warning_too_late"),
+      ~ rlang::inform(paste0("Data available for ", date))
+    )
+  }
+
+  if (date_updated == date) TRUE else FALSE
+}
