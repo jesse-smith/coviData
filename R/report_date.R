@@ -26,6 +26,7 @@ archive_report_date <- function(
   # Define global variables for `path`, `birth_date`, and
 
   # Get data files
+  rlang::inform("Getting file info...")
   data_dir %>%
     path_clean() %>%
     fs::dir_info() %>%
@@ -46,6 +47,7 @@ archive_report_date <- function(
   data_files
 
   # Get already archived files
+  rlang::inform("Checking archive for existing data...")
   archive_dir %>%
     path_clean() %>%
     fs::dir_ls() %>%
@@ -66,8 +68,7 @@ archive_report_date <- function(
   if (vec_is_empty(new_files)) {
 
     # Do nothing if no new files
-    rlang::inform("No new data to archive")
-    invisible(new_files)
+    rlang::inform("No new data to archive.")
 
   } else {
 
@@ -75,12 +76,14 @@ archive_report_date <- function(
     remove(data_files, archive_files)
 
     # Archive new files
+    rlang::inform("Archiving new data...")
     new_files %>%
       purrr::transpose() %>%
       purrr::walk(~ to_report_date_fst(.x$path, .x$birth_date, .x$save_as))
-
-    invisible(new_files)
+    rlang::inform("Done.")
   }
+
+  invisible(new_files)
 
 }
 
@@ -139,6 +142,7 @@ coalesce_report_date <- function(
 ) {
 
   # Get files
+  rlang::inform("Reading archived data...")
   archive_dir %>%
     path_clean() %>%
     fs::dir_ls() %>%
@@ -150,6 +154,17 @@ coalesce_report_date <- function(
         stringr::str_detect(pattern = "^nbs_data_.*[.]fst$")
     ) ->
   archive_files
+
+  # Create progress bars if used in interactive session
+  if (interactive()) {
+    pb_reduce <- progress::progress_bar$new(
+      format = paste0(":percent [:bar] Estimated Time Remaining: :eta"),
+      total = vec_size(archive_files) - 1,
+      show_after = 0
+    )
+  } else {
+    pb_reduce <- NULL
+  }
 
   # Read fst datasets
   archive_files %>%
@@ -168,29 +183,19 @@ coalesce_report_date <- function(
 
   remove(archive_dir, archive_files)
 
-  # Create progress bar if used in interactive session
-  if (interactive()) {
-    pb <- progress::progress_bar$new(
-      format = paste0(
-        "Coalescing Report Dates :percent ",
-        "[:bar] Estimated Time Remaining: :eta"
-      ),
-      total = vec_size(fst_data) - 1,
-      show_after = 0
-    )
-  } else {
-      pb <- NULL
-  }
-
   id <- rlang::ensym(id)
 
   # Coalesce report dates by file
 
+  rlang::inform("Coalescing report dates...")
+  if (interactive()) pb_reduce$tick(0)
+
   fst_data %>%
-    purrr::reduce(reduce_fst_report_dates, .by = id, .pb = pb) %>%
+    purrr::reduce(reduce_fst_report_dates, .by = id, .pb = pb_reduce) %>%
     dplyr::mutate(report_date = lubridate::as_date(report_date)) %>%
     dplyr::arrange(dplyr::desc(report_date)) %>%
-    set_attr("is_report_date", TRUE)
+    set_attr("is_report_date", TRUE) %>%
+    {rlang::inform("Done.")}
 
 }
 
@@ -209,8 +214,8 @@ coalesce_report_date <- function(
 #' @param .by The name of the column to use when joining data; defaults to
 #'   "inv_local_id"
 #' @param .pb An optional progress bar object created by
-#'   \code{\link[progress:progress_bar]{progress_bar()}}; will be incremented
-#'   after each reduction step
+#'   \code{\link[progress]{progress_bar}}; will be incremented after each
+#'   reduction step
 #'
 #' @return The reduced and coalesced data as a `tibble`
 #'
@@ -309,27 +314,25 @@ add_collection_date <- function(
   }
 
   # Read `.id_col` and `.from_col` from `.from_file`
+  rlang::inform("Reading `.from_file`...")
   collection_date <- vroom::vroom(
     .from_file,
     col_types = vroom::cols(.default = vroom::col_character())
   ) %>%
     janitor::clean_names() %>%
     dplyr::select(.id_col, .from_col) %>%
-    dplyr::mutate(
-      dplyr::across(
-        dplyr::matches(paste0("^", .from_col, "$")),
-        ~ lubridate::mdy(.x)
-      ),
-    ) %>%
+    standardize_dates() %>%
     dplyr::rename(collection_date = .from_col)
 
+  rlang::inform("Joining by `.id_col`...")
   tidylog::inner_join(
     .data,
     collection_date,
     by = .id_col,
     suffix = c(".data", ".collection_date")
   ) %>%
-    set_attr("is_report_date", TRUE)
+    set_attr("is_report_date", TRUE) %>%
+    {rlang::inform("Done.")}
 
 }
 
