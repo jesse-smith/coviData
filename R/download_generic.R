@@ -60,49 +60,17 @@ download_data_for_regions <- function(
   )
 
   # Step 2 - Make sure REDcap's data matches the date requested
+  on.exit(options(warn = options("warn")[[1]]), add = TRUE)
+
+  options(warn = 2)
+  check_date_updated()
+  options(warn = options("warn")[[1]])
+
+  # Step 3 - Download
 
   # URL base for API
   api_uri <- "https://redcap.health.tn.gov/redcap/api/"
 
-  # Create request params for REDcap update date
-  api_date_params <- list(
-    token        = api_token,
-    content      = "record",
-    format       = "json",
-    type         = "flat",
-    records      = region,
-    fields       = date_updated,
-    returnFormat = "json"
-  )
-
-  # Get date_updated
-  httr::POST(api_uri, body = api_date_params) %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON() %>%
-    purrr::as_vector() %>%
-    lubridate::as_date() ->
-    date_updated
-
-  # Make sure that date_updated is at least as current as input date
-  assertthat::assert_that(
-    date_updated >= date,
-    msg = paste0(
-      "REDcap does not yet have data for ",
-      Sys.Date(), ". Please check back later."
-    )
-  )
-
-  # Make sure that date_updated equals input date; otherwise it's older
-  assertthat::assert_that(
-    date_updated == date,
-    msg = paste0(
-      "REDcap's update date is more recent than the date specified in 'date'. ",
-      "To download REDcap's most recent data, please re-run with",
-      "'date == as.Date(", date_updated, ")'."
-    )
-  )
-
-  # Step 3 - Download
   message("Downloading REDcap file...")
 
   # Create params to get
