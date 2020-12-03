@@ -41,7 +41,5 @@ reference:
     Help pages for setting up your environment to work best with coviData
   contents:
     - using-renviron
-navbar:
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/jesse-smith/coviData
+development:
+  mode: unreleased
