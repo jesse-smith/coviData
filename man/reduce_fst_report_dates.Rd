@@ -15,8 +15,8 @@ reduce_fst_report_dates(.accumulated, .next, .by, .pb = NULL)
 "inv_local_id"}
 
 \item{.pb}{An optional progress bar object created by
-\code{\link[progress:progress_bar]{progress_bar()}}; will be incremented
-after each reduction step}
+\code{\link[progress]{progress_bar}}; will be incremented after each
+reduction step}
 }
 \value{
 The reduced and coalesced data as a \code{tibble}
