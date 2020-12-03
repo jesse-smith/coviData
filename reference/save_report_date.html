@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download REDcap File from TN REDcap — download_redcap_file • coviData</title>
+<title>Save Report Dates to fst File — save_report_date • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,13 @@
 
 
 
-<meta property="og:title" content="Download REDcap File from TN REDcap — download_redcap_file" />
-<meta property="og:description" content="Download REDcap File from TN REDcap" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="Save Report Dates to fst File — save_report_date" />
+<meta property="og:description" content="save_report_date() is a simple wrapper around
+write_fst() that saves reduced report date data
+to an fst file. It exists purely for convenience and semantic clarity; it
+can only be used with the output of coalesce_report_date() or
+add_collection_date()." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -116,63 +120,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download REDcap File from TN REDcap</h1>
-    
-    <div class="hidden name"><code>download_redcap_file.Rd</code></div>
+    <h1>Save Report Dates to <code>fst</code> File</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/report_date.R'><code>R/report_date.R</code></a></small>
+    <div class="hidden name"><code>save_report_date.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Download REDcap File from TN REDcap</p>
+    <p><code>save_report_date()</code> is a simple wrapper around
+<code><a href='http://www.fstpackage.org/reference/write_fst.html'>write_fst()</a></code> that saves reduced report date data
+to an <code>fst</code> file. It exists purely for convenience and semantic clarity; it
+can only be used with the output of <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code> or
+<code><a href='add_collection_date.html'>add_collection_date()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>download_redcap_file</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  <span class='va'>api_token</span>,
-  <span class='va'>redcap_file</span>,
-  <span class='va'>directory</span>,
-  <span class='va'>new_file</span>,
-  convert <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>
+    <pre class="usage"><span class='fu'>save_report_date</span><span class='op'>(</span>
+  <span class='va'>.data</span>,
+  save_as <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
+    <span class='st'>"Report Date Linelist/report_date_linelist"</span>, ext <span class='op'>=</span> <span class='st'>"fst"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>date</th>
-      <td><p>A <code>Date</code> indicating the date of the file to download</p></td>
+      <th>.data</th>
+      <td><p>A <code>tibble</code> returned from <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code> or
+<code><a href='add_collection_date.html'>add_collection_date()</a></code></p></td>
     </tr>
     <tr>
-      <th>api_token</th>
-      <td><p>The API token for the REDcap project to access. Ideally,
-this should be stored in Renviron and not in a script.</p></td>
-    </tr>
-    <tr>
-      <th>redcap_file</th>
-      <td><p>A string indicating the name of the file to download from
-REDcap</p></td>
-    </tr>
-    <tr>
-      <th>directory</th>
-      <td><p>A string indicating the directory to save the file in</p></td>
-    </tr>
-    <tr>
-      <th>new_file</th>
-      <td><p>A string indicating the name to save the file under</p></td>
-    </tr>
-    <tr>
-      <th>convert</th>
-      <td><p>A logical indicating whether the user would like to convert
-the file to another format. If so, the file will open in Excel after
-downloading.</p></td>
-    </tr>
-    <tr>
-      <th>force</th>
-      <td><p>A logical indicating whether to ignore existing files with
-the given date already in the directory</p></td>
+      <th>save_as</th>
+      <td><p>The write path to the new <code>fst</code> file</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The input data (invisibly)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

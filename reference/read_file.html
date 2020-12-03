@@ -50,7 +50,7 @@
 <meta property="og:description" content="read_file reads delimited- and Excel-type data files. The backend for
 delimited files is fread; the backend for Excel
 files is read_excel." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -119,7 +119,7 @@ files is read_excel." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read a Tabular Data File</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/read.R'><code>R/read.R</code></a></small>
     <div class="hidden name"><code>read_file.Rd</code></div>
     </div>
 
@@ -132,6 +132,7 @@ files is <code><a href='https://readxl.tidyverse.org/reference/read_excel.html'>
     <pre class="usage"><span class='fu'>read_file</span><span class='op'>(</span>
   <span class='va'>path</span>,
   file_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"auto"</span>, <span class='st'>"delimited"</span>, <span class='st'>"excel"</span><span class='op'>)</span>,
+  type_convert <span class='op'>=</span> <span class='cn'>TRUE</span>,
   msg <span class='op'>=</span> <span class='st'>"Reading file..."</span>
 <span class='op'>)</span></pre>
 
@@ -148,6 +149,13 @@ if necessary</p></td>
       <td><p>A string indicating the type of file to read; only
 "delimited" and "excel" files are supported. The default is "auto", which
 determines the file type from the file extension.</p></td>
+    </tr>
+    <tr>
+      <th>type_convert</th>
+      <td><p>Should <code>read_file()</code> attempt to guess the data type of
+the columns after reading?</p>
+<p><em>Note: The default is <code>TRUE</code> for compatibility; want to transition to
+<code><a href='https://vroom.r-lib.org/reference/vroom.html'>vroom::vroom()</a></code> as backend and swap default to <code>FALSE</code>.</em></p></td>
     </tr>
     <tr>
       <th>msg</th>

@@ -53,7 +53,7 @@ character; converts characters to UTF-8 encoding; replaces
 non-alphabetical symbols with a space; removes excess whitespace; and
 converts to the desired case (title, by default). It also informs the user if
 any characters could not be converted to UTF-8." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -122,7 +122,7 @@ any characters could not be converted to UTF-8." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Standardize String Formatting</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/standardize.R'><code>R/standardize.R</code></a></small>
     <div class="hidden name"><code>standardize_string.Rd</code></div>
     </div>
 
@@ -161,10 +161,10 @@ and may technically perform operations other than case conversion.</p></td>
     <p>A character vector of the same length as <code>string</code></p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This functions is primarily intended to standardize proper nouns (such as
-names of persons) into a common format; it doesn't necessarily <em>correct</em>
-the strings. For more general string standardization of this type, see
-the <a href='https://tazinho.github.io/snakecase/'>snakecase</a> package.</p>
+    <p>This function is primarily intended to <em>standardize</em> proper nouns (such
+as names of persons) into a common format; it doesn't necessarily
+<em>correct</em> the strings. For more general string standardization of this
+type, see the <a href='https://tazinho.github.io/snakecase/'>snakecase</a> package.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

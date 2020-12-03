@@ -52,9 +52,9 @@ of a data frame and returns the randomized data. This destroys all
 statistical information in the dataset, both univariate and multivariate.
 However, since the set of possible output values is the same as the input
 values, the minimum and maximum of numeric columns will be the same, as will
-the unique values of all columns if n is larger than the number of
-observations." />
-<meta property="og:image" content="/logo.png" />
+the unique values of all columns (if n is larger than the number of
+observations)." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -123,7 +123,7 @@ observations." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create Column-Wise Randomized Test Data for Non-Statistical Validation</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/randomize.R'><code>R/randomize.R</code></a></small>
     <div class="hidden name"><code>randomize.Rd</code></div>
     </div>
 
@@ -133,8 +133,8 @@ of a data frame and returns the randomized data. This destroys all
 statistical information in the dataset, both univariate and multivariate.
 However, since the set of possible output values is the same as the input
 values, the minimum and maximum of numeric columns will be the same, as will
-the unique values of all columns if <code>n</code> is larger than the number of
-observations.</p>
+the unique values of all columns (if <code>n</code> is larger than the number of
+observations).</p>
     </div>
 
     <pre class="usage"><span class='fu'>randomize</span><span class='op'>(</span><span class='va'>.data</span>, n <span class='op'>=</span> <span class='cn'>NULL</span>, .groups <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -173,12 +173,13 @@ all values from the input data appear at least once if <code>n</code> is greater
 equal to the number of observations in the data.</p>
 <p>A stratified version that restricts randomization to occur <em>within</em> strata
 can be obtained by grouping the data using
-<code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code> prior to calling <code>randomize()</code>. In
+<code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code> prior to calling <code>randomize()</code>. In
 this case, the relative proportions of the groups within the dataset remain
 the same; this allows the user to retain portions of the data's structure
 while destroying the remaining information.</p>
-<p>Note that the above is not an implementation of differential privacy and
-that, when groups are defined, information both <em>within and between</em> grouping
+<p>Note that the above only provides anonymity when the number of unique values for
+quasi-identifiers (within each group) is large and unique idenfiers are handled separately.
+Also note that when groups are defined, information both <em>within and between</em> grouping
 variables <em>will not be modified</em>.</p>
 
   </div>

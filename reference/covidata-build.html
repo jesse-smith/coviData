@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce Lists, Matrices, and More to Source-Specific Data Frames — as_covidata • coviData</title>
+<title>Build a Source-Specific Data Frame — covidata-build • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,11 @@
 
 
 
-<meta property="og:title" content="Coerce Lists, Matrices, and More to Source-Specific Data Frames — as_covidata" />
-<meta property="og:description" content="The as_* family of functions turns existing objects, such as a data
-frame or matrix, into a tbl_df of class ael, nbs,
-or pcr. This is in contrast to the ael(), nbs(), and pcr() functions,
-which build tibbles from individual columns. Recall that tibble subclasses
-in coviData have a .date attribute, which assists in handling data made
-available at different times." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="Build a Source-Specific Data Frame — covidata-build" />
+<meta property="og:description" content="ael(), nbs(), and pcr() construct data frames. They are used like
+tibble(), except an additional .date argument
+is included." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -121,58 +118,52 @@ available at different times." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce Lists, Matrices, and More to Source-Specific Data Frames</h1>
-    
-    <div class="hidden name"><code>as_covidata.Rd</code></div>
+    <h1>Build a Source-Specific Data Frame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/class-covidata.R'><code>R/class-covidata.R</code></a></small>
+    <div class="hidden name"><code>covidata-build.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>as_*</code> family of functions turns existing objects, such as a data
-frame or matrix, into a <code><a href='https://tibble.tidyverse.org/reference/tbl_df-class.html'>tbl_df</a></code> of class <code>ael</code>, <code>nbs</code>,
-or <code>pcr</code>. This is in contrast to the <code><a href='covidata-helpers.html'>ael()</a></code>, <code><a href='covidata-helpers.html'>nbs()</a></code>, and <code><a href='covidata-helpers.html'>pcr()</a></code> functions,
-which build tibbles from individual columns. Recall that <code>tibble</code> subclasses
-in coviData have a <code>.date</code> attribute, which assists in handling data made
-available at different times.</p>
+    <p><code>ael()</code>, <code>nbs()</code>, and <code>pcr()</code> construct data frames. They are used like
+<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble()</a></code>, except an additional <code>.date</code> argument
+is included.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_ael</span><span class='op'>(</span>
-  <span class='va'>x</span>,
+    <pre class="usage"><span class='fu'>ael</span><span class='op'>(</span>
   <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='cn'>NA</span><span class='op'>)</span>,
+  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
   .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>,
-  rownames <span class='op'>=</span> <span class='fu'>pkgconfig</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pkgconfig/man/get_config.html'>get_config</a></span><span class='op'>(</span><span class='st'>"tibble::rownames"</span>, <span class='cn'>NULL</span><span class='op'>)</span>
+  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='fu'>as_nbs</span><span class='op'>(</span>
-  <span class='va'>x</span>,
+<span class='fu'>nbs</span><span class='op'>(</span>
   <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='cn'>NA</span><span class='op'>)</span>,
+  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
   .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>,
-  rownames <span class='op'>=</span> <span class='fu'>pkgconfig</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pkgconfig/man/get_config.html'>get_config</a></span><span class='op'>(</span><span class='st'>"tibble::rownames"</span>, <span class='cn'>NULL</span><span class='op'>)</span>
+  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='fu'>as_pcr</span><span class='op'>(</span>
-  <span class='va'>x</span>,
+<span class='fu'>pcr</span><span class='op'>(</span>
   <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='cn'>NA</span><span class='op'>)</span>,
+  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
   .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>,
-  rownames <span class='op'>=</span> <span class='fu'>pkgconfig</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pkgconfig/man/get_config.html'>get_config</a></span><span class='op'>(</span><span class='st'>"tibble::rownames"</span>, <span class='cn'>NULL</span><span class='op'>)</span>
+  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A data frame, list, matrix, or other object that could reasonably be
-coerced to a tibble.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Unused, for extensibility.</p></td>
+      <td><p>&lt;<code><a href='https://rlang.r-lib.org/reference/dyn-dots.html'>dynamic-dots</a></code>&gt;
+A set of name-value pairs. These arguments are
+processed with <code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>rlang::quos()</a></code> and support unquote via <code>!!</code> and
+unquote-splice via <code>!!!</code>. Use <code>:=</code> to create columns that start with a dot.</p>
+<p>Arguments are evaluated sequentially.
+You can refer to previously created elements directly or using the <a href='tidyeval.html'>.data</a>
+pronoun.
+An existing <code>.data</code> pronoun, provided e.g. inside <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code>,
+is not available.</p></td>
     </tr>
     <tr>
       <th>.date</th>
@@ -204,26 +195,22 @@ for names in the style of base R).</p></li>
 See there for more details on these terms and the strategies used
 to enforce them.</p></td>
     </tr>
-    <tr>
-      <th>rownames</th>
-      <td><p>How to treat existing row names of a data frame or matrix:</p><ul>
-<li><p><code>NULL</code>: remove row names. This is the default.</p></li>
-<li><p><code>NA</code>: keep row names.</p></li>
-<li><p>A string: the name of a new column. Existing rownames are transferred
-into this column and the <code>row.names</code> attribute is deleted.
-Read more in <a href='https://tibble.tidyverse.org/reference/rownames.html'>rownames</a>.</p></li>
-</ul></td>
-    </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of class <code>ael</code>, <code>nbs</code>, or <code>pcr</code></p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>These functions are thin wrappers around the <code><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></code>
-function; see there for details.</p>
+    <p>These function create data frames of class <code>ael</code>, <code>nbs</code>, or <code>pcr</code>. The data
+behave identically to a <code>tibble</code> in most functions, but coviData functions
+uses these classes to treat each data source appropriately. Additionally, the
+<code>.date</code> argument tells coviData functions when the data was made
+available, which facilitates automatic handling of data reported at
+different times.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></code>; <code><a href='covidata-helpers.html'>ael</a>{ael()}</code>, <code><a href='covidata-helpers.html'>nbs()</a></code>,
-and <code><a href='covidata-helpers.html'>pcr()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download Snapshot of NBS PCR Test Data Posted on REDcap — download_pcr_snapshot • coviData</title>
+<title>Clean a Path with the fs Package — path_clean • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,13 @@
 
 
 
-<meta property="og:title" content="Download Snapshot of NBS PCR Test Data Posted on REDcap — download_pcr_snapshot" />
-<meta property="og:description" content="Download Snapshot of NBS PCR Test Data Posted on REDcap" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="Clean a Path with the fs Package — path_clean" />
+<meta property="og:description" content="path_clean() is wrapper around path_tidy(),
+path_expand_r()
+(or path_expand()), and
+path_norm(). It tidies, then expands, then
+normalizes the given path(s)." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -116,26 +120,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download Snapshot of NBS PCR Test Data Posted on REDcap</h1>
-    
-    <div class="hidden name"><code>download_pcr_snapshot.Rd</code></div>
+    <h1>Clean a Path with the fs Package</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>path_clean.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Download Snapshot of NBS PCR Test Data Posted on REDcap</p>
+    <p><code>path_clean()</code> is wrapper around <code><a href='http://fs.r-lib.org/reference/path_tidy.html'>path_tidy()</a></code>,
+<code><a href='http://fs.r-lib.org/reference/path_expand.html'>path_expand_r()</a></code>
+(or <code><a href='http://fs.r-lib.org/reference/path_expand.html'>path_expand()</a></code>), and
+<code><a href='http://fs.r-lib.org/reference/path_math.html'>path_norm()</a></code>. It tidies, then expands, then
+normalizes the given path(s).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>download_pcr_snapshot</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  api_token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"redcap_DFR_token"</span><span class='op'>)</span>,
-  redcap_file <span class='op'>=</span> <span class='st'>"lab_pcr"</span>,
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
-  new_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"MSR - All PCRs_"</span>, <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"%m%d%Y"</span><span class='op'>)</span>, <span class='st'>".csv"</span><span class='op'>)</span>,
-  convert <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>path_clean</span><span class='op'>(</span><span class='va'>path</span>, home <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"r"</span>, <span class='st'>"user"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>A character vector of one or more paths.</p></td>
+    </tr>
+    <tr>
+      <th>home</th>
+      <td><p>The home directory definition to use when expanding a path. The
+default is to use <strong>R</strong>'s definition, but the system definition of the
+user's home directory can also be used. These are equivalent to calling
+<code>path_expand_r()</code> or <code>path_expand()</code>, respectively.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The cleaned path(s) in an <code>fs_path</code> object, which is a character
+vector that also has class <code>fs_path</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Magrittr Pipe Helpers — magrittr_utils • coviData</title>
+<title>Archive fst Files of NBS Report Dates Based on Date of Creation — archive_report_date • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,11 @@
 
 
 
-<meta property="og:title" content="Magrittr Pipe Helpers — magrittr_utils" />
-<meta property="og:description" content="The magrittr pipe is a common programming tool in R that often makes
-code much easier to read. In addition to the primary pipe operator, magrittr
-offers several additional pipes, as well as functions to help perform common
-infix-operations in a pipe-friendly manner." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="Archive fst Files of NBS Report Dates Based on Date of Creation — archive_report_date" />
+<meta property="og:description" content="archive_report_date() infers the date reported for NBS IDs using the date
+of creation for the data files in data_dir. It saves the inferred report
+dates in archive_dir." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -119,20 +118,41 @@ infix-operations in a pipe-friendly manner." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Magrittr Pipe Helpers</h1>
-    
-    <div class="hidden name"><code>magrittr_utils.Rd</code></div>
+    <h1>Archive <code>fst</code> Files of NBS Report Dates Based on Date of Creation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/report_date.R'><code>R/report_date.R</code></a></small>
+    <div class="hidden name"><code>archive_report_date.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The magrittr pipe is a common programming tool in <strong>R</strong> that often makes
-code much easier to read. In addition to the primary pipe operator, magrittr
-offers several additional pipes, as well as functions to help perform common
-infix-operations in a pipe-friendly manner.</p>
+    <p><code>archive_report_date()</code> infers the date reported for NBS IDs using the date
+of creation for the data files in <code>data_dir</code>. It saves the inferred report
+dates in <code>archive_dir</code>.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>archive_report_date</span><span class='op'>(</span>
+  data_dir <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
+    <span class='st'>"Sandbox data pull Final/"</span><span class='op'>)</span>,
+  archive_dir <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
+    <span class='st'>"Report Date Linelist/archive/"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data_dir</th>
+      <td><p>The directory containing the NBS data files to archive</p></td>
+    </tr>
+    <tr>
+      <th>archive_dir</th>
+      <td><p>The location of the archive directory</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A <code>tibble</code> containing the data files paths, creation (birth) date,
+and archive file paths for newly created archive data</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

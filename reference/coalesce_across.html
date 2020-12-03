@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a Source-Specific Data Frame — covidata-helpers • coviData</title>
+<title>Coalesce with tidyselect Semantics — coalesce_across • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,11 @@
 
 
 
-<meta property="og:title" content="Build a Source-Specific Data Frame — covidata-helpers" />
-<meta property="og:description" content="ael(), nbs(), and pcr() construct data frames. They are used like
-tibble(), except an additional .date argument
-is included." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="Coalesce with tidyselect Semantics — coalesce_across" />
+<meta property="og:description" content="Given a set of data frame columns (potentially using
+&amp;lt;tidy-select&amp;gt;), coalesce_across()
+finds the first non-missing value at each position." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -118,99 +118,41 @@ is included." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a Source-Specific Data Frame</h1>
-    
-    <div class="hidden name"><code>covidata-helpers.Rd</code></div>
+    <h1>Coalesce with <strong>tidyselect</strong> Semantics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>coalesce_across.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>ael()</code>, <code>nbs()</code>, and <code>pcr()</code> construct data frames. They are used like
-<code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble()</a></code>, except an additional <code>.date</code> argument
-is included.</p>
+    <p>Given a set of data frame columns (potentially using
+<code><a href='https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html'>&lt;tidy-select&gt;</a></code>), <code>coalesce_across()</code>
+finds the first non-missing value at each position.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ael</span><span class='op'>(</span>
-  <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>nbs</span><span class='op'>(</span>
-  <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='fu'>pcr</span><span class='op'>(</span>
-  <span class='va'>...</span>,
-  .date <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .rows <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .name_repair <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"check_unique"</span>, <span class='st'>"unique"</span>, <span class='st'>"universal"</span>, <span class='st'>"minimal"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>coalesce_across</span><span class='op'>(</span><span class='va'>.cols</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>&lt;<code><a href='https://rlang.r-lib.org/reference/dyn-dots.html'>dynamic-dots</a></code>&gt;
-A set of name-value pairs. These arguments are
-processed with <code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>rlang::quos()</a></code> and support unquote via <code>!!</code> and
-unquote-splice via <code>!!!</code>. Use <code>:=</code> to create columns that start with a dot.</p>
-<p>Arguments are evaluated sequentially.
-You can refer to previously created elements directly or using the <a href='tidyeval.html'>.data</a>
-pronoun.
-An existing <code>.data</code> pronoun, provided e.g. inside <code><a href='https://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code>,
-is not available.</p></td>
-    </tr>
-    <tr>
-      <th>.date</th>
-      <td><p>A <code>Date</code> indicating when the data was made available. This
-will usually come from name of the data file; the <code>coviData::load_*</code>
-family detects this automatically when reading the data. This argument is
-optional, but omitting it limits the ability of coviData functions to
-handle data from several reporting dates.</p></td>
-    </tr>
-    <tr>
-      <th>.rows</th>
-      <td><p>The number of rows, useful to create a 0-column tibble or
-just as an additional check.</p></td>
-    </tr>
-    <tr>
-      <th>.name_repair</th>
-      <td><p>Treatment of problematic column names:</p><ul>
-<li><p><code>"minimal"</code>: No name repair or checks, beyond basic existence,</p></li>
-<li><p><code>"unique"</code>: Make sure names are unique and not empty,</p></li>
-<li><p><code>"check_unique"</code>: (default value), no name repair, but check they are
-<code>unique</code>,</p></li>
-<li><p><code>"universal"</code>: Make the names <code>unique</code> and syntactic</p></li>
-<li><p>a function: apply custom name repair (e.g., <code>.name_repair = make.names</code>
-for names in the style of base R).</p></li>
-<li><p>A purrr-style anonymous function, see <code><a href='https://rlang.r-lib.org/reference/as_function.html'>rlang::as_function()</a></code></p></li>
-</ul>
-
-<p>This argument is passed on as <code>repair</code> to <code><a href='https://vctrs.r-lib.org/reference/vec_as_names.html'>vctrs::vec_as_names()</a></code>.
-See there for more details on these terms and the strategies used
-to enforce them.</p></td>
+      <th>.cols</th>
+      <td><p>&lt;<code><a href='https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html'>tidy-select</a></code>&gt; Columns to transform.
+Because <code>across()</code> is used within functions like <code>summarise()</code> and
+<code>mutate()</code>, you can't select or compute upon grouping variables.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>ael</code>, <code>nbs</code>, or <code>pcr</code></p>
+    <p>A vector the same length as the first <code>...</code> argument with
+missing values replaced by the first non-missing value.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>These function create data frames of class <code>ael</code>, <code>nbs</code>, or <code>pcr</code>. The data
-behave identically to a <code>tibble</code> in most functions, but coviData functions
-uses these classes to treat each data source appropriately. Additionally, the
-<code>.date</code> argument tells coviData functions when the data was made
-available, which facilitates automatic handling of data reported at
-different times.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble()</a></code></p></div>
+    <p><code>coalesce_across()</code> is a wrapper around
+<code><a href='https://dplyr.tidyverse.org/reference/coalesce.html'>coalesce()</a></code> that allows specification of columns
+using <code>&lt;tidy-select&gt;</code> semantics. It does this using
+<code><a href='https://dplyr.tidyverse.org/reference/across.html'>across()</a></code>, which means it is only designed to work
+inside <strong>dplyr</strong> verbs. In other cases, just use <code>coalesce()</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

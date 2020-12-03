@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a Helper Function for a covidata Subclass — covidata_helper • coviData</title>
+<title>How to Access Sensitive Information Non-Interactively with Renviron — using-renviron • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,12 @@
 
 
 
-<meta property="og:title" content="Create a Helper Function for a covidata Subclass — covidata_helper" />
-<meta property="og:description" content="covidata_helper creates helper functions for a covidata subclass. It
-requires new_mysubclass() and validate_mysubclass() functions
-to be defined and available for the class mysubclass." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:title" content="How to Access Sensitive Information Non-Interactively with Renviron — using-renviron" />
+<meta property="og:description" content="When writing code that might be shared, it's bad practice to hard-code
+sensitive information in a script (or package, obviously). For data that
+doesn't need to be shared, but doesn't necessarily need encryption,
+.Renviron files provide a way to store and retrieve information." />
+<meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
 
@@ -118,31 +119,54 @@ to be defined and available for the class mysubclass." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a Helper Function for a <code>covidata</code> Subclass</h1>
-    
-    <div class="hidden name"><code>covidata_helper.Rd</code></div>
+    <h1>How to Access Sensitive Information Non-Interactively with Renviron</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/using-Renviron.R'><code>R/using-Renviron.R</code></a></small>
+    <div class="hidden name"><code>using-renviron.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>covidata_helper</code> creates helper functions for a <code>covidata</code> subclass. It
-requires <code>new_mysubclass()</code> and <code>validate_mysubclass()</code> functions
-to be defined and available for the class <code>mysubclass</code>.</p>
+    <p>When writing code that might be shared, it's bad practice to hard-code
+sensitive information in a script (or package, obviously). For data that
+doesn't need to be shared, but doesn't necessarily need encryption,
+<em>.Renviron</em> files provide a way to store and retrieve information.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>covidata_helper</span><span class='op'>(</span><span class='va'>class</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>class</th>
-      <td><p>A <code>covidata</code> subclass</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A user-friendly helper function for constructing objects of <code>class</code></p>
+    <p>A <em>.Renviron</em> file is a special file that you can use to store
+<code>environment variables</code>, which are just variables that are
+available using the <code><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv()</a></code> function. They're
+particularly useful for storing information that you don't want to leave
+your computer, like API keys. You can also store usernames and passwords in
+this file; it's better than entering them directly, but note that they
+<strong>will not be encrypted</strong>. A better solution for usernames, passwords,
+and other things that should be encrypted is the
+<a href='https://github.com/r-lib/keyring'>keyring</a> package. <code>coviData</code>
+follows this convention; see <code>using_keyring</code> for details on username/
+password setup <strong>(not yet implemented)</strong>.</p>
+<p>To use the <em>.Renviron</em> file with <code>coviData</code>, follow these steps:</p>
+<ol>
+<li><p>Check your <code>R_USER</code> directory by typing
+<code><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv(R_USER)</a></code> into the console. We will use the user-level
+<em>.Renviron</em> file for storage; it lives here.</p></li>
+<li><p>Go to the <code>R_USER</code> directory in Windows Explorer and create a
+new text file <strong>(right-click -&gt; New -&gt; Text Document)</strong>. Name this
+file <strong>".Renviron"</strong> and delete the <strong>.txt</strong> extension.</p></li>
+<li><p>Open this file using Notepad or another text/code editor</p></li>
+<li><p>Enter the variables you'd like to store in <code>key=value</code> format.
+For example, if I wanted to store an API key in the environment variable
+<code>api_key</code>, I would enter <code>api_key="some_key_to_save"</code> to store it
+as a string.</p></li>
+<li><p>Save and exit. Once your restart <strong>R</strong>, these variables will be
+available using <code>Sys.env()</code>.</p></li>
+<li><p>(optional) You can hide the <em>.Renviron</em> file in Windows Explorer
+<strong>(right-click -&gt; Properties -&gt; Hidden -&gt; OK)</strong> to avoid clutter</p></li>
+</ol>
+
+<p><code>coviData</code> currently uses the <em>.Renviron</em> file for REDcap API
+tokens, but may expand to ESSENCE and NBS tokens as well in the future.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
