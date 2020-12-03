@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save Report Dates to fst File — save_report_date • coviData</title>
+<title>Objects exported from other packages — reexports • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,13 @@
 
 
 
-<meta property="og:title" content="Save Report Dates to fst File — save_report_date" />
-<meta property="og:description" content="save_report_date() is a simple wrapper around
-write_fst() that saves reduced report date data
-to an fst file. It exists purely for convenience and semantic clarity; it
-can only be used with the output of coalesce_report_date() or
-add_collection_date()." />
+<meta property="og:title" content="Objects exported from other packages — reexports" />
+<meta property="og:description" content="These objects are imported from other packages. Follow the links
+below to see their documentation.
+
+  magrittr%&amp;gt;%
+
+" />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,42 +121,22 @@ add_collection_date()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save Report Dates to <code>fst</code> File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/report_date.R'><code>R/report_date.R</code></a></small>
-    <div class="hidden name"><code>save_report_date.Rd</code></div>
+    <h1>Objects exported from other packages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils-magrittr.R'><code>R/utils-magrittr.R</code></a></small>
+    <div class="hidden name"><code>reexports.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>save_report_date()</code> is a simple wrapper around
-<code><a href='http://www.fstpackage.org/reference/write_fst.html'>write_fst()</a></code> that saves reduced report date data
-to an <code>fst</code> file. It exists purely for convenience and semantic clarity; it
-can only be used with the output of <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code> or
-<code><a href='add_collection_date.html'>add_collection_date()</a></code>.</p>
+    <p>These objects are imported from other packages. Follow the links
+below to see their documentation.</p>
+<dl>
+  <dt>magrittr</dt><dd><p><code>%&gt;%</code></p></dd>
+
+</dl>
     </div>
 
-    <pre class="usage"><span class='fu'>save_report_date</span><span class='op'>(</span>
-  <span class='va'>.data</span>,
-  save_as <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class='st'>"Report Date Linelist/report_date_linelist"</span>, ext <span class='op'>=</span> <span class='st'>"fst"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>.data</th>
-      <td><p>A <code>tibble</code> returned from <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code> or
-<code><a href='add_collection_date.html'>add_collection_date()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>save_as</th>
-      <td><p>The write path to the new <code>fst</code> file</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The input data (invisibly)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
