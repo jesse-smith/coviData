@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add Specimen Collection Date to a Report Date Tibble — add_collection_date • coviData</title>
+<title>Fill Implicitly Missing Dates in a Time-Indexed Data Frame — fill_dates • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Add Specimen Collection Date to a Report Date Tibble — add_collection_date" />
-<meta property="og:description" content="add_collection_date() reads the specimen collection date column from an
-NBS data file and adds it to the input data (typically the result of
-coalesce_report_date())." />
+<meta property="og:title" content="Fill Implicitly Missing Dates in a Time-Indexed Data Frame — fill_dates" />
+<meta property="og:description" content="fill_date() finds implicitly missing observations in a time-indexed data
+frame and fills them with fill_na. start and end values can be supplied
+to fill dates outside the range of the data." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -118,55 +118,48 @@ coalesce_report_date())." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add Specimen Collection Date to a Report Date Tibble</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/report_date.R'><code>R/report_date.R</code></a></small>
-    <div class="hidden name"><code>add_collection_date.Rd</code></div>
+    <h1>Fill Implicitly Missing Dates in a Time-Indexed Data Frame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>fill_dates.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>add_collection_date()</code> reads the specimen collection date column from an
-NBS data file and adds it to the input data (typically the result of
-<code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code>).</p>
+    <p><code>fill_date()</code> finds implicitly missing observations in a time-indexed data
+frame and fills them with <code>fill_na</code>. <code>start</code> and <code>end</code> values can be supplied
+to fill dates outside the range of the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_collection_date</span><span class='op'>(</span>
-  <span class='va'>.data</span>,
-  .from_col <span class='op'>=</span> <span class='st'>"specimen_coll_dt"</span>,
-  .id_col <span class='op'>=</span> <span class='st'>"inv_local_id"</span>,
-  .date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  .from_file <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/"</span>,
-    <span class='st'>"Sandbox data pull Final/"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fill_dates</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>date_col</span>, start <span class='op'>=</span> <span class='cn'>NULL</span>, end <span class='op'>=</span> <span class='cn'>NULL</span>, fill_na <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>A <code>tibble</code> returned from <code><a href='coalesce_report_date.html'>coalesce_report_date()</a></code></p></td>
+      <th>data</th>
+      <td><p>A data frame or data frame extension (e.g. a tibble)</p></td>
     </tr>
     <tr>
-      <th>.from_col</th>
-      <td><p>A string indicating the variable in <code>.from_file</code> to use as
-specimen collection date</p></td>
+      <th>date_col</th>
+      <td><p>The column to use as the time index</p></td>
     </tr>
     <tr>
-      <th>.id_col</th>
-      <td><p>A string indicating the variable in <code>.data</code> and <code>.from_file</code>
-to use as an ID variable</p></td>
+      <th>start</th>
+      <td><p>An optional start date for the period to fill</p></td>
     </tr>
     <tr>
-      <th>.date</th>
-      <td><p>The date of the NBS file to use for collection dates</p></td>
+      <th>end</th>
+      <td><p>An optional end date for the period to fill</p></td>
     </tr>
     <tr>
-      <th>.from_file</th>
-      <td><p>A file path to the NBS data with the desired specimen
-collection dates; if only a directory is provided, the NBS file
-corresponding to <code>date</code> will be used</p></td>
+      <th>fill_na</th>
+      <td><p>The value to use when creating observations for implicitly
+missing data</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A tibble</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
