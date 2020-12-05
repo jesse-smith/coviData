@@ -8,6 +8,7 @@ add_collection_date(
   .data,
   .from_col = "specimen_coll_dt",
   .id_col = "inv_local_id",
+  .date = Sys.Date(),
   .from_file = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/",
     "Sandbox data pull Final/")
 )
@@ -21,9 +22,11 @@ specimen collection date}
 \item{.id_col}{A string indicating the variable in \code{.data} and \code{.from_file}
 to use as an ID variable}
 
+\item{.date}{The date of the NBS file to use for collection dates}
+
 \item{.from_file}{A file path to the NBS data with the desired specimen
-collection dates; if only a directory is provided, the most recently
-created NBS file download will be read}
+collection dates; if only a directory is provided, the NBS file
+corresponding to \code{date} will be used}
 }
 \description{
 \code{add_collection_date()} reads the specimen collection date column from an

@@ -717,6 +717,29 @@ relevel_pcr <- function(x) {
 # || By Data Type || ###########################################################
 
 # | Timeseries #################################################################
+
+#' Fill Implicitly Missing Dates in a Time-Indexed Data Frame
+#'
+#' `fill_date()` finds implicitly missing observations in a time-indexed data
+#' frame and fills them with `fill_na`. `start` and `end` values can be supplied
+#' to fill dates outside the range of the data.
+#'
+#' @param data A data frame or data frame extension (e.g. a tibble)
+#'
+#' @param date_col The column to use as the time index
+#'
+#' @param start An optional start date for the period to fill
+#'
+#' @param end An optional end date for the period to fill
+#'
+#' @param fill_na The value to use when creating observations for implicitly
+#'   missing data
+#'
+#' @return A tibble
+#'
+#' @keywords internal
+#'
+#' @export
 fill_dates <- function(
   data,
   date_col,

@@ -194,7 +194,7 @@ coalesce_report_date <- function(
     purrr::reduce(reduce_fst_report_dates, .by = id, .pb = pb_reduce) %>%
     dplyr::mutate(report_date = lubridate::as_date(report_date)) %>%
     dplyr::arrange(dplyr::desc(report_date)) %>%
-    set_attr("is_report_date", TRUE) %>%
+    set_attr("is_report_date", TRUE) %T>%
     {rlang::inform("Done.")}
 
 }
@@ -255,16 +255,22 @@ reduce_fst_report_dates <- function(
 #' @param .id_col A string indicating the variable in `.data` and `.from_file`
 #'   to use as an ID variable
 #'
+#' @param ... `<tidy-select>` Additional variables to add
+#'
+#' @param .date The date of the NBS file to use for collection dates
+#'
 #' @param .from_file A file path to the NBS data with the desired specimen
-#'   collection dates; if only a directory is provided, the most recently
-#'   created NBS file download will be read
+#'   collection dates; if only a directory is provided, the NBS file
+#'   corresponding to `date` will be used
 #'
 #' @export
 add_collection_date <- function(
   .data,
   .from_col = "specimen_coll_dt",
   .id_col = "inv_local_id",
-  .from_file = path_create(
+  ...,
+  date = Sys.Date(),
+  from_file = path_create(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/",
     "Sandbox data pull Final/"
   )
@@ -302,25 +308,25 @@ add_collection_date <- function(
     )
   }
 
-  .from_file %<>% path_clean()
+  from_file <- path_clean(from_file)
 
   # If `.from_file` is a directory, load the latest NBS file from it
-  if (fs::is_dir(.from_file)) {
-    .from_file <- find_file(
-      date = Sys.Date(),
-      directory = paste0(.from_file, "/"),
-      pattern = paste0(".*", Sys.Date(), ".*[.]csv")
+  if (fs::is_dir(from_file)) {
+    from_file <- find_file(
+      date = date,
+      directory = paste0(from_file, "/"),
+      pattern = paste0(".*", date, ".*[.]csv")
     ) %>% path_clean()
   }
 
   # Read `.id_col` and `.from_col` from `.from_file`
   rlang::inform("Reading `.from_file`...")
   collection_date <- vroom::vroom(
-    .from_file,
+    from_file,
     col_types = vroom::cols(.default = vroom::col_character())
   ) %>%
     janitor::clean_names() %>%
-    dplyr::select(.id_col, .from_col) %>%
+    dplyr::select(.id_col, .from_col, ...) %>%
     standardize_dates() %>%
     dplyr::rename(collection_date = .from_col)
 
@@ -331,7 +337,7 @@ add_collection_date <- function(
     by = .id_col,
     suffix = c(".data", ".collection_date")
   ) %>%
-    set_attr("is_report_date", TRUE) %>%
+    set_attr("is_report_date", TRUE) %T>%
     {rlang::inform("Done.")}
 
 }
