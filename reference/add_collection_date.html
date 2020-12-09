@@ -133,8 +133,9 @@ NBS data file and adds it to the input data (typically the result of
   <span class='va'>.data</span>,
   .from_col <span class='op'>=</span> <span class='st'>"specimen_coll_dt"</span>,
   .id_col <span class='op'>=</span> <span class='st'>"inv_local_id"</span>,
-  .date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  .from_file <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/"</span>,
+  <span class='va'>...</span>,
+  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
+  from_file <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/"</span>,
     <span class='st'>"Sandbox data pull Final/"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -154,6 +155,10 @@ specimen collection date</p></td>
       <th>.id_col</th>
       <td><p>A string indicating the variable in <code>.data</code> and <code>.from_file</code>
 to use as an ID variable</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p><code>&lt;tidy-select&gt;</code> Additional variables to add</p></td>
     </tr>
     <tr>
       <th>.date</th>
