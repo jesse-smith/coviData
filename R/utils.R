@@ -1053,6 +1053,8 @@ path_clean <- function(path, home = c("r", "user")) {
 #'
 #' @return The combined and cleaned path in an `fs_path` object, which is a
 #'   character vector that also has class `fs_path`
+#'
+#' @export
 path_create <- function(..., ext = NULL, home = c("r", "user")) {
 
   if (rlang::is_null(ext)) {

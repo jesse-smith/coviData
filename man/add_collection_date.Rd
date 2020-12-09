@@ -8,8 +8,9 @@ add_collection_date(
   .data,
   .from_col = "specimen_coll_dt",
   .id_col = "inv_local_id",
-  .date = Sys.Date(),
-  .from_file = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/",
+  ...,
+  date = Sys.Date(),
+  from_file = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP Data/",
     "Sandbox data pull Final/")
 )
 }
@@ -21,6 +22,8 @@ specimen collection date}
 
 \item{.id_col}{A string indicating the variable in \code{.data} and \code{.from_file}
 to use as an ID variable}
+
+\item{...}{\verb{<tidy-select>} Additional variables to add}
 
 \item{.date}{The date of the NBS file to use for collection dates}
 
