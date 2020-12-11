@@ -20,8 +20,8 @@ vector that also has class \code{fs_path}
 }
 \description{
 \code{path_clean()} is wrapper around \code{\link[fs:path_tidy]{path_tidy()}},
-\code{\link[fs:path_expand_r]{path_expand_r()}}
+\code{\link[fs:path_expand]{path_expand_r()}}
 (or \code{\link[fs:path_expand]{path_expand()}}), and
-\code{\link[fs:path_norm]{path_norm()}}. It tidies, then expands, then
+\code{\link[fs:path_math]{path_norm()}}. It tidies, then expands, then
 normalizes the given path(s).
 }
