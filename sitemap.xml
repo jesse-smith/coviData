@@ -4,10 +4,34 @@
     <loc>https://jesse-smith.github.io/covidata//index.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_axis_labels.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/add_collection_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_covid_events.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_event.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_scale_month.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_title_caption.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/add_today.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/archive_report_date.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/assert_cols.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/assert_dataframe.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/assertthat-helpers.html</loc>
@@ -100,6 +124,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/find_file.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/gg_var.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/guess_filetype.html</loc>
   </url>
   <url>
@@ -172,7 +199,19 @@
     <loc>https://jesse-smith.github.io/covidata//reference/sample_unique.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/save_plot.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/save_report_date.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/select_colnames.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/set_axis_limits.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/set_covid_theme.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/split_names.html</loc>
