@@ -97,12 +97,15 @@ download_data_for_regions <- function(
   on.exit(fs::dir_delete(dir_temp))
 
   # Download file
-  httr::POST(
-    api_uri,
+  httr::RETRY(
+    "POST"
+    url = api_uri,
     body = api_nbs_params,
     httr::write_disk(zip_temp),
-    httr::progress()
-  )
+    httr::progress(),
+    times = 3L
+  ) %>% 
+    httr::stop_for_status()
 
   message("\nDone.")
 
@@ -172,7 +175,8 @@ download_interview_report <- function(
     pattern = new_file,
     directory = directory,
     rtn_error = FALSE
-  ) %>% length()
+  ) %>%
+    length()
 
   # Don't run if any are found
   assertthat::assert_that(
@@ -217,12 +221,15 @@ download_interview_report <- function(
   fs::dir_create(dir_temp)
 
   # Download file
-  httr::POST(
+  httr::RETRY(,
+    "POST",
     api_uri,
     body = api_nbs_params,
     httr::write_disk(zip_temp),
-    httr::progress()
-  )
+    httr::progress(),
+    times = 3L
+  ) %>%
+    httr::stop_for_status()
 
   message("\nDone.")
 
@@ -375,7 +382,13 @@ check_date_updated <- function(
   )
 
   # Get date_updated
-  httr::POST(api_uri, body = api_date_params) %>%
+  httr::RETRY(
+    "POST",
+    url = api_uri,
+    body = api_date_params,
+    times = 3L
+  ) %>%
+    httr::stop_for_status() %>%
     httr::content(as = "text") %>%
     jsonlite::fromJSON() %>%
     purrr::as_vector() %>%
