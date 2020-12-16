@@ -115,7 +115,7 @@ error_notify <- function(
   html = FALSE,
   operation = NULL
 ) {
-  
+
   purrr::walk(rlang::fn_fmls_syms(), ~ force(.x))
 
   args <- rlang::fn_fmls() %>% extract(rlang::fn_fmls_names(notify))
@@ -123,11 +123,11 @@ error_notify <- function(
   force(args)
 
   function(.error) {
-  
+
     .trace <- .error[["trace"]]
-    
+
     .bottom <- vctrs::vec_size(.trace)
-    
+
     if (!is.null(.call)) {
       # Do nothing
     } else if (!is.null(operation)) {
@@ -139,8 +139,8 @@ error_notify <- function(
     }
 
     br <- if (rlang::is_true(html)) "<br>" else "\n"
-    
-    if (is.null(args$subject) {
+
+    if (is.null(args$subject)) {
       args$subject <- paste(
         .call, "in", error_file, "Failed at", Sys.time()
       )
@@ -177,14 +177,14 @@ option_error <- function() {
   nframe <- sys.nframe() - 1L
   info <- rlang:::signal_context_info(nframe)
   bottom <- sys.frame(info[[2L]])
-  
-  
+
+
   trace <- rlang::trace_back(bottom = bottom)
-  
+
   if (rlang::trace_length(trace) <= 0L) {
     return(NULL)
   }
-  
+
   stop_call <- sys.call(-1L)
   stop_frame <- sys.frame(-1L)
 
@@ -220,4 +220,51 @@ option_error <- function() {
     rlang:::cat_line(backtrace_lines)
   }
   NULL
+}
+
+#' `entrace()` + `notify()`
+#'
+#' `ennotify()` adds a backtrace to base R errors and sends a notification
+#' email with the failing function an a full backtrace. However, it cannot
+#' capture the condition object associated with the error, and thus cannot
+#' show error messages. Logging errors is recommended.
+#'
+#' Set `ennotify()` as your error handler using
+#'
+#' `options(error = quote(coviData::ennotify()),`
+#' ` rlang_backtrace_on_error = "full")`
+#'
+#' The function currently emails me (Jesse Smith) every time an error is
+#' processed, so please do not use this before consulting me first.
+#'
+#' @export
+ennotify <- function() {
+  # Add traceback if needed
+  rlang::entrace()
+
+  # Get traceback
+  trace <- rlang::trace_back()
+
+  # Get function from objects
+  fn <- trace[["calls"]][[1L]] %>% rlang::call_name() %>% paste0("()")
+
+  trace_string <- capture.output(print(trace)) %>% paste0("\n", collapse = "")
+
+  # Send notification
+  subject <- paste0("Error in `", fn, "` at ", Sys.time())
+
+  body <- paste0(
+    "`", fn, "` encountered an error. The full traceback is:",
+    "\n\n",
+    trace_string,
+    "\n\n",
+    "This error should have been logged; ",
+    "see the associated log file for details."
+  )
+
+  coviData::notify(
+    to = "jesse.smith@shelbycountytn.gov",
+    subject = subject,
+    body = body
+  )
 }

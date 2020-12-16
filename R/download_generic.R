@@ -98,13 +98,13 @@ download_data_for_regions <- function(
 
   # Download file
   httr::RETRY(
-    "POST"
+    "POST",
     url = api_uri,
     body = api_nbs_params,
     httr::write_disk(zip_temp),
     httr::progress(),
     times = 3L
-  ) %>% 
+  ) %>%
     httr::stop_for_status()
 
   message("\nDone.")
