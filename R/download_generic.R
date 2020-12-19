@@ -221,7 +221,7 @@ download_interview_report <- function(
   fs::dir_create(dir_temp)
 
   # Download file
-  httr::RETRY(,
+  httr::RETRY(
     "POST",
     api_uri,
     body = api_nbs_params,
