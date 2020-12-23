@@ -421,3 +421,14 @@ check_date_updated <- function(
 
   if (date_updated == date) TRUE else FALSE
 }
+
+download_redcap <- function(
+  date = Sys.Date(),
+  api_token,
+  api_params,
+  directory,
+  new_file,
+  force = FALSE
+) {
+
+}
