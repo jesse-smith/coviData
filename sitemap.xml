@@ -28,6 +28,15 @@
     <loc>https://jesse-smith.github.io/covidata//reference/archive_report_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_load_teams.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_schedule.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_schedule_predefined.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/assert_cols.html</loc>
   </url>
   <url>
@@ -169,6 +178,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/notify.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/parse_weekday.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_clean.html</loc>
   </url>
   <url>
@@ -208,6 +220,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/save_report_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/schedule_calendar.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/select_colnames.html</loc>
   </url>
   <url>
@@ -223,7 +238,16 @@
     <loc>https://jesse-smith.github.io/covidata//reference/standardize_string.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_remove_parenthetic.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_replace_brackets.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_to_factor.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/team_schedules.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/to_report_date_fst.html</loc>
