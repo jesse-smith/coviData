@@ -1,6 +1,3 @@
-context("Standardizing Vectors")
-
-
 test_that("the default is title case", {
   expect_equal(standardize_string("jesse smith"), "Jesse Smith")
 })
