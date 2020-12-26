@@ -67,7 +67,8 @@ create_schedules <- function(
 
 calculate_schedule_weekdays <- function(
   from = Sys.Date(),
-  to = Sys.Date() + 29L
+  to = Sys.Date() + 29L,
+  .anchor = from
 ) {
 
   cycle <- c(
@@ -89,7 +90,8 @@ calculate_schedule_weekdays <- function(
 
 calculate_schedule_42 <- function(
   from = Sys.Date(),
-  to = Sys.Date() + 29L
+  to = Sys.Date() + 29L,
+  .anchor = from
 ) {
 
   cycle <- c(rep(TRUE, 4L), rep(FALSE, 2L))
@@ -97,13 +99,15 @@ calculate_schedule_42 <- function(
   calculate_schedule(
     cycle = cycle,
     from = from,
-    to = to
+    to = to,
+    .anchor = .anchor
   )
 }
 
 calculate_schedule_5623 <- function(
   from = Sys.Date(),
-  to = Sys.Date() + 29L
+  to = Sys.Date() + 29L,
+  .anchor = from
 ) {
 
   c52 <- c(rep(TRUE, 5L), rep(FALSE, 2L))
@@ -116,7 +120,8 @@ calculate_schedule_5623 <- function(
   calculate_schedule(
     cycle = cycle,
     from = from,
-    to = to
+    to = to,
+    .anchor = .anchor
   )
 }
 
@@ -131,22 +136,42 @@ calculate_schedule <- function(
     Sat = FALSE
   ),
   from = Sys.Date(),
-  to = Sys.Date() + 29L
+  to = Sys.Date() + 29L,
+  .anchor = from
 ) {
 
   cycle_is_named <- !is.null(names(cycle))
 
+  if (!lubridate::is.Date(from)) {
+    from <- tibble::tibble(date = from) %>%
+      standardize_dates() %>%
+      dplyr::pull(.data[["date"]])
+  }
+
+  if (!lubridate::is.Date(to)) {
+    to <- tibble::tibble(date = to) %>%
+      standardize_dates() %>%
+      dplyr::pull(.data[["date"]])
+  }
+
+  if (!lubridate::is.Date(.anchor)) {
+    .anchor <- tibble::tibble(date = .anchor) %>%
+      standardize_dates() %>%
+      dplyr::pull(.data[["date"]])
+  }
+
   if (cycle_is_named) {
     calculate_schedule_by_day(
+      cycle = cycle,
       from = from,
-      to = to,
-      cycle = cycle
+      to = to
     )
   } else {
     calculate_schedule_by_cycle(
+      cycle = cycle,
       from = from,
       to = to,
-      cycle = cycle
+      .anchor = .anchor
     )
   }
 }
@@ -162,6 +187,7 @@ calculate_schedule_by_cycle <- function(
 
   from <- lubridate::as_date(from)
   to <- lubridate::as_date(to)
+  .anchor <- lubridate::as_date(.anchor)
 
   if (to < from) {
     from_switched <- to
@@ -192,13 +218,13 @@ calculate_schedule_by_cycle <- function(
 
   if (.anchor <= from) {
     # `.anchor` is also less than `to`
-    from_temp <- from
+    from_temp <- .anchor
     to_temp <- .anchor + (cycle_length * times_to - 1L)
     scheduled <- anchor_2_to
   } else if (.anchor >= to) {
     # `.anchor` is also greater than `from`
     from_temp <- .anchor - (cycle_length * times_from - 1L)
-    to_temp <- to
+    to_temp <- .anchor
     scheduled <- from_2_anchor
   } else {
     from_temp <- .anchor - (cycle_length * times_from - 1L)
@@ -327,9 +353,76 @@ match_weekdays <- function(day) {
 }
 
 create_schedule_calendar <- function(
+  title = "Work Schedule",
+  schedule = c("weekdays", "42", "5623", "custom"),
   from = "2021-01-01",
   to = "2021-12-31",
-  schedule = c("weekdays", "42", "5623")
+  .anchor = from,
+  .cycle = NULL,
+  .pdf = FALSE,
+  .dir = ""
 ) {
 
+  schedule <- rlang::arg_match(schedule)[[1]]
+
+  if (schedule == "weekdays") {
+    schedule <- calculate_schedule_weekdays(
+      from = from,
+      to = to
+    )
+  } else if (schedule == "42") {
+    schedule <- calculate_schedule_42(
+      from = from,
+      to = to,
+      .anchor = .anchor
+    )
+  } else if (schedule == "5623") {
+    schedule <- calculate_schedule_5623(
+      from = from,
+      to = to,
+      .anchor = .anchor
+    )
+  } else {
+    schedule <- calculate_schedule(
+      cycle = .cycle,
+      from = from,
+      to = to,
+      .anchor = .anchor
+    )
+  }
+
+  scheduled_days <- schedule %>%
+    dplyr::mutate(row = vec_seq_along(.)) %>%
+    dplyr::filter(.data[["scheduled"]]) %>%
+    dplyr::pull(.data[["row"]])
+
+  start_date <- min(schedule[["date"]], na.rm = TRUE)
+  end_date <- max(schedule[["date"]], na.rm = TRUE)
+
+  if (.pdf) {
+    save_as <- path_create(.dir, snakecase::to_snake_case(title))
+  } else {
+    save_as <- ""
+  }
+
+  calendR::calendR(
+    start_date = start_date,
+    end_date = end_date,
+    special.days = scheduled_days,
+    title = title,
+    font.style = "bold",
+    title.col     = rgb(0.098, 0.098, 0.439, alpha = 0.9),
+    mbg.col       = rgb(0.098, 0.098, 0.439, alpha = 0.9),
+    weeknames.col = rgb(0.098, 0.098, 0.439, alpha = 0.9),
+    bg.col     = "#f0f0f0",
+    months.col = "#f0f0f0",
+    low.col    = "#f0f0f0",
+    days.col = rgb(0.098, 0.098, 0.439),
+    col      = rgb(0.098, 0.098, 0.439),
+    special.col = rgb(0.098, 0.098, 0.439, alpha = 0.3),
+    doc_name = save_as,
+    papersize = "A5",
+    lwd = 1/3,
+    pdf = .pdf
+  )
 }
