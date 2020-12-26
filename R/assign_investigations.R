@@ -1,7 +1,25 @@
-load_investigator_schedule <- function(
+#' Load the Current Investigator Team Assignments
+#'
+#' `sched_load_teams()` loads the current investigators on each team from an
+#' Excel file. It is mostly a wrapper around
+#' \code{\link[readxl:read_excel]{read_excel()}}, If `clean_names = TRUE`,
+#' it also standardizes names with
+#' \code{\link[janitor:clean_names]{clean_names()}} and gives the name
+#' `role` to the first column (which is unnamed in the Excel sheet).
+#'
+#' @param path The path to the Excel workbook containing team assignments
+#'
+#' @return A `tibble` containing the contents of the first sheet in the
+#'   workbook, with names modified as described above
+#'
+#' @family Assignment Schedules
+#'
+#' @export
+sched_load_teams <- function(
   path = path_create(
     "V:/Administration/Schedules/Copy of Revised Shift Schedules 12.06.2020",
-    ext = "xlsx"
+    ext = "xlsx",
+  clean_names = TRUE
   )
 ) {
 
@@ -38,6 +56,23 @@ parse_investigator_schedule <- function(.data) {
     )
 }
 
+parse_investigator_names <- function(string) {
+  string %>%
+    # Replace brackets with parentheses, since R can't escape them correctly
+    stringr::str_replace_all(
+      pattern = stringr::coll("["),
+      replacement = "("
+    ) %>%
+    stringr::str_replace_all(
+      pa
+    )
+    stringr::str_remove_all(pattern = "[(].*[)]")
+    janitor::make_clean_names(
+      transliterations = c("Any-Latin", "Latin-ASCII"),
+      sep_out = " "
+    )
+}
+
 tibble::tribble(
     ~team,         ~schedule,       ~anchor,
       "a",        "weekdays", as.Date(NA),
@@ -65,7 +100,7 @@ create_schedules <- function(
 }
 
 
-calculate_schedule_weekdays <- function(
+sched_calc_weekdays <- function(
   from = Sys.Date(),
   to = Sys.Date() + 29L
 ) {
@@ -87,7 +122,7 @@ calculate_schedule_weekdays <- function(
   )
 }
 
-calculate_schedule_42 <- function(
+sched_calc_42 <- function(
   from = Sys.Date(),
   to = Sys.Date() + 29L
 ) {
@@ -100,8 +135,7 @@ calculate_schedule_42 <- function(
     to = to
   )
 }
-
-calculate_schedule_5623 <- function(
+sched_calc_5623 <- function(
   from = Sys.Date(),
   to = Sys.Date() + 29L
 ) {
@@ -120,7 +154,7 @@ calculate_schedule_5623 <- function(
   )
 }
 
-calculate_schedule <- function(
+sched_calc <- function(
   cycle = c(
     Sun = FALSE,
     Mon = TRUE,
@@ -151,7 +185,7 @@ calculate_schedule <- function(
   }
 }
 
-calculate_schedule_by_cycle <- function(
+sched_calc_by_cycle <- function(
   cycle = c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
   from = Sys.Date(),
   to = Sys.Date() + 29L,
@@ -214,7 +248,7 @@ calculate_schedule_by_cycle <- function(
     dplyr::filter(dplyr::between(.data[["date"]], from, to))
 }
 
-calculate_schedule_by_day <- function(
+sched_calc_by_day <- function(
   cycle = c(
     Sun = FALSE,
     Mon = TRUE,
@@ -300,7 +334,7 @@ calculate_schedule_by_day <- function(
   )
 }
 
-match_weekdays <- function(day) {
+parse_weekday <- function(day) {
 
   vec_assert(day, ptype = character())
 
@@ -326,7 +360,7 @@ match_weekdays <- function(day) {
   )
 }
 
-create_schedule_calendar <- function(
+sched_calendar <- function(
   from = "2021-01-01",
   to = "2021-12-31",
   schedule = c("weekdays", "42", "5623")
