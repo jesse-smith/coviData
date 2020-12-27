@@ -203,7 +203,7 @@ add_covid_events <- function(gg_obj, lab_y) {
     add_event("2020-09-29", "End State Restrictions", lab_y = lab_y) %>%
     add_event(
       "2020-11-23",
-      "Emphasize Masking\nReduce Dining Hours & Capacity",
+      "Emphasize Masking\nDining Restrictions",
       lab_y = lab_y,
       vjust = 0.6
     )

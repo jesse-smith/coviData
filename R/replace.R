@@ -1,5 +1,16 @@
 #' Add Updated Names Columns to AEL File and Replace Existing File
 #'
+#' Function to replace AEL data with cleaned names data.
+#'
+#' @param date The date of the file to replace
+#'
+#' @param directory The directory in which the file is located
+#'
+#' @param date_file IDK
+#'
+#' @param overwrite_names If names are already cleaned, should this be
+#'   overwritten?
+#'
 #' @export
 replace_ael <- function(
   date = Sys.Date(),

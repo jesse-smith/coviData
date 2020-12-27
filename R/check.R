@@ -321,3 +321,52 @@ check_deaths <- function(
     unmatched = unmatched_ids
   )
 }
+
+
+
+#' Check and Clean Dates in a Linelist
+#'
+#' `check_linelist_dates()` checks a linelist with collection and report dates
+#' for errors and logical inconsistencies. It removes observations that fail
+#' these tests.
+#'
+#' @param .data A linelist with one case/test per row
+#'
+#' @param .collection_date A `Date` column corresponding to the date of sample
+#'   collection
+#'
+#' @param .report_date A `Date` column corresponding to the date the sample
+#'   was reported
+#'
+#' @param today The `Date` to consider as "today"
+#'
+#' @param quiet Should messages be shown for each checking and removal step?
+#'
+#' @return The checked and cleaned linelist
+#'
+#' @export
+check_linelist_dates <- function(
+  .data,
+  .collection_date = "collection_date",
+  .report_date = "report_date",
+  today = Sys.Date(),
+  quiet = FALSE
+) {
+
+  collect_nm <- select_colnames(.data, .collection_date)
+  report_nm <- select_colnames(.data, .report_date)
+
+  assert_cols(.data, collect_nm, ptype = lubridate::Date(), n = 1L)
+  assert_cols(.data, report_nm, ptype = lubridate::Date(), n = 1L)
+
+  .data %T>%
+    {if (!quiet) rlang::inform("Removing invalid dates")} %>%
+    tidylog::filter(
+      .data[[collect_nm]] >= as.Date("2020-03-05"),
+      .data[[collect_nm]] <= today,
+      .data[[report_nm]] >= as.Date("2020-03-05"),
+      .data[[report_nm]] <= today
+    ) %T>%
+    {if (!quiet) rlang::inform("Removing illogical dates combinations")} %>%
+    tidylog::filter(.data[[collect_nm]] <= .data[[report_nm]])
+}

@@ -21,92 +21,6 @@ load_ael <- function(
   )
 }
 
-#' Load, Clean, & Merge AEL Data Files for 2 Consecutive dates
-#'
-#' DEPRECATED - please use \code{load_ael() %>% clean_generic()}.
-#'
-#' @export
-load_and_process_ael <- function(
-  date1 = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/AEL Data/",
-  date2 = date1 - 1,
-  date1_file = NULL,
-  date2_file = NULL,
-  overwrite_names_1 = FALSE,
-  overwrite_names_2 = FALSE,
-  encoding = TRUE,
-  check = TRUE
-) {
-
-  # Get path to date1 file, read data, and process name columns
-  message(paste0("Reading file for ", date1, "..."))
-  load_ael(date1, directory = directory) %>%
-    dplyr::mutate(
-      dplyr::across(where(lubridate::is.POSIXt), dttm_to_dt)
-    ) %>%
-    dplyr::mutate(
-      dplyr::across(
-        where(is.character),
-        .fns = stringr::str_conv,
-        encoding = "UTF-8"
-      )
-    ) %>%
-    # Restrict to TN and blanks
-    dplyr::filter(PtState %in% c("TN", NA)) %>%
-    # Split name columns, if not already done
-    process_names(force = overwrite_names_1) %>%
-    # Perform standard cleaning
-    preprocess() %>%
-    dplyr::mutate(
-      dplyr::across(
-        dplyr::ends_with("name", ignore.case = TRUE),
-        standardize_string
-      )
-    ) %>%
-    # Add FileDate for sorting
-    dplyr::mutate(file_date = date1) ->
-    date1_data
-
-  # Get path to date2 file, read data, and process name columns
-  message(paste0("Reading file for ", date2, "..."))
-  load_ael(date1, directory = directory) %>%
-    dplyr::mutate(
-      dplyr::across(where(lubridate::is.POSIXt), dttm_to_dt)
-    ) %>%
-    dplyr::mutate(
-      dplyr::across(
-        where(is.character),
-        .fns = stringr::str_conv,
-        encoding = "UTF-8"
-      )
-    ) %>%
-    # Restrict to TN and blanks
-    dplyr::filter(PtState %in% c("TN", NA)) %>%
-    # Split name columns, if not already done
-    process_names(force = overwrite_names_2) %>%
-    # Perform standard cleaning
-    preprocess() %>%
-    dplyr::mutate(
-      dplyr::across(
-        dplyr::ends_with("name", ignore.case = TRUE),
-        standardize_string
-      )
-    ) %>%
-    # Add FileDate for sorting
-    dplyr::mutate(file_date = date2) ->
-    date2_data
-
-  # Combine files from both dates
-  # Not restricting AuthDate - want to be able to handle AEL backlogs. Will
-  # still only show us new AEL data upon checking.
-  date1_data %>%
-    dplyr::add_row(
-      date2_data
-    ) %>%
-    dplyr::arrange(dplyr::desc(file_date)) %>%
-    dplyr::distinct(episode_no, .keep_all = TRUE)
-}
-
 #' Load Data from the Integrated Data Tool REDcap Project
 #'
 #' \code{load_integrated_data} loads data from the Integrated Data Tool REDcap
@@ -221,17 +135,11 @@ load_pcr <- function(
 
 #' Load Cleaned Data from SAS Program
 #'
-#' @param date A \code{Date} indicating the date of the file to read
-#'
 #' @param directory A string indicating the directory of the file to read
 #'
-#' @param category A string indicating which cateory of cleaned data to read.
-#'   Options are "Positive cases", "Negatives", "PCR_Positives", or
-#'   "PCR_Negatives"
+#' @param dataset A string indicating which dataset to read
 #'
 #' @param ext The file extension to search for - "csv" by default
-#'
-#' @export
 load_sas <- function(
   directory =
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"
