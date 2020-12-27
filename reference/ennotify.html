@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Send an Email Notification on Error — error_notify • coviData</title>
+<title>entrace() + notify() — ennotify • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,11 @@
 
 
 
-<meta property="og:title" content="Send an Email Notification on Error — error_notify" />
-<meta property="og:description" content="error_notify() generates an error handler that sends an email notification
-when an expression generates an error. It relies on
-notify() and can optionally avoid terminating
-the larger expression it was called from. This is useful for running scripts
-with independent components." />
+<meta property="og:title" content="entrace() + notify() — ennotify" />
+<meta property="og:description" content="ennotify() adds a backtrace to base R errors and sends a notification
+email with the failing function an a full backtrace. However, it cannot
+capture the condition object associated with the error, and thus cannot
+show error messages. Logging errors is recommended." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,64 +119,28 @@ with independent components." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Send an Email Notification on Error</h1>
+    <h1><code>entrace()</code> + <code>notify()</code></h1>
     <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/notify.R'><code>R/notify.R</code></a></small>
-    <div class="hidden name"><code>error_notify.Rd</code></div>
+    <div class="hidden name"><code>ennotify.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>error_notify()</code> generates an error handler that sends an email notification
-when an expression generates an error. It relies on
-<code><a href='notify.html'>notify()</a></code> and can optionally avoid terminating
-the larger expression it was called from. This is useful for running scripts
-with independent components.</p>
+    <p><code>ennotify()</code> adds a backtrace to base R errors and sends a notification
+email with the failing function an a full backtrace. However, it cannot
+capture the condition object associated with the error, and thus cannot
+show error messages. Logging errors is recommended.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error_notify</span><span class='op'>(</span>
-  abort <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  to <span class='op'>=</span> <span class='st'>"jesse.smith@shelbycountytn.gov"</span>,
-  .call <span class='op'>=</span> <span class='cn'>NULL</span>,
-  subject <span class='op'>=</span> <span class='cn'>NULL</span>,
-  body <span class='op'>=</span> <span class='cn'>NULL</span>,
-  cc <span class='op'>=</span> <span class='cn'>NULL</span>,
-  html <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  operation <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ennotify</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>abort</th>
-      <td><p>Should execution terminate after reporting the error?</p></td>
-    </tr>
-    <tr>
-      <th>to</th>
-      <td><p>A character vector containing recipient email addresses. Required.</p></td>
-    </tr>
-    <tr>
-      <th>subject</th>
-      <td><p>A character string containing the email subject. Required.</p></td>
-    </tr>
-    <tr>
-      <th>body</th>
-      <td><p>A character string containing the email body; if <code>html = TRUE</code>,
-this will be parsed as HTML. Optional.</p></td>
-    </tr>
-    <tr>
-      <th>cc</th>
-      <td><p>A character vector containing email address to "cc". Optional.</p></td>
-    </tr>
-    <tr>
-      <th>html</th>
-      <td><p>Should the <code>body</code> be treated as plain text or HTML? The default
-is plain text (<code>FALSE</code>).</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The input error condition, with a backtrace</p>
+    <p>Set <code>ennotify()</code> as your error handler using</p>
+<p><code>options(error = quote(coviData::ennotify()),</code>
+<code> rlang_backtrace_on_error = "full")</code></p>
+<p>The function currently emails me (Jesse Smith) every time an error is
+processed, so please do not use this before consulting me first.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
