@@ -77,26 +77,27 @@ convert_snapshot_to_xlsx <- function(
   # Get matching files from directory
   to_convert <- find_file(
     date = date,
-    pattern = paste0(".*", formatted_date, ".*"),
+    pattern = paste0(".*", formatted_date, ".*[.](?!xls).*"),
     directory = directory,
     rtn_error = FALSE
   )
 
   existing <- find_file(
     date = date,
-    pattern = paste0(".*", formatted_date, ".*", "xlsx"),
+    pattern = paste0(".*", formatted_date, ".*[.]xls.*"),
     directory = directory,
     rtn_error = FALSE
   )
 
   # Don't run if any are found
-  assertthat::assert_that(
-    NROW(existing) == 0 | force,
+  if (vec_size(existing) != 0 & !force) {
     msg = paste(
       "An existing file matches this date; conversion will not continue.",
-      "To download anyway, set 'force == TRUE'."
+      "To convert anyway, set 'force == TRUE'."
     )
-  )
+    
+    rlang::abort(msg)
+  }
 
   # Convert
 
@@ -143,18 +144,20 @@ convert_snapshot_to_xlsx <- function(
 #' @keywords internal
 convert_to_xlsx <- function(file, xlsx_file = NULL) {
 
-  assertthat::assert_that(
-    is_windows(),
-    msg = paste0(
+  if (!is_windows()) {
+    msg <- paste0(
       "`convert_to_xlsx()` currently only works on Windows",
       " due to VBA dependencies"
     )
-  )
+    
+    rlang::abort(msg)
+  }
 
-  file %<>% create_path() %>%
+  file <- file %>% 
+    create_path() %>%
     stringr::str_replace_all(pattern = "/", replacement = "\\\\")
 
-  xlsx_file %<>% create_path(ext = ".xlsx")
+  xlsx_file <- create_path(xlsx_file, ext = ".xlsx")
 
   xlsx_file_vba <- xlsx_file %>%
     stringr::str_replace_all(pattern = "/", replacement = "\\\\")
