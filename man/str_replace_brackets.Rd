@@ -13,12 +13,11 @@ str_replace_braces(string)
 \item{string}{A character vector}
 }
 \value{
-The \code{string}, with square brackets and curly braces replaced by
+The \code{string}, with square brackets or curly braces replaced by
 parentheses
 }
 \description{
 \code{str_replace_brackets()} and \code{str_replace_braces()} are convenience functions
 for replacing square brackets and curly braces with parentheses.
-\strong{R} cannot escape these characters correctly, so this is necessary to
-handle them in regex.
 }
+\keyword{internal}

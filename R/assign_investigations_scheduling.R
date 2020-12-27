@@ -33,19 +33,39 @@
 #'
 #' @inherit asg_schedule params return
 #'
-#' @name asg_schedule_predefined
+#' @param schedule A string indicating the schedule to use. For custom
+#'   schedules, use `schedule = "custom"`.
 #'
 #' @family Case Assignment
 #'
 #' @aliases asg_schedule_weekdays asg_schedule_42 asg_schedule_5623
-NULL
+asg_schedule_predefined <- function(
+  schedule = c("weekdays", "42", "5623", "custom"),
+  start = Sys.Date(),
+  end = start + 29L,
+  anchor = start,
+  cycle = NULL
+) {
+
+  schedule <- rlang::arg_match(schedule)[[1L]]
+
+  if (schedule == "weekdays") {
+    asg_schedule_weekdays(start = start, end = end, anchor = anchor)
+  } else if (schedule == "42") {
+    asg_schedule_42(start = start, end = end, anchor = anchor)
+  } else if (schedule == "5623") {
+    asg_schedule_5623(start = start, end = end, anchor = anchor)
+  } else {
+    asg_schedule(cycle = cycle, start = start, end = end, anchor = anchor)
+  }
+}
 
 #' @rdname asg_schedule_predefined
 #'
 #' @export
 asg_schedule_weekdays <- function(
   start = Sys.Date(),
-  end = Sys.Date() + 29L,
+  end = start + 29L,
   anchor = start
 ) {
 

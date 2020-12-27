@@ -16,3 +16,4 @@ The input \code{string}, with parenthetic expressions removed
 \code{str_remove_parenthetic()} removes parenthetic expressions from strings
 (i.e. "Hi, Alice (and Bob)!" becomes "Hi, Alice !").
 }
+\keyword{internal}

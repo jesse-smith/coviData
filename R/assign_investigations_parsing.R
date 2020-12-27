@@ -1,32 +1,12 @@
-asg_parse_teams <- function(.data) {
-  .data %>%
-    # Find rows with investigator names
-    dplyr::mutate(
-      row = vec_seq_along(.),
-      inv_role = tidyr::replace_na(.data[["role"]] == "Investigators", FALSE),
-      inv_start_row = .data[["row"]][inv_role],
-      .before = 1L
-    ) %>%
-    # Filter to rows with investigator names
-    dplyr::filter(.data[["row"]] >= .data[["inv_start_row"]]) %>%
-    # Remove helper variables
-    dplyr::select(-c("row", "inv_role", "inv_start_row", "role")) %>%
-    # Remove empty rows
-    janitor::remove_empty(which = "rows") %>%
-    # Parse investigator names
-    dplyr::mutate(
-      dplyr::across(dplyr::everything(), ~ asg_parse_inv_names(.x))
-    )
-}
-
 #' Parse Investigator Names and Remove (Most) Non-Alphabetical Characters
 #'
-#' `asg_parse_inv_names()` parses investigator names given in the teams
+#' `asg_parse_names()` parses investigator names given in the teams
 #' worksheet into a standard format for matching with REDcap. It:
 #' \enumerate{
 #'   \item Replaces square brackets and curly braces with parentheses
 #'   \item Removes parenthetic expressions
 #'   \item Removes ordinal and numeric expressions
+#'   \item Converts `NA`s to text (for the next function)
 #'   \item Passes the intermediate to
 #'     \code{\link[janitor:make_clean_names]{
 #'       make_clean_names(
@@ -38,6 +18,7 @@ asg_parse_teams <- function(.data) {
 #'     }}
 #'   \item Removes leading and trailing dashes
 #'   \item Removes extraneous whitespace
+#'   \item Inverts converted `NA`s (back to `NA_character_`)
 #' }
 #'
 #' @param string A character vector containing investigator names
@@ -47,13 +28,14 @@ asg_parse_teams <- function(.data) {
 #' @family Case Assignment
 #'
 #' @export
-asg_parse_inv_names <- function(string) {
+asg_parse_names <- function(string) {
   string %>%
     str_replace_brackets() %>%
     str_replace_braces() %>%
     str_remove_parenthetic() %>%
     str_remove_ordinal() %>%
     str_remove_numeric() %>%
+    stringr::str_replace_na() %>%
     janitor::make_clean_names(
       case = "title",
       use_make_names = FALSE,
@@ -61,7 +43,8 @@ asg_parse_inv_names <- function(string) {
       sep_out = " "
     ) %>%
     str_trim_dashes() %>%
-    stringr::str_squish()
+    stringr::str_squish() %>%
+    str_invert_na()
 }
 
 #' Replace Square Brackets and Curly Braces with Parentheses
@@ -235,5 +218,30 @@ parse_weekday <- function(day) {
     stringr::str_starts(day, "Th") ~ "Thursday",
     stringr::str_starts(day, "Fr") ~ "Friday",
     stringr::str_starts(day, "Sa") ~ "Saturday"
+  )
+}
+
+#' Invert `NA` String Replacement
+#'
+#' `str_inv_replace_na()` performs the inverse operation of
+#' \code{\link[stringr:str_replace_na]{str_replace_na()}}; that is, it converts
+#' replaced `NA` values back to `NA_character_`. This only works if `NA` is
+#' replaced with `"NA"` or a case-wise variant thereof (i.e. `"Na"`, `"na"`, or
+#' `"nA"`). It is designed to invert the addition of "`_[0-9]`" suffixes as
+#' well.
+#'
+#' @param string A character vector
+#'
+#' @return The input `string` with `NA` replacements converted back to
+#'   `NA_character_`
+#'
+#' @keywords internal
+#'
+#' @export
+str_invert_na <- function(string) {
+  stringr::str_replace_all(
+    string,
+    pattern = "^(N|n)(A|a)(_[0-9]+)?$",
+    replacement = NA_character_
   )
 }

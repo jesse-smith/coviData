@@ -252,14 +252,14 @@ reduce_fst_report_dates <- function(
 #' @param .from_col A string indicating the variable in `.from_file` to use as
 #'   specimen collection date
 #'
-#' @param .id_col A string indicating the variable in `.data` and `.from_file`
+#' @param .id_col A string indicating the variable in `.data` and `from_file`
 #'   to use as an ID variable
 #'
 #' @param ... `<tidy-select>` Additional variables to add
 #'
-#' @param .date The date of the NBS file to use for collection dates
+#' @param date The date of the NBS file to use for collection dates
 #'
-#' @param .from_file A file path to the NBS data with the desired specimen
+#' @param from_file A file path to the NBS data with the desired specimen
 #'   collection dates; if only a directory is provided, the NBS file
 #'   corresponding to `date` will be used
 #'

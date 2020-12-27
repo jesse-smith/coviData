@@ -40,35 +40,13 @@ schedule_calendar <- function(
     )
   }
 
-  # Check that `schedule` matches one of the acceptable arguments
-  schedule <- rlang::arg_match(schedule)[[1]]
-
-  # Handle cases of `schedule`
-  if (schedule == "weekdays") {
-    schedule <- calculate_schedule_weekdays(
-      start = start,
-      end = end
-    )
-  } else if (schedule == "42") {
-    schedule <- calculate_schedule_42(
-      start = start,
-      end = end,
-      anchor = anchor
-    )
-  } else if (schedule == "5623") {
-    schedule <- calculate_schedule_5623(
-      start = start,
-      end = end,
-      anchor = anchor
-    )
-  } else {
-    schedule <- calculate_schedule(
-      cycle = cycle,
-      start = start,
-      end = end,
-      anchor = anchor
-    )
-  }
+  # Create schedule
+  schedule <- asg_schedule_predefined(
+    start = start,
+    end = end,
+    anchor = anchor,
+    cycle = cycle
+  )
 
   # Convert the schedule to a vector of "special days" for calendR
   scheduled_days <- schedule %>%
@@ -80,7 +58,7 @@ schedule_calendar <- function(
   end_date <- max(schedule[["date"]], na.rm = TRUE)
 
   if (.pdf) {
-    save_as <- path_create(.dir, snakecase::to_snake_case(title))
+    save_as <- path_create(.dir, janitor::make_clean_names(title))
   } else {
     save_as <- ""
   }

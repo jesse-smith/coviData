@@ -1,3 +1,13 @@
+#' Run the Cases Workflow for Daily Report
+#'
+#' `process_positive_people()` runs the positive people (cases) workflow from
+#' the SAS program.
+#'
+#' @param date The date of the files to use
+#'
+#' @return A `tibble` containing the information from the NBS investigations
+#'   file on all cases
+#'
 #' @export
 process_positive_people <- function(date = Sys.Date()) {
 

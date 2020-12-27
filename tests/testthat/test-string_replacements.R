@@ -62,3 +62,11 @@ test_that("leading and trailing dashes are removed", {
     " wait- what happened? I missed it"
   )
 })
+
+# `str_invert_na()`
+test_that("NA replacements are inverted", {
+  expect_equal(
+    str_invert_na(c("na", "NA_2", "nA_30", "Na_025", "Nate")),
+    c(NA_character_, NA_character_, NA_character_, NA_character_, "Nate")
+  )
+})

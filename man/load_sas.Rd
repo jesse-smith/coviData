@@ -13,13 +13,9 @@ load_sas(
 \arguments{
 \item{directory}{A string indicating the directory of the file to read}
 
+\item{dataset}{A string indicating which dataset to read}
+
 \item{ext}{The file extension to search for - "csv" by default}
-
-\item{date}{A \code{Date} indicating the date of the file to read}
-
-\item{category}{A string indicating which cateory of cleaned data to read.
-Options are "Positive cases", "Negatives", "PCR_Positives", or
-"PCR_Negatives"}
 }
 \description{
 Load Cleaned Data from SAS Program

@@ -7,17 +7,24 @@
 \alias{asg_schedule_5623}
 \title{Quickly Create Pre-Defined Work Schedules}
 \usage{
-asg_schedule_weekdays(
+asg_schedule_predefined(
+  schedule = c("weekdays", "42", "5623", "custom"),
   start = Sys.Date(),
-  end = Sys.Date() + 29L,
-  anchor = start
+  end = start + 29L,
+  anchor = start,
+  cycle = NULL
 )
+
+asg_schedule_weekdays(start = Sys.Date(), end = start + 29L, anchor = start)
 
 asg_schedule_42(start = Sys.Date(), end = Sys.Date() + 29L, anchor = start)
 
 asg_schedule_5623(start = Sys.Date(), end = Sys.Date() + 29L, anchor = start)
 }
 \arguments{
+\item{schedule}{A string indicating the schedule to use. For custom
+schedules, use \code{schedule = "custom"}.}
+
 \item{start}{The start date of the returned schedule; either a string in
 "YYYY-MM-DD" format or a \code{Date} object}
 
@@ -28,6 +35,10 @@ asg_schedule_5623(start = Sys.Date(), end = Sys.Date() + 29L, anchor = start)
 This can be any valid date; no particular relationship to \code{start} or \code{end}
 is needed. It must be either a string in "YYYY-MM-DD" format or a
 \code{Date} object.}
+
+\item{cycle}{A logical vector defining one scheduling cycle. If named, names
+are passed to \code{\link[coviData:parse_weekday]{parse_weekday()}} for
+standardization of weekday names.}
 }
 \value{
 A \code{tibble} with columns \code{date} (a \code{Date} column containing dates
@@ -66,7 +77,13 @@ that function for implementing other schedules.
 }
 \seealso{
 Other Case Assignment: 
+\code{\link{asg_calc_schedules}()},
+\code{\link{asg_join_nights_weekends}()},
+\code{\link{asg_join_schedules}()},
+\code{\link{asg_load_nights_weekends}()},
 \code{\link{asg_load_teams}()},
+\code{\link{asg_parse_names}()},
+\code{\link{asg_parse_nights_weekends}()},
 \code{\link{asg_schedule}()}
 }
 \concept{Case Assignment}

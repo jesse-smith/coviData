@@ -6,12 +6,15 @@
 \usage{
 asg_load_teams(
  
-    path = path_create("V:/Administration/Schedules/Copy of Revised Shift Schedules 12.06.2020",
-    ext = "xlsx", clean_names = TRUE)
+    path = path_create("V:/Administration/Schedules/Copy of Copy of Revised Shift Schedules 12.23.2020",
+    ext = "xlsx"),
+  clean_names = TRUE
 )
 }
 \arguments{
 \item{path}{The path end the Excel workbook containing team assignments}
+
+\item{clean_names}{Should names be cleaned before returning data?}
 }
 \value{
 A \code{tibble} containing the contents of the first sheet in the
@@ -27,7 +30,13 @@ it also standardizes names with
 }
 \seealso{
 Other Case Assignment: 
-\code{\link{asg_schedule_predefined}},
+\code{\link{asg_calc_schedules}()},
+\code{\link{asg_join_nights_weekends}()},
+\code{\link{asg_join_schedules}()},
+\code{\link{asg_load_nights_weekends}()},
+\code{\link{asg_parse_names}()},
+\code{\link{asg_parse_nights_weekends}()},
+\code{\link{asg_schedule_predefined}()},
 \code{\link{asg_schedule}()}
 }
 \concept{Case Assignment}
