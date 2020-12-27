@@ -1,6 +1,6 @@
 template:
   params:
-    bootswatch: paper
+    bootswatch: darkly
 url: https://jesse-smith.github.io/covidata/
 reference:
 - title: "Download"

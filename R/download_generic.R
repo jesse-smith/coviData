@@ -103,7 +103,8 @@ download_data_for_regions <- function(
     body = api_nbs_params,
     httr::write_disk(zip_temp),
     httr::progress(),
-    times = 3L
+    times = 12L,
+    pause_cap = 300L
   ) %>%
     httr::stop_for_status()
 
@@ -227,7 +228,8 @@ download_interview_report <- function(
     body = api_nbs_params,
     httr::write_disk(zip_temp),
     httr::progress(),
-    times = 3L
+    times = 12L,
+    pause_cap = 300L
   ) %>%
     httr::stop_for_status()
 
@@ -386,7 +388,8 @@ check_date_updated <- function(
     "POST",
     url = api_uri,
     body = api_date_params,
-    times = 3L
+    times = 12L,
+    pause_cap = 300L
   ) %>%
     httr::stop_for_status() %>%
     httr::content(as = "text") %>%
@@ -417,4 +420,15 @@ check_date_updated <- function(
   }
 
   if (date_updated == date) TRUE else FALSE
+}
+
+download_redcap <- function(
+  date = Sys.Date(),
+  api_token,
+  api_params,
+  directory,
+  new_file,
+  force = FALSE
+) {
+
 }

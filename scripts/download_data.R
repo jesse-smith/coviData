@@ -9,9 +9,9 @@ library(coviData)
 #
 # The NBS and PCR functions will open Excel for you to save as .xlsx; to do this
 # with any of the `download_*` functions, set `convert = TRUE`.
-download_nbs_snapshot()
+download_nbs_snapshot(force = TRUE)
 Sys.sleep(3) # Give R enough time to delete temporary files (3 seconds)
-convert_nbs_snapshot()
+convert_nbs_snapshot(force = TRUE)
 Sys.sleep(3) # Give Excel time to release files (3 seconds)
 download_pcr_snapshot()
 Sys.sleep(3) # Give R enough time to delete temporary files (3 seconds)

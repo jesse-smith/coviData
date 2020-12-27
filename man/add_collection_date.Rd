@@ -20,14 +20,14 @@ add_collection_date(
 \item{.from_col}{A string indicating the variable in \code{.from_file} to use as
 specimen collection date}
 
-\item{.id_col}{A string indicating the variable in \code{.data} and \code{.from_file}
+\item{.id_col}{A string indicating the variable in \code{.data} and \code{from_file}
 to use as an ID variable}
 
 \item{...}{\verb{<tidy-select>} Additional variables to add}
 
-\item{.date}{The date of the NBS file to use for collection dates}
+\item{date}{The date of the NBS file to use for collection dates}
 
-\item{.from_file}{A file path to the NBS data with the desired specimen
+\item{from_file}{A file path to the NBS data with the desired specimen
 collection dates; if only a directory is provided, the NBS file
 corresponding to \code{date} will be used}
 }

@@ -11,6 +11,16 @@ replace_ael(
   overwrite_names = FALSE
 )
 }
+\arguments{
+\item{date}{The date of the file to replace}
+
+\item{directory}{The directory in which the file is located}
+
+\item{date_file}{IDK}
+
+\item{overwrite_names}{If names are already cleaned, should this be
+overwritten?}
+}
 \description{
-Add Updated Names Columns to AEL File and Replace Existing File
+Function to replace AEL data with cleaned names data.
 }
