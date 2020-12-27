@@ -137,8 +137,9 @@ it also standardizes names with
 
     <pre class="usage"><span class='fu'>asg_load_teams</span><span class='op'>(</span>
  
-    path <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/Administration/Schedules/Copy of Revised Shift Schedules 12.06.2020"</span>,
-    ext <span class='op'>=</span> <span class='st'>"xlsx"</span>, clean_names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    path <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/Administration/Schedules/Copy of Copy of Revised Shift Schedules 12.23.2020"</span>,
+    ext <span class='op'>=</span> <span class='st'>"xlsx"</span><span class='op'>)</span>,
+  clean_names <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -147,6 +148,10 @@ it also standardizes names with
     <tr>
       <th>path</th>
       <td><p>The path end the Excel workbook containing team assignments</p></td>
+    </tr>
+    <tr>
+      <th>clean_names</th>
+      <td><p>Should names be cleaned before returning data?</p></td>
     </tr>
     </table>
 
@@ -157,7 +162,13 @@ workbook, with names modified as described above</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Case Assignment: 
-<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a></code>,
+<code><a href='asg_calc_schedules.html'>asg_calc_schedules</a>()</code>,
+<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
+<code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
+<code><a href='asg_parse_names.html'>asg_parse_names</a>()</code>,
+<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
+<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a>()</code>,
 <code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
 
   </div>

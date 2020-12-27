@@ -28,7 +28,28 @@
     <loc>https://jesse-smith.github.io/covidata//reference/archive_report_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_calc_schedules.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_nights_weekends.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_schedules.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_load_nights_weekends.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/asg_load_teams.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_names.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_nights_weekends.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_teams.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/asg_schedule.html</loc>
@@ -151,9 +172,6 @@
     <loc>https://jesse-smith.github.io/covidata//reference/load_ael.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/load_and_process_ael.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/load_data.html</loc>
   </url>
   <url>
@@ -191,6 +209,9 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/process_names.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/process_positive_people.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/randomize.html</loc>
@@ -238,6 +259,15 @@
     <loc>https://jesse-smith.github.io/covidata//reference/standardize_string.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_invert_na.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_remove_numeric.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_remove_ordinal.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_remove_parenthetic.html</loc>
   </url>
   <url>
@@ -245,6 +275,9 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_to_factor.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_trim_dashes.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/team_schedules.html</loc>

@@ -159,11 +159,15 @@ schedules do not require an anchor point.</p>
 
     </div>
 
-    <pre class="usage"><span class='fu'>asg_schedule_weekdays</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>asg_schedule_predefined</span><span class='op'>(</span>
+  schedule <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weekdays"</span>, <span class='st'>"42"</span>, <span class='st'>"5623"</span>, <span class='st'>"custom"</span><span class='op'>)</span>,
   start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>29L</span>,
-  anchor <span class='op'>=</span> <span class='va'>start</span>
+  end <span class='op'>=</span> <span class='va'>start</span> <span class='op'>+</span> <span class='fl'>29L</span>,
+  anchor <span class='op'>=</span> <span class='va'>start</span>,
+  cycle <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
+
+<span class='fu'>asg_schedule_weekdays</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>, end <span class='op'>=</span> <span class='va'>start</span> <span class='op'>+</span> <span class='fl'>29L</span>, anchor <span class='op'>=</span> <span class='va'>start</span><span class='op'>)</span>
 
 <span class='fu'>asg_schedule_42</span><span class='op'>(</span>start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>, end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>29L</span>, anchor <span class='op'>=</span> <span class='va'>start</span><span class='op'>)</span>
 
@@ -172,6 +176,11 @@ schedules do not require an anchor point.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>schedule</th>
+      <td><p>A string indicating the schedule to use. For custom
+schedules, use <code>schedule = "custom"</code>.</p></td>
+    </tr>
     <tr>
       <th>start</th>
       <td><p>The start date of the returned schedule; either a string in
@@ -188,6 +197,12 @@ schedules do not require an anchor point.</p>
 This can be any valid date; no particular relationship to <code>start</code> or <code>end</code>
 is needed. It must be either a string in "YYYY-MM-DD" format or a
 <code>Date</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>cycle</th>
+      <td><p>A logical vector defining one scheduling cycle. If named, names
+are passed to <code><a href='parse_weekday.html'>parse_weekday()</a></code> for
+standardization of weekday names.</p></td>
     </tr>
     </table>
 
@@ -206,7 +221,13 @@ that function for implementing other schedules.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Case Assignment: 
+<code><a href='asg_calc_schedules.html'>asg_calc_schedules</a>()</code>,
+<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
+<code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
 <code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
+<code><a href='asg_parse_names.html'>asg_parse_names</a>()</code>,
+<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
 <code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
 
   </div>

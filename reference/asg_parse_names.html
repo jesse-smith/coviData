@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load, Clean, &amp; Merge AEL Data Files for 2 Consecutive dates — load_and_process_ael • coviData</title>
+<title>Parse Investigator Names and Remove (Most) Non-Alphabetical Characters — asg_parse_names • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,27 @@
 
 
 
-<meta property="og:title" content="Load, Clean, &amp; Merge AEL Data Files for 2 Consecutive dates — load_and_process_ael" />
-<meta property="og:description" content="DEPRECATED - please use load_ael() %&amp;gt;% clean_generic()." />
+<meta property="og:title" content="Parse Investigator Names and Remove (Most) Non-Alphabetical Characters — asg_parse_names" />
+<meta property="og:description" content="asg_parse_names() parses investigator names given in the teams
+worksheet into a standard format for matching with REDcap. It:
+Replaces square brackets and curly braces with parentheses
+Removes parenthetic expressions
+Removes ordinal and numeric expressions
+Converts NAs to text (for the next function)
+Passes the intermediate to
+
+      make_clean_names(
+        case = &quot;title&quot;,
+        use_make_names = FALSE,
+        transliterations = c(&quot;Any-Latin&quot;, &quot;Latin-ASCII&quot;),
+        sep_out = &quot; &quot;
+      )
+    
+Removes leading and trailing dashes
+Removes extraneous whitespace
+Inverts converted NAs (back to NA_character_)
+
+" />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,28 +135,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load, Clean, &amp; Merge AEL Data Files for 2 Consecutive dates</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load.R'><code>R/load.R</code></a></small>
-    <div class="hidden name"><code>load_and_process_ael.Rd</code></div>
+    <h1>Parse Investigator Names and Remove (Most) Non-Alphabetical Characters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations_parsing.R'><code>R/assign_investigations_parsing.R</code></a></small>
+    <div class="hidden name"><code>asg_parse_names.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>DEPRECATED - please use <code>load_ael() %&gt;% clean_generic()</code>.</p>
+    <p><code>asg_parse_names()</code> parses investigator names given in the teams
+worksheet into a standard format for matching with REDcap. It:</p><ol>
+<li><p>Replaces square brackets and curly braces with parentheses</p></li>
+<li><p>Removes parenthetic expressions</p></li>
+<li><p>Removes ordinal and numeric expressions</p></li>
+<li><p>Converts <code>NA</code>s to text (for the next function)</p></li>
+<li><p>Passes the intermediate to
+<code><a href='https://rdrr.io/pkg/janitor/man/make_clean_names.html'>
+      make_clean_names(
+        case = "title",
+        use_make_names = FALSE,
+        transliterations = c("Any-Latin", "Latin-ASCII"),
+        sep_out = " "
+      )
+    </a></code></p></li>
+<li><p>Removes leading and trailing dashes</p></li>
+<li><p>Removes extraneous whitespace</p></li>
+<li><p>Inverts converted <code>NA</code>s (back to <code>NA_character_</code>)</p></li>
+</ol>
+
     </div>
 
-    <pre class="usage"><span class='fu'>load_and_process_ael</span><span class='op'>(</span>
-  date1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/AEL Data/"</span>,
-  date2 <span class='op'>=</span> <span class='va'>date1</span> <span class='op'>-</span> <span class='fl'>1</span>,
-  date1_file <span class='op'>=</span> <span class='cn'>NULL</span>,
-  date2_file <span class='op'>=</span> <span class='cn'>NULL</span>,
-  overwrite_names_1 <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  overwrite_names_2 <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  encoding <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  check <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>asg_parse_names</span><span class='op'>(</span><span class='va'>string</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>string</th>
+      <td><p>A character vector containing investigator names</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The input <code>string</code> with cleaned names</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Case Assignment: 
+<code><a href='asg_calc_schedules.html'>asg_calc_schedules</a>()</code>,
+<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
+<code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
+<code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
+<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
+<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a>()</code>,
+<code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

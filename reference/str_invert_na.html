@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Cleaned Data from SAS Program — load_sas • coviData</title>
+<title>Invert NA String Replacement — str_invert_na • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,13 @@
 
 
 
-<meta property="og:title" content="Load Cleaned Data from SAS Program — load_sas" />
-<meta property="og:description" content="Load Cleaned Data from SAS Program" />
+<meta property="og:title" content="Invert NA String Replacement — str_invert_na" />
+<meta property="og:description" content="str_inv_replace_na() performs the inverse operation of
+str_replace_na(); that is, it converts
+replaced NA values back to NA_character_. This only works if NA is
+replaced with &quot;NA&quot; or a case-wise variant thereof (i.e. &quot;Na&quot;, &quot;na&quot;, or
+&quot;nA&quot;). It is designed to invert the addition of &quot;_[0-9]&quot; suffixes as
+well." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,38 +121,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Cleaned Data from SAS Program</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load.R'><code>R/load.R</code></a></small>
-    <div class="hidden name"><code>load_sas.Rd</code></div>
+    <h1>Invert <code>NA</code> String Replacement</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations_parsing.R'><code>R/assign_investigations_parsing.R</code></a></small>
+    <div class="hidden name"><code>str_invert_na.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Load Cleaned Data from SAS Program</p>
+    <p><code>str_inv_replace_na()</code> performs the inverse operation of
+<code><a href='https://stringr.tidyverse.org/reference/str_replace_na.html'>str_replace_na()</a></code>; that is, it converts
+replaced <code>NA</code> values back to <code>NA_character_</code>. This only works if <code>NA</code> is
+replaced with <code>"NA"</code> or a case-wise variant thereof (i.e. <code>"Na"</code>, <code>"na"</code>, or
+<code>"nA"</code>). It is designed to invert the addition of "<code>_[0-9]</code>" suffixes as
+well.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_sas</span><span class='op'>(</span>
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"</span>,
-  dataset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"positive_ppl"</span>, <span class='st'>"negative_ppl"</span>, <span class='st'>"positive_pcr"</span>, <span class='st'>"negative_pcr"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>str_invert_na</span><span class='op'>(</span><span class='va'>string</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>A string indicating the directory of the file to read</p></td>
-    </tr>
-    <tr>
-      <th>dataset</th>
-      <td><p>A string indicating which dataset to read</p></td>
-    </tr>
-    <tr>
-      <th>ext</th>
-      <td><p>The file extension to search for - "csv" by default</p></td>
+      <th>string</th>
+      <td><p>A character vector</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The input <code>string</code> with <code>NA</code> replacements converted back to
+<code>NA_character_</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

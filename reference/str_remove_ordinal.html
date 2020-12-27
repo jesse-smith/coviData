@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Cleaned Data from SAS Program — load_sas • coviData</title>
+<title>Remove Mixed Ordinal Numbers with Text Representation — str_remove_ordinal • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Load Cleaned Data from SAS Program — load_sas" />
-<meta property="og:description" content="Load Cleaned Data from SAS Program" />
+<meta property="og:title" content="Remove Mixed Ordinal Numbers with Text Representation — str_remove_ordinal" />
+<meta property="og:description" content="Removes mixed text/numeric ordinal numbers (i.e. &quot;1st&quot;, &quot;2nd&quot;, &quot;23rd&quot;). This
+function was inspired by the replace_ordinal() function in the
+textclean package, and re-uses pieces of its code." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,38 +118,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Cleaned Data from SAS Program</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load.R'><code>R/load.R</code></a></small>
-    <div class="hidden name"><code>load_sas.Rd</code></div>
+    <h1>Remove Mixed Ordinal Numbers with Text Representation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations_parsing.R'><code>R/assign_investigations_parsing.R</code></a></small>
+    <div class="hidden name"><code>str_remove_ordinal.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Load Cleaned Data from SAS Program</p>
+    <p>Removes mixed text/numeric ordinal numbers (i.e. "1st", "2nd", "23rd"). This
+function was inspired by the <code>replace_ordinal()</code> function in the
+textclean package, and re-uses pieces of its code.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_sas</span><span class='op'>(</span>
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"</span>,
-  dataset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"positive_ppl"</span>, <span class='st'>"negative_ppl"</span>, <span class='st'>"positive_pcr"</span>, <span class='st'>"negative_pcr"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>str_remove_ordinal</span><span class='op'>(</span><span class='va'>string</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>A string indicating the directory of the file to read</p></td>
+      <th>string</th>
+      <td><p>A character vector</p></td>
     </tr>
     <tr>
-      <th>dataset</th>
-      <td><p>A string indicating which dataset to read</p></td>
+      <th>num_paste</th>
+      <td><p>A logical. If <code>TRUE</code>, the elements of larger numbers are
+separated with spaces. If <code>FALSE</code>, the elements will be joined without
+spaces.</p></td>
     </tr>
     <tr>
-      <th>ext</th>
-      <td><p>The file extension to search for - "csv" by default</p></td>
+      <th>A</th>
+      <td><p>logical. If <code>TRUE</code>, ordinal numbers are removed from <code>string</code></p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Ignored.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Currently only implemented for ordinal values 1 through 100.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

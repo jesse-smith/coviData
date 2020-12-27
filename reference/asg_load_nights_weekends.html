@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Cleaned Data from SAS Program — load_sas • coviData</title>
+<title>Load Night &amp; Weekend Scheduling Data — asg_load_nights_weekends • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Load Cleaned Data from SAS Program — load_sas" />
-<meta property="og:description" content="Load Cleaned Data from SAS Program" />
+<meta property="og:title" content="Load Night &amp; Weekend Scheduling Data — asg_load_nights_weekends" />
+<meta property="og:description" content="asg_load_nights_weekends() loads schedules for investigators working nights
+and weekends. These team members do not follow a team-wide schedule and must
+be dealt with individually." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,38 +118,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Cleaned Data from SAS Program</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load.R'><code>R/load.R</code></a></small>
-    <div class="hidden name"><code>load_sas.Rd</code></div>
+    <h1>Load Night &amp; Weekend Scheduling Data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations_nights_weekends.R'><code>R/assign_investigations_nights_weekends.R</code></a></small>
+    <div class="hidden name"><code>asg_load_nights_weekends.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Load Cleaned Data from SAS Program</p>
+    <p><code>asg_load_nights_weekends()</code> loads schedules for investigators working nights
+and weekends. These team members do not follow a team-wide schedule and must
+be dealt with individually.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_sas</span><span class='op'>(</span>
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"</span>,
-  dataset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"positive_ppl"</span>, <span class='st'>"negative_ppl"</span>, <span class='st'>"positive_pcr"</span>, <span class='st'>"negative_pcr"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>asg_load_nights_weekends</span><span class='op'>(</span>
+  path <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/Administration/Schedules/Night&amp;Weekend staff"</span>, ext <span class='op'>=</span> <span class='st'>"xlsx"</span><span class='op'>)</span>,
+  sheet <span class='op'>=</span> <span class='st'>"schedules"</span>,
+  clean_names <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>A string indicating the directory of the file to read</p></td>
+      <th>path</th>
+      <td><p>The location of the nights and weekends scheduling workbook</p></td>
     </tr>
     <tr>
-      <th>dataset</th>
-      <td><p>A string indicating which dataset to read</p></td>
+      <th>sheet</th>
+      <td><p>The sheet from which to read the schedule; either the sheet name
+or the sheet number</p></td>
     </tr>
     <tr>
-      <th>ext</th>
-      <td><p>The file extension to search for - "csv" by default</p></td>
+      <th>clean_names</th>
+      <td><p>Should names be cleaned?</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The data in the read sheet as a <code>tibble</code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Case Assignment: 
+<code><a href='asg_calc_schedules.html'>asg_calc_schedules</a>()</code>,
+<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
+<code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
+<code><a href='asg_parse_names.html'>asg_parse_names</a>()</code>,
+<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
+<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a>()</code>,
+<code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

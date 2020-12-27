@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Cleaned Data from SAS Program — load_sas • coviData</title>
+<title>Calculate Whether Investigators Are Working on a Given Date — asg_calc_schedules • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,11 @@
 
 
 
-<meta property="og:title" content="Load Cleaned Data from SAS Program — load_sas" />
-<meta property="og:description" content="Load Cleaned Data from SAS Program" />
+<meta property="og:title" content="Calculate Whether Investigators Are Working on a Given Date — asg_calc_schedules" />
+<meta property="og:description" content="asg_calc_schedules() takes the output of asg_join_nights_weekends() and
+calcuates whether investigators are scheduled to work on date. Either a
+predefined schedule or a custom schedule must be supplied for every
+investigator." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,38 +119,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Cleaned Data from SAS Program</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/load.R'><code>R/load.R</code></a></small>
-    <div class="hidden name"><code>load_sas.Rd</code></div>
+    <h1>Calculate Whether Investigators Are Working on a Given Date</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations.R'><code>R/assign_investigations.R</code></a></small>
+    <div class="hidden name"><code>asg_calc_schedules.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Load Cleaned Data from SAS Program</p>
+    <p><code>asg_calc_schedules()</code> takes the output of <code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends()</a></code> and
+calcuates whether investigators are scheduled to work on <code>date</code>. Either a
+predefined schedule or a custom schedule must be supplied for every
+investigator.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>load_sas</span><span class='op'>(</span>
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/"</span>,
-  dataset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"positive_ppl"</span>, <span class='st'>"negative_ppl"</span>, <span class='st'>"positive_pcr"</span>, <span class='st'>"negative_pcr"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>asg_calc_schedules</span><span class='op'>(</span><span class='va'>.data</span>, date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>A string indicating the directory of the file to read</p></td>
+      <th>.data</th>
+      <td><p>The output of <code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends()</a></code></p></td>
     </tr>
     <tr>
-      <th>dataset</th>
-      <td><p>A string indicating which dataset to read</p></td>
-    </tr>
-    <tr>
-      <th>ext</th>
-      <td><p>The file extension to search for - "csv" by default</p></td>
+      <th>date</th>
+      <td><p>The date to use when checking whether investigators are scheduled</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A <code>tibble</code> with columns <code>team</code>, <code>member</code>, and <code>scheduled</code></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Case Assignment: 
+<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
+<code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
+<code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
+<code><a href='asg_parse_names.html'>asg_parse_names</a>()</code>,
+<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
+<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a>()</code>,
+<code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
