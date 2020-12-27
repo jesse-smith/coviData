@@ -7,11 +7,12 @@
 error_notify(
   abort = TRUE,
   to = "jesse.smith@shelbycountytn.gov",
-  operation = "An Operation",
-  subject = paste(operation, "failed at", format(Sys.time(), "\%H:\%M on \%Y-\%m-\%d")),
+  .call = NULL,
+  subject = NULL,
   body = NULL,
   cc = NULL,
-  html = FALSE
+  html = FALSE,
+  operation = NULL
 )
 }
 \arguments{
