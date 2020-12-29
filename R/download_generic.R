@@ -1,153 +1,3 @@
-#' Download a File from the Data for Regions REDcap Project
-#'
-#' `download_data_for_regions()` is the workhorse behind the
-#' `download_*_snapshot()` functions.
-#'
-#' @param date A \code{Date} indicating the date of the file to download
-#'
-#' @param api_token The API token for accessing the Data for Regions REDcap
-#'   project. This should be stored in an \emph{.Renviron} file; see
-#'   \link{using-renviron} for details.
-#'
-#' @param redcap_file A string indicating the name of the file to download from
-#'   REDcap
-#'
-#' @param directory A string specifying the save directory; this should usually
-#'   be left alone
-#'
-#' @param new_file A string specifying the save file name; this should always
-#'   end in \emph{.csv} and should usually be left alone
-#'
-#' @param force A logical indicating whether to ignore any existing files
-#'   matching `date` and `directory`
-#'
-#' @return Invisibly returns the path to the new data file
-#'
-#' @keywords internal
-#'
-#' @export
-download_data_for_regions <- function(
-  date = Sys.Date(),
-  api_token,
-  redcap_file,
-  directory,
-  new_file,
-  force = FALSE
-) {
-
-  # Generic parameters - don't want these to be function parameters, but they
-  # could change state-side
-  region <- "MSR"
-  date_updated <- "date_updated"
-
-  # Step 1 - Check directory to make sure file isn't already there
-
-  # Get matching files from directory
-  n_existing <- find_file(
-    date = date,
-    pattern = new_file,
-    directory = directory,
-    rtn_error = FALSE
-  ) %>% length()
-
-  # Don't run if any are found
-  assertthat::assert_that(
-    n_existing == 0 | force,
-    msg = paste(
-      "An existing file matches this date; download will not continue.",
-      "To download anyway, set 'force == TRUE'."
-    )
-  )
-
-  # Step 2 - Make sure REDcap's data matches the date requested
-  on.exit(options(warn = options("warn")[[1]]), add = TRUE)
-
-  options(warn = 2)
-  check_date_updated()
-  options(warn = options("warn")[[1]])
-
-  # Step 3 - Download
-
-  # URL base for API
-  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
-
-  message("Downloading REDcap file...")
-
-  # Create params to get
-  api_nbs_params <- list(
-    token        = api_token,
-    content      = "file",
-    action       = "export",
-    record       = region,
-    field        = redcap_file,
-    returnFormat = "json"
-  )
-
-  # Create temp folder and file names
-  directory %<>% create_path()
-  dir_temp <- fs::file_temp(".temp_redcap_", tmp_dir = directory)
-  zip_temp <- create_path(dir_temp, "redcap_file", ".zip")
-
-  # Delete existing temp folder if it exists and create new one
-  if (fs::dir_exists(dir_temp)) fs::dir_delete(dir_temp)
-  fs::dir_create(dir_temp)
-
-  # Make sure that things are cleaned up when this function exits, whether
-  # normally or as a result of an error
-  on.exit(fs::dir_delete(dir_temp))
-
-  # Download file
-  httr::RETRY(
-    "POST",
-    url = api_uri,
-    body = api_nbs_params,
-    httr::write_disk(zip_temp),
-    httr::progress(),
-    times = 12L,
-    pause_cap = 300L
-  ) %>%
-    httr::stop_for_status()
-
-  message("\nDone.")
-
-  # Step 4 - Unzip, Move, and Rename
-
-  # Unzip new file in temporary directory
-  message("Unzipping folder...", appendLF = FALSE)
-  utils::unzip(zip_temp, exdir = dir_temp)
-  fs::file_delete(zip_temp)
-  message("Done.")
-
-  # Move to specified directory and rename
-  message(
-    "Moving file and cleaning up; this may take a while...",
-    appendLF = FALSE
-  )
-
-  # Find the result of unzipping
-  file_temp <- fs::dir_ls(dir_temp)
-
-  # Make sure there's only one file
-  assertthat::assert_that(
-    length(file_temp) == 1,
-    msg = paste0(
-      "Expected 1 file when unzipping the response from REDcap, but got ",
-      length(file_temp), "."
-    )
-  )
-
-  file_new <- create_path(directory, new_file)
-
-  # Move the file to the chosen directory with the chosen file name
-  fs::file_move(
-    path = file_temp,
-    new_path = file_new
-  )
-  message("Done.")
-
-  invisible(path_create(directory, new_file))
-}
-
 #' Download a Report from the Integrated Data Tool REDcap Project
 #'
 #' `download_interview_report()` downloads a report from the Integrated Data
@@ -209,7 +59,7 @@ download_interview_report <- function(
   # Create temp folder and file names
   directory %<>% create_path()
   dir_temp <- fs::file_temp(".temp_redcap_", tmp_dir = directory)
-  zip_temp <- create_path(dir_temp, "redcap_file.csv")
+  file_temp_dl <- create_path(dir_temp, "redcap_file.csv")
 
   # Delete existing temp folder if it exists
   if (fs::dir_exists(dir_temp)) fs::dir_delete(dir_temp)
@@ -226,7 +76,7 @@ download_interview_report <- function(
     "POST",
     api_uri,
     body = api_nbs_params,
-    httr::write_disk(zip_temp),
+    httr::write_disk(file_temp_dl),
     httr::progress(),
     times = 12L,
     pause_cap = 300L

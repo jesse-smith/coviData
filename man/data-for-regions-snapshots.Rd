@@ -6,6 +6,7 @@
 \alias{download_pcr_snapshot}
 \alias{download_antigen_snapshot}
 \alias{download_serology_snapshot}
+\alias{download_vaccine_snapshot}
 \title{Download a File from the Data for Regions REDcap Project}
 \usage{
 download_nbs_snapshot(
@@ -42,6 +43,16 @@ download_serology_snapshot(
   redcap_file = "lab_serology",
   directory = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR SEROLOGY/",
   new_file = paste0("MSR - All Serologies_", format(Sys.Date(), "\%m\%d\%Y"), ".csv"),
+  force = FALSE
+)
+
+download_vaccine_snapshot(
+  date = Sys.Date(),
+  api_token = Sys.getenv("redcap_DFR_token"),
+  redcap_file = "covid_vaccine_data",
+  directory = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"),
+  new_file = paste0("COVID_VACC_MSR_", format(Sys.Date(), "\%Y\%m\%d"), ".csv"),
   force = FALSE
 )
 }
@@ -83,4 +94,8 @@ testing data (if posted).
 
 \code{download_serology_snapshot()} downloads the current snapshot of serology
 testing data (if posted).
+
+\code{download_vaccine_snapshot()} downloads the current snapshot of vaccination
+data (if posted). Note that this is only posted on Tues/Fri, unlike other
+snapshot files.
 }

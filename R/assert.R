@@ -73,23 +73,34 @@ assert_cols <- function(.data, ..., ptype = NULL, n = NULL) {
 
 #' Flexible Error Assertion
 #'
-#' `assert_all()` and `assert_any()` are functions that require all or any of the expressions in `...` to be `TRUE`. They are more flexible versions of \code{\link[base:stopifnot]{stopifnot()}} that also provide the conditioning system benefits of \code{\link[rlang:abort]{abort()}}. They are powered (and generalized) by `assert()`.
+#' `assert_all()` and `assert_any()` are functions that require all or any of
+#' the expressions in `...` to be `TRUE`. They are more flexible versions of
+#' \code{\link[base:stopifnot]{stopifnot()}} that also provide the conditioning
+#' system benefits of \code{\link[rlang:abort]{abort()}}. They are powered
+#' (and generalized) by `assert()`.
 #'
-#' `assert()` evaluates logical expressions and throws an error if the conditions specified by `reduce` are not met. It allows any combination of logical conditions (not just "all `TRUE`" or "any `TRUE`") and provides the conditioning system benefits of \code{\link[rlang:abort]{abort()}}. 
-#' 
+#' `assert()` evaluates logical expressions and throws an error if the
+#' conditions specified by `reduce` are not met. It allows any combination of
+#' logical conditions (not just "all `TRUE`" or "any `TRUE`") and provides the
+#' \conditioning system benefits of \code{\link[rlang:abort]{abort()}}.
+#'
 #' @inheritParams rlang::abort
 #'
 #' @param ... Unnamed expressions that describe the conditions to be tested
 #'
 #' @param data Additional data to be stored in the condition object
 #'
-#' @param reduce A function that takes a vector of logical values as an argument and returns a single logical value. `reduce` is given the results of the expressions in `...` and decides whether the assertion passed or failed. The default is `all()` (i.e. all expressions must be `TRUE`), but any function that meets the criteria above is acceptable.
+#' @param reduce A function that takes a vector of logical values as an argument
+#'   and returns a single logical value. `reduce` is given the results of the
+#'     expressions in `...` and decides whether the assertion passed or failed.
+#'     The default is \code{\link[base:all]{all()}} (i.e. all expressions must
+#'     be `TRUE`), but any function that meets the criteria above is acceptable.
 #'
 #' @return `TRUE` if the assertions evaluate to `TRUE`, otherwise an error
 #'   condition
 #'
 #' @aliases assert_any assert_all
-#' 
+#'
 #' @export
 assert <- function(
   ...,
@@ -102,7 +113,7 @@ assert <- function(
 ) {
   # Store dots in list
   dots <- rlang::list2(...)
-  
+
   # Check that dots are all scalar logical
   dots_are_lgl <- vapply(
     dots,
@@ -112,7 +123,7 @@ assert <- function(
   if (!all(dots_are_lgl)) {
     rlang::abort("All expressions in `...` must evaluate to `TRUE` or `FALSE`")
   }
-  
+
   # Reduce dots to one scalar logical
   success <- reduce(unlist(dots))
 
@@ -122,7 +133,7 @@ assert <- function(
       "`reduce` must be a function that accepts a logical vector returns a single logical value"
     )
   }
-  
+
   # If successful, return `success`
   # Else throw an error
   if (success) {
@@ -155,11 +166,11 @@ assert_all <- function(
   trace = NULL,
   parent = NULL
 ) {
-  
+
   if (is.null(trace)) {
     trace <- rlang::trace_back()
   }
-  
+
   assert(
     ...,
     message = message,
@@ -201,15 +212,19 @@ assert_any <- function(
 
 #' Create an Error Message for `assert()`
 #'
-#' `create_assert_msg()` creates an error message for a failure in \code{\link[coviData:assert]{assert()}} if both `message` and `class` are `NULL`.
-#' 
-#' @inheritParams assert
-#' 
-#' @return An error message as a character string. If `message` is provided, then `message`; if `class` is provided, then `""`. Otherwise, a string listing the failed assertions in `...`
+#' `create_assert_msg()` creates an error message for a failure in
+#' \code{\link[coviData:assert]{assert()}} if both `message` and `class` are
+#' `NULL`.
 #'
-#' @nord
+#' @inheritParams assert
+#'
+#' @return An error message as a character string. If `message` is provided,
+#' then `message`; if `class` is provided, then `""`. Otherwise, a string
+#' listing the failed assertions in `...`
+#'
+#' @noRd
 create_assert_msg <- function(..., message, class, reduce) {
-  
+
   if (!is.null(message)) {
     return(message)
   } else if (!is.null(class)) {

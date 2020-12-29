@@ -36,6 +36,27 @@ convert_pcr_snapshot <- function(
   )
 }
 
+#' @rdname convert_snapshot_to_xlsx
+#'
+#' @export
+convert_vaccine_snapshot <- function(
+  date = Sys.Date(),
+  directory = path_create(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"
+  ),
+  force = FALSE,
+  open = FALSE
+) {
+  convert_snapshot_to_xlsx(
+    date = date,
+    date_format = "%Y%m%d",
+    directory = directory,
+    force = force,
+    open = open
+  )
+}
+
 #' Find a Snapshot File and Convert to XLSX Format
 #'
 #' `convert_snapshot_to_xlsx()` finds a snapshot file in `directory` with `date`
@@ -61,7 +82,7 @@ convert_pcr_snapshot <- function(
 #'
 #' @return A tidy path to the new XLSX file (invisibly)
 #'
-#' @aliases convert_nbs_snapshot convert_pcr_snapshot
+#' @aliases convert_nbs_snapshot convert_pcr_snapshot convert_vaccine_snapshot
 #'
 #' @export
 convert_snapshot_to_xlsx <- function(
@@ -95,7 +116,7 @@ convert_snapshot_to_xlsx <- function(
       "An existing file matches this date; conversion will not continue.",
       "To convert anyway, set 'force == TRUE'."
     )
-    
+
     rlang::abort(msg)
   }
 
@@ -149,11 +170,11 @@ convert_to_xlsx <- function(file, xlsx_file = NULL) {
       "`convert_to_xlsx()` currently only works on Windows",
       " due to VBA dependencies"
     )
-    
+
     rlang::abort(msg)
   }
 
-  file <- file %>% 
+  file <- file %>%
     create_path() %>%
     stringr::str_replace_all(pattern = "/", replacement = "\\\\")
 
