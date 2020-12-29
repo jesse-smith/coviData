@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find a Snapshot File and Convert to XLSX Format — convert_nbs_snapshot • coviData</title>
+<title>Flexible Error Assertion — assert • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,12 @@
 
 
 
-<meta property="og:title" content="Find a Snapshot File and Convert to XLSX Format — convert_nbs_snapshot" />
-<meta property="og:description" content="convert_snapshot_to_xlsx() finds a snapshot file in directory with date
-in its name and converts it to an XLSX file of the same name. See
-convert_to_xlsx for details." />
+<meta property="og:title" content="Flexible Error Assertion — assert" />
+<meta property="og:description" content="assert_all() and assert_any() are functions that require all or any of
+the expressions in ... to be TRUE. They are more flexible versions of
+stopifnot() that also provide the conditioning
+system benefits of abort(). They are powered
+(and generalized) by assert()." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -118,84 +120,105 @@ convert_to_xlsx for details." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find a Snapshot File and Convert to XLSX Format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/convert_to_xlsx.R'><code>R/convert_to_xlsx.R</code></a></small>
-    <div class="hidden name"><code>convert_snapshot_to_xlsx.Rd</code></div>
+    <h1>Flexible Error Assertion</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assert.R'><code>R/assert.R</code></a></small>
+    <div class="hidden name"><code>assert.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>convert_snapshot_to_xlsx()</code> finds a snapshot file in <code>directory</code> with <code>date</code>
-in its name and converts it to an XLSX file of the same name. See
-<code><a href='convert_to_xlsx.html'>convert_to_xlsx</a></code> for details.</p>
+    <p><code>assert_all()</code> and <code>assert_any()</code> are functions that require all or any of
+the expressions in <code>...</code> to be <code>TRUE</code>. They are more flexible versions of
+<code><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot()</a></code> that also provide the conditioning
+system benefits of <code><a href='https://rlang.r-lib.org/reference/abort.html'>abort()</a></code>. They are powered
+(and generalized) by <code>assert()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>convert_nbs_snapshot</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  directory <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class='st'>"Sandbox data pull Final/"</span><span class='op'>)</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  open <span class='op'>=</span> <span class='cn'>FALSE</span>
+    <pre class="usage"><span class='fu'>assert</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trace <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reduce <span class='op'>=</span> <span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/all.html'>all</a></span>
 <span class='op'>)</span>
 
-<span class='fu'>convert_pcr_snapshot</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  directory <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  open <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='fu'>assert_all</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trace <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parent <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
-<span class='fu'>convert_vaccine_snapshot</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  directory <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class='st'>"COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"</span><span class='op'>)</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  open <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span>
-
-<span class='fu'>convert_snapshot_to_xlsx</span><span class='op'>(</span>
-  date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>,
-  date_format <span class='op'>=</span> <span class='st'>"%Y-%m-%d"</span>,
-  <span class='va'>directory</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  open <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='fu'>assert_any</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trace <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parent <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>date</th>
-      <td><p>The date included in the name of the file to convert</p></td>
+      <th>...</th>
+      <td><p>Unnamed expressions that describe the conditions to be tested</p></td>
     </tr>
     <tr>
-      <th>directory</th>
-      <td><p>The directory in which to look for the file to convert</p></td>
+      <th>message</th>
+      <td><p>The message to display. Character vectors are
+formatted with <code><a href='https://rlang.r-lib.org/reference/format_error_bullets.html'>format_error_bullets()</a></code>. The first element
+defines a message header and the rest of the vector defines
+bullets. Bullets named <code>i</code> and <code>x</code> define info and error bullets
+respectively, with special Unicode and colour formatting applied
+if possible.</p>
+<p>If a message is not supplied, it is expected that the message is
+generated lazily through <a href='https://rlang.r-lib.org/reference/cnd_message.html'>conditionMessage()</a>. In
+that case, <code>class</code> must be supplied. Only <code>inform()</code> allows empty
+messages as it is occasionally useful to build user output
+incrementally.</p></td>
     </tr>
     <tr>
-      <th>force</th>
-      <td><p>Should the file be converted if it will overwrite an existing
-XLSX file?</p></td>
+      <th>class</th>
+      <td><p>Subclass of the condition. This allows your users
+to selectively handle the conditions signalled by your functions.</p></td>
     </tr>
     <tr>
-      <th>open</th>
-      <td><p>Should the XLSX file be opened after conversion?</p></td>
+      <th>data</th>
+      <td><p>Additional data to be stored in the condition object</p></td>
     </tr>
     <tr>
-      <th>date_format</th>
-      <td><p>The format of the date in the file name. The default for
-the generic function is 'YYYY-MM-DD'; see <code><a href='https://rdrr.io/r/base/strptime.html'>strptime</a></code> for
-details on format specification and the body of <code>convert_pcr_snapshot()</code>
-for an implementation example (in 'MMDDYYYY' format).</p></td>
+      <th>trace</th>
+      <td><p>A <code>trace</code> object created by <code><a href='https://rlang.r-lib.org/reference/trace_back.html'>trace_back()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>parent</th>
+      <td><p>A parent condition object created by <code><a href='https://rlang.r-lib.org/reference/abort.html'>abort()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>reduce</th>
+      <td><p>A function that takes a vector of logical values as an argument
+and returns a single logical value. <code>reduce</code> is given the results of the
+expressions in <code>...</code> and decides whether the assertion passed or failed.
+The default is <code><a href='https://rdrr.io/r/base/all.html'>all()</a></code> (i.e. all expressions must
+be <code>TRUE</code>), but any function that meets the criteria above is acceptable.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tidy path to the new XLSX file (invisibly)</p>
+    <p><code>TRUE</code> if the assertions evaluate to <code>TRUE</code>, otherwise an error
+condition</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>convert_*_snapshot()</code> functions make it easier to convert specific data
-files.</p>
+    <p><code>assert()</code> evaluates logical expressions and throws an error if the
+conditions specified by <code>reduce</code> are not met. It allows any combination of
+logical conditions (not just "all <code>TRUE</code>" or "any <code>TRUE</code>") and provides the
+ system benefits of <code><a href='https://rlang.r-lib.org/reference/abort.html'>abort()</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
