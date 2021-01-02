@@ -28,10 +28,25 @@
     <loc>https://jesse-smith.github.io/covidata//reference/archive_report_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_add_nights_weekends_schedules.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_assign_cases.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/asg_calc_schedules.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_nights_weekends.html</loc>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_download_redcap_cases.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_download_redcap_investigators.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_get_scheduled_investigators.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_investigators.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/asg_join_schedules.html</loc>

@@ -130,7 +130,7 @@ snapshot files." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Download a File from the Data for Regions REDcap Project</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/download.R'><code>R/download.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/download_data_for_regions.R'><code>R/download_data_for_regions.R</code></a></small>
     <div class="hidden name"><code>data-for-regions-snapshots.Rd</code></div>
     </div>
 
@@ -194,7 +194,7 @@ snapshot files.</p>
   redcap_file <span class='op'>=</span> <span class='st'>"covid_vaccine_data"</span>,
   directory <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
     <span class='st'>"COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"</span><span class='op'>)</span>,
-  new_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"COVID_VACC_MSR_"</span>, <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"%Y%m%d"</span><span class='op'>)</span>, <span class='st'>".csv"</span><span class='op'>)</span>,
+  new_file <span class='op'>=</span> <span class='fu'>name_data_for_regions_file</span><span class='op'>(</span><span class='va'>redcap_file</span>, api_token <span class='op'>=</span> <span class='va'>api_token</span><span class='op'>)</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 

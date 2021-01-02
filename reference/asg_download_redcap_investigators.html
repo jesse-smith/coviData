@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join Nights and Weekends Schedules to Teams Data — asg_join_nights_weekends • coviData</title>
+<title>Download Investigators Listed in the Case Assignment REDcap Project — asg_download_redcap_investigators • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Join Nights and Weekends Schedules to Teams Data — asg_join_nights_weekends" />
-<meta property="og:description" content="asg_join_nights_weekends() loads individual schedules for investigators on
-night or weekend shifts and joins them with the output of
-asg_join_schedules()." />
+<meta property="og:title" content="Download Investigators Listed in the Case Assignment REDcap Project — asg_download_redcap_investigators" />
+<meta property="og:description" content="asg_download_redcap_investigators() downloads all investigators available
+for assignment in the Case Assignment REDcap project, as well as the
+id assigned to each investigator in REDcap." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -118,55 +118,33 @@ asg_join_schedules()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join Nights and Weekends Schedules to Teams Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations.R'><code>R/assign_investigations.R</code></a></small>
-    <div class="hidden name"><code>asg_join_nights_weekends.Rd</code></div>
+    <h1>Download Investigators Listed in the Case Assignment REDcap Project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_cases_download.R'><code>R/assign_cases_download.R</code></a></small>
+    <div class="hidden name"><code>asg_download_redcap_investigators.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>asg_join_nights_weekends()</code> loads individual schedules for investigators on
-night or weekend shifts and joins them with the output of
-<code><a href='asg_join_schedules.html'>asg_join_schedules()</a></code>.</p>
+    <p><code>asg_download_redcap_investigators()</code> downloads all investigators available
+for assignment in the <strong>Case Assignment</strong> REDcap project, as well as the
+<code>id</code> assigned to each investigator in REDcap.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>asg_join_nights_weekends</span><span class='op'>(</span>
-  <span class='va'>.data</span>,
-  path <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/Administration/Schedules/Night&amp;Weekend staff"</span>, ext <span class='op'>=</span> <span class='st'>"xlsx"</span><span class='op'>)</span>,
-  sheet <span class='op'>=</span> <span class='st'>"schedules"</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>asg_download_redcap_investigators</span><span class='op'>(</span>api_token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"redcap_CA_token"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.data</th>
-      <td><p>The output of <code>as_join_schedules()</code></p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>The location of the nights and weekends scheduling workbook</p></td>
-    </tr>
-    <tr>
-      <th>sheet</th>
-      <td><p>The sheet from which to read the schedule; either the sheet name
-or the sheet number</p></td>
+      <th>api_token</th>
+      <td><p>The API token for the Case Assignment REDcap project. The
+default pulls this from the environment variable <code>redcap_CA_token</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>tibble</code> with a <code>schedule_custom</code> column added</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other Case Assignment: 
-<code><a href='asg_calc_schedules.html'>asg_calc_schedules</a>()</code>,
-<code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
-<code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
-<code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
-<code><a href='asg_parse_names.html'>asg_parse_names</a>()</code>,
-<code><a href='asg_parse_nights_weekends.html'>asg_parse_nights_weekends</a>()</code>,
-<code><a href='asg_schedule_predefined.html'>asg_schedule_predefined</a>()</code>,
-<code><a href='asg_schedule.html'>asg_schedule</a>()</code></p></div>
+    <p>A <code>tibble</code> with one row for each investigator and columns for <code>id</code>
+and <code>investigator</code> (name)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

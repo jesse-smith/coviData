@@ -47,10 +47,10 @@
 
 
 <meta property="og:title" content="Calculate Whether Investigators Are Working on a Given Date — asg_calc_schedules" />
-<meta property="og:description" content="asg_calc_schedules() takes the output of asg_join_nights_weekends() and
-calcuates whether investigators are scheduled to work on date. Either a
-predefined schedule or a custom schedule must be supplied for every
-investigator." />
+<meta property="og:description" content="asg_calc_schedules() takes the output of
+asg_add_nights_weekends_schedules() and calcuates whether investigators are
+scheduled to work on date. Either a predefined schedule or a custom
+schedule must be supplied for every investigator." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,15 +120,15 @@ investigator." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate Whether Investigators Are Working on a Given Date</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_investigations.R'><code>R/assign_investigations.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/assign_cases.R'><code>R/assign_cases.R</code></a></small>
     <div class="hidden name"><code>asg_calc_schedules.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>asg_calc_schedules()</code> takes the output of <code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends()</a></code> and
-calcuates whether investigators are scheduled to work on <code>date</code>. Either a
-predefined schedule or a custom schedule must be supplied for every
-investigator.</p>
+    <p><code>asg_calc_schedules()</code> takes the output of
+<code><a href='asg_add_nights_weekends_schedules.html'>asg_add_nights_weekends_schedules()</a></code> and calcuates whether investigators are
+scheduled to work on <code>date</code>. Either a predefined schedule or a custom
+schedule must be supplied for every investigator.</p>
     </div>
 
     <pre class="usage"><span class='fu'>asg_calc_schedules</span><span class='op'>(</span><span class='va'>.data</span>, date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -138,7 +138,7 @@ investigator.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>The output of <code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends()</a></code></p></td>
+      <td><p>The output of <code>asg_join_nights_weekends()</code></p></td>
     </tr>
     <tr>
       <th>date</th>
@@ -152,7 +152,7 @@ investigator.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Case Assignment: 
-<code><a href='asg_join_nights_weekends.html'>asg_join_nights_weekends</a>()</code>,
+<code><a href='asg_add_nights_weekends_schedules.html'>asg_add_nights_weekends_schedules</a>()</code>,
 <code><a href='asg_join_schedules.html'>asg_join_schedules</a>()</code>,
 <code><a href='asg_load_nights_weekends.html'>asg_load_nights_weekends</a>()</code>,
 <code><a href='asg_load_teams.html'>asg_load_teams</a>()</code>,
