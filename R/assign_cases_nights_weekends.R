@@ -4,7 +4,7 @@
 #' and weekends. These team members do not follow a team-wide schedule and must
 #' be dealt with individually.
 #'
-#' @param path The location of the nights and weekends scheduling workbook
+#' @param path The location of the nights and weekends scheduling Excel workbook
 #'
 #' @param sheet The sheet from which to read the schedule; either the sheet name
 #'   or the sheet number

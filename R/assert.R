@@ -82,7 +82,7 @@ assert_cols <- function(.data, ..., ptype = NULL, n = NULL) {
 #' `assert()` evaluates logical expressions and throws an error if the
 #' conditions specified by `reduce` are not met. It allows any combination of
 #' logical conditions (not just "all `TRUE`" or "any `TRUE`") and provides the
-#' \conditioning system benefits of \code{\link[rlang:abort]{abort()}}.
+#' conditioning system benefits of \code{\link[rlang:abort]{abort()}}.
 #'
 #' @inheritParams rlang::abort
 #'

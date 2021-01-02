@@ -80,5 +80,5 @@ system benefits of \code{\link[rlang:abort]{abort()}}. They are powered
 \code{assert()} evaluates logical expressions and throws an error if the
 conditions specified by \code{reduce} are not met. It allows any combination of
 logical conditions (not just "all \code{TRUE}" or "any \code{TRUE}") and provides the
-\conditioning system benefits of \code{\link[rlang:abort]{abort()}}.
+conditioning system benefits of \code{\link[rlang:abort]{abort()}}.
 }

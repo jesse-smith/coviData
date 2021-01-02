@@ -98,7 +98,7 @@ convert_snapshot_to_xlsx <- function(
   # Get matching files from directory
   to_convert <- find_file(
     date = date,
-    pattern = paste0(".*", formatted_date, ".*[.](?!xls).*"),
+    pattern = paste0(".*", formatted_date, ".*"),
     directory = directory,
     rtn_error = FALSE
   )

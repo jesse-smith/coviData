@@ -195,7 +195,7 @@ add_covid_events <- function(gg_obj, lab_y) {
     add_event("2020-05-18", "Phase 2 Reopen", lab_y = lab_y) %>%
     add_event(
       "2020-07-08",
-      "Bars Close\nMask Directive",
+      "Face Mask Order 1\nBars Close",
       lab_y = lab_y,
       vjust = 0.6
     ) %>%
@@ -203,7 +203,13 @@ add_covid_events <- function(gg_obj, lab_y) {
     add_event("2020-09-29", "End State Restrictions", lab_y = lab_y) %>%
     add_event(
       "2020-11-23",
-      "Emphasize Masking\nDining Restrictions",
+      "Face Mask Order 3\nDining Restrictions",
+      lab_y = lab_y,
+      vjust = 0.6
+    ) %>%
+    add_event(
+      "2020-12-26",
+      "Face Mask Order 4\nSafer-at-Home",
       lab_y = lab_y,
       vjust = 0.6
     )

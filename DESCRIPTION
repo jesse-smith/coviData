@@ -42,7 +42,6 @@ Imports:
     rvest (>= 0.3.6),
     skimr (>= 2.1.2),
     stats (>= 4.0.2),
-    stats (>= 4.0.2),
     stringdist (>= 0.9.6.3),
     stringr (>= 1.4.0),
     tibble (>= 3.0.4),

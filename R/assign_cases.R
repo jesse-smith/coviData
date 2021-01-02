@@ -7,7 +7,7 @@
 #' \code{\link[janitor:clean_names]{clean_names()}} and gives the name
 #' `role` end the first column (which is unnamed in the Excel sheet).
 #'
-#' @param path The path end the Excel workbook containing team assignments
+#' @param path The path to the Excel workbook containing team membership data
 #'
 #' @param clean_names Should names be cleaned before returning data?
 #'
@@ -19,7 +19,7 @@
 #' @export
 asg_load_teams <- function(
   path = path_create(
-    "V:/Administration/Schedules/Copy of Copy of Revised Shift Schedules 12.23.2020",
+    "V:/Administration/Schedules/Investigation Staff Schedule",
     ext = "xlsx"
   ),
   clean_names = TRUE
@@ -107,8 +107,8 @@ asg_join_schedules <- function(teams, schedules = team_schedules) {
 
 #' Join Nights and Weekends Schedules to Teams Data
 #'
-#' `asg_join_nights_weekends()` loads individual schedules for investigators on
-#' night or weekend shifts and joins them with the output of
+#' `asg_add_nights_weekends_schedules()` loads individual schedules for
+#' investigators on night or weekend shifts and joins them with the output of
 #' `asg_join_schedules()`.
 #'
 #' @inheritParams asg_load_nights_weekends
@@ -120,7 +120,7 @@ asg_join_schedules <- function(teams, schedules = team_schedules) {
 #' @family Case Assignment
 #'
 #' @export
-asg_join_nights_weekends <- function(
+asg_add_nights_weekends_schedules <- function(
   .data,
   path = path_create(
     "V:/Administration/Schedules/Night&Weekend staff",
@@ -160,10 +160,10 @@ asg_join_nights_weekends <- function(
 
 #' Calculate Whether Investigators Are Working on a Given Date
 #'
-#' `asg_calc_schedules()` takes the output of `asg_join_nights_weekends()` and
-#' calcuates whether investigators are scheduled to work on `date`. Either a
-#' predefined schedule or a custom schedule must be supplied for every
-#' investigator.
+#' `asg_calc_schedules()` takes the output of
+#' `asg_add_nights_weekends_schedules()` and calcuates whether investigators are
+#' scheduled to work on `date`. Either a predefined schedule or a custom
+#' schedule must be supplied for every investigator.
 #'
 #' @param .data The output of `asg_join_nights_weekends()`
 #'
@@ -203,4 +203,110 @@ asg_calc_schedules <- function(.data, date = Sys.Date()) {
         )
     ) %>%
     dplyr::select("team", "member", "scheduled")
+}
+
+#' Get Investigators Scheduled to Work on a Given Date
+#'
+#' `asg_get_scheduled_investigators()` parses scheduling files and returns
+#' investigators scheduled to work on `date`.
+#'
+#' @inheritParams asg_calc_schedules
+#'
+#' @param path_teams The location of the teams scheduling Excel workbook
+#'   data
+#'
+#' @param path_nights_weekends The location of the nights and weekends
+#'   scheduling Excel workbook
+#'
+#' @param team_schedules A `tibble` containing information for parsing schedules
+#'   into dates; the default is the built-in `team_schedules` dataset and should
+#'   probably not be changed
+#'
+#' @param scheduled_only Should only scheduled investigators be returned? If
+#'   `FALSE`, all investigators will be returned. Useful for debugging.
+#'
+#' @return A `tibble` containing `team`, `investigator`, and `scheduled` columns
+#'
+#' @export
+asg_get_scheduled_investigators <- function(
+  date = Sys.Date(),
+  path_teams = path_create(
+    "V:/Administration/Schedules/Investigation Staff Schedule",
+    ext = "xlsx"
+  ),
+  path_nights_weekends = path_create(
+    "V:/Administration/Schedules/Night&Weekend staff",
+    ext = "xlsx"
+  ),
+  team_schedules = team_schedules,
+  scheduled_only = TRUE
+) {
+  rlang::inform("Loading teams...")
+  asg_load_teams(path = path_teams) %>%
+    asg_parse_teams() %>%
+    asg_join_schedules(schedules = team_schedules) %>%
+    asg_add_nights_weekends_schedules(path = path_nights_weekends) %>%
+    dplyr::mutate(
+      null_cycle = purrr::map_lgl(.data[["cycle"]], ~ is.null(.x))
+    ) %>%
+    # Get rid of investigators with no schedule
+    dplyr::filter(
+      !(.data[["schedule"]] == "nights-weekends" & .data[["null_cycle"]])
+    ) %>%
+    dplyr::select(-"null_cycle") %>%
+    asg_calc_schedules(date = date) %>%
+    dplyr::rename(investigator = .data[["member"]]) %>%
+    purrr::when(
+      scheduled_only ~ dplyr::filter(., .data[["scheduled"]]),
+      ~ .
+    )
+}
+
+#' Assign Cases to Scheduled Investigators
+#'
+#' `asg_assign_cases()` divides unassigned cases among REDcap investigators
+#' scheduled to work on `date`. It distributes cases randomly and evenly across
+#' investigators until either all are assigned or there are too few cases for
+#' another round of even distribution. Any remaining cases are assigned randomly
+#' with at most one additional case given to an investigator.
+#'
+#' @inheritParams asg_join_investigators
+#'
+#' @return A `tibble` containing the results of
+#'   \code{
+#'   \link[coviData:asg_download_redcap_cases]{asg_download_redcap_cases()}
+#'   }, with
+#'   `assign_date` and `investigator` filled
+#'
+#' @export
+asg_assign_cases <- function(
+  date = Sys.Date(),
+  api_token = Sys.getenv("redcap_CA_token")
+) {
+
+  cases <- asg_download_redcap_cases(api_token = api_token)
+  investigators <- asg_join_investigators(date = date, api_token = api_token)
+
+  # Get number of unassigned cases and investigators
+  n_cases <- vec_size(cases)
+  n_investigators <- vec_size(investigators)
+
+  # Get number of investigators needed
+  n_reps <- n_cases %/% n_investigators
+  n_additional <- n_cases - n_investigators * n_reps
+
+  # Create randomized vector of investigator assignments
+  investigator_ids <- investigators %>%
+    vec_rep(times = n_reps) %>%
+    dplyr::bind_rows(dplyr::slice_sample(investigators, n = n_additional)) %>%
+    dplyr::slice_sample(prop = 1L) %>%
+    dplyr::pull("id")
+
+  # Replace `investigator` column with randomized `investigators` and fill
+  # `assign_date`
+  dplyr::mutate(
+    cases,
+    investigator = investigator_ids,
+    assign_date = format(Sys.time(), "%Y-%m-%d %H:%M")
+  )
 }

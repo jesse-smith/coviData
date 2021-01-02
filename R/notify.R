@@ -142,7 +142,7 @@ error_notify <- function(
 
     if (is.null(args$subject)) {
       args$subject <- paste(
-        .call, "in", error_file, "Failed at", Sys.time()
+        .call, "Failed at", Sys.time()
       )
     }
 
@@ -170,56 +170,6 @@ error_notify <- function(
     )
 
   }
-}
-
-option_error <- function() {
-
-  nframe <- sys.nframe() - 1L
-  info <- rlang:::signal_context_info(nframe)
-  bottom <- sys.frame(info[[2L]])
-
-
-  trace <- rlang::trace_back(bottom = bottom)
-
-  if (rlang::trace_length(trace) <= 0L) {
-    return(NULL)
-  }
-
-  stop_call <- sys.call(-1L)
-  stop_frame <- sys.frame(-1L)
-
-  cnd <- stop_frame[["cond"]]
-
-  from_stop <- rlang::is_call(
-    stop_call,
-    name = "stop",
-    ns = c("", "base")
-  )
-
-  if (from_stop && inherits(cnd, "rlang_error")) {
-    return(NULL)
-  } else if (from_stop && is.null(cnd)) {
-    msg_call <- quote(.makeMessage(..., domain = domain))
-    msg <- rlang::eval_bare(msg_call, stop_frame)
-  } else if (from_stop) {
-    msg <- cnd$message
-  } else {
-    msg <- geterrmessage()
-  }
-
-  err <- rlang::error_cnd(
-    message = msg,
-    error = cnd,
-    trace = trace,
-    parent = cnd
-  )
-
-  backtrace_lines <- rlang:::format_onerror_backtrace(err)
-
-  if (vctrs::vec_size(backtrace_lines) > 0L) {
-    rlang:::cat_line(backtrace_lines)
-  }
-  NULL
 }
 
 #' `entrace()` + `notify()`
