@@ -1,45 +1,4 @@
 template:
   params:
-    bootswatch: darkly
+    bootswatch: paper
 url: https://jesse-smith.github.io/covidata/
-reference:
-- title: "Download"
-  desc: "Downloading data from source"
-- contents:
-  - download_ael
-  - download_nbs_snapshot
-  - download_pcr_snapshot
-  - download_antigen_snapshot
-  - download_serology_snapshot
-  - download_integrated_data
-- title: "Load"
-  desc: "Loading data into R"
-- contents:
-  - load_ael
-  - load_nbs
-  - load_pcr
-  - load_integrated_data
-- title: "Preprocess"
-  desc: "Preparing data for analysis"
-- contents:
-  - preprocess
-- title: "Sample"
-  desc: "Sampling from vector-like R objects"
-  contents:
-  - vec_sample
-  - sample_unique
-  - randomize
-- title: "Data-Specific Classes"
-  desc: >
-    Functions for creating S3 classes that handle data from a specific source
-    and (possibly) reporting date
-  contents:
-    - covidata-build
-    - covidata-cast
-- title: "Help Setting Up"
-  desc: >
-    Help pages for setting up your environment to work best with coviData
-  contents:
-    - using-renviron
-development:
-  mode: unreleased

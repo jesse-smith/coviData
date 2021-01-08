@@ -103,3 +103,100 @@ read_file <- function(
       {message("Done.")}
   }
 }
+
+#' Efficently Read Delimited Files
+#'
+#' `read_file_delim()` reads delimited files using
+#' \code{\link[vroom:vroom]{vroom()}}. This allows the use of ALTREP columns,
+#' which don't load data into memory until they are needed.
+#'
+#' By default, `read_file_delim()` does not attempt to guess column types and
+#' reads all columns as character. This can be changed by setting
+#' `col_types = vroom::cols(.default = vroom::col_guess())`. If columns are
+#' guessed, the default is to use all rows; this can be changed by setting
+#' `guess_max` to a different value.
+#'
+#' This saves a
+#' significant amount of time and space when loading data with many rarely used
+#' columns.`read_file_delim()` will eventually be paired with
+#' `read_file_excel()` to replace the internals of
+#' \code{\link[coviData:read_file]{read_file()}}.
+#'
+#' @inheritParams vroom::vroom
+#'
+#' @param ... Additional arguments to pass to \code{\link[vroom:vroom]{vroom()}}
+#'
+#' @return A `tibble` if reading one file; a list of `tibble`s if reading
+#'   multiple
+#'
+#' @export
+read_file_delim <- function(
+  file,
+  col_select = vroom::everything(),
+  col_types = vroom::cols(.default = vroom::col_character()),
+  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  guess_max = .Machine$integer.max %/% 100L,
+  delim = NULL,
+  ...
+) {
+    vroom::vroom(
+      file = path_create(file),
+      delim = delim,
+      col_types = col_types,
+      col_select = col_select,
+      na = na,
+      guess_max = guess_max,
+      ...
+    )
+}
+
+#' Read Excel Files
+#'
+#' `read_file_excel()` reads Excel files using
+#' \code{\link[readxl:read_excel]{read_excel()}}.
+#'
+#' By default, `read_file_excel()` does not attempt to guess column types and
+#' reads all columns as character. This can be changed by setting
+#' `col_types = "guess"`. If columns are
+#' guessed, the default is to use all rows; this can be changed by setting
+#' `guess_max` to a different value.
+#'
+#' Note that when reading Excel files as character, dates will be read as the
+#' Excel numeric representation in character format
+#' (i.e. the date 2020-01-01 will be read as `"43831"`). These dates can be
+#' parsed into `Date` format using any of the janitor package's date conversion
+#' functions (the most basic being
+#' \code{\link[janitor::excel_numeric_to_date]{excel_numeric_to_date()}}). A
+#' coviData function is also planned that will likely reply on this function.
+#'
+#' `read_file_excel()` will eventually be paired with
+#' `read_file_delim()` to replace the internals of
+#' \code{\link[coviData:read_file]{read_file()}}.
+#'
+#' @inheritParams readxl::read_excel
+#'
+#' @param file Path to the xls/xlsx file
+#'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[readxl:read_excel]{read_excel()}}
+#'
+#' @return A `tibble`
+#'
+#' @export
+read_file_excel <- function(
+  file,
+  range = NULL,
+  col_types = "character",
+  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  guess_max = .Machine$integer.max %/% 100L,
+  ...
+) {
+  readxl::read_excel(
+    path = path_create(file),
+    range = range,
+    col_types = col_types,
+    na = na,
+    guess_max = guess_max,
+    ...
+  )
+}
