@@ -19,7 +19,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">coviData</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -129,8 +129,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-download" class="hasAnchor"><a href="#section-download" class="anchor"></a>Download</h2>
-          <p class="section-desc"><p>Downloading data from source</p></p>
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
         </th>
       </tr>
       
@@ -141,9 +141,195 @@
       <tr>
         
         <td>
-          <p><code><a href="download_ael.html">download_ael()</a></code> </p>
+          <p><code><a href="add_collection_date.html">add_collection_date()</a></code> </p>
         </td>
-        <td><p>Download AEL File from Serv-U SFTP Site</p></td>
+        <td><p>Add Specimen Collection Date to a Report Date Tibble</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="archive_report_date.html">archive_report_date()</a></code> </p>
+        </td>
+        <td><p>Archive <code>fst</code> Files of NBS Report Dates Based on Date of Creation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_add_nights_weekends_schedules.html">asg_add_nights_weekends_schedules()</a></code> </p>
+        </td>
+        <td><p>Join Nights and Weekends Schedules to Teams Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_assign_cases.html">asg_assign_cases()</a></code> </p>
+        </td>
+        <td><p>Assign Cases to Scheduled Investigators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_calc_schedules.html">asg_calc_schedules()</a></code> </p>
+        </td>
+        <td><p>Calculate Whether Investigators Are Working on a Given Date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_download_redcap_cases.html">asg_download_redcap_cases()</a></code> </p>
+        </td>
+        <td><p>Download Cases from Case Assignment REDcap Project</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_download_redcap_investigators.html">asg_download_redcap_investigators()</a></code> </p>
+        </td>
+        <td><p>Download Investigators Listed in the Case Assignment REDcap Project</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_get_scheduled_investigators.html">asg_get_scheduled_investigators()</a></code> </p>
+        </td>
+        <td><p>Get Investigators Scheduled to Work on a Given Date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_join_investigators.html">asg_join_investigators()</a></code> </p>
+        </td>
+        <td><p>Join Investigators Listed in Investigation Schedule &amp; Case Assignment Project</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_join_schedules.html">asg_join_schedules()</a></code> </p>
+        </td>
+        <td><p>Join the <code>team_schedules</code> Dataset to Teams</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_load_nights_weekends.html">asg_load_nights_weekends()</a></code> </p>
+        </td>
+        <td><p>Load Night &amp; Weekend Scheduling Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_load_teams.html">asg_load_teams()</a></code> </p>
+        </td>
+        <td><p>Load the Current Investigator Team Assignments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_parse_names.html">asg_parse_names()</a></code> </p>
+        </td>
+        <td><p>Parse Investigator Names and Remove (Most) Non-Alphabetical Characters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_parse_nights_weekends.html">asg_parse_nights_weekends()</a></code> </p>
+        </td>
+        <td><p>Parse and Re-Shape Nights and Weekends Scheduling Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_parse_teams.html">asg_parse_teams()</a></code> </p>
+        </td>
+        <td><p>Parse the Team Schedule Workbook to Standardized Format</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_schedule.html">asg_schedule()</a></code> <code><a href="asg_schedule.html">asg_schedule_by_cycle()</a></code> <code><a href="asg_schedule.html">asg_schedule_by_day()</a></code> </p>
+        </td>
+        <td><p>Define Rotating or Weekly Work Schedules</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="asg_schedule_predefined.html">asg_schedule_predefined()</a></code> <code><a href="asg_schedule_predefined.html">asg_schedule_weekdays()</a></code> <code><a href="asg_schedule_predefined.html">asg_schedule_42()</a></code> <code><a href="asg_schedule_predefined.html">asg_schedule_5623()</a></code> </p>
+        </td>
+        <td><p>Quickly Create Pre-Defined Work Schedules</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="assert.html">assert()</a></code> <code><a href="assert.html">assert_all()</a></code> <code><a href="assert.html">assert_any()</a></code> </p>
+        </td>
+        <td><p>Flexible Error Assertion</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_ael.html">check_ael()</a></code> </p>
+        </td>
+        <td><p>Check Two AEL Data Files for New or Removed Results</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_date_updated.html">check_date_updated()</a></code> </p>
+        </td>
+        <td><p>Check Update Date in Data for Regions REDcap Project</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_deaths.html">check_deaths()</a></code> </p>
+        </td>
+        <td><p>Compare Linelists from NBS and Surveillance Team and Report Differences</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="check_linelist_dates.html">check_linelist_dates()</a></code> </p>
+        </td>
+        <td><p>Check and Clean Dates in a Linelist</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="coalesce_across.html">coalesce_across()</a></code> </p>
+        </td>
+        <td><p>Coalesce with <strong>tidyselect</strong> Semantics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="coalesce_by_column.html">coalesce_by_column()</a></code> </p>
+        </td>
+        <td><p>Coalesce Rows by Columns in Data Frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="coalesce_dupes.html">coalesce_dupes()</a></code> </p>
+        </td>
+        <td><p>Coalesce Information in Duplicate Rows</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="coalesce_report_date.html">coalesce_report_date()</a></code> </p>
+        </td>
+        <td><p>Coalesce Report Dates from Archived <code>fst</code> Files</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cols_exist.html">cols_exist()</a></code> </p>
+        </td>
+        <td><p>Do One or More Columns Actually Exist?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="convert_snapshot_to_xlsx.html">convert_nbs_snapshot()</a></code> <code><a href="convert_snapshot_to_xlsx.html">convert_pcr_snapshot()</a></code> <code><a href="convert_snapshot_to_xlsx.html">convert_vaccine_snapshot()</a></code> <code><a href="convert_snapshot_to_xlsx.html">convert_snapshot_to_xlsx()</a></code> </p>
+        </td>
+        <td><p>Find a Snapshot File and Convert to XLSX Format</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="covidata-build.html">ael()</a></code> <code><a href="covidata-build.html">nbs()</a></code> <code><a href="covidata-build.html">pcr()</a></code> </p>
+        </td>
+        <td><p>Build a Source-Specific Data Frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="covidata-cast.html">as_ael()</a></code> <code><a href="covidata-cast.html">as_nbs()</a></code> <code><a href="covidata-cast.html">as_pcr()</a></code> </p>
+        </td>
+        <td><p>Cast Lists, Matrices, and More to Source-Specific Data Frames</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="covidata-class.html">new_covidata()</a></code> <code><a href="covidata-class.html">validate_covidata()</a></code> </p>
+        </td>
+        <td><p>Construct or Validate <code>covidata</code> Subclasses</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_path.html">create_path()</a></code> </p>
+        </td>
+        <td><p>Create a Tidy Path from Directory + File + Extension</p></td>
       </tr><tr>
         
         <td>
@@ -153,28 +339,51 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="download_ael.html">download_ael()</a></code> </p>
+        </td>
+        <td><p>Download AEL File from Serv-U SFTP Site</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="download_integrated_data.html">download_integrated_data()</a></code> </p>
         </td>
         <td><p>Download Data from the Integrated Data Tool REDcap Project</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-load" class="hasAnchor"><a href="#section-load" class="anchor"></a>Load</h2>
-          <p class="section-desc"><p>Loading data into R</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="download_servu.html">download_servu()</a></code> </p>
+        </td>
+        <td><p>Download Lab File from Serv-U</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ennotify.html">ennotify()</a></code> </p>
+        </td>
+        <td><p><code>entrace()</code> + <code>notify()</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="filter_region.html">filter_region()</a></code> </p>
+        </td>
+        <td><p>Filter Dataframe from an AEL File to Memphis Area</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="load_ael.html">load_ael()</a></code> </p>
         </td>
         <td><p>Load AEL Data from Disk</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_data.html">load_data()</a></code> </p>
+        </td>
+        <td><p>Load a Data File Using the Directory, Date, and Extension</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_integrated_data.html">load_integrated_data()</a></code> </p>
+        </td>
+        <td><p>Load Data from the Integrated Data Tool REDcap Project</p></td>
       </tr><tr>
         
         <td>
@@ -190,47 +399,81 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="load_integrated_data.html">load_integrated_data()</a></code> </p>
+          <p><code><a href="load_report_date.html">load_report_date()</a></code> </p>
         </td>
-        <td><p>Load Data from the Integrated Data Tool REDcap Project</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-preprocess" class="hasAnchor"><a href="#section-preprocess" class="anchor"></a>Preprocess</h2>
-          <p class="section-desc"><p>Preparing data for analysis</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
+        <td><p>Load Report Dates from <code>fst</code> File</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="load_sas.html">load_sas()</a></code> </p>
+        </td>
+        <td><p>Load Cleaned Data from SAS Program</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="path_clean.html">path_clean()</a></code> </p>
+        </td>
+        <td><p>Clean a Path with the fs Package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="path_create.html">path_create()</a></code> </p>
+        </td>
+        <td><p>Create a Path from Components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="path_inv.html">path_inv()</a></code> </p>
+        </td>
+        <td><p>Return the Path to a NBS Investigations File</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="preprocess.html">preprocess()</a></code> </p>
         </td>
         <td><p>Standardize Variables, Handle Dates, and Remove Bad Columns</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-sample" class="hasAnchor"><a href="#section-sample" class="anchor"></a>Sample</h2>
-          <p class="section-desc"><p>Sampling from vector-like R objects</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
+      </tr><tr>
         
         <td>
-          <p><code><a href="vec_sample.html">vec_sample()</a></code> </p>
+          <p><code><a href="process_names.html">process_names()</a></code> </p>
         </td>
-        <td><p>Re-implementation of <code>base::sample()</code> Using the vctrs Package</p></td>
+        <td><p>Add Name Columns to AEL Excel File</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="process_positive_people.html">process_positive_people()</a></code> </p>
+        </td>
+        <td><p>Run the Cases Workflow for Daily Report</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="randomize.html">randomize()</a></code> </p>
+        </td>
+        <td><p>Create Column-Wise Randomized Test Data for Non-Statistical Validation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_file_delim.html">read_file_delim()</a></code> </p>
+        </td>
+        <td><p>Efficently Read Delimited Files</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_file_excel.html">read_file_excel()</a></code> </p>
+        </td>
+        <td><p>Read Excel Files</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="replace_ael.html">replace_ael()</a></code> </p>
+        </td>
+        <td><p>Add Updated Names Columns to AEL File and Replace Existing File</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="replace_deaths_id.html">replace_deaths_id()</a></code> </p>
+        </td>
+        <td><p>Replace NBS ID in Surveillance Deaths Linelist with Standardized ID</p></td>
       </tr><tr>
         
         <td>
@@ -240,53 +483,63 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="randomize.html">randomize()</a></code> </p>
+          <p><code><a href="save_plot.html">save_plot()</a></code> </p>
         </td>
-        <td><p>Create Column-Wise Randomized Test Data for Non-Statistical Validation</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-data-specific-classes" class="hasAnchor"><a href="#section-data-specific-classes" class="anchor"></a>Data-Specific Classes</h2>
-          <p class="section-desc"><p>Functions for creating S3 classes that handle data from a specific source and (possibly) reporting date</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="covidata-build.html">ael()</a></code> <code><a href="covidata-build.html">nbs()</a></code> <code><a href="covidata-build.html">pcr()</a></code> </p>
-        </td>
-        <td><p>Build a Source-Specific Data Frame</p></td>
+        <td><p>Save a <code>ggplot</code> Object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="covidata-cast.html">as_ael()</a></code> <code><a href="covidata-cast.html">as_nbs()</a></code> <code><a href="covidata-cast.html">as_pcr()</a></code> </p>
+          <p><code><a href="save_report_date.html">save_report_date()</a></code> </p>
         </td>
-        <td><p>Cast Lists, Matrices, and More to Source-Specific Data Frames</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-help-setting-up" class="hasAnchor"><a href="#section-help-setting-up" class="anchor"></a>Help Setting Up</h2>
-          <p class="section-desc"><p>Help pages for setting up your environment to work best with coviData</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
+        <td><p>Save Report Dates to <code>fst</code> File</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="schedule_calendar.html">schedule_calendar()</a></code> </p>
+        </td>
+        <td><p>Create a Scheduling Calendar</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="split_names.html">split_names()</a></code> </p>
+        </td>
+        <td><p>Split Patient Names in AEL Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="standardize_string.html">standardize_string()</a></code> </p>
+        </td>
+        <td><p>Standardize String Formatting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="str_to_factor.html">str_to_factor()</a></code> </p>
+        </td>
+        <td><p>Convert Character Strings to Factors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="team_schedules.html">team_schedules</a></code> </p>
+        </td>
+        <td><p>Team Schedules Used for Case Assignment</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="using-renviron.html">using-renviron</a></code> </p>
         </td>
         <td><p>How to Access Sensitive Information Non-Interactively with Renviron</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vctr-helpers.html">vctr-helpers</a></code> </p>
+        </td>
+        <td><p>vctrs: Vector Helpers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="vec_sample.html">vec_sample()</a></code> </p>
+        </td>
+        <td><p>Re-implementation of <code>base::sample()</code> Using the vctrs Package</p></td>
       </tr>
     </tbody>
     </table>

@@ -226,6 +226,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/path_create.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/path_inv.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/preprocess.html</loc>
   </url>
   <url>
@@ -239,6 +242,12 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/read_file.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/read_file_delim.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/read_file_excel.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/reduce_fst_report_dates.html</loc>
