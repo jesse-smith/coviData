@@ -59,7 +59,7 @@ Excel numeric representation in character format
 (i.e. the date 2020-01-01 will be read as \code{"43831"}). These dates can be
 parsed into \code{Date} format using any of the janitor package's date conversion
 functions (the most basic being
-\code{\link[janitor::excel_numeric_to_date]{excel_numeric_to_date()}}). A
+\code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}}). A
 coviData function is also planned that will likely reply on this function.
 
 \code{read_file_excel()} will eventually be paired with

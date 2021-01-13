@@ -33,7 +33,7 @@ standardize_string <- function(string, case_fn = stringr::str_to_title, ...) {
 
   string %>%
     as.character() %>%
-    stringr::str_conv(encoding = "UTF-8") %T>%
+    stringr::str_conv(encoding = "UTF-8") %>%
     detect_and_replace(pattern = "[\ufffd\u001a]", msg = esc_msg) %>%
     stringr::str_remove_all(pattern = "['\"]") %>%
     stringr::str_replace_all(pattern = "[^a-zA-Z ]", replacement = " ") %>%

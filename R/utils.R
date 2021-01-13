@@ -56,26 +56,6 @@ detect_and_replace <- function(
   }
 }
 
-dttm_to_dt <- function(.x) {
-  # If .x is already Date type, return as-is
-  if (lubridate::is.Date(.x)) return(.x)
-
-  # Otherwise, check for any additional information in the variable
-  t <- (
-    lubridate::hour(.x) +
-      lubridate::minute(.x) / 60 +
-      lubridate::second(.x) / 3600
-  )
-
-  if (all(t == stats::median(t, na.rm = TRUE) | is.na(t))) {
-    lubridate::as_date(.x)
-  } else if (lubridate::is.POSIXlt(.x)) {
-    lubridate::as_datetime(.x)
-  } else {
-    .x
-  }
-}
-
 # | Coalesce ###################################################################
 
 #' Coalesce with \strong{tidyselect} Semantics
