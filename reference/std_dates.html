@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a Scheduling Calendar — schedule_calendar • coviData</title>
+<title>Parse Dates to Standard Format — std_dates • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,10 @@
 
 
 
-<meta property="og:title" content="Create a Scheduling Calendar — schedule_calendar" />
-<meta property="og:description" content="schedule_calendar() creates a calendar from a given schedule, start
-date, end date, and (if needed) anchor date. Custom schedules can be used
-by setting schedule = &quot;custom&quot; and providing the scheduling cycle via
-cycle. The schedule can be saved to pdf with .pdf = TRUE; the file name
-is a standardized version of the title." />
+<meta property="og:title" content="Parse Dates to Standard Format — std_dates" />
+<meta property="og:description" content="std_dates standardizes a date vector and returns a vector in Date or
+POSIXct format, depending on whether there is sub-daily information
+available in the data." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,78 +118,37 @@ is a standardized version of the title." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a Scheduling Calendar</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/schedule_calendar.R'><code>R/schedule_calendar.R</code></a></small>
-    <div class="hidden name"><code>schedule_calendar.Rd</code></div>
+    <h1>Parse Dates to Standard Format</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/std_date.R'><code>R/std_date.R</code></a></small>
+    <div class="hidden name"><code>std_dates.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>schedule_calendar()</code> creates a calendar from a given <code>schedule</code>, <code>start</code>
-date, <code>end</code> date, and (if needed) <code>anchor</code> date. Custom schedules can be used
-by setting <code>schedule = "custom"</code> and providing the scheduling cycle via
-<code>cycle</code>. The schedule can be saved to pdf with <code>.pdf = TRUE</code>; the file name
-is a standardized version of the title.</p>
+    <p><code>std_dates</code> standardizes a date vector and returns a vector in <code>Date</code> or
+<code>POSIXct</code> format, depending on whether there is sub-daily information
+available in the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>schedule_calendar</span><span class='op'>(</span>
-  title <span class='op'>=</span> <span class='st'>"Work Schedule"</span>,
-  schedule <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"weekdays"</span>, <span class='st'>"42"</span>, <span class='st'>"5623"</span>, <span class='st'>"custom"</span><span class='op'>)</span>,
-  start <span class='op'>=</span> <span class='st'>"2021-01-01"</span>,
-  end <span class='op'>=</span> <span class='st'>"2021-12-31"</span>,
-  anchor <span class='op'>=</span> <span class='va'>start</span>,
-  cycle <span class='op'>=</span> <span class='cn'>NULL</span>,
-  .pdf <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  .dir <span class='op'>=</span> <span class='st'>"~/"</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>std_dates</span><span class='op'>(</span><span class='va'>.x</span>, orders <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dmy"</span>, <span class='st'>"mdy"</span>, <span class='st'>"ymd"</span>, <span class='st'>"dmyT"</span>, <span class='st'>"mdyT"</span>, <span class='st'>"ymdT"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>title</th>
-      <td><p>The title of the calendar</p></td>
+      <th>orders</th>
+      <td><p>The orders to use when parse character strings with
+<code><a href='http://lubridate.tidyverse.org/reference/parse_date_time.html'>parse_date_time()</a></code></p></td>
     </tr>
     <tr>
-      <th>schedule</th>
-      <td><p>The schedule to use</p></td>
-    </tr>
-    <tr>
-      <th>start</th>
-      <td><p>The start date of the returned schedule; either a string in
-"YYYY-MM-DD" format or a <code>Date</code> object</p></td>
-    </tr>
-    <tr>
-      <th>end</th>
-      <td><p>The end date of the returned schedule; either a string in
-"YYYY-MM-DD" format or a <code>Date</code> object</p></td>
-    </tr>
-    <tr>
-      <th>anchor</th>
-      <td><p>The date from which to start ("anchor") schedule calculations.
-This can be any valid date; no particular relationship to <code>start</code> or <code>end</code>
-is needed. It must be either a string in "YYYY-MM-DD" format or a
-<code>Date</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>cycle</th>
-      <td><p>A logical vector defining one scheduling cycle. If named, names
-are passed to <code><a href='parse_weekday.html'>parse_weekday()</a></code> for
-standardization of weekday names.</p></td>
-    </tr>
-    <tr>
-      <th>.pdf</th>
-      <td><p>Should the schedule be saved as a pdf?</p></td>
-    </tr>
-    <tr>
-      <th>.dir</th>
-      <td><p>The directory in which to save the schedule if <code>.pdf = TRUE</code>;
-defaults to the <code>R_USER</code> directory</p></td>
+      <th>x</th>
+      <td><p>A vector of dates in a <code>Date</code>- or <code>POSIXct</code>-like format, or as
+character strings</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list defining the <code>calendR</code> object</p>
+    <p>A <code>Date</code> or <code>POSIXct</code> vector</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

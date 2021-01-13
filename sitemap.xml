@@ -28,51 +28,6 @@
     <loc>https://jesse-smith.github.io/covidata//reference/archive_report_date.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_add_nights_weekends_schedules.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_assign_cases.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_calc_schedules.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_download_redcap_cases.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_download_redcap_investigators.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_get_scheduled_investigators.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_investigators.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_join_schedules.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_load_nights_weekends.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_load_teams.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_names.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_nights_weekends.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_parse_teams.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_schedule.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/asg_schedule_predefined.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/assert.html</loc>
   </url>
   <url>
@@ -220,13 +175,13 @@
     <loc>https://jesse-smith.github.io/covidata//reference/parse_weekday.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/path_by_date.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_clean.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_create.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/path_inv.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/preprocess.html</loc>
@@ -271,9 +226,6 @@
     <loc>https://jesse-smith.github.io/covidata//reference/save_report_date.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/schedule_calendar.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/select_colnames.html</loc>
   </url>
   <url>
@@ -287,6 +239,12 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/standardize_string.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/std_dates.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/std_names.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_invert_na.html</loc>
