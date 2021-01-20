@@ -22,10 +22,10 @@
 #' the same; this allows the user to retain portions of the data's structure
 #' while destroying the remaining information.
 #'
-#' Note that the above only provides anonymity when the number of unique values for
-#' quasi-identifiers (within each group) is large and unique idenfiers are handled separately.
-#' Also note that when groups are defined, information both *within and between* grouping
-#' variables *will not be modified*.
+#' Note that the above only provides anonymity when the number of unique values
+#' for quasi-identifiers (within each group) is large and unique identifiers
+#' are handled separately. Also note that when groups are defined, information
+#' both *within and between* grouping variables *will not be modified*.
 #'
 #' @param .data A data frame or data frame extension (e.g. a
 #'   \code{\link[tibble:tbl_df-class]{tibble}})
@@ -42,12 +42,7 @@
 #' @export
 randomize <- function(.data, n = NULL, .groups = NULL) {
 
-  assertthat::assert_that(
-    is.data.frame(.data),
-    msg = paste0(
-      "`.data` must be a data frame or data frame extension"
-    )
-  )
+  assert_dataframe(.data)
 
   n_data <- vctrs::vec_size(.data)
 
@@ -56,21 +51,14 @@ randomize <- function(.data, n = NULL, .groups = NULL) {
   }
 
   assertthat::assert_that(
-    n[[1]] >= 0 & rlang::is_scalar_integerish(n),
+    n[[1]] >= 0L && rlang::is_scalar_integerish(n),
     msg = "`n` must be a non-negative scalar integer"
   )
 
   .data %>%
     dplyr::summarize(
-      dplyr::across(
-        .fns = ~ sample_unique(.x, n = round(n * dplyr::n() / n_data))
-      ),
+      dplyr::across(dplyr::everything(), ~ sample_unique(.x, n = n)),
       .groups = .groups
-    ) %>%
-    purrr::when(
-      NROW(.) > n ~ vec_sample(., n = n),
-      NROW(.) < n ~ dplyr::bind_rows(., vec_sample(., n = n - NROW(.)))
-      ~ .
     ) %>%
     dplyr::as_tibble()
 

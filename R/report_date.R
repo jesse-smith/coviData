@@ -23,8 +23,6 @@ archive_report_date <- function(
   )
 ) {
 
-  # Define global variables for `path`, `birth_date`, and
-
   # Get data files
   rlang::inform("Getting file info...")
   data_dir %>%
