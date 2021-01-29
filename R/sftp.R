@@ -1,5 +1,8 @@
+# NOTE ON AUTHORSHIP -----------------------------------------------------------
 # These functions originate from the sftp package by Theodor Stenevang Klemming;
 # see https://github.com/stenevang/sftp/ for the original implementation.
+
+# FUNCTIONS --------------------------------------------------------------------
 
 #' Create a List Object with SFTP Connection Details
 #'
@@ -53,7 +56,11 @@
 #' )
 #' }
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_connect <- function(server   = "",
@@ -136,7 +143,11 @@ sftp_connect <- function(server   = "",
 #'
 #' @seealso \code{\link{sftp_listfiles}}, \code{\link{sftp_listdirs}}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_list <- function(sftp_connection = sftp_con,
@@ -269,7 +280,11 @@ sftp_list <- function(sftp_connection = sftp_con,
 #'
 #' @seealso \link{sftp_listdirs}, \link{sftp_list}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_listfiles <- function(sftp_connection = sftp_con,
@@ -315,7 +330,11 @@ sftp_listfiles <- function(sftp_connection = sftp_con,
 #'
 #' @seealso \link{sftp_listfiles}, \link{sftp_list}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_listdirs <- function(sftp_connection = sftp_con,
@@ -369,7 +388,11 @@ sftp_listdirs <- function(sftp_connection = sftp_con,
 #'
 #' @seealso \link{sftp_upload}, \link{sftp_delete}, \link{sftp_rename}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_download <- function(file,
@@ -461,7 +484,11 @@ sftp_download <- function(file,
 #'
 #' @seealso \link{sftp_download}, \link{sftp_delete}, \link{sftp_rename}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_upload <- function(file,
@@ -567,7 +594,11 @@ sftp_upload <- function(file,
 #'
 #' @seealso \link{sftp_download}, \link{sftp_upload}, \link{sftp_rename}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_delete <- function(file,
@@ -640,7 +671,11 @@ sftp_delete <- function(file,
 #'
 #' @seealso \link{sftp_download}, \link{sftp_upload}, \link{sftp_delete}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_rename <- function(from,
@@ -742,7 +777,11 @@ sftp_rename <- function(from,
 #'
 #' @seealso \link{sftp_removedir}, \link{sftp_rename}, \link{sftp_changedir}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_makedir <- function(foldername,
@@ -822,7 +861,11 @@ sftp_makedir <- function(foldername,
 #'
 #' @seealso \link{sftp_makedir}, \link{sftp_rename}, \link{sftp_changedir}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_removedir <- function(foldername,
@@ -902,7 +945,11 @@ sftp_removedir <- function(foldername,
 #'
 #' @seealso \link{sftp_makedir}, \link{sftp_removedir}, \link{sftp_rename}
 #'
-#' @noRd
+#' @keywords internal
+#'
+#' @family sftp
+#'
+#' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_changedir <- function(tofolder,
@@ -970,7 +1017,20 @@ sftp_changedir <- function(tofolder,
   return(TRUE)
 }
 
-# | Undocumented Functions #####################################################
+#' Write to SFTP Log File
+#'
+#' @param message Character. Text to write to the file. It is passed to
+#'   `readr::write_lines()`.
+#'
+#' @param log_file Character. The path to the log file
+#'
+#' @return `message` (invisibly)
+#'
+#' @family sftp
+#'
+#' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
+#'
+#' @noRd
 sftp_log <- function(message,
                      log_file) {
   readr::write_lines(
@@ -980,6 +1040,17 @@ sftp_log <- function(message,
   )
 }
 
+#' Remove Trailing Forward Slashes from File Path
+#'
+#' @param string Character. One or more file paths
+#'
+#' @return `string` with trailing forward slashes removed
+#'
+#' @family sftp
+#'
+#' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
+#'
+#' @noRd
 trim_slashes <- function(string) {
   string <- gsub("/{1,2}$", "", string) # remove any trailing slash
   return(string)

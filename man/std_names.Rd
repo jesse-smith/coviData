@@ -4,7 +4,7 @@
 \alias{std_names}
 \title{Parse Investigator Names and Remove (Most) Non-Alphabetical Characters}
 \usage{
-std_names(string)
+std_names(string, case = c("upper", "lower", "title", "sentence"))
 }
 \arguments{
 \item{string}{A character vector containing investigator names}
@@ -19,18 +19,8 @@ format. It:
 \item Replaces square brackets and curly braces with parentheses
 \item Removes parenthetic expressions
 \item Removes ordinal and numeric expressions
-\item Converts \code{NA}s to text (for the next function)
-\item Passes the intermediate to
-\code{\link[janitor:make_clean_names]{
-      make_clean_names(
-        case = "title",
-        use_make_names = FALSE,
-        transliterations = c("Any-Latin", "Latin-ASCII"),
-        sep_out = " "
-      )
-    }}
-\item Removes leading and trailing dashes
+\item Removes symbols (replaces all except apostrophes with a space)
 \item Removes extraneous whitespace
-\item Inverts converted \code{NA}s (back to \code{NA_character_})
+\item Converts to the desired case
 }
 }
