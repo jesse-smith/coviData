@@ -91,7 +91,7 @@ returns path that contain a specified date given additional parameters." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -102,7 +102,7 @@ returns path that contain a specified date given additional parameters." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jesse-smith/coviData/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,6 +151,13 @@ returns path that contain a specified date given additional parameters.</p>
 <span class='fu'>path_pcr</span><span class='op'>(</span>
   date <span class='op'>=</span> <span class='cn'>NULL</span>,
   dir <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
+  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='fu'>path_vac</span><span class='op'>(</span>
+  date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dir <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
+    <span class='st'>"COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"</span><span class='op'>)</span>,
   ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -210,6 +217,7 @@ both "xlsx" and "csv" files.</p></td>
 <ul>
 <li><p><code>path_inv()</code> returns path(s) to NBS investigations files</p></li>
 <li><p><code>path_pcr()</code> returns path(s) to NBS PCR files</p></li>
+<li><p><code>path_vac()</code> returns path(s) to TennIIS vaccination files</p></li>
 </ul>
 
 <p>This will eventually replace <code><a href='find_file.html'>find_file()</a></code>

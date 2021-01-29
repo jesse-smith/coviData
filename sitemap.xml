@@ -172,9 +172,6 @@
     <loc>https://jesse-smith.github.io/covidata//reference/notify.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/parse_weekday.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_by_date.html</loc>
   </url>
   <url>
@@ -235,6 +232,39 @@
     <loc>https://jesse-smith.github.io/covidata//reference/set_covid_theme.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_changedir.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_connect.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_delete.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_download.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_list.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_listdirs.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_listfiles.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_makedir.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_removedir.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_rename.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_upload.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/split_names.html</loc>
   </url>
   <url>
@@ -259,6 +289,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/str_remove_parenthetic.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_remove_symbols.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_replace_brackets.html</loc>
   </url>
   <url>
@@ -278,6 +311,15 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/using-renviron.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/vac_load.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/vac_parse_zip.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/vac_prep.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vctr-helpers.html</loc>
