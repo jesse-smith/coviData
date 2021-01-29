@@ -143,8 +143,8 @@ download_servu <- function(
 ) {
 
   # Standardize paths
-  remote_dir %<>% fs::path_norm() %>% fs::path_tidy()
-  local_dir %<>% fs::path_expand() %>% fs::path_norm() %>% fs::path_tidy()
+  remote_dir <- remote_dir %>% fs::path_norm() %>% fs::path_tidy()
+  local_dir <- path_create(local_dir)
 
   # Create SFTP connection details
   sftp_con <- sftp_connect(
