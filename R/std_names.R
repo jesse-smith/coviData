@@ -6,19 +6,9 @@
 #'   \item Replaces square brackets and curly braces with parentheses
 #'   \item Removes parenthetic expressions
 #'   \item Removes ordinal and numeric expressions
-#'   \item Converts `NA`s to text (for the next function)
-#'   \item Passes the intermediate to
-#'     \code{\link[janitor:make_clean_names]{
-#'       make_clean_names(
-#'         case = "title",
-#'         use_make_names = FALSE,
-#'         transliterations = c("Any-Latin", "Latin-ASCII"),
-#'         sep_out = " "
-#'       )
-#'     }}
-#'   \item Removes leading and trailing dashes
+#'   \item Removes symbols (replaces all except apostrophes with a space)
 #'   \item Removes extraneous whitespace
-#'   \item Inverts converted `NA`s (back to `NA_character_`)
+#'   \item Converts to the desired case
 #' }
 #'
 #' @param string A character vector containing investigator names
@@ -26,23 +16,24 @@
 #' @return The input `string` with cleaned names
 #'
 #' @export
-std_names <- function(string) {
+std_names <- function(string, case = c("upper", "lower", "title", "sentence")) {
+
+  case <- rlang::arg_match(case)[[1L]]
+
   string %>%
+    stringi::stri_trans_general("Any-Latin;Latin-ASCII") %>%
     str_replace_brackets() %>%
-    str_replace_braces() %>%
     str_remove_parenthetic() %>%
     str_remove_ordinal() %>%
     str_remove_numeric() %>%
-    stringr::str_replace_na() %>%
-    janitor::make_clean_names(
-      case = "title",
-      use_make_names = FALSE,
-      transliterations = c("Any-Latin", "Latin-ASCII"),
-      sep_out = " "
-    ) %>%
-    str_trim_dashes() %>%
+    str_remove_symbols() %>%
     stringr::str_squish() %>%
-    str_invert_na()
+    purrr::when(
+      case == "lower" ~ stringr::str_to_lower(.),
+      case == "upper" ~ stringr::str_to_upper(.),
+      case == "title" ~ stringr::str_to_title(.),
+      case == "sentence" ~ stringr::str_to_sentence(.)
+    )
 }
 
 #' Replace Square Brackets and Curly Braces with Parentheses
@@ -63,28 +54,11 @@ std_names <- function(string) {
 str_replace_brackets <- function(string) {
   string %>%
     stringr::str_replace_all(
-      pattern = stringr::coll("["),
+      pattern = "\\[|\\{",
       replacement = "("
     ) %>%
     stringr::str_replace_all(
-      pattern = stringr::coll("]"),
-      replacement = ")"
-    )
-}
-
-#' @rdname str_replace_brackets
-#'
-#' @keywords internal
-#'
-#' @export
-str_replace_braces <- function(string) {
-  string %>%
-    stringr::str_replace_all(
-      pattern = stringr::coll("{"),
-      replacement = "("
-    ) %>%
-    stringr::str_replace_all(
-      pattern = stringr::coll("}"),
+      pattern = "\\]\\}",
       replacement = ")"
     )
 }
@@ -179,44 +153,22 @@ str_trim_dashes <- function(string) {
     stringr::str_remove_all(pattern = "-+$")
 }
 
-#' Parse Weekdays to Match Full Weekday Names
+#' Remove Symbols from String
 #'
-#' `parse_weekday()` takes a vector of weekday abbreviations and returns the
-#' full name of each weekday. If the abbreviation is one letter, it matches the
-#' standard one-letter weekday abbreviations (U/M/T/W/R/F/S). If more than one
-#' letter, it matches the first two letters to the full day name.
+#' `str_remove_symbols()` removes all non-alphanumeric characters from a string.
+#' It removes apostrophes entirely but replaces other symbols with a space.
 #'
-#' @param day A character vector of day names or abbreviations
+#' @param string A character vector
 #'
-#' @return A character vector of full day names
+#' @return The input `string`, with symbols removed
 #'
 #' @keywords internal
 #'
 #' @export
-parse_weekday <- function(day) {
-
-  vctrs::vec_assert(day, ptype = character())
-
-  day <- std_names(day)
-
-  day_len_1 <- stringr::str_length(day) == 1L
-
-  dplyr::case_when(
-    day_len_1 & day == "U" ~ "Sunday",
-    day_len_1 & day == "M" ~ "Monday",
-    day_len_1 & day == "T" ~ "Tuesday",
-    day_len_1 & day == "W" ~ "Wednesday",
-    day_len_1 & day == "R" ~ "Thursday",
-    day_len_1 & day == "F" ~ "Friday",
-    day_len_1 & day == "S" ~ "Saturday",
-    stringr::str_starts(day, "Su") ~ "Sunday",
-    stringr::str_starts(day, "Mo") ~ "Monday",
-    stringr::str_starts(day, "Tu") ~ "Tuesday",
-    stringr::str_starts(day, "We") ~ "Wednesday",
-    stringr::str_starts(day, "Th") ~ "Thursday",
-    stringr::str_starts(day, "Fr") ~ "Friday",
-    stringr::str_starts(day, "Sa") ~ "Saturday"
-  )
+str_remove_symbols <- function(string) {
+  string %>%
+    stringr::str_remove_all("[']+") %>%
+    stringr::str_replace_all("[^A-Za-z0-9 ]", replacement = " ")
 }
 
 #' Invert `NA` String Replacement
