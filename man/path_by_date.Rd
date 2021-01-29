@@ -4,6 +4,7 @@
 \alias{path_by_date}
 \alias{path_inv}
 \alias{path_pcr}
+\alias{path_vac}
 \title{Return the Path to a NBS Investigations File}
 \usage{
 path_by_date(
@@ -26,6 +27,13 @@ path_inv(
 path_pcr(
   date = NULL,
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
+  ext = c("csv", "xlsx")
+)
+
+path_vac(
+  date = NULL,
+  dir = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"),
   ext = c("csv", "xlsx")
 )
 }
@@ -69,6 +77,7 @@ returns path that contain a specified date given additional parameters.
 \itemize{
 \item{\code{path_inv()} returns path(s) to NBS investigations files}
 \item{\code{path_pcr()} returns path(s) to NBS PCR files}
+\item{\code{path_vac()} returns path(s) to TennIIS vaccination files}
 }
 
 This will eventually replace \code{\link[coviData:find_file]{find_file()}}

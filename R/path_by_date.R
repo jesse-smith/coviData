@@ -8,6 +8,7 @@
 #' \itemize{
 #'   \item{`path_inv()` returns path(s) to NBS investigations files}
 #'   \item{`path_pcr()` returns path(s) to NBS PCR files}
+#'   \item{`path_vac()` returns path(s) to TennIIS vaccination files}
 #' }
 #'
 #' This will eventually replace \code{\link[coviData:find_file]{find_file()}}
@@ -151,6 +152,31 @@ path_pcr <- function(
     date_regex = "[0-9]{8}",
     date = date,
     file_regex = paste0("MSR - All PCRs_{date}.*[.]", ext),
+    type = "file"
+  )
+}
+
+#' @rdname path_by_date
+#'
+#' @export
+path_vac <- function(
+  date = NULL,
+  dir = path_create(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
+    "COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"
+  ),
+  ext = c("csv", "xlsx")
+) {
+
+  # Check `ext`
+  ext <- rlang::arg_match(ext)[[1L]]
+
+  path_by_date(
+    dir = dir,
+    date_format = "%Y%m%d",
+    date_regex = "[0-9]{8}",
+    date = date,
+    file_regex = paste0("COVID_VACC_MSR_{date}.*[.]", ext),
     type = "file"
   )
 }
