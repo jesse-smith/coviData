@@ -6,8 +6,6 @@
 \title{Replace Square Brackets and Curly Braces with Parentheses}
 \usage{
 str_replace_brackets(string)
-
-str_replace_braces(string)
 }
 \arguments{
 \item{string}{A character vector}
