@@ -44,8 +44,8 @@ this case, the relative proportions of the groups within the dataset remain
 the same; this allows the user to retain portions of the data's structure
 while destroying the remaining information.
 
-Note that the above only provides anonymity when the number of unique values for
-quasi-identifiers (within each group) is large and unique idenfiers are handled separately.
-Also note that when groups are defined, information both \emph{within and between} grouping
-variables \emph{will not be modified}.
+Note that the above only provides anonymity when the number of unique values
+for quasi-identifiers (within each group) is large and unique identifiers
+are handled separately. Also note that when groups are defined, information
+both \emph{within and between} grouping variables \emph{will not be modified}.
 }
