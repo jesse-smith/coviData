@@ -9,8 +9,8 @@ vac_load(date = NULL, ext = c("csv", "xlsx"), path = character(), ...)
 \arguments{
 \item{date}{A \code{Date} or string in the format "YYYY-MM-DD"}
 
-\item{ext}{The file type to return. NBS investigations files are saved as
-both "xlsx" and "csv" files.}
+\item{ext}{The file type to return. Files may be saved as "fst", "csv", or
+"xlsx".}
 
 \item{path}{Optional \code{character}. The path to the file to load; if this is
 supplied, \code{date} and \code{ext} are ignored.}

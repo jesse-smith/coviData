@@ -14,6 +14,6 @@ is_open(path)
 }
 \description{
 \code{is_open()} tests whether access to a file is currently being blocked by
-another program.
+another program. TODO: This should probably be named \code{is_blocked()}.
 }
 \keyword{internal}

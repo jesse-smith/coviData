@@ -2,25 +2,23 @@
 % Please edit documentation in R/notify.R
 \name{notify}
 \alias{notify}
-\title{Send an Email Notification with Outlook}
+\title{Send an Email Notification with blastula}
 \usage{
-notify(to, subject, body = NULL, cc = NULL, html = FALSE)
+notify(to, subject = "", body = "", html = FALSE, fail = FALSE)
 }
 \arguments{
-\item{to}{A character vector containing recipient email addresses. Required.}
+\item{to}{Character. The recipient(s) of the email.}
 
-\item{subject}{A character string containing the email subject. Required.}
+\item{subject}{Character. The subject of the email.}
 
-\item{body}{A character string containing the email body; if \code{html = TRUE},
-this will be parsed as HTML. Optional.}
+\item{body}{Character. The body of the email. If \code{HTML = FALSE}, this should
+be plain text. If \code{HTML = TRUE}, this should be HTML text.}
 
-\item{cc}{A character vector containing email address to "cc". Optional.}
+\item{html}{Should the body of the email be rendered as HTML?}
 
-\item{html}{Should the \code{body} be treated as plain text or HTML? The default
-is plain text (\code{FALSE}).}
+\item{fail}{Should failure cause an error?}
 }
 \description{
-\code{notify} sends a notification email via Outlook. This assumes that Outlook
-is installed on your machine and that you've already set up an account.
+\code{notify} sends a notification email using a Visual Basic interface to Outlook
 }
 \keyword{internal}

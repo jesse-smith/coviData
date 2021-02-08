@@ -50,9 +50,9 @@ randomize <- function(.data, n = NULL, .groups = NULL) {
     n <- n_data
   }
 
-  assertthat::assert_that(
-    n[[1]] >= 0L && rlang::is_scalar_integerish(n),
-    msg = "`n` must be a non-negative scalar integer"
+  assert(
+    n[[1]] >= 0L, rlang::is_scalar_integerish(n),
+    message = "`n` must be a non-negative scalar integer"
   )
 
   .data %>%
@@ -83,9 +83,9 @@ randomize <- function(.data, n = NULL, .groups = NULL) {
 #' @export
 sample_unique <- function(.x, n) {
 
-  assertthat::assert_that(
-    n[[1]] >= 0 & rlang::is_scalar_integerish(n),
-    msg = "`n` must be a non-negative scalar integer"
+  assert(
+    n[[1]] >= 0, rlang::is_scalar_integerish(n),
+    message = "`n` must be a non-negative scalar integer"
   )
 
   unique_x <- vctrs::vec_unique(.x)
@@ -125,8 +125,8 @@ sample_unique <- function(.x, n) {
 #' @export
 vec_sample <- function(.x, n, replace = FALSE, weight_by = NULL) {
 
-  assertthat::assert_that(
-    n[[1]] >= 0 & rlang::is_scalar_integerish(n),
+  assert(
+    n[[1]] >= 0, rlang::is_scalar_integerish(n),
     msg = "`n` must be a non-negative scalar integer"
   )
 

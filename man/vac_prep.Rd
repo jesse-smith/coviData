@@ -9,6 +9,8 @@ vac_prep(.data, distinct = FALSE)
 \arguments{
 \item{.data}{Vaccination data, as loaded by
 \code{\link[coviData:vac_load]{vac_load()}}}
+
+\item{distinct}{Should data be de-duplicated to distinct individuals?}
 }
 \value{
 A \code{tibble}

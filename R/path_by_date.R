@@ -12,14 +12,14 @@
 #' }
 #'
 #' This will eventually replace \code{\link[coviData:find_file]{find_file()}}
-#' for finding NBS investigations files.
+#' for finding specific files.
 #'
 #' @param date A `Date` or string in the format "YYYY-MM-DD"
 #'
-#' @param dir The directory holding the investigations files
+#' @param dir The directory holding the files of interest
 #'
-#' @param ext The file type to return. NBS investigations files are saved as
-#'   both "xlsx" and "csv" files.
+#' @param ext The file type to return. Files may be saved as "fst", "csv", or
+#'   "xlsx".
 #'
 #' @param date_format The format of the date in the file name; see
 #'   \code{\link[base:format]{format()}} for more information
@@ -42,7 +42,7 @@
 #'
 #' @return An `fs_path` character vector
 #'
-#' @aliases path_inv path_pcr
+#' @aliases path_inv path_pcr path_vac
 #'
 #' @export
 path_by_date <- function(
@@ -118,7 +118,7 @@ path_inv <- function(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "Sandbox data pull Final/"
   ),
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 ) {
 
   # Check `ext`
@@ -140,7 +140,7 @@ path_inv <- function(
 path_pcr <- function(
   date = NULL,
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 ) {
 
   # Check `ext`
@@ -165,7 +165,7 @@ path_vac <- function(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"
   ),
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 ) {
 
   # Check `ext`

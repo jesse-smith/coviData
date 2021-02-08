@@ -8,6 +8,8 @@ std_names(string, case = c("upper", "lower", "title", "sentence"))
 }
 \arguments{
 \item{string}{A character vector containing investigator names}
+
+\item{case}{Case of output}
 }
 \value{
 The input \code{string} with cleaned names

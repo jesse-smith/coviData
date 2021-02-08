@@ -21,24 +21,24 @@ path_inv(
   date = NULL,
   dir = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "Sandbox data pull Final/"),
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 )
 
 path_pcr(
   date = NULL,
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/",
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 )
 
 path_vac(
   date = NULL,
   dir = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"),
-  ext = c("csv", "xlsx")
+  ext = c("csv", "xlsx", "fst")
 )
 }
 \arguments{
-\item{dir}{The directory holding the investigations files}
+\item{dir}{The directory holding the files of interest}
 
 \item{date_format}{The format of the date in the file name; see
 \code{\link[base:format]{format()}} for more information}
@@ -61,8 +61,8 @@ in the glue package.}
 should the function return only the file with the latest creation date
 (\code{TRUE}, the default), or should it return all file paths (\code{FALSE})?}
 
-\item{ext}{The file type to return. NBS investigations files are saved as
-both "xlsx" and "csv" files.}
+\item{ext}{The file type to return. Files may be saved as "fst", "csv", or
+"xlsx".}
 }
 \value{
 An \code{fs_path} character vector
@@ -81,5 +81,5 @@ returns path that contain a specified date given additional parameters.
 }
 
 This will eventually replace \code{\link[coviData:find_file]{find_file()}}
-for finding NBS investigations files.
+for finding specific files.
 }

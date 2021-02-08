@@ -234,10 +234,7 @@ guess_filetype <- function(path) {
 #' @export
 cols_exist <- function(.data, ..., action = rlang::abort) {
 
-  assertthat::assert_that(
-    is.data.frame(.data),
-    msg = "`.data` must be a data frame"
-  )
+  assert_dataframe(.data)
 
   .ptype <- vctrs::vec_ptype(.data)
 
@@ -254,12 +251,10 @@ cols_exist <- function(.data, ..., action = rlang::abort) {
 
   if (vctrs::vec_size(cols_missing) > 0) {
 
-    assertthat::assert_that(
-      any(
-        identical(rlang::abort, action),
-        identical(rlang::warn, action),
-        identical(rlang::inform, action)
-      ),
+    assert_any(
+      identical(rlang::abort, action),
+      identical(rlang::warn, action),
+      identical(rlang::inform, action),
       msg = paste0(
         "`action` must be one of `rlang::abort()`, `rlang::warn()`, ",
         "or `rlang::inform()`"
@@ -905,7 +900,7 @@ find_file <- function(
 #' Test Whether a File is Open
 #'
 #' `is_open()` tests whether access to a file is currently being blocked by
-#' another program.
+#' another program. TODO: This should probably be named `is_blocked()`.
 #'
 #' @param path The path to the file in question
 #'
@@ -915,19 +910,20 @@ find_file <- function(
 is_open <- function(path) {
 
   # Clean path
-  path %<>% fs::path_expand() %>% fs::path_norm() %>% fs::path_tidy()
+  path <- path_create(path)
 
   # Check that file exists - if not, can't be open, so return FALSE
   if (!fs::file_exists(path)) return(FALSE)
 
-  suppressWarnings(
-    try(
-      withr::with_connection(list(c = file(path, open = "a")), code = ""),
-      silent = TRUE
-    ) %>%
-      class() %>%
-      magrittr::equals("try-error") %>%
-      any()
+  # Expression attempting to open file
+  check_con <- rlang::expr({
+    con <- file(!!path, open = "a")
+    close(con)
+  })
+
+  rlang::inherits_any(
+    suppressWarnings(try(eval(check_con), silent = TRUE)),
+    "try-error"
   )
 }
 
@@ -1002,9 +998,9 @@ create_path <- function(directory, file_name = NULL, ext = NULL) {
 #'   vector that also has class `fs_path`
 path_clean <- function(path, home = c("r", "user")) {
 
-  home %<>%
+  home <- home %>%
     stringr::str_to_lower() %>%
-    stringr::str_remove_all("[ \n\t\r]")
+    stringr::str_remove_all("\\s+")
 
   home <- rlang::arg_match(home)[[1]]
 
@@ -1040,8 +1036,8 @@ path_create <- function(..., ext = NULL, home = c("r", "user")) {
   if (rlang::is_null(ext)) {
     ext <- ""
   } else {
-    ext %<>%
-      stringr::str_remove_all("[ \n\t\r]") %>%
+    ext <- ext %>%
+      stringr::str_remove_all("\\s+") %>%
       stringr::str_remove("^[.]")
   }
 
@@ -1093,7 +1089,7 @@ trim_backups <- function(
   min_date <- lubridate::as_date(min_date)
 
   # Check that min_backups is > 0
-  assertthat::assert_that(
+  assert(
     min_backups > 0,
     msg = paste0(
       "Setting `min_backups` < 1 could delete all identified files, ",
@@ -1103,16 +1099,15 @@ trim_backups <- function(
   )
 
   # Check that min_date is <= Sys.Date()
-  assertthat::validate_that(
-    min_date <= Sys.Date(),
-    msg = rlang::warn(
-      message = paste0(
+  if (min_date <= Sys.Date()) {
+    rlang::warn(
+      paste0(
         "Setting `min_date` greater than today's date does not make sense.\n",
         "The effect is identical to `min_date = Sys.Date()`; ",
         "please consider revising your code for clarity."
       )
     )
-  )
+  }
 
   # Get file info
   fs::dir_info(directory, regexp = pattern) %>%

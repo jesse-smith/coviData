@@ -13,6 +13,8 @@
 #' @param .data Vaccination data, as loaded by
 #'   \code{\link[coviData:vac_load]{vac_load()}}
 #'
+#' @param distinct Should data be de-duplicated to distinct individuals?
+#'
 #' @return A `tibble`
 #'
 #' @export

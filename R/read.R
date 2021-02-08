@@ -42,9 +42,9 @@ read_file <- function(
   if (file_type == "auto") file_type <- guess_filetype(path)
 
   # Make sure that file_type is supported
-  assertthat::assert_that(
+  assert(
     file_type %in% c("excel", "delimited"),
-    msg = paste0(
+    message = paste0(
       "File type is unknown or unsupported.\n",
       "If this is a delimited text file with column separators in [,\t |;:], ",
       "please specify 'file_type = 'delimited''. ",
@@ -134,7 +134,8 @@ read_file_delim <- function(
   file,
   col_select = vroom::everything(),
   col_types = vroom::cols(.default = vroom::col_character()),
-  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  na = c("", ".", "NA", "na", "Na", "N/A", "n/a", "N/a",
+         "NULL", "null", "Null"),
   guess_max = .Machine$integer.max %/% 100L,
   delim = NULL,
   ...
@@ -164,10 +165,9 @@ read_file_delim <- function(
 #' Note that when reading Excel files as character, dates will be read as the
 #' Excel numeric representation in character format
 #' (i.e. the date 2020-01-01 will be read as `"43831"`). These dates can be
-#' parsed into `Date` format using any of the janitor package's date conversion
-#' functions (the most basic being
-#' \code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}}). A
-#' coviData function is also planned that will likely reply on this function.
+#' parsed into `Date` format using \code{\link[coviData:std_dates]{std_dates()}}
+#' or any of the janitor package's date conversion functions (the most basic
+#' being \code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}}).
 #'
 #' `read_file_excel()` will eventually be paired with
 #' `read_file_delim()` to replace the internals of
@@ -186,8 +186,9 @@ read_file_delim <- function(
 read_file_excel <- function(
   file,
   range = NULL,
-  col_types = "character",
-  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  col_types = "text",
+  na = c("", ".", "NA", "na", "Na", "N/A", "n/a", "N/a",
+         "NULL", "null", "Null"),
   guess_max = .Machine$integer.max %/% 100L,
   ...
 ) {

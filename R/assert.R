@@ -20,7 +20,7 @@ assert_dataframe <- function(x, arg = NULL) {
   }
 
   if (is.data.frame(x)) {
-    x
+    invisible(x)
   } else {
     rlang::abort(
       paste(arg, "must be a data frame or data frame extension"),
@@ -51,24 +51,26 @@ assert_dataframe <- function(x, arg = NULL) {
 #' @export
 assert_cols <- function(.data, ..., ptype = NULL, n = NULL) {
 
+  # Ensure that `.data` is a dataframe
   assert_dataframe(.data)
 
-  data_ptype <- vec_ptype(.data)
+  # Get selected columns from `.data` prototype
+  selection <- dplyr::select(vec_ptype(.data), ...)
 
-  remove(.data)
-
-  selection <- dplyr::select(data_ptype, ...)
-
-  dplyr::mutate(
-    selection,
-    dplyr::across(.fns = ~ vec_assert(.x, ptype = ptype))
+  # Assert that columns are all of `ptype`
+  purrr::map(
+    colnames(selection),
+    ~ vec_assert(selection[[.x]], ptype = ptype, arg = .x)
   )
 
-  if (!is.null(n) & length(selection) != n) {
-    rlang::abort(
-      paste(n, "columns must be selected", class = "assert_cols")
-    )
-  }
+  # Assert that `n` columns were matched
+  assert_any(
+    vec_is_empty(n),
+    NCOL(selection) == n,
+    message = paste(n, "columns must be selected"),
+    class = "assert_cols"
+  )
+  invisible(.data)
 }
 
 #' Flexible Error Assertion
@@ -111,48 +113,44 @@ assert <- function(
   parent = NULL,
   reduce = base::all
 ) {
-  # Store dots in list
-  dots <- rlang::list2(...)
+  # Store dots in list; flatten if needed
+  dots <- rlang::list2(...) %>%
+    purrr::map(~ purrr::when(.x, is.list(.) ~ purrr::flatten_lgl(.), ~ .))
 
-  # Check that dots are all scalar logical
-  dots_are_lgl <- vapply(
-    dots,
-    FUN = is.logical,
-    FUN.VALUE = logical(1L)
-  )
-  if (!all(dots_are_lgl)) {
-    rlang::abort("All expressions in `...` must evaluate to `TRUE` or `FALSE`")
-  }
+  exprs <- purrr::map_chr(rlang::enexprs(...), rlang::expr_label)
+
+  # Check that dots are all logical
+  purrr::map2(dots, exprs, ~ vec_assert(.x, ptype = logical(), arg = .y))
 
   # Reduce dots to one scalar logical
-  success <- reduce(unlist(dots))
+  success_vec <- purrr::map_lgl(dots, reduce)
+  success <- reduce(success_vec)
 
   # Check that `success` is scalar logical
   if (!rlang::is_scalar_logical(success)) {
-    rlang::abort(
-      "`reduce` must be a function that accepts a logical vector returns a single logical value"
-    )
+    rlang::abort(paste(
+      "`reduce` must be a function that accepts a logical vector",
+      "and returns a single logical value"
+    ))
   }
 
   # If successful, return `success`
   # Else throw an error
-  if (success) {
-    invisible(success)
-  } else {
-    msg <- create_assert_msg(
-      ...,
-      message = message,
-      class = class,
-      reduce = reduce
-    )
-    rlang::abort(
-      message = msg,
-      class = class,
-      !!!data,
-      trace = trace,
-      parent = parent
-    )
-  }
+  if (success) return(invisible(success))
+  msg <- create_assert_msg(
+    exprs = exprs,
+    success_vec = success_vec,
+    message = message,
+    class = class,
+    reduce = reduce
+  )
+  rlang::abort(
+    message = msg,
+    class = class,
+    !!!data,
+    trace = trace,
+    parent = parent
+  )
 }
 
 #' @rdname assert
@@ -223,7 +221,7 @@ assert_any <- function(
 #' listing the failed assertions in `...`
 #'
 #' @noRd
-create_assert_msg <- function(..., message, class, reduce) {
+create_assert_msg <- function(exprs, success_vec, message, class, reduce) {
 
   if (!is.null(message)) {
     return(message)
@@ -231,21 +229,10 @@ create_assert_msg <- function(..., message, class, reduce) {
     return("")
   }
 
-  dots <- rlang::list2(...)
-
-  exprs <- rlang::enexprs(...)
-
-  labels <- vapply(
-    exprs,
-    FUN = rlang::expr_label,
-    FUN.VALUE = character(1L)
-  )
-
-  failures <- labels[!unlist(dots)]
-
-  names(failures) <- rep("x", length(failures))
-
-  bullets <- rlang::format_error_bullets(failures)
+  bullets <- exprs[!success_vec] %>%
+    set_names(rep("x", times = length(.))) %>%
+    rlang::format_error_bullets() %>%
+    stringr::str_replace_all("[`]{2,}", replacement = "`")
 
   if (identical(reduce, base::any)) {
     one_of <- " one of "
@@ -254,7 +241,7 @@ create_assert_msg <- function(..., message, class, reduce) {
   }
 
   paste0(
-    "An assertion in this code has failed. To pass this assertion, ",
+    "An assertion in this code has failed. To pass the assertion, ",
     one_of,
     "the following must be `TRUE` (but is not):\n",
     bullets,

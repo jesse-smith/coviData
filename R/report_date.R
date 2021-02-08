@@ -274,28 +274,15 @@ add_collection_date <- function(
   )
 ) {
 
-  assert_that(is.character(.id_col), msg = "`.id_col` must be a string")
-  assert_that(is.character(.from_col), msg = "`.from_col` must be a string")
+  vec_assert(.id_col, ptype = character())
+  vec_assert(.from_col, ptype = character())
 
-  # `.id_col` must be in `.data`
-  id_col_1 <- .data %>%
-    dplyr::select(dplyr::matches(paste0("^", .id_col, "$"))) %>%
-    NCOL() %>%
-    equals(1)
-
-  assert_that(
-    id_col_1,
-    msg = "`.id_col` must match a column in `.data`"
+  assert_cols(.data, dplyr::matches(paste0("^", .id_col, "$")), n = 1L)
+  assert_cols(
+    .data,
+    dplyr::matches(paste0("^", c(.from_col, "collection_date"), "$")),
+    n = 0L
   )
-
-  # `.from_col` and 'collection_date' shouldn't be in `.data`
-  collection_date_0 <- .data %>%
-    dplyr::select(
-      dplyr::matches(paste0("^", .from_col, "$")),
-      dplyr::matches("^collection_date$")
-    ) %>%
-    NCOL() %>%
-    equals(0)
 
   if (!collection_date_0) {
     rlang::warn(
@@ -365,9 +352,9 @@ save_report_date <- function(
   )
 ) {
 
-  assert_that(
+  assert(
     rlang::is_true(attr(.data, "is_report_date")),
-    msg = paste0(
+    message= paste0(
       "`.data` must be a tibble returned by `add_report_date()` ",
       "or `coalesce_report_date()`"
     )

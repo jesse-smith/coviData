@@ -4,14 +4,31 @@
 \alias{std_dates}
 \title{Parse Dates to Standard Format}
 \usage{
-std_dates(.x, orders = c("dmy", "mdy", "ymd", "dmyT", "mdyT", "ymdT"))
+std_dates(
+  x,
+  force = c("none", "dt", "dttm"),
+  orders = c("Omdy", "dOmy", "yOmd", "OmdyT", "dOmyT", "yOmdT", "TOmdy", "TdOmy",
+    "TyOmd", "OmdyR", "dOmyR", "yOmdR", "Omdyr", "dOmyr", "yOmdr", "OmdyTz", "dOmyTz",
+    "yOmdTz", "TOmdyz", "TdOmyz", "TyOmdz", "OmdyRz", "dOmyRz", "yOmdRz", "Omdyrz",
+    "dOmyrz", "yOmdrz"),
+  ...
+)
 }
 \arguments{
-\item{orders}{The orders to use when parse character strings with
+\item{x}{A vector of character dates}
+
+\item{force}{Whether to force conversion to \code{Date} (\code{force = "dt"}) or
+\code{POSIXct} (\code{force = "dttm"}). The default is no forcing (\code{force = "none"}).}
+
+\item{orders}{The orders to use when parsing character vector with
 \code{\link[lubridate:parse_date_time]{parse_date_time()}}}
 
-\item{x}{A vector of dates in a \code{Date}- or \code{POSIXct}-like format, or as
-character strings}
+\item{...}{Additional arguments to pass to
+\code{\link[janitor:convert_to_date]{convert_to_datetime()}}. These
+will, in turn, be passed to further methods, including
+\code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}},
+\code{\link[lubridate:parse_date_time]{parse_date_time()}}, and
+\code{\link[base:as.POSIXct]{as.POSIXct()}}.}
 }
 \value{
 A \code{Date} or \code{POSIXct} vector

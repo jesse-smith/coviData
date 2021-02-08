@@ -7,8 +7,8 @@
 read_file_excel(
   file,
   range = NULL,
-  col_types = "character",
-  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  col_types = "text",
+  na = c("", ".", "NA", "na", "Na", "N/A", "n/a", "N/a", "NULL", "null", "Null"),
   guess_max = .Machine$integer.max\%/\%100L,
   ...
 )
@@ -57,10 +57,9 @@ guessed, the default is to use all rows; this can be changed by setting
 Note that when reading Excel files as character, dates will be read as the
 Excel numeric representation in character format
 (i.e. the date 2020-01-01 will be read as \code{"43831"}). These dates can be
-parsed into \code{Date} format using any of the janitor package's date conversion
-functions (the most basic being
-\code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}}). A
-coviData function is also planned that will likely reply on this function.
+parsed into \code{Date} format using \code{\link[coviData:std_dates]{std_dates()}}
+or any of the janitor package's date conversion functions (the most basic
+being \code{\link[janitor:excel_numeric_to_date]{excel_numeric_to_date()}}).
 
 \code{read_file_excel()} will eventually be paired with
 \code{read_file_delim()} to replace the internals of

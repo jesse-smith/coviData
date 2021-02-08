@@ -8,7 +8,7 @@ read_file_delim(
   file,
   col_select = vroom::everything(),
   col_types = vroom::cols(.default = vroom::col_character()),
-  na = c("", ".", "NA", "na", "Na", "nA", "N/A", "n/a", "N/a", "n/A"),
+  na = c("", ".", "NA", "na", "Na", "N/A", "n/a", "N/a", "NULL", "null", "Null"),
   guess_max = .Machine$integer.max\%/\%100L,
   delim = NULL,
   ...

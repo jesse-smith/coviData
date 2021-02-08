@@ -326,9 +326,9 @@ download_data_for_regions <- function(
   file_temp <- fs::dir_ls(dir_temp)
 
   # Make sure there's only one file
-  assertthat::assert_that(
+  assert(
     length(file_temp) == 1,
-    msg = paste0(
+    message = paste0(
       "Expected 1 file when unzipping the response from REDcap, but got ",
       length(file_temp), "."
     )
@@ -379,9 +379,9 @@ check_directory_for_existing_file <- function(
   ) %>% length()
 
   # Don't run if any are found
-  assertthat::assert_that(
-    n_existing == 0 | force,
-    msg = paste(
+  assert_any(
+    n_existing == 0, force,
+    message = paste(
       "An existing file matches this date; download will not continue.",
       "To download anyway, set 'force == TRUE'."
     )

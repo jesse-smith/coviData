@@ -168,7 +168,7 @@ convert_to_xlsx <- function(file, xlsx_file = NULL) {
   if (!is_windows()) {
     msg <- paste0(
       "`convert_to_xlsx()` currently only works on Windows",
-      " due to VBA dependencies"
+      " due to VB dependencies"
     )
 
     rlang::abort(msg)

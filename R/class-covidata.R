@@ -57,27 +57,34 @@ validate_covidata <- function(x) {
 
 
 
-  assertthat::assert_that(
-    all(stringr::str_ends(str_object_class, pattern = str_covid_tbl_class)),
-    msg = paste0(
+  assert(
+    stringr::str_ends(str_object_class, pattern = str_covid_tbl_class),
+    message = paste0(
       "This object's class is not 'covidata' or a subclass of 'covidata'; ",
       "see below for a comparison of class attributes.\n\n",
-      waldo::compare(object_class, covidata_class)
+      if (requireNamespace("waldo", quietly = TRUE)) {
+        waldo::compare(object_class, covidata_class)
+      } else {
+        "Sorry, the waldo package must be installed to view this comparision."
+      }
     )
   )
 
-  assertthat::has_attr(x, "date_stamp")
+  assert(
+    !is.null(x, "date_stamp"),
+    message = "`x` must have a `date_stamp` attribute"
+  )
 
   date_stamp <- attr(x, "date_stamp")
 
-  assertthat::assert_that(
+  assert(
     lubridate::is.Date(date_stamp),
-    msg = "The 'date_stamp' attribute of `covidata` must be a `Date` object"
+    message = "The 'date_stamp' attribute of `covidata` must be a `Date` object"
   )
 
-  assertthat::assert_that(
+  assert(
     date_stamp >= lubridate::as_date("2020-01-01") | is.na(date_stamp),
-    msg = paste0(
+    message = paste0(
       "The 'date_stamp' attribute of `covidata` cannot be a date ",
       "earlier than January 01, 2020, when the WHO was notified of COVID-19."
     )
@@ -85,9 +92,9 @@ validate_covidata <- function(x) {
 
   today <- lubridate::as_date(lubridate::now("UTC") + lubridate::hours(14))
 
-  assertthat::assert_that(
+  assert(
     attr(x, "date_stamp") <= today | is.na(date_stamp),
-    msg = paste0(
+    message = paste0(
       "The 'date_stamp' attribute of `covidata` cannot be a date ",
       "later than the current date in the UTC+14 timezone."
     )
@@ -154,7 +161,7 @@ new_covidata_subclass <- function(class) {
 #' @rdname covidata-subclass-creators
 validate_covidata_subclass <- function(class) {
   function(x) {
-    assertthat::assert_that(
+    assert(
       class == attr(x, "class")[[1]],
       msg = paste0("This is not an object of class ", class)
     )

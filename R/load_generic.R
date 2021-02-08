@@ -33,9 +33,9 @@ load_data <- function(
     message(paste0("\nDate used: ", date, "\n"))
   }
 
-  assertthat::assert_that(
+  assert(
     !(rlang::is_empty(date) & rlang::is_empty(file_name)),
-    msg = "Either `date` or `file_name` must be supplied"
+    message = "Either `date` or `file_name` must be supplied"
   )
 
   # We're ready to find and read the NBS data

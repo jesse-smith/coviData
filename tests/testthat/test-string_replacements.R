@@ -11,7 +11,7 @@ test_that("square brackets are replaced with parentheses", {
 # `str_replace_braces()`
 test_that("curly braces are replaced with parentheses", {
   expect_equal(
-    str_replace_braces(
+    str_replace_brackets(
       "This }{sentence}{ contains a lot of '}' and '{' {braces}"
     ),
     "This )(sentence)( contains a lot of ')' and '(' (braces)"
@@ -55,11 +55,13 @@ test_that("numeric expressions are removed", {
   )
 })
 
-# `str_trim_dashes()`
-test_that("leading and trailing dashes are removed", {
+# `str_remove_symbols()`
+test_that("symbols are removed", {
   expect_equal(
-    str_trim_dashes("- wait- what happened? I missed it--"),
-    " wait- what happened? I missed it"
+    str_remove_symbols(
+      "Why!? ar3 all-the$e symbol's -here...get\"rid\" of'them&."
+    ),
+    "Why ar3 all the e symbols here get rid ofthem"
   )
 })
 

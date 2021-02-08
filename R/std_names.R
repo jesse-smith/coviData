@@ -13,6 +13,8 @@
 #'
 #' @param string A character vector containing investigator names
 #'
+#' @param case Case of output
+#'
 #' @return The input `string` with cleaned names
 #'
 #' @export
@@ -21,7 +23,7 @@ std_names <- function(string, case = c("upper", "lower", "title", "sentence")) {
   case <- rlang::arg_match(case)[[1L]]
 
   string %>%
-    stringi::stri_trans_general("Any-Latin;Latin-ASCII") %>%
+    str_to_ascii() %>%
     str_replace_brackets() %>%
     str_remove_parenthetic() %>%
     str_remove_ordinal() %>%
@@ -34,6 +36,29 @@ std_names <- function(string, case = c("upper", "lower", "title", "sentence")) {
       case == "title" ~ stringr::str_to_title(.),
       case == "sentence" ~ stringr::str_to_sentence(.)
     )
+}
+
+#' Convert a String to ASCII Representation
+#'
+#' `str_to_ascii()` converts a string to ASCII characters only. When
+#' `trans = TRUE`, non-ASCII characters are transliterated; otherwise, non-ASCII
+#' characters are replaced with the ASCII SUBSTITUTE CHARACTER (`0x1A`).
+#'
+#' @param string A character vector
+#'
+#' @param trans Should non-ASCII characters be transliterated?
+#'
+#' @return An ASCII-encoded character vector
+#'
+#' @export
+str_to_ascii <- function(string, trans = TRUE) {
+  if (trans) {
+    string %>%
+      stringi::stri_trans_general("Any-Latin;Latin-ASCII") %>%
+      stringi::stri_enc_toascii()
+  } else {
+    stringi::stri_enc_toascii(string)
+  }
 }
 
 #' Replace Square Brackets and Curly Braces with Parentheses
@@ -58,7 +83,7 @@ str_replace_brackets <- function(string) {
       replacement = "("
     ) %>%
     stringr::str_replace_all(
-      pattern = "\\]\\}",
+      pattern = "\\]|\\}",
       replacement = ")"
     )
 }
@@ -134,25 +159,6 @@ str_remove_numeric <- function(string) {
   stringr::str_remove_all(string, pattern = "[0-9]([.,][0-9])*")
 }
 
-#' Remove Leading and Trailing Dashes from String
-#'
-#' `str_trim_dashes()` removes leading and trailing dashes from a string. This
-#' is most useful to clean up the results of previous operations that may have
-#' left such dashes.
-#'
-#' @param string A character vector
-#'
-#' @return The input `string`, with leading and trailing dashes removed
-#'
-#' @keywords internal
-#'
-#' @export
-str_trim_dashes <- function(string) {
-  string %>%
-    stringr::str_remove_all(pattern = "^-+") %>%
-    stringr::str_remove_all(pattern = "-+$")
-}
-
 #' Remove Symbols from String
 #'
 #' `str_remove_symbols()` removes all non-alphanumeric characters from a string.
@@ -168,7 +174,8 @@ str_trim_dashes <- function(string) {
 str_remove_symbols <- function(string) {
   string %>%
     stringr::str_remove_all("[']+") %>%
-    stringr::str_replace_all("[^A-Za-z0-9 ]", replacement = " ")
+    stringr::str_replace_all("[^A-Za-z0-9 ]", replacement = " ") %>%
+    stringr::str_squish()
 }
 
 #' Invert `NA` String Replacement

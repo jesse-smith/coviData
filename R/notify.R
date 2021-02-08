@@ -1,220 +1,245 @@
-# The following was modified from https://stackoverflow.com/questions/26811679/sending-email-in-r-via-outlook
-
-#' Send an Email Notification with Outlook
+#' Send an Email Notification with blastula
 #'
-#' `notify` sends a notification email via Outlook. This assumes that Outlook
-#' is installed on your machine and that you've already set up an account.
+#' `notify` sends a notification email using a Visual Basic interface to Outlook
 #'
-#' @param to A character vector containing recipient email addresses. Required.
+#' @param to Character. The recipient(s) of the email.
 #'
-#' @param subject A character string containing the email subject. Required.
+#' @param subject Character. The subject of the email.
 #'
-#' @param body A character string containing the email body; if `html = TRUE`,
-#'   this will be parsed as HTML. Optional.
+#' @param body Character. The body of the email. If `HTML = FALSE`, this should
+#'   be plain text. If `HTML = TRUE`, this should be HTML text.
 #'
-#' @param cc A character vector containing email address to "cc". Optional.
+#' @param html Should the body of the email be rendered as HTML?
 #'
-#' @param html Should the `body` be treated as plain text or HTML? The default
-#'   is plain text (`FALSE`).
+#' @param fail Should failure cause an error?
 #'
 #' @keywords internal
 #'
 #' @export
 notify <- function(
   to,
-  subject,
-  body = NULL,
-  cc = NULL,
-  html = FALSE
+  subject = "",
+  body = "",
+  html = FALSE,
+  fail = FALSE
 ) {
 
-  # Withr and RDCOMClient are suggested for coviData but necessary for
-  # `notify()`
-  rdcom_ns <- requireNamespace("RDCOMClient", quietly = TRUE)
-  withr_ns <- requireNamespace("withr", quietly = TRUE)
-
-  if (!rdcom_ns) {
-    rdcom_message = paste0(
-      "`notify()` requires the RDCOMClient package to be installed. ",
-      "To install this package, run:\n\n",
-      "`install.packages(",
-        "'RDCOMClient', ",
-        "repos = 'http://www.omegahat.net/R'",
-      ")`\n"
+  if (!is_windows()) {
+    msg <- paste0(
+      "`notify()` currently only works on Windows",
+      " due to dependencies on Outlook and Visual Basic"
     )
-  } else {
-    rdcom_message <- ""
+    rlang::abort(msg)
   }
 
-  if (!withr_ns) {
-    withr_message <- paste0(
-      "`notify()` requires the withr package to be installed. ",
-      "To install this package, run:\n\n",
-      "`install.packages('withr')`\n"
-    )
+  temp_script <- fs::file_temp("script_", ext = "vbs")
+  on.exit(fs::file_delete(temp_script), add = TRUE)
+
+
+  mail_to <- paste0("mail.Recipients.Add(\"", to, "\")", collapse = "\n  ")
+
+  if (html) {
+    mail_body <- stringr::str_glue("mail.HTMLBody = \"{body}\"")
   } else {
-    withr_message = ""
+    body <- vb_newline_notify(body)
+    mail_body <- stringr::str_glue("mail.Body = \"{body}\"")
   }
 
-  assertthat::assert_that(
-    rdcom_ns, withr_ns,
-    msg = paste0(rdcom_message, withr_message)
+  script_contents <- stringr::str_glue(
+    "With CreateObject(\"Outlook.Application\")",
+    "  Set mail = .CreateItem(olMailItem)",
+    "  mail.Subject = \"{subject}\"",
+    "  {mail_to}",
+    "  mail.Recipients.ResolveAll()",
+    "  {mail_body}",
+    "  mail.Send()",
+    "End With",
+    .sep = "\n"
   )
 
-  send_email <- rlang::expr({
+  readr::write_lines(script_contents, file = temp_script, na = "")
 
-    to <- stringr::str_flatten(to, "; ")
-    cc <- if (rlang::is_empty(cc)) "" else stringr::str_flatten(cc, "; ")
-    body <- if (rlang::is_empty(body)) "" else body
+  run_vbs <- rlang::expr(
+    capture.output(system2("cscript.exe", temp_script)) %>%
+      stringr::str_remove_all("^\\[[0-9]+\\]") %>%
+      stringr::str_flatten("\n") %>%
+      rlang::inform(class = "cmd_output")
+  )
 
-    outlook <- RDCOMClient::COMCreate("Outlook.Application")
-
-    email <- outlook$CreateItem(0)
-    email[["to"]] <- to
-    email[["cc"]] <- cc
-    email[["subject"]] <- subject
-
-    if (rlang::is_true(html)) {
-      email[["htmlbody"]] <- body
-    } else {
-      email[["body"]] <- body
-    }
-
-    email$Send()
-
-    remove(outlook, email)
-  })
-
-  withr::with_namespace("RDCOMClient", eval(send_email), warn.conflicts = FALSE)
-}
-
-#' Send an Email Notification on Error
-#'
-#' `error_notify()` generates an error handler that sends an email notification
-#' when an expression generates an error. It relies on
-#' \code{\link[coviData:notify]{notify()}} and can optionally avoid terminating
-#' the larger expression it was called from. This is useful for running scripts
-#' with independent components.
-#'
-#' @inheritParams notify
-#'
-#' @param abort Should execution terminate after reporting the error?
-#'
-#' @return The input error condition, with a backtrace
-#'
-#' @keywords internal
-#'
-#' @export
-error_notify <- function(
-  abort = TRUE,
-  to = "jesse.smith@shelbycountytn.gov",
-  .call = NULL,
-  subject = NULL,
-  body = NULL,
-  cc = NULL,
-  html = FALSE,
-  operation = NULL
-) {
-
-  purrr::walk(rlang::fn_fmls_syms(), ~ force(.x))
-
-  args <- rlang::fn_fmls() %>% extract(rlang::fn_fmls_names(notify))
-
-  force(args)
-
-  function(.error) {
-
-    .trace <- .error[["trace"]]
-
-    .bottom <- vctrs::vec_size(.trace)
-
-    if (!is.null(.call)) {
-      # Do nothing
-    } else if (!is.null(operation)) {
-      .call <- operation
-    } else if (!is.null(.trace)) {
-      .call <- .trace[[.bottom]]
-    } else {
-      .call <- .error[["call"]]
-    }
-
-    br <- if (rlang::is_true(html)) "<br>" else "\n"
-
-    if (is.null(args$subject)) {
-      args$subject <- paste(
-        .call, "Failed at", Sys.time()
-      )
-    }
-
-    if (is.null(args$body)) {
-      args$body <- paste0(
-        "The following error occurred while executing ", .call, ":", br, br,
-        .error$message, br, br,
-        "See the associated log for details."
-      )
-    }
-
-    eval(rlang::call2(notify, !!!args))
-
-    generate_error <- rlang::expr({
-      if (rlang::is_true(abort)) {
-        rlang::cnd_signal(.error)
-      } else {
-        try(rlang::cnd_signal(.error))
-      }
-    })
-
-    withr::with_options(
-      list(rlang_backtrace_on_error = "branch", error = rlang::entrace),
-      eval(generate_error)
-    )
-
-  }
+  if (fail) eval(run_vbs) else try(eval(run_vbs))
 }
 
 #' `entrace()` + `notify()`
 #'
+#' @description
 #' `ennotify()` adds a backtrace to base R errors and sends a notification
-#' email with the failing function an a full backtrace. However, it cannot
+#' email with the failing function and a full backtrace. However, it cannot
 #' capture the condition object associated with the error, and thus cannot
-#' show error messages. Logging errors is recommended.
+#' show error messages. Logging errors is highly recommended.
+#'
+#' The helpers `ennotify_to()` and `ennotify_context()` assist in setting
+#' global parameters to make your message more informative (and go to the right
+#' people!). See below for details.
 #'
 #' Set `ennotify()` as your error handler using
 #'
 #' `options(error = quote(coviData::ennotify()),`
 #' ` rlang_backtrace_on_error = "full")`
 #'
-#' The function currently emails me (Jesse Smith) every time an error is
-#' processed, so please do not use this before consulting me first.
+#' There are two options used by `ennotify()` to customize output.
+#'
+#' The first is `"ennotify_to"`; this is a character vector containing
+#' recipient email addresses for error notifications. This can be set most
+#' easily using `ennotify_to(to = your_recipients)`, and retrieved most easily
+#' using `ennotify_to()` with no arguments
+#'
+#' The second is `"ennotify_context"`; this allows the user to fill in the
+#' context in which the error occurred. This should make sense in the sentence
+#' "`foo()` in {ennotify_context} encountered an error." This can be set most
+#' easily using `ennotify_context(context = your_context)`, and retrieved most
+#' easily using `ennotify_context()` with no arguments.
+#'
+#' `ennotify_inform()` allows easy switching of message printing for
+#' `ennotify_context()`. This is mostly useful for printing logging messages.
+#'
+#' If `"ennotify_to"` is unset, the function currently emails me (Jesse Smith)
+#' every time an error is processed, so please **do not** use this before
+#' consulting me first. This function is only exported to allow usage in scripts
+#' and other Shelby County R packages.
+#'
+#' In the event of an internal error (within the `ennotify()` function), the
+#' error will be printed to stderr, but execution will continue.
+#'
+#' @param ... Character vectors of recipient email addresses
+#'
+#' @param context Character. The current error context, if one occurs.
+#'
+#' @param inform Should `ennotify_context()` print a message when called?
+#'
+#' @keywords internal
 #'
 #' @export
 ennotify <- function() {
-  # Add traceback if needed
-  rlang::entrace()
+  try({
+    # Add traceback if needed
+    rlang::entrace()
 
-  # Get traceback
-  trace <- rlang::trace_back()
+    # Get traceback
+    trace <- rlang::trace_back()
 
-  # Get function from objects
-  fn <- trace[["calls"]][[1L]] %>% rlang::call_name() %>% paste0("()")
+    # Get function from objects
+    fn <- trace[["calls"]][[1L]] %>% rlang::call_name() %>% paste0("()")
 
-  trace_string <- capture.output(print(trace)) %>% paste0("\n", collapse = "")
+    trace_string <- capture.output(print(trace)) %>% paste0("\n", collapse = "")
 
-  # Send notification
-  subject <- paste0("Error in `", fn, "` at ", Sys.time())
+    # Send notification
+    to <- ennotify_to()
+    if (rlang::is_empty(to)) {
+      to <- "jesse.smith@shelbycountytn.gov"
+    }
 
-  body <- paste0(
-    "`", fn, "` encountered an error. The full traceback is:",
-    "\n\n",
-    trace_string,
-    "\n\n",
-    "This error should have been logged; ",
-    "see the associated log file for details."
-  )
+    context <- ennotify_context()
+    if (rlang::is_empty(context)) {
+      in_ <- ""
+      context <- ""
+      subject <- paste0(
+        "Error in `", fn, "` at ", format(Sys.time(), "%H:%M %Y-%m-%d")
+      )
+    } else {
+      in_ <- " in "
+      subject <- paste0(
+        "Error", in_, context, " at ", format(Sys.time(), "%H:%M %Y-%m-%d")
+      )
+    }
 
-  coviData::notify(
-    to = "jesse.smith@shelbycountytn.gov",
-    subject = subject,
-    body = body
-  )
+    body <- paste0(
+      "`", fn, "` encountered an error ", in_, context, ".",
+      "\n\n",
+      "The full traceback is:\n",
+      trace_string,
+      "\n\n",
+      "This error should have been logged; ",
+      "see the associated log file for details.",
+      "\n\n",
+      "Note: This message was generated automatically."
+    )
+
+    coviData::notify(
+      to = to,
+      subject = subject,
+      body = body
+    )
+  })
+}
+
+#' @rdname ennotify
+#'
+#' @export
+ennotify_to <- function(...) {
+  try({
+    dots_empty <- rlang::dots_n(...) == 0L
+    if (dots_empty) return(options("ennotify_to")[[1L]])
+
+    to <- unlist(rlang::list2(...))
+    coviData::assert_any(
+      all(is.character(to), stringr::str_detect(to, ".+@[^.]+[.].+")),
+      is.null(to),
+      message = paste(
+        "`ennotify_to` must be either a character vector of email addresses",
+        "or `NULL`"
+      )
+    )
+
+    invisible(options(ennotify_to = to))
+  })
+}
+
+#' @rdname ennotify
+#'
+#' @export
+ennotify_context <- function(context, inform = ennotify_inform()) {
+  try({
+    if (rlang::is_missing(context)) return(options("ennotify_context")[[1L]])
+
+    coviData::assert_any(
+      is.character(context),
+      is.null(context),
+      message = "`ennotify_context` must be either a character string or `NULL`"
+    )
+
+    inform <- rlang::is_true(inform)
+    if (inform) rlang::inform(paste0(stringr::str_to_sentence(context), "..."))
+    invisible(options(ennotify_context = context))
+  })
+}
+
+#' @rdname ennotify
+#'
+#' @export
+ennotify_inform <- function(inform) {
+  try({
+    if (rlang::is_missing(inform)) return(options("ennotify_inform")[[1L]])
+
+    coviData::assert_any(
+      rlang::is_true(inform),
+      rlang::is_false(inform),
+      is.null(inform),
+      message = "`ennotify_inform` must be `TRUE`, `FALSE`, `NULL`"
+    )
+
+    invisible(options(ennotify_inform = inform))
+  })
+}
+
+#' Replace LF and CRLF with VB Constants for `notify()`
+#'
+#' @param string A string to perform replacement on
+#'
+#' @return The string with (CR)LF replaced with "& VbCrLf &"
+vb_newline_notify <- function(string) {
+  string %>%
+    stringr::str_replace_all("[\r]?[\n]", replacement = "\" & VbCrLf & \"") %>%
+    stringr::str_remove_all("\"{2}") %>%
+    stringr::str_replace_all("\\s+([&]\\s*)+\\s+", replacement = " & ") %>%
+    stringr::str_replace_all("[ ]{2,}", replacement = " ")
 }

@@ -2,22 +2,63 @@
 % Please edit documentation in R/notify.R
 \name{ennotify}
 \alias{ennotify}
+\alias{ennotify_to}
+\alias{ennotify_context}
+\alias{ennotify_inform}
 \title{\code{entrace()} + \code{notify()}}
 \usage{
 ennotify()
+
+ennotify_to(...)
+
+ennotify_context(context, inform = ennotify_inform())
+
+ennotify_inform(inform)
+}
+\arguments{
+\item{...}{Character vectors of recipient email addresses}
+
+\item{context}{Character. The current error context, if one occurs.}
+
+\item{inform}{Should \code{ennotify_context()} print a message when called?}
 }
 \description{
 \code{ennotify()} adds a backtrace to base R errors and sends a notification
-email with the failing function an a full backtrace. However, it cannot
+email with the failing function and a full backtrace. However, it cannot
 capture the condition object associated with the error, and thus cannot
-show error messages. Logging errors is recommended.
-}
-\details{
+show error messages. Logging errors is highly recommended.
+
+The helpers \code{ennotify_to()} and \code{ennotify_context()} assist in setting
+global parameters to make your message more informative (and go to the right
+people!). See below for details.
+
 Set \code{ennotify()} as your error handler using
 
 \verb{options(error = quote(coviData::ennotify()),}
 \verb{ rlang_backtrace_on_error = "full")}
 
-The function currently emails me (Jesse Smith) every time an error is
-processed, so please do not use this before consulting me first.
+There are two options used by \code{ennotify()} to customize output.
+
+The first is \code{"ennotify_to"}; this is a character vector containing
+recipient email addresses for error notifications. This can be set most
+easily using \code{ennotify_to(to = your_recipients)}, and retrieved most easily
+using \code{ennotify_to()} with no arguments
+
+The second is \code{"ennotify_context"}; this allows the user to fill in the
+context in which the error occurred. This should make sense in the sentence
+"\code{foo()} in {ennotify_context} encountered an error." This can be set most
+easily using \code{ennotify_context(context = your_context)}, and retrieved most
+easily using \code{ennotify_context()} with no arguments.
+
+\code{ennotify_inform()} allows easy switching of message printing for
+\code{ennotify_context()}. This is mostly useful for printing logging messages.
+
+If \code{"ennotify_to"} is unset, the function currently emails me (Jesse Smith)
+every time an error is processed, so please \strong{do not} use this before
+consulting me first. This function is only exported to allow usage in scripts
+and other Shelby County R packages.
+
+In the event of an internal error (within the \code{ennotify()} function), the
+error will be printed to stderr, but execution will continue.
 }
+\keyword{internal}
