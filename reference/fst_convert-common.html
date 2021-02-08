@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>User-Friendly Assertions for R — assertthat-helpers • coviData</title>
+<title>Save Commonly Used Files in fst Format — fst_convert-common • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,12 @@
 
 
 
-<meta property="og:title" content="User-Friendly Assertions for R — assertthat-helpers" />
-<meta property="og:description" content="The assertthat package provides helpers for making assertions about a object.
-It is useful for checking assumptions and throwing errors if they are not
-met. See https://github.com/hadley/assertthat for more information." />
+<meta property="og:title" content="Save Commonly Used Files in fst Format — fst_convert-common" />
+<meta property="og:description" content="Each fst_* function is designed to easily convert a specific file, though
+they will technically work with any tabular data file.
+fst_inv() converts an investigations file
+fst_pcr() converts a PCR file
+fst_vac() converts a vaccination file" />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -118,19 +120,70 @@ met. See https://github.com/hadley/assertthat for more information." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>User-Friendly Assertions for R</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/utils-assertthat.R'><code>R/utils-assertthat.R</code></a></small>
-    <div class="hidden name"><code>assertthat-helpers.Rd</code></div>
+    <h1>Save Commonly Used Files in <code>fst</code> Format</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/fst.R'><code>R/fst.R</code></a></small>
+    <div class="hidden name"><code>fst_convert-common.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The assertthat package provides helpers for making assertions about a object.
-It is useful for checking assumptions and throwing errors if they are not
-met. See <a href='https://github.com/hadley/assertthat'>https://github.com/hadley/assertthat</a> for more information.</p>
+    <p>Each <code>fst_*</code> function is designed to easily convert a specific file, though
+they will technically work with any tabular data file.</p>
+<p><code>fst_inv()</code> converts an investigations file</p>
+<p><code>fst_pcr()</code> converts a PCR file</p>
+<p><code>fst_vac()</code> converts a vaccination file</p>
     </div>
 
+    <pre class="usage"><span class='fu'>fst_inv</span><span class='op'>(</span>date <span class='op'>=</span> <span class='cn'>NULL</span>, dir <span class='op'>=</span> <span class='cn'>NULL</span>, ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>, save_as <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>fst_pcr</span><span class='op'>(</span>date <span class='op'>=</span> <span class='cn'>NULL</span>, save_as <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>fst_vac</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='path_by_date.html'>path_vac</a></span><span class='op'>(</span>ext <span class='op'>=</span> <span class='st'>"csv"</span><span class='op'>)</span>, save_as <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>date</th>
+      <td><p>A <code>Date</code> or string in the format "YYYY-MM-DD"</p></td>
+    </tr>
+    <tr>
+      <th>dir</th>
+      <td><p>The directory holding the files of interest</p></td>
+    </tr>
+    <tr>
+      <th>ext</th>
+      <td><p>The file type to return. Files may be saved as "fst", "csv", or
+"xlsx".</p></td>
+    </tr>
+    <tr>
+      <th>save_as</th>
+      <td><p>Character. The path to save the result <code>fst</code> file. This must
+have an <code>fst</code> extension; if it does not, the current extension (if any)
+will be removed and replaced with <code>fst</code>. If left <code>NULL</code>, the <code>path</code>
+argument is used (with extension replaced by <code>fst</code>).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments to pass to <code><a href='read_file_delim.html'>read_file_delim()</a></code> or
+<code><a href='read_file_excel.html'>read_file_excel()</a></code>. The <code>col_types</code> argument is particularly useful to
+control the type in which the data is saved (default is all <code>character</code>).</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>Character. File path to read from. it will be passed to
+<code><a href='read_file_excel.html'>read_file_excel()</a></code> if the file
+extension is "xlsx" or "xls", otherwise it will be passed to
+<code><a href='read_file_delim.html'>read_file_delim()</a></code></p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The dataset being converted, invisibly</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For general conversion to <code>fst</code> format, see
+<code><a href='fst_convert.html'>fst_convert()</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

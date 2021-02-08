@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove Leading and Trailing Dashes from String — str_trim_dashes • coviData</title>
+<title>Convert a String to ASCII Representation — str_to_ascii • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Remove Leading and Trailing Dashes from String — str_trim_dashes" />
-<meta property="og:description" content="str_trim_dashes() removes leading and trailing dashes from a string. This
-is most useful to clean up the results of previous operations that may have
-left such dashes." />
+<meta property="og:title" content="Convert a String to ASCII Representation — str_to_ascii" />
+<meta property="og:description" content="str_to_ascii() converts a string to ASCII characters only. When
+trans = TRUE, non-ASCII characters are transliterated; otherwise, non-ASCII
+characters are replaced with the ASCII SUBSTITUTE CHARACTER (0x1A)." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -118,18 +118,18 @@ left such dashes." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove Leading and Trailing Dashes from String</h1>
+    <h1>Convert a String to ASCII Representation</h1>
     <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/std_names.R'><code>R/std_names.R</code></a></small>
-    <div class="hidden name"><code>str_trim_dashes.Rd</code></div>
+    <div class="hidden name"><code>str_to_ascii.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>str_trim_dashes()</code> removes leading and trailing dashes from a string. This
-is most useful to clean up the results of previous operations that may have
-left such dashes.</p>
+    <p><code>str_to_ascii()</code> converts a string to ASCII characters only. When
+<code>trans = TRUE</code>, non-ASCII characters are transliterated; otherwise, non-ASCII
+characters are replaced with the ASCII SUBSTITUTE CHARACTER (<code>0x1A</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>str_trim_dashes</span><span class='op'>(</span><span class='va'>string</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>str_to_ascii</span><span class='op'>(</span><span class='va'>string</span>, trans <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,11 +138,15 @@ left such dashes.</p>
       <th>string</th>
       <td><p>A character vector</p></td>
     </tr>
+    <tr>
+      <th>trans</th>
+      <td><p>Should non-ASCII characters be transliterated?</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The input <code>string</code>, with leading and trailing dashes removed</p>
+    <p>An ASCII-encoded character vector</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

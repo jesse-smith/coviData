@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Send an Email Notification on Error — error_notify • coviData</title>
+<title>Coerce Datetimes to Dates if No Information is Lost — dttm_to_dt • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,10 @@
 
 
 
-<meta property="og:title" content="Send an Email Notification on Error — error_notify" />
-<meta property="og:description" content="error_notify() generates an error handler that sends an email notification
-when an expression generates an error. It relies on
-notify() and can optionally avoid terminating
-the larger expression it was called from. This is useful for running scripts
-with independent components." />
+<meta property="og:title" content="Coerce Datetimes to Dates if No Information is Lost — dttm_to_dt" />
+<meta property="og:description" content="dttm_to_dt() converts POSIXt objects to Date objects when there is no
+additional information contained in the POSIXt format (i.e. there is no
+sub-daily information)." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -120,64 +118,44 @@ with independent components." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Send an Email Notification on Error</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/notify.R'><code>R/notify.R</code></a></small>
-    <div class="hidden name"><code>error_notify.Rd</code></div>
+    <h1>Coerce Datetimes to Dates if No Information is Lost</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/std_date.R'><code>R/std_date.R</code></a></small>
+    <div class="hidden name"><code>dttm_to_dt.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>error_notify()</code> generates an error handler that sends an email notification
-when an expression generates an error. It relies on
-<code><a href='notify.html'>notify()</a></code> and can optionally avoid terminating
-the larger expression it was called from. This is useful for running scripts
-with independent components.</p>
+    <p><code>dttm_to_dt()</code> converts <code>POSIXt</code> objects to <code>Date</code> objects when there is no
+additional information contained in the <code>POSIXt</code> format (i.e. there is no
+sub-daily information).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error_notify</span><span class='op'>(</span>
-  abort <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  to <span class='op'>=</span> <span class='st'>"jesse.smith@shelbycountytn.gov"</span>,
-  .call <span class='op'>=</span> <span class='cn'>NULL</span>,
-  subject <span class='op'>=</span> <span class='cn'>NULL</span>,
-  body <span class='op'>=</span> <span class='cn'>NULL</span>,
-  cc <span class='op'>=</span> <span class='cn'>NULL</span>,
-  html <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  operation <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dttm_to_dt</span><span class='op'>(</span><span class='va'>.x</span>, force <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"dt"</span>, <span class='st'>"dttm"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>abort</th>
-      <td><p>Should execution terminate after reporting the error?</p></td>
+      <th>.x</th>
+      <td><p>A <code>Date</code>, <code>POSIXct</code> or <code>POSIXlt</code> (i.e. a datetime) vector</p></td>
     </tr>
     <tr>
-      <th>to</th>
-      <td><p>A character vector containing recipient email addresses. Required.</p></td>
-    </tr>
-    <tr>
-      <th>subject</th>
-      <td><p>A character string containing the email subject. Required.</p></td>
-    </tr>
-    <tr>
-      <th>body</th>
-      <td><p>A character string containing the email body; if <code>html = TRUE</code>,
-this will be parsed as HTML. Optional.</p></td>
-    </tr>
-    <tr>
-      <th>cc</th>
-      <td><p>A character vector containing email address to "cc". Optional.</p></td>
-    </tr>
-    <tr>
-      <th>html</th>
-      <td><p>Should the <code>body</code> be treated as plain text or HTML? The default
-is plain text (<code>FALSE</code>).</p></td>
+      <th>force</th>
+      <td><p>Whether to force conversion to <code>Date</code> (<code>force = "dt"</code>) or
+<code>POSIXct</code> (<code>force = "dttm"</code>). The default is no forcing (<code>force = "none"</code>).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The input error condition, with a backtrace</p>
+    <p>Either a <code>POSIXct</code> vector or a <code>Date</code> vector</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Specifically, <code>dttm_to_dt</code> checks whether all sub-daily information is the
+same for each value in the datetime vector. If so, no additional information
+is gained by using a <code>POSIXt</code> format over the simpler <code>Date</code> format, and
+the data is coerced.</p>
+<p>If the input is scalar (i.e. has length <code>1L</code>), then no conversion is
+attempted</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

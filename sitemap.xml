@@ -37,9 +37,6 @@
     <loc>https://jesse-smith.github.io/covidata//reference/assert_dataframe.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/assertthat-helpers.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/check_ael.html</loc>
   </url>
   <url>
@@ -50,6 +47,9 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/check_linelist_dates.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/chr_to_dttm.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/coalesce_across.html</loc>
@@ -103,6 +103,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/data-for-regions-snapshots.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/decimal_time.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/download_ael.html</loc>
   </url>
   <url>
@@ -118,10 +121,10 @@
     <loc>https://jesse-smith.github.io/covidata//reference/download_servu.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/ennotify.html</loc>
+    <loc>https://jesse-smith.github.io/covidata//reference/dttm_to_dt.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/error_notify.html</loc>
+    <loc>https://jesse-smith.github.io/covidata//reference/ennotify.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/fill_dates.html</loc>
@@ -131,6 +134,12 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/find_file.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/fst_convert-common.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/fst_convert.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/gg_var.html</loc>
@@ -295,13 +304,16 @@
     <loc>https://jesse-smith.github.io/covidata//reference/str_replace_brackets.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_to_ascii.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/str_to_factor.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/str_trim_dashes.html</loc>
+    <loc>https://jesse-smith.github.io/covidata//reference/team_schedules.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/team_schedules.html</loc>
+    <loc>https://jesse-smith.github.io/covidata//reference/tidyeval.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/to_report_date_fst.html</loc>
@@ -320,6 +332,9 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vac_prep.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/vb_newline_notify.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vctr-helpers.html</loc>

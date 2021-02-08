@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>entrace() + notify() — ennotify • coviData</title>
+<title>Extract Time as a Decimal of Hours — decimal_time • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,35 +46,8 @@
 
 
 
-<meta property="og:title" content="entrace() + notify() — ennotify" />
-<meta property="og:description" content="ennotify() adds a backtrace to base R errors and sends a notification
-email with the failing function and a full backtrace. However, it cannot
-capture the condition object associated with the error, and thus cannot
-show error messages. Logging errors is highly recommended.
-The helpers ennotify_to() and ennotify_context() assist in setting
-global parameters to make your message more informative (and go to the right
-people!). See below for details.
-Set ennotify() as your error handler using
-options(error = quote(coviData::ennotify()),
- rlang_backtrace_on_error = &quot;full&quot;)
-There are two options used by ennotify() to customize output.
-The first is &quot;ennotify_to&quot;; this is a character vector containing
-recipient email addresses for error notifications. This can be set most
-easily using ennotify_to(to = your_recipients), and retrieved most easily
-using ennotify_to() with no arguments
-The second is &quot;ennotify_context&quot;; this allows the user to fill in the
-context in which the error occurred. This should make sense in the sentence
-&quot;foo() in ennotify_context encountered an error.&quot; This can be set most
-easily using ennotify_context(context = your_context), and retrieved most
-easily using ennotify_context() with no arguments.
-ennotify_inform() allows easy switching of message printing for
-ennotify_context(). This is mostly useful for printing logging messages.
-If &quot;ennotify_to&quot; is unset, the function currently emails me (Jesse Smith)
-every time an error is processed, so please do not use this before
-consulting me first. This function is only exported to allow usage in scripts
-and other Shelby County R packages.
-In the event of an internal error (within the ennotify() function), the
-error will be printed to stderr, but execution will continue." />
+<meta property="og:title" content="Extract Time as a Decimal of Hours — decimal_time" />
+<meta property="og:description" content="Extract Time as a Decimal of Hours" />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -143,67 +116,31 @@ error will be printed to stderr, but execution will continue." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1><code>entrace()</code> + <code>notify()</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/notify.R'><code>R/notify.R</code></a></small>
-    <div class="hidden name"><code>ennotify.Rd</code></div>
+    <h1>Extract Time as a Decimal of Hours</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/std_date.R'><code>R/std_date.R</code></a></small>
+    <div class="hidden name"><code>decimal_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>ennotify()</code> adds a backtrace to base R errors and sends a notification
-email with the failing function and a full backtrace. However, it cannot
-capture the condition object associated with the error, and thus cannot
-show error messages. Logging errors is highly recommended.</p>
-<p>The helpers <code>ennotify_to()</code> and <code>ennotify_context()</code> assist in setting
-global parameters to make your message more informative (and go to the right
-people!). See below for details.</p>
-<p>Set <code>ennotify()</code> as your error handler using</p>
-<p><code>options(error = quote(coviData::ennotify()),</code>
-<code> rlang_backtrace_on_error = "full")</code></p>
-<p>There are two options used by <code>ennotify()</code> to customize output.</p>
-<p>The first is <code>"ennotify_to"</code>; this is a character vector containing
-recipient email addresses for error notifications. This can be set most
-easily using <code>ennotify_to(to = your_recipients)</code>, and retrieved most easily
-using <code>ennotify_to()</code> with no arguments</p>
-<p>The second is <code>"ennotify_context"</code>; this allows the user to fill in the
-context in which the error occurred. This should make sense in the sentence
-"<code>foo()</code> in ennotify_context encountered an error." This can be set most
-easily using <code>ennotify_context(context = your_context)</code>, and retrieved most
-easily using <code>ennotify_context()</code> with no arguments.</p>
-<p><code>ennotify_inform()</code> allows easy switching of message printing for
-<code>ennotify_context()</code>. This is mostly useful for printing logging messages.</p>
-<p>If <code>"ennotify_to"</code> is unset, the function currently emails me (Jesse Smith)
-every time an error is processed, so please <strong>do not</strong> use this before
-consulting me first. This function is only exported to allow usage in scripts
-and other Shelby County R packages.</p>
-<p>In the event of an internal error (within the <code>ennotify()</code> function), the
-error will be printed to stderr, but execution will continue.</p>
+    <p>Extract Time as a Decimal of Hours</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ennotify</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='fu'>ennotify_to</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
-
-<span class='fu'>ennotify_context</span><span class='op'>(</span><span class='va'>context</span>, inform <span class='op'>=</span> <span class='fu'>ennotify_inform</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>ennotify_inform</span><span class='op'>(</span><span class='va'>inform</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>decimal_time</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Character vectors of recipient email addresses</p></td>
-    </tr>
-    <tr>
-      <th>context</th>
-      <td><p>Character. The current error context, if one occurs.</p></td>
-    </tr>
-    <tr>
-      <th>inform</th>
-      <td><p>Should <code>ennotify_context()</code> print a message when called?</p></td>
+      <th>x</th>
+      <td><p>A vector with hour, minute, and/or second information that can be
+extracted by lubridate's <code>hour()</code>, <code>minute()</code>, and <code>second()</code> functions
+(respectively).</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A <code>double</code> vector of decimal hours</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -145,20 +145,20 @@ returns path that contain a specified date given additional parameters.</p>
   date <span class='op'>=</span> <span class='cn'>NULL</span>,
   dir <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
     <span class='st'>"Sandbox data pull Final/"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
+  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span>, <span class='st'>"fst"</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='fu'>path_pcr</span><span class='op'>(</span>
   date <span class='op'>=</span> <span class='cn'>NULL</span>,
   dir <span class='op'>=</span> <span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
+  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span>, <span class='st'>"fst"</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='fu'>path_vac</span><span class='op'>(</span>
   date <span class='op'>=</span> <span class='cn'>NULL</span>,
   dir <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
     <span class='st'>"COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"</span><span class='op'>)</span>,
-  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span><span class='op'>)</span>
+  ext <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"csv"</span>, <span class='st'>"xlsx"</span>, <span class='st'>"fst"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,7 +166,7 @@ returns path that contain a specified date given additional parameters.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dir</th>
-      <td><p>The directory holding the investigations files</p></td>
+      <td><p>The directory holding the files of interest</p></td>
     </tr>
     <tr>
       <th>date_format</th>
@@ -203,8 +203,8 @@ should the function return only the file with the latest creation date
     </tr>
     <tr>
       <th>ext</th>
-      <td><p>The file type to return. NBS investigations files are saved as
-both "xlsx" and "csv" files.</p></td>
+      <td><p>The file type to return. Files may be saved as "fst", "csv", or
+"xlsx".</p></td>
     </tr>
     </table>
 
@@ -221,7 +221,7 @@ both "xlsx" and "csv" files.</p></td>
 </ul>
 
 <p>This will eventually replace <code><a href='find_file.html'>find_file()</a></code>
-for finding NBS investigations files.</p>
+for finding specific files.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
