@@ -153,7 +153,9 @@ ennotify <- function() {
     }
 
     body <- paste0(
-      "`", fn, "` encountered an error ", in_, context, ".",
+      "`", fn, "` encountered the following error ", in_, context, ":",
+      "\n\n",
+      geterrmessage(),
       "\n\n",
       "The full traceback is:\n",
       trace_string,

@@ -4,7 +4,7 @@
 \alias{process_positive_people}
 \title{Run the Cases Workflow for Daily Report}
 \usage{
-process_positive_people(date = Sys.Date())
+process_positive_people(date = NULL)
 }
 \arguments{
 \item{date}{The date of the files to use}

@@ -78,7 +78,7 @@ dttm_to_dt <- function(.x, force = c("none", "dt", "dttm")) {
 
   # Otherwise, check for any additional information in the variable
   t <- decimal_time(.x)
-  t1 <- stats::na.omit(t)[[1L]]
+  t1 <- if (!all(is.na(t))) stats::na.omit(t)[[1L]] else NA_real_
 
   if (all(t == t1 | is.na(t))) {
     lubridate::as_date(.x)

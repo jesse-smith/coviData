@@ -25,7 +25,7 @@ convert_pcr_snapshot(
 convert_vaccine_snapshot(
   date = Sys.Date(),
   directory = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
-    "COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"),
+    "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"),
   force = FALSE,
   open = FALSE
 )

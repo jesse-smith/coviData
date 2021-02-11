@@ -284,15 +284,6 @@ add_collection_date <- function(
     n = 0L
   )
 
-  if (!collection_date_0) {
-    rlang::warn(
-      paste0(
-        "`.data` already contains columns matching `.from_col` ",
-        "or named 'collection_date'"
-      )
-    )
-  }
-
   from_file <- path_clean(from_file)
 
   # If `.from_file` is a directory, load the latest NBS file from it

@@ -51,8 +51,8 @@ download_vaccine_snapshot(
   api_token = Sys.getenv("redcap_DFR_token"),
   redcap_file = "covid_vaccine_data",
   directory = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
-    "COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"),
-  new_file = name_data_for_regions_file(redcap_file, api_token = api_token),
+    "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"),
+  new_file = paste0("MSR_VACC_", date, ".csv"),
   force = FALSE
 )
 }

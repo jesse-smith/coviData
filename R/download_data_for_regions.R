@@ -160,17 +160,22 @@ download_vaccine_snapshot <- function(
   redcap_file = "covid_vaccine_data",
   directory = path_create(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
-    "COVID-19 Vaccine Reporting/COVID-19 Vaccine data pull/"
+    "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"
   ),
-  new_file = name_data_for_regions_file(redcap_file, api_token = api_token),
+  new_file = paste0("MSR_VACC_", format(date, "%Y%m%d"), ".csv"),
   force = FALSE
 ) {
 
-  date <- lubridate::as_date(date)
+  directory <- path_create(directory)
+  new_file <- path_create(new_file)
 
-  vacc_date <- get_vaccine_snapshot_date(api_token)
+  updated <- check_vac_date_updated(
+    date,
+    api_token = api_token,
+    redcap_file = redcap_file
+  )
 
-  if (vacc_date != date & !force) {
+  if (!updated && !force) {
     rlang::abort(
       paste0(
         "Vaccine data was last updated on\n",
@@ -185,7 +190,7 @@ download_vaccine_snapshot <- function(
     )
   }
 
-  message("Starting vaccine snapshot download...\n")
+  message("Starting vaccine snapshot download...")
   download_data_for_regions(
     date = date,
     api_token = api_token,
@@ -432,6 +437,30 @@ name_data_for_regions_file <- function(
 }
 
 
+#' Check Date Vaccination Data Was Last Updated
+#'
+#' `check_vac_date_updated()` checks the last update date for vaccination data
+#' on the TN REDcap.
+#'
+#' @param date The expected update date
+#'
+#' @param api_token The API key for the TN Data for Regions project
+#'
+#' @param redcap_file The name of the vaccine data file on the REDcap project
+#'
+#' @return A boolean (`TRUE` or `FALSE`)
+#'
+#' @export
+check_vac_date_updated <- function(
+  date = Sys.Date(),
+  api_token = Sys.getenv("redcap_DFR_token"),
+  redcap_file = "covid_vaccine_data"
+) {
+  update_date <- get_vaccine_snapshot_date(api_token, redcap_file = redcap_file)
+
+  lubridate::as_date(date) == lubridate::as_date(update_date)
+}
+
 #' Determine Update Date for Vaccine Snapshot Data
 #'
 #' `get_vaccine_snapshot_date()` determines the last date that the vaccine
@@ -443,12 +472,54 @@ name_data_for_regions_file <- function(
 #'
 #' @noRd
 get_vaccine_snapshot_date <- function(
-  api_token = Sys.getenv("redcap_DFR_token")
+  api_token = Sys.getenv("redcap_DFR_token"),
+  redcap_file = "covid_vaccine_data"
 ) {
-  name_data_for_regions_file(
-    api_token = api_token,
-    redcap_file = "covid_vaccine_data"
+
+  tmp_file <- download_vaccine_file(api_token, redcap_file = redcap_file)
+  on.exit(fs::dir_delete(fs::path_dir(tmp_file)), add = TRUE)
+
+  if (fs::path_ext(tmp_file) != "zip") {
+    rlang::abort("Vaccine file is not a ZIP archive")
+  }
+
+  tmp_file %>%
+    zip::zip_list() %>%
+    dplyr::pull("timestamp") %>%
+    lubridate::as_date()
+}
+
+download_vaccine_file <- function(
+  api_token = Sys.getenv("redcap_DFR_token"),
+  redcap_file = "covid_vaccine_data",
+  dir = fs::dir_create(fs::file_temp("vacc_")),
+  file = name_data_for_regions_file(redcap_file, api_token = api_token)
+) {
+
+  file <- path_create(dir, file)
+
+  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
+
+  # Create params to get
+  api_params <- list(
+    token        = api_token,
+    content      = "file",
+    action       = "export",
+    record       = "MSR",
+    field        = redcap_file,
+    returnFormat = "json"
+  )
+
+  httr::RETRY(
+    "POST",
+    url = api_uri,
+    body = api_params,
+    httr::write_disk(file),
+    httr::progress(),
+    times = 12L,
+    pause_cap = 300L
   ) %>%
-    stringr::str_remove_all(pattern = "[^0-9]*") %>%
-    lubridate::ymd()
+    httr::stop_for_status()
+
+  file
 }

@@ -202,8 +202,8 @@ check_ael <- function(
 #'
 #' @export
 check_deaths <- function(
-  surveillance_file = "Working Copy Death  Epi.xlsx",
-  nbs_file = "NBSDeathLineList.xlsx",
+  surveillance_file = path_deaths("surv"),
+  nbs_file = path_deaths("nbs"),
   directory = "V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/",
   surveillance_file_id = NULL,
   nbs_file_id = PATIENT_LOCAL_ID,
@@ -211,10 +211,10 @@ check_deaths <- function(
 ) {
 
   # Create path to surveillance deaths file
-  s_path <- create_path(directory, surveillance_file)
+  s_path <- create_path(surveillance_file)
 
   # Create path to NBS deaths file
-  n_path <- create_path(directory, nbs_file)
+  n_path <- create_path(nbs_file)
 
   # Create path to file with missing ids
   unmatched_dir  <- create_path(directory, "Missing IDs/")
@@ -225,6 +225,7 @@ check_deaths <- function(
   surveillance_data <- readxl::read_excel(
     path = s_path,
     trim_ws = TRUE,
+    sheet = "Sheet 1",
     guess_max = .Machine$integer.max %/% 100L
   )
 

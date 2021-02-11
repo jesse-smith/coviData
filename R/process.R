@@ -9,19 +9,20 @@
 #'   file on all cases
 #'
 #' @export
-process_positive_people <- function(date = Sys.Date()) {
+process_positive_people <- function(date = NULL) {
 
   missings <- c(NA_character_, "Na", "", " ")
 
-  load_nbs(date = date) %>%
-    preprocess() %>%
+  path_inv(date) %>%
+    read_file_delim() %>%
+    janitor::clean_names() %>%
     # Filter to only our jurisdiction and county
     # Jurisdiction should get dropped as a constant during pre-processing, so
     # handle it flexibly
     tidylog::filter(
       dplyr::across(
         dplyr::contains("jurisdiction_nm"),
-        ~ .x == "Memphis Shelby County"
+        ~ stringr::str_detect(.x, "(?i).*Memphis.*Shelby.*County.*")
       ),
       alt_county %in% c("Shelby County", missings)
     ) %>%
@@ -33,17 +34,22 @@ process_positive_people <- function(date = Sys.Date()) {
     ) %>%
     dplyr::mutate(
       patient_last_name = patient_last_name %>%
+        str_to_ascii() %>%
         stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "[ \t\n\r]+"),
+        stringr::str_remove_all(pattern = "\\s+"),
       patient_first_name = patient_first_name %>%
+        str_to_ascii() %>%
         stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "[ \t\n\r]+")
+        stringr::str_remove_all(pattern = "\\s+")
     ) %>%
     dplyr::mutate(
       patient_street_addr = patient_street_addr_1 %>%
+        str_to_ascii() %>%
         stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "[ \t\n\r]+"),
-      patient_zip = patient_zip %>% stringr::str_trunc(width = 5, ellipsis = "")
+        stringr::str_remove_all(pattern = "\\s+"),
+      patient_zip = patient_zip %>%
+        str_to_ascii() %>%
+        stringr::str_trunc(width = 5, ellipsis = "")
     ) %>%
     # Filter to confirmed and probable cases
     tidylog::filter(inv_case_status %in% c("C", "P")) %>% # Check that inv_local_id is unique - matches SAS on 2020-11-15
