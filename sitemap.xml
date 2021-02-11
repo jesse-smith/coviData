@@ -127,6 +127,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/ennotify.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/env_vars.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/fill_dates.html</loc>
   </url>
   <url>
@@ -184,10 +187,16 @@
     <loc>https://jesse-smith.github.io/covidata//reference/path_by_date.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/path_by_pattern.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_clean.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/path_create.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/path_deaths.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/preprocess.html</loc>
@@ -320,9 +329,6 @@
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/trim_backups.html</loc>
-  </url>
-  <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/using-renviron.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vac_load.html</loc>
