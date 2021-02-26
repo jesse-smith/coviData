@@ -15,10 +15,10 @@
 #' To use \code{download_integrated_data} you'll need an API access key for the
 #' associated REDcap project. Please contact
 #' \email{jesse.smith@@shelbycountytn.gov} or
-#' \email{umar.kabir@@shelbycountytn.gov} for more information.
+#' \email{karim.gilani@@shelbycountytn.gov} for more information.
 #'
 #' Best practice is to save this API access token in a separate file; see
-#' \link{using-renviron} for details.
+#' \link{env_vars} for details.
 #'
 #' @inherit download_interview_report params return
 #'
