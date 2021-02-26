@@ -11,10 +11,11 @@ notify(to, subject = "", body = "", html = FALSE, fail = FALSE)
 
 \item{subject}{Character. The subject of the email.}
 
-\item{body}{Character. The body of the email. If \code{HTML = FALSE}, this should
-be plain text. If \code{HTML = TRUE}, this should be HTML text.}
+\item{body}{Character. The body of the email. If \code{html = FALSE}, this should
+be plain text. If \code{html = TRUE}, this should be HTML text.}
 
-\item{html}{Should the body of the email be rendered as HTML?}
+\item{html}{Is the \code{body} HTML or plain text? All messages are sent in HTML;
+this argument determines how messages are parsed.}
 
 \item{fail}{Should failure cause an error?}
 }

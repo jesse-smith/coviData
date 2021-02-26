@@ -6,12 +6,13 @@
 #'
 #' @param subject Character. The subject of the email.
 #'
-#' @param body Character. The body of the email. If `HTML = FALSE`, this should
-#'   be plain text. If `HTML = TRUE`, this should be HTML text.
-#'
-#' @param html Should the body of the email be rendered as HTML?
+#' @param body Character. The body of the email. If `html = FALSE`, this should
+#'   be plain text. If `html = TRUE`, this should be HTML text.
 #'
 #' @param fail Should failure cause an error?
+#'
+#' @param html Is the `body` HTML or plain text? All messages are sent in HTML;
+#'   this argument determines how messages are parsed.
 #'
 #' @keywords internal
 #'
@@ -35,15 +36,15 @@ notify <- function(
   temp_script <- fs::file_temp("script_", ext = "vbs")
   on.exit(fs::file_delete(temp_script), add = TRUE)
 
-
   mail_to <- paste0("mail.Recipients.Add(\"", to, "\")", collapse = "\n  ")
 
   if (html) {
-    mail_body <- stringr::str_glue("mail.HTMLBody = \"{body}\"")
+    body <- html_to_vb(body, collapse = " ")
   } else {
-    body <- vb_newline_notify(body)
-    mail_body <- stringr::str_glue("mail.Body = \"{body}\"")
+    body <- str_to_vb_html(body, collapse = "<br>")
   }
+
+  mail_body <- stringr::str_glue("mail.HTMLBody = \"{body}\"")
 
   script_contents <- stringr::str_glue(
     "With CreateObject(\"Outlook.Application\")",
@@ -57,14 +58,14 @@ notify <- function(
     .sep = "\n"
   )
 
-  readr::write_lines(script_contents, file = temp_script, na = "")
+  writeLines(script_contents, con = temp_script)
 
-  run_vbs <- rlang::expr(
+  run_vbs <- rlang::expr({
     capture.output(system2("cscript.exe", temp_script)) %>%
       stringr::str_remove_all("^\\[[0-9]+\\]") %>%
       stringr::str_flatten("\n") %>%
       rlang::inform(class = "cmd_output")
-  )
+  })
 
   if (fail) eval(run_vbs) else try(eval(run_vbs))
 }
@@ -120,58 +121,14 @@ notify <- function(
 #'
 #' @export
 ennotify <- function() {
-  try({
-    # Add traceback if needed
-    rlang::entrace()
 
-    # Get traceback
-    trace <- rlang::trace_back()
-
-    # Get function from objects
-    fn <- trace[["calls"]][[1L]] %>% rlang::call_name() %>% paste0("()")
-
-    trace_string <- capture.output(print(trace)) %>% paste0("\n", collapse = "")
-
-    # Send notification
-    to <- ennotify_to()
-    if (rlang::is_empty(to)) {
-      to <- "jesse.smith@shelbycountytn.gov"
-    }
-
-    context <- ennotify_context()
-    if (rlang::is_empty(context)) {
-      in_ <- ""
-      context <- ""
-      subject <- paste0(
-        "Error in `", fn, "` at ", format(Sys.time(), "%H:%M %Y-%m-%d")
-      )
-    } else {
-      in_ <- " in "
-      subject <- paste0(
-        "Error", in_, context, " at ", format(Sys.time(), "%H:%M %Y-%m-%d")
-      )
-    }
-
-    body <- paste0(
-      "`", fn, "` encountered the following error ", in_, context, ":",
-      "\n\n",
-      geterrmessage(),
-      "\n\n",
-      "The full traceback is:\n",
-      trace_string,
-      "\n\n",
-      "This error should have been logged; ",
-      "see the associated log file for details.",
-      "\n\n",
-      "Note: This message was generated automatically."
-    )
-
-    coviData::notify(
-      to = to,
-      subject = subject,
-      body = body
-    )
-  })
+  # Add traceback if needed
+  rlang::entrace()
+  coviData::notify(
+    to = err_notify_to(),
+    subject = err_notify_subject(),
+    body = err_notify_body()
+  )
 }
 
 #' @rdname ennotify
@@ -233,15 +190,89 @@ ennotify_inform <- function(inform) {
   })
 }
 
-#' Replace LF and CRLF with VB Constants for `notify()`
+try_notify <- function(expr) {
+  tryCatch(eval(expr), error = cnd_notify)
+}
+
+cnd_notify <- function(cnd) {
+  cnd <- rlang::cnd_entrace(cnd)
+  trace <- cnd$trace
+  notify(
+    to = err_notify_to(),
+    subject = err_notify_subject(trace = trace),
+    body = err_notify_body(trace = trace)
+  )
+}
+
+#' Convert String to HTML Suitable for Inclusion in VB Script
 #'
-#' @param string A string to perform replacement on
+#' @param string A character vector
 #'
-#' @return The string with (CR)LF replaced with "& VbCrLf &"
-vb_newline_notify <- function(string) {
+#' @param collapse An optional character string to separate the results. Not
+#'   `NA_character_`.
+#'
+#' @return An HTML string
+str_to_vb_html <- function(string, collapse = NULL) {
   string %>%
-    stringr::str_replace_all("[\r]?[\n]", replacement = "\" & VbCrLf & \"") %>%
-    stringr::str_remove_all("\"{2}") %>%
-    stringr::str_replace_all("\\s+([&]\\s*)+\\s+", replacement = " & ") %>%
-    stringr::str_replace_all("[ ]{2,}", replacement = " ")
+    paste0(collapse = collapse) %>%
+    stringr::str_replace_all("[\r]?\n", replacement = "<br>") %>%
+    stringr::str_replace_all("\t", replacement = "    ") %>%
+    stringr::str_replace_all("\"", replacement = "\"\"")
+}
+
+html_to_vb <- function(html, collapse = NULL) {
+  html %>%
+    paste0(collapse = collapse) %>%
+    stringr::str_squish() %>%
+    stringr::str_replace_all("\"", replacement = "\"\"")
+}
+
+str_trace <- function(trace) {
+   paste0(capture.output(print(trace)), "\n", collapse = "")
+}
+
+str_trace_fn <- function(trace) {
+  paste0(rlang::call_name(trace[["calls"]][[1L]]), "()")
+}
+
+err_notify_to <- function(
+  to = ennotify_to(),
+  default = "Jesse.Smith@shelbycountytn.gov"
+) {
+  try((if (rlang::is_empty(to)) default else to))
+}
+
+err_notify_subject <- function(
+  context = ennotify_context(),
+  trace = rlang::last_error()[["trace"]]
+) {
+  try({
+    if (rlang::is_empty(context)) context <- str_trace_fn(trace)
+    paste0("Error in `", context, "` at ", format(Sys.time(), "%H:%M %Y-%m-%d"))
+  })
+}
+
+err_notify_body <- function(
+  context = ennotify_context(),
+  trace = rlang::last_error()[["trace"]]
+) {
+  try({
+    fn <- str_trace_fn(trace)
+    trace_string <- str_trace(trace)
+    in_ <- if (rlang::is_empty(context)) NULL else " in "
+
+    paste0(
+      "`", fn, "` encountered the following error ", in_, context, ":",
+      "\n\n",
+      geterrmessage(),
+      "\n\n",
+      "The full traceback is:\n",
+      trace_string,
+      "\n\n",
+      "This error should have been logged; ",
+      "see the associated log file for details.",
+      "\n\n",
+      "Note: This message was generated automatically."
+    )
+  })
 }
