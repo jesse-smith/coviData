@@ -68,9 +68,33 @@ assert_cols <- function(.data, ..., ptype = NULL, n = NULL) {
     vec_is_empty(n),
     NCOL(selection) == n,
     message = paste(n, "columns must be selected"),
-    class = "assert_cols"
+    class = "error_assert_cols"
   )
   invisible(.data)
+}
+
+#' Assert that an Object is Boolean
+#'
+#' `assert_bool()` checks whether an object is (scalar) Boolean using
+#' \code{\link[rlang:is_bool]{is_bool()}}.
+#'
+#' @param x An object to test
+#'
+#' @param arg Optional argument name to display in error messages. If not
+#'   provided, the input `x` is parsed to a name using `expr_label(enexpr(x))`.
+#'
+#' @return `x`, invisibly
+#'
+#' @export
+assert_bool <- function(x, arg = NULL) {
+  if (is.null(arg)) arg <- rlang::expr_label(rlang::enexpr(x))
+  assert_all(
+    rlang::is_bool(x),
+    message = paste0(arg, " must evaluate to `TRUE` or `FALSE`"),
+    class = "error_assert_bool"
+  )
+
+  invisible(x)
 }
 
 #' Flexible Error Assertion
