@@ -212,7 +212,9 @@ add_covid_events <- function(gg_obj, lab_y) {
       "Face Mask Order 4\nSafer-at-Home",
       lab_y = lab_y,
       vjust = 0.6
-    )
+    ) %>%
+    add_event("2021-01-23", "Safer-At-Home Lifted", lab_y = lab_y) %>%
+    add_event("2021-02-20", "Broaden Safety Measures", lab_y = lab_y)
 }
 
 #' Add a Marker for Today's Date to a Plot
