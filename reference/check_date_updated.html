@@ -134,7 +134,8 @@ region in the Data for Regions REDcap project.</p>
   api_token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"redcap_DFR_token"</span><span class='op'>)</span>,
   region <span class='op'>=</span> <span class='st'>"MSR"</span>,
   date_updated <span class='op'>=</span> <span class='st'>"date_updated"</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  vac <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -149,7 +150,7 @@ probably what you want</p></td>
       <th>api_token</th>
       <td><p>The API token for accessing the Data for Regions REDcap
 project. This should be stored in an <em>.Renviron</em> file; see
-using-renviron for details.</p></td>
+<a href='env_vars.html'>env_vars</a> for details.</p></td>
     </tr>
     <tr>
       <th>region</th>
@@ -166,6 +167,11 @@ be changed from default</p></td>
       <th>quiet</th>
       <td><p>By default, warnings are issued if date does not match, and a
 message is issued if it does; should these be silenced?</p></td>
+    </tr>
+    <tr>
+      <th>vac</th>
+      <td><p>Should vaccination data be checked (<code>TRUE</code>), or NBS data
+(<code>FALSE</code>, the default)?</p></td>
     </tr>
     </table>
 

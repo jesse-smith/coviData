@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse Dates in Character Format to Datetime Format — chr_to_dttm • coviData</title>
+<title>Efficiently Write Delimited Files — write_file_delim • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,9 @@
 
 
 
-<meta property="og:title" content="Parse Dates in Character Format to Datetime Format — chr_to_dttm" />
-<meta property="og:description" content="chr_to_dttm standardizes a datetime vector in character format and returns
-a vector in POSIXct format." />
+<meta property="og:title" content="Efficiently Write Delimited Files — write_file_delim" />
+<meta property="og:description" content="write_file_delim() writes delimited files using
+vroom_write()." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -117,63 +117,52 @@ a vector in POSIXct format." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse Dates in Character Format to Datetime Format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/std_date.R'><code>R/std_date.R</code></a></small>
-    <div class="hidden name"><code>chr_to_dttm.Rd</code></div>
+    <h1>Efficiently Write Delimited Files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/write_file_delim.R'><code>R/write_file_delim.R</code></a></small>
+    <div class="hidden name"><code>write_file_delim.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>chr_to_dttm</code> standardizes a datetime vector in character format and returns
-a vector in <code>POSIXct</code> format.</p>
+    <p><code>write_file_delim()</code> writes delimited files using
+<code><a href='https://vroom.r-lib.org/reference/vroom_write.html'>vroom_write()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>chr_to_dttm</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  tz <span class='op'>=</span> <span class='st'>"UTC"</span>,
-  orders <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mdy"</span>, <span class='st'>"dmy"</span>, <span class='st'>"ymd"</span>, <span class='st'>"mdyT"</span>, <span class='st'>"dmyT"</span>, <span class='st'>"ymdT"</span>, <span class='st'>"mdyR"</span>, <span class='st'>"dmyR"</span>, <span class='st'>"ymdR"</span>,
-    <span class='st'>"mdyr"</span>, <span class='st'>"dmyr"</span>, <span class='st'>"ymdr"</span>, <span class='st'>"mdyTz"</span>, <span class='st'>"dmyTz"</span>, <span class='st'>"ymdTz"</span>, <span class='st'>"Tmdyz"</span>, <span class='st'>"Tdmyz"</span>, <span class='st'>"Tymdz"</span>,
-    <span class='st'>"mdyRz"</span>, <span class='st'>"dmyRz"</span>, <span class='st'>"ymdRz"</span>, <span class='st'>"mdyrz"</span>, <span class='st'>"dmyrz"</span>, <span class='st'>"ymdrz"</span>, <span class='st'>"Tmdy"</span>, <span class='st'>"Tdmy"</span>, <span class='st'>"Tymd"</span>,
-    <span class='st'>"Tmdyz"</span>, <span class='st'>"Tdmyz"</span>, <span class='st'>"Tymdz"</span><span class='op'>)</span>,
-  train <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_file_delim</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>path</span>, delim <span class='op'>=</span> <span class='st'>","</span>, na <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A vector of character dates</p></td>
+      <td><p>Data frame or data frame extension to write to disk</p></td>
     </tr>
     <tr>
-      <th>tz</th>
-      <td><p>Optional timezone</p></td>
+      <th>path</th>
+      <td><p>Path or connection to write to</p></td>
     </tr>
     <tr>
-      <th>orders</th>
-      <td><p>The orders to use when parsing character vector with
-<code><a href='http://lubridate.tidyverse.org/reference/parse_date_time.html'>parse_date_time()</a></code></p></td>
+      <th>delim</th>
+      <td><p>Delimiter used to separate values. Defaults to <code>","</code> to write
+comma-separated value (CSV) files.</p></td>
     </tr>
     <tr>
-      <th>train</th>
-      <td><p>logical, default <code>TRUE</code>. Whether to train formats on a subset of
-the input vector. The result of this is that supplied orders are sorted
-according to performance on this training set, which commonly results in
-increased performance. Please note that even when <code>train = FALSE</code> (and
-<code>exact = FALSE</code>) guessing of the actual formats is still performed on a
-pseudo-random subset of the original input vector. This might result in
-<code>All formats failed to parse</code> error. See notes below.</p></td>
+      <th>na</th>
+      <td><p>String used for missing values. Defaults to blank (<code>""</code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Additional arguments to pass to
-<code><a href='http://lubridate.tidyverse.org/reference/parse_date_time.html'>parse_date_time()</a></code></p></td>
+<code><a href='https://vroom.r-lib.org/reference/vroom_write.html'>vroom_write()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>POSIXct</code> vector</p>
+    <p>THe input data</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>By default, files are comma-delimited with missing values represented as
+blank strings (<code>""</code>).</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -194,7 +194,7 @@ snapshot files.</p>
   redcap_file <span class='op'>=</span> <span class='st'>"covid_vaccine_data"</span>,
   directory <span class='op'>=</span> <span class='fu'><a href='path_create.html'>path_create</a></span><span class='op'>(</span><span class='st'>"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
     <span class='st'>"COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"</span><span class='op'>)</span>,
-  new_file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"MSR_VACC_"</span>, <span class='va'>date</span>, <span class='st'>".csv"</span><span class='op'>)</span>,
+  new_file <span class='op'>=</span> <span class='fu'>name_vac_file</span><span class='op'>(</span><span class='va'>date</span>, redcap_file <span class='op'>=</span> <span class='va'>redcap_file</span>, api_token <span class='op'>=</span> <span class='va'>api_token</span><span class='op'>)</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -209,7 +209,7 @@ snapshot files.</p>
       <th>api_token</th>
       <td><p>The API token for accessing the Data for Regions REDcap
 project. This should be stored in an <em>.Renviron</em> file; see
-using-renviron for details.</p></td>
+<a href='env_vars.html'>env_vars</a> for details.</p></td>
     </tr>
     <tr>
       <th>redcap_file</th>

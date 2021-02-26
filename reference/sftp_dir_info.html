@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Replace LF and CRLF with VB Constants for notify() — vb_newline_notify • coviData</title>
+<title>Query File Metadata from SFTP Connection — sftp_dir_info • coviData</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,13 @@
 
 
 
-<meta property="og:title" content="Replace LF and CRLF with VB Constants for notify() — vb_newline_notify" />
-<meta property="og:description" content="Replace LF and CRLF with VB Constants for notify()" />
+<meta property="og:title" content="Query File Metadata from SFTP Connection — sftp_dir_info" />
+<meta property="og:description" content="sftp_dir_info() returns metadata for all files in the directory specified
+by the sftp_connection.
+Note that the year in the modification_time is
+inferred such that the resulting datetime is as close as possible to the
+current time while remaining in the past or present. This is due to times
+returned by curl() not including a year." />
 <meta property="og:image" content="https://jesse-smith.github.io/covidata/logo.png" />
 
 
@@ -116,29 +121,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Replace LF and CRLF with VB Constants for <code>notify()</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/notify.R'><code>R/notify.R</code></a></small>
-    <div class="hidden name"><code>vb_newline_notify.Rd</code></div>
+    <h1>Query File Metadata from SFTP Connection</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jesse-smith/coviData/blob/master/R/sftp_dir_info.R'><code>R/sftp_dir_info.R</code></a></small>
+    <div class="hidden name"><code>sftp_dir_info.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Replace LF and CRLF with VB Constants for <code><a href='notify.html'>notify()</a></code></p>
+    <p><code>sftp_dir_info()</code> returns metadata for all files in the directory specified
+by the <code>sftp_connection</code>.</p>
+<p>Note that the year in the <code>modification_time</code> is
+<em>inferred</em> such that the resulting datetime is as close as possible to the
+current time while remaining in the past or present. This is due to times
+returned by <code><a href='https://jeroen.cran.dev/curl/reference/curl.html'>curl()</a></code> not including a year.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>vb_newline_notify</span><span class='op'>(</span><span class='va'>string</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>sftp_dir_info</span><span class='op'>(</span><span class='va'>sftp_connection</span>, regexp <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>string</th>
-      <td><p>A string to perform replacement on</p></td>
+      <th>sftp_connection</th>
+      <td><p>A list of connection parameters as created by
+<code><a href='sftp_connect.html'>sftp_connect()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The string with (CR)LF replaced with "&amp; VbCrLf &amp;"</p>
+    <p>A <code>tibble</code> containing the <code>path</code>, <code>size</code>, <code>permissions</code>,
+<code>modification_time</code>, and <code>hard_links</code> of each file in the directory</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -31,6 +31,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/assert.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/assert_bool.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/assert_cols.html</loc>
   </url>
   <url>
@@ -259,6 +262,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/sftp_delete.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/sftp_dir_info.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/sftp_download.html</loc>
   </url>
   <url>
@@ -319,6 +325,9 @@
     <loc>https://jesse-smith.github.io/covidata//reference/str_to_factor.html</loc>
   </url>
   <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/str_to_vb_html.html</loc>
+  </url>
+  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/team_schedules.html</loc>
   </url>
   <url>
@@ -340,12 +349,12 @@
     <loc>https://jesse-smith.github.io/covidata//reference/vac_prep.html</loc>
   </url>
   <url>
-    <loc>https://jesse-smith.github.io/covidata//reference/vb_newline_notify.html</loc>
-  </url>
-  <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vctr-helpers.html</loc>
   </url>
   <url>
     <loc>https://jesse-smith.github.io/covidata//reference/vec_sample.html</loc>
+  </url>
+  <url>
+    <loc>https://jesse-smith.github.io/covidata//reference/write_file_delim.html</loc>
   </url>
 </urlset>
