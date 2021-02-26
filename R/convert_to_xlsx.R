@@ -41,7 +41,7 @@ convert_pcr_snapshot <- function(
 #' @export
 convert_vaccine_snapshot <- function(
   date = Sys.Date(),
-  directory = path_create(
+  directory = paste0(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"
   ),
