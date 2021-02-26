@@ -1091,7 +1091,7 @@ trim_backups <- function(
   # Check that min_backups is > 0
   assert(
     min_backups > 0,
-    msg = paste0(
+    message = paste0(
       "Setting `min_backups` < 1 could delete all identified files, ",
       "which is not the purpose of this function. ",
       "Please choose min_backups >= 1."
