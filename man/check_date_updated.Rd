@@ -9,7 +9,8 @@ check_date_updated(
   api_token = Sys.getenv("redcap_DFR_token"),
   region = "MSR",
   date_updated = "date_updated",
-  quiet = FALSE
+  quiet = FALSE,
+  vac = FALSE
 )
 }
 \arguments{
@@ -18,7 +19,7 @@ probably what you want}
 
 \item{api_token}{The API token for accessing the Data for Regions REDcap
 project. This should be stored in an \emph{.Renviron} file; see
-\link{using-renviron} for details.}
+\link{env_vars} for details.}
 
 \item{region}{The region to check for; exists to aid internal implementation
 and should probably not be changed from default}
@@ -29,6 +30,9 @@ be changed from default}
 
 \item{quiet}{By default, warnings are issued if date does not match, and a
 message is issued if it does; should these be silenced?}
+
+\item{vac}{Should vaccination data be checked (\code{TRUE}), or NBS data
+(\code{FALSE}, the default)?}
 }
 \value{
 \code{TRUE} if dates match, \code{FALSE} otherwise

@@ -207,6 +207,9 @@ download_servu <- function(
 #' @param quiet By default, warnings are issued if date does not match, and a
 #'   message is issued if it does; should these be silenced?
 #'
+#' @param vac Should vaccination data be checked (`TRUE`), or NBS data
+#'   (`FALSE`, the default)?
+#'
 #' @return `TRUE` if dates match, `FALSE` otherwise
 #'
 #' @seealso \code{\link{data-for-regions-snapshots}}
@@ -217,7 +220,8 @@ check_date_updated <- function(
   api_token = Sys.getenv("redcap_DFR_token"),
   region = "MSR",
   date_updated = "date_updated",
-  quiet = FALSE
+  quiet = FALSE,
+  vac = FALSE
 ) {
   # URL base for API
   api_uri <- "https://redcap.health.tn.gov/redcap/api/"
@@ -234,19 +238,23 @@ check_date_updated <- function(
   )
 
   # Get date_updated
-  httr::RETRY(
-    "POST",
-    url = api_uri,
-    body = api_date_params,
-    times = 12L,
-    pause_cap = 300L
-  ) %>%
-    httr::stop_for_status() %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON() %>%
-    purrr::as_vector() %>%
-    lubridate::as_date() ->
-    date_updated
+  if (vac) {
+    date_updated <- vac_snapshot_date(api_token)
+  } else {
+    httr::RETRY(
+      "POST",
+      url = api_uri,
+      body = api_date_params,
+      times = 12L,
+      pause_cap = 300L
+    ) %>%
+      httr::stop_for_status() %>%
+      httr::content(as = "text") %>%
+      jsonlite::fromJSON() %>%
+      purrr::as_vector() %>%
+      lubridate::as_date() ->
+      date_updated
+  }
 
   # Make sure that date_updated is at least as current as input date
 
