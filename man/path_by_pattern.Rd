@@ -12,6 +12,8 @@ path_by_pattern(dir, pattern, by = c("modified", "created"))
 \item{dir}{The path to the directory of interest}
 
 \item{pattern}{The regular expression to use when filtering paths}
+
+\item{by}{Should recency be determined by modification or creation date?}
 }
 \value{
 An \code{fs_path} vector

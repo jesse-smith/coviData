@@ -8,6 +8,8 @@
 #'
 #' @param pattern The regular expression to use when filtering paths
 #'
+#' @param by Should recency be determined by modification or creation date?
+#'
 #' @return An `fs_path` vector
 #'
 #' @aliases path_teams path_nights_weekends
