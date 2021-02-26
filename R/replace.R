@@ -76,6 +76,7 @@ replace_deaths_id <- function(
   surveillance_data <- readxl::read_excel(
     path = path,
     trim_ws = TRUE,
+    sheet = "Sheet 1",
     guess_max = .Machine$integer.max %/% 100L
   )
 
