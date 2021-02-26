@@ -18,7 +18,7 @@ download_interview_report(
 
 \item{api_token}{The API token for accessing the Data for Regions REDcap
 project. This should be stored in an \emph{.Renviron} file; see
-\link{using-renviron} for details.}
+\link{env_vars} for details.}
 
 \item{report_id}{The ID of the report to download}
 
