@@ -18,7 +18,7 @@ download_integrated_data(
 
 \item{api_token}{The API token for accessing the Data for Regions REDcap
 project. This should be stored in an \emph{.Renviron} file; see
-\link{using-renviron} for details.}
+\link{env_vars} for details.}
 
 \item{directory}{A string specifying the save directory; this should usually
 be left alone}
@@ -49,8 +49,8 @@ change this if you're doing some custom analysis; by default,
 To use \code{download_integrated_data} you'll need an API access key for the
 associated REDcap project. Please contact
 \email{jesse.smith@shelbycountytn.gov} or
-\email{umar.kabir@shelbycountytn.gov} for more information.
+\email{karim.gilani@shelbycountytn.gov} for more information.
 
 Best practice is to save this API access token in a separate file; see
-\link{using-renviron} for details.
+\link{env_vars} for details.
 }
