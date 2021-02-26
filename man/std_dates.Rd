@@ -7,10 +7,11 @@
 std_dates(
   x,
   force = c("none", "dt", "dttm"),
-  orders = c("Omdy", "dOmy", "yOmd", "OmdyT", "dOmyT", "yOmdT", "TOmdy", "TdOmy",
-    "TyOmd", "OmdyR", "dOmyR", "yOmdR", "Omdyr", "dOmyr", "yOmdr", "OmdyTz", "dOmyTz",
-    "yOmdTz", "TOmdyz", "TdOmyz", "TyOmdz", "OmdyRz", "dOmyRz", "yOmdRz", "Omdyrz",
-    "dOmyrz", "yOmdrz"),
+  train = TRUE,
+  orders = c("mdy", "dmy", "ymd", "mdyT", "dmyT", "ymdT", "mdyR", "dmyR", "ymdR",
+    "mdyr", "dmyr", "ymdr", "mdyTz", "dmyTz", "ymdTz", "Tmdyz", "Tdmyz", "Tymdz",
+    "mdyRz", "dmyRz", "ymdRz", "mdyrz", "dmyrz", "ymdrz", "Tmdy", "Tdmy", "Tymd",
+    "Tmdyz", "Tdmyz", "Tymdz"),
   ...
 )
 }
@@ -19,6 +20,14 @@ std_dates(
 
 \item{force}{Whether to force conversion to \code{Date} (\code{force = "dt"}) or
 \code{POSIXct} (\code{force = "dttm"}). The default is no forcing (\code{force = "none"}).}
+
+\item{train}{logical, default \code{TRUE}. Whether to train formats on a subset of
+the input vector. The result of this is that supplied orders are sorted
+according to performance on this training set, which commonly results in
+increased performance. Please note that even when \code{train = FALSE} (and
+\code{exact = FALSE}) guessing of the actual formats is still performed on a
+pseudo-random subset of the original input vector. This might result in
+\verb{All formats failed to parse} error. See notes below.}
 
 \item{orders}{The orders to use when parsing character vector with
 \code{\link[lubridate:parse_date_time]{parse_date_time()}}}

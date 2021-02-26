@@ -21,16 +21,20 @@
 std_dates <- function(
   x,
   force = c("none", "dt", "dttm"),
-  orders = c("Omdy", "dOmy", "yOmd",
-             "OmdyT", "dOmyT", "yOmdT", "TOmdy", "TdOmy", "TyOmd",
-             "OmdyR", "dOmyR", "yOmdR", "Omdyr", "dOmyr", "yOmdr",
-             "OmdyTz", "dOmyTz", "yOmdTz", "TOmdyz", "TdOmyz", "TyOmdz",
-             "OmdyRz", "dOmyRz", "yOmdRz", "Omdyrz", "dOmyrz", "yOmdrz"),
+  train = TRUE,
+  orders = c("mdy",  "dmy",  "ymd",
+             "mdyT", "dmyT", "ymdT",
+             "mdyR", "dmyR", "ymdR",
+             "mdyr", "dmyr", "ymdr",
+             "mdyTz", "dmyTz", "ymdTz", "Tmdyz", "Tdmyz", "Tymdz",
+             "mdyRz", "dmyRz", "ymdRz", "mdyrz", "dmyrz", "ymdrz",
+             "Tmdy",  "Tdmy",  "Tymd",  "Tmdyz", "Tdmyz", "Tymdz"),
   ...
 ) {
   x %>%
     janitor::convert_to_datetime(
       orders = orders,
+      train = train,
       ...,
       character_fun = chr_to_dttm,
       string_conversion_failure = "warning"
@@ -114,18 +118,27 @@ decimal_time <- function(x) {
 #' @param orders The orders to use when parsing character vector with
 #'   \code{\link[lubridate:parse_date_time]{parse_date_time()}}
 #'
+#' @inheritParams lubridate::parse_date_time
+#'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[lubridate:parse_date_time]{parse_date_time()}}
+#'
 #' @return A `POSIXct` vector
 chr_to_dttm <- function(
   x,
   tz = "UTC",
-  orders = c("Omdy", "dOmy", "yOmd",
-             "OmdyT", "dOmyT", "yOmdT", "TOmdy", "TdOmy", "TyOmd",
-             "OmdyR", "dOmyR", "yOmdR", "Omdyr", "dOmyr", "yOmdr",
-             "OmdyTz", "dOmyTz", "yOmdTz", "TOmdyz", "TdOmyz", "TyOmdz",
-             "OmdyRz", "dOmyRz", "yOmdRz", "Omdyrz", "dOmyrz", "yOmdrz")
+  orders = c("mdy",  "dmy",  "ymd",
+             "mdyT", "dmyT", "ymdT",
+             "mdyR", "dmyR", "ymdR",
+             "mdyr", "dmyr", "ymdr",
+             "mdyTz", "dmyTz", "ymdTz", "Tmdyz", "Tdmyz", "Tymdz",
+             "mdyRz", "dmyRz", "ymdRz", "mdyrz", "dmyrz", "ymdrz",
+             "Tmdy",  "Tdmy",  "Tymd",  "Tmdyz", "Tdmyz", "Tymdz"),
+  train = TRUE,
+  ...
 ) {
   x %>%
     stringr::str_replace(pattern = "^$", replacement = NA_character_) %>%
-    lubridate::parse_date_time(orders = orders, tz = tz) %>%
+    lubridate::parse_date_time(orders = orders, train = train, tz = tz, ...) %>%
     lubridate::as_datetime()
 }
