@@ -52,7 +52,7 @@ download_vaccine_snapshot(
   redcap_file = "covid_vaccine_data",
   directory = path_create("V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"),
-  new_file = paste0("MSR_VACC_", date, ".csv"),
+  new_file = name_vac_file(date, redcap_file = redcap_file, api_token = api_token),
   force = FALSE
 )
 }
@@ -61,7 +61,7 @@ download_vaccine_snapshot(
 
 \item{api_token}{The API token for accessing the Data for Regions REDcap
 project. This should be stored in an \emph{.Renviron} file; see
-\link{using-renviron} for details.}
+\link{env_vars} for details.}
 
 \item{redcap_file}{A string indicating the name of the file to download from
 REDcap}

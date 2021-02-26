@@ -162,33 +162,9 @@ download_vaccine_snapshot <- function(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"
   ),
-  new_file = paste0("MSR_VACC_", format(date, "%Y%m%d"), ".csv"),
+  new_file = name_vac_file(date, redcap_file=redcap_file, api_token=api_token),
   force = FALSE
 ) {
-
-  directory <- path_create(directory)
-  new_file <- path_create(new_file)
-
-  updated <- check_vac_date_updated(
-    date,
-    api_token = api_token,
-    redcap_file = redcap_file
-  )
-
-  if (!updated && !force) {
-    rlang::abort(
-      paste0(
-        "Vaccine data was last updated on\n",
-        vacc_date, "\n",
-        "but the specified download date is\n",
-        date,
-        "\n\n",
-        "To download anyway (and potentially overwrite existing files), ",
-        "set `force = TRUE`."
-      ),
-      class = "vaccine_data_not_updated"
-    )
-  }
 
   message("Starting vaccine snapshot download...")
   download_data_for_regions(
@@ -197,7 +173,8 @@ download_vaccine_snapshot <- function(
     redcap_file = redcap_file,
     directory = directory,
     new_file = new_file,
-    force = force
+    force = force,
+    vac = TRUE
   )
   message("\nFinished vaccine snapshot download.")
 }
@@ -211,7 +188,7 @@ download_vaccine_snapshot <- function(
 #'
 #' @param api_token The API token for accessing the Data for Regions REDcap
 #'   project. This should be stored in an \emph{.Renviron} file; see
-#'   \link{using-renviron} for details.
+#'   \link{env_vars} for details.
 #'
 #' @param redcap_file A string indicating the name of the file to download from
 #'   REDcap
@@ -236,7 +213,8 @@ download_data_for_regions <- function(
   redcap_file,
   directory,
   new_file,
-  force = FALSE
+  force = FALSE,
+  vac = FALSE
 ) {
 
   # Generic parameters - don't want these to be function parameters, but they
@@ -253,11 +231,11 @@ download_data_for_regions <- function(
   )
 
   # Step 2 - Make sure REDcap's data matches the date requested
-  original_warn <- options("warn")[[1L]]
+  original_warn <- getOption("warn")
   on.exit(options(warn = original_warn), add = TRUE)
 
   options(warn = 2L)
-  check_date_updated(date = date)
+  check_date_updated(date = date, vac = vac)
   options(warn = original_warn)
 
   # Step 3 - Download
@@ -436,29 +414,16 @@ name_data_for_regions_file <- function(
     extract2(1L)
 }
 
-
-#' Check Date Vaccination Data Was Last Updated
-#'
-#' `check_vac_date_updated()` checks the last update date for vaccination data
-#' on the TN REDcap.
-#'
-#' @param date The expected update date
-#'
-#' @param api_token The API key for the TN Data for Regions project
-#'
-#' @param redcap_file The name of the vaccine data file on the REDcap project
-#'
-#' @return A boolean (`TRUE` or `FALSE`)
-#'
-#' @export
-check_vac_date_updated <- function(
+name_vac_file <- function(
   date = Sys.Date(),
-  api_token = Sys.getenv("redcap_DFR_token"),
-  redcap_file = "covid_vaccine_data"
+  redcap_file = "covid_vaccine_data",
+  ext = "csv",
+  api_token = Sys.getenv("redcap_DFR_token")
 ) {
-  update_date <- get_vaccine_snapshot_date(api_token, redcap_file = redcap_file)
-
-  lubridate::as_date(date) == lubridate::as_date(update_date)
+  name_data_for_regions_file(redcap_file, api_token = api_token) %>%
+    fs::path_ext_remove() %>%
+    paste0("_", format(date, "%Y%m%d")) %>%
+    fs::path_ext_set(ext)
 }
 
 #' Determine Update Date for Vaccine Snapshot Data
@@ -471,7 +436,7 @@ check_vac_date_updated <- function(
 #' @return A `Date` indicating the last update date
 #'
 #' @noRd
-get_vaccine_snapshot_date <- function(
+vac_snapshot_date <- function(
   api_token = Sys.getenv("redcap_DFR_token"),
   redcap_file = "covid_vaccine_data"
 ) {

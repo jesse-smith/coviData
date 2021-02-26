@@ -10,7 +10,8 @@ download_data_for_regions(
   redcap_file,
   directory,
   new_file,
-  force = FALSE
+  force = FALSE,
+  vac = FALSE
 )
 }
 \arguments{
@@ -18,7 +19,7 @@ download_data_for_regions(
 
 \item{api_token}{The API token for accessing the Data for Regions REDcap
 project. This should be stored in an \emph{.Renviron} file; see
-\link{using-renviron} for details.}
+\link{env_vars} for details.}
 
 \item{redcap_file}{A string indicating the name of the file to download from
 REDcap}
