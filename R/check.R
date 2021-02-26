@@ -258,8 +258,10 @@ check_deaths <- function(
   }
 
   # Standardize NBS ID in surveillance file
-  surveillance_data %<>%
-    dplyr::mutate(std_nbs_id = standardize_nbs_id(!!surveillance_file_id))
+  surveillance_data <- dplyr::mutate(
+    surveillance_data,
+    std_nbs_id = standardize_nbs_id(!!surveillance_file_id)
+  )
 
   # Standardize NBS ID in NBS file
   nbs_data %<>%
