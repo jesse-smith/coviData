@@ -25,7 +25,7 @@
 #' @export
 download_integrated_data <- function(
   date = Sys.Date(),
-  api_token = Sys.getenv("redcap_IDT_token"),
+  api_token = Sys.getenv("redcap_NIT_token"),
   directory = paste0(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
      "Integrated data tool Case Interviews/data/"
@@ -37,7 +37,7 @@ download_integrated_data <- function(
   download_interview_report(
     date = date,
     api_token = api_token,
-    report_id = "12314",
+    report_id = "27",
     directory = directory,
     new_file = new_file,
     force = force
