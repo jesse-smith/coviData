@@ -4,7 +4,7 @@
 \alias{write_file_delim}
 \title{Efficiently Write Delimited Files}
 \usage{
-write_file_delim(x, path, delim = ",", na = "", ...)
+write_file_delim(x, path, delim = ",", na = "", force = FALSE, ...)
 }
 \arguments{
 \item{x}{Data frame or data frame extension to write to disk}
@@ -15,6 +15,8 @@ write_file_delim(x, path, delim = ",", na = "", ...)
 comma-separated value (CSV) files.}
 
 \item{na}{String used for missing values. Defaults to blank (\code{""}).}
+
+\item{force}{Should any existing files be overwritten?}
 
 \item{...}{Additional arguments to pass to
 \code{\link[vroom:vroom_write]{vroom_write()}}}

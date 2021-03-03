@@ -15,6 +15,8 @@
 #'
 #' @param na String used for missing values. Defaults to blank (`""`).
 #'
+#' @param force Should any existing files be overwritten?
+#'
 #' @param ... Additional arguments to pass to
 #'   \code{\link[vroom:vroom_write]{vroom_write()}}
 #'
@@ -26,7 +28,7 @@ write_file_delim <- function(
   path,
   delim = ",",
   na = "",
-  force  = FALSE,
+  force = FALSE,
   ...
 ) {
   path <- path_create(path)
