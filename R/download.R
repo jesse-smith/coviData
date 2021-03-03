@@ -37,7 +37,7 @@ download_integrated_data <- function(
   download_interview_report(
     date = date,
     api_token = api_token,
-    report_id = "27",
+    report_id = "81",
     directory = directory,
     new_file = new_file,
     force = force

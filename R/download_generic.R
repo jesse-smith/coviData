@@ -42,7 +42,7 @@ download_interview_report <- function(
   message("Downloading REDcap report...")
 
   # URL base for API
-  api_uri <- "https://redcap.health.tn.gov/redcap/api/"
+  api_uri <- "https://redcap.shelbycountytn.gov/api/"
 
   # Create params to get
   api_nbs_params <- list(
