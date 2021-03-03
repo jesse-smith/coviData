@@ -21,10 +21,27 @@
 #' @return THe input data
 #'
 #' @export
-write_file_delim <- function(x, path, delim = ",", na = "", ...) {
+write_file_delim <- function(
+  x,
+  path,
+  delim = ",",
+  na = "",
+  force  = FALSE,
+  ...
+) {
+  path <- path_create(path)
+
+  assert_any(
+    force,
+    !fs::file_exists(path),
+    message = paste(
+      "A file already exists at this location; to overwrite, set `force = TRUE`"
+    )
+  )
+
   vroom::vroom_write(
     x,
-    path = path_create(path),
+    path = path,
     delim = delim,
     na = na,
     ...
