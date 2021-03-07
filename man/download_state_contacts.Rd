@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_state_contacts.R
 \name{download_state_contacts}
 \alias{download_state_contacts}
-\title{Download "Contacts for State Monitoring" Report}
+\title{Download "Automated Contacts for State Monitoring" Report}
 \usage{
 download_state_contacts(
   date = Sys.Date(),
@@ -21,6 +21,7 @@ download_state_contacts(
 \item{force}{Should the new file overwrite any existing files?}
 }
 \description{
-\code{download_state_contacts()} saves the "Contacts for State Monitoring" report
-for transformation and upload to the Tennessee DoH REDcap.
+\code{download_state_contacts()} saves the
+"Automated Contacts for State Monitoring" report for transformation and
+upload to the Tennessee DoH REDcap.
 }

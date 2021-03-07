@@ -1,7 +1,8 @@
-#' Download "Contacts for State Monitoring" Report
+#' Download "Automated Contacts for State Monitoring" Report
 #'
-#' `download_state_contacts()` saves the "Contacts for State Monitoring" report
-#' for transformation and upload to the Tennessee DoH REDcap.
+#' `download_state_contacts()` saves the
+#' "Automated Contacts for State Monitoring" report for transformation and
+#' upload to the Tennessee DoH REDcap.
 #'
 #' @param date The date to use in the file name
 #'
@@ -21,7 +22,7 @@ download_state_contacts <- function(
   download_interview_report(
     date = date,
     api_token = api_token,
-    report_id = "83",
+    report_id = "176",
     directory = directory,
     new_file  = paste0("state_contact_monitoring_", date, ".csv"),
     force = force
