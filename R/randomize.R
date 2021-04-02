@@ -127,7 +127,7 @@ vec_sample <- function(.x, n, replace = FALSE, weight_by = NULL) {
 
   assert(
     n[[1]] >= 0, rlang::is_scalar_integerish(n),
-    msg = "`n` must be a non-negative scalar integer"
+    message = "`n` must be a non-negative scalar integer"
   )
 
   wt_null <- is.null(weight_by)
