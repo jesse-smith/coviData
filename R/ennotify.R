@@ -103,7 +103,7 @@ ennotify_set_options <- function(
 ennotify_to <- function(...) {
   try({
     dots_empty <- rlang::dots_n(...) == 0L
-    if (dots_empty) return(options("ennotify_to")[[1L]])
+    if (dots_empty) return(getOption("ennotify_to"))
 
     to <- unlist(rlang::list2(...))
     coviData::assert_any(
@@ -124,7 +124,7 @@ ennotify_to <- function(...) {
 #' @export
 ennotify_context <- function(context, inform = ennotify_inform()) {
   try({
-    if (rlang::is_missing(context)) return(options("ennotify_context")[[1L]])
+    if (rlang::is_missing(context)) return(getOption("ennotify_context"))
 
     coviData::assert_any(
       is.character(context),
@@ -143,7 +143,7 @@ ennotify_context <- function(context, inform = ennotify_inform()) {
 #' @export
 ennotify_inform <- function(inform) {
   try({
-    if (rlang::is_missing(inform)) return(options("ennotify_inform")[[1L]])
+    if (rlang::is_missing(inform)) return(getOption("ennotify_inform"))
 
     coviData::assert_any(
       rlang::is_true(inform),
