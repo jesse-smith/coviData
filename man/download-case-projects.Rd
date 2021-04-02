@@ -30,7 +30,7 @@ download_nca(
 \item{api_token}{\code{character}. API token/key for accessing the project
 programmatically. Best practice is to set as an environment variable and
 retrieve using \code{Sys.getenv("token_environment_variable")}. See
-\code{\link{env-variables}} for more information.}
+\code{\link{env_vars}} for more information.}
 
 \item{headers}{\code{"raw"} or \code{"label"}. Should column names ("headers") be
 exported as the raw variable names (\code{"raw"}, the default) or the label

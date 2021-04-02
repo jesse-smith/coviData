@@ -18,7 +18,7 @@ download_redcap_records(
 \item{api_token}{\code{character}. API token/key for accessing the project
 programmatically. Best practice is to set as an environment variable and
 retrieve using \code{Sys.getenv("token_environment_variable")}. See
-\code{\link{env-variables}} for more information.}
+\code{\link{env_vars}} for more information.}
 
 \item{dir}{\code{character}. Directory to save data; this should usually remain
 unchanged.}
