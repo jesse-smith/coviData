@@ -146,10 +146,9 @@ ennotify_inform <- function(inform) {
     if (rlang::is_missing(inform)) return(getOption("ennotify_inform"))
 
     coviData::assert_any(
-      rlang::is_true(inform),
-      rlang::is_false(inform),
+      rlang::is_bool(inform),
       is.null(inform),
-      message = "`ennotify_inform` must be `TRUE`, `FALSE`, `NULL`"
+      message = "`ennotify_inform` must be boolean or `NULL`"
     )
 
     invisible(options(ennotify_inform = inform))
