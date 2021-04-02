@@ -1,26 +1,3 @@
-#' Load AEL Data from Disk
-#'
-#' `load_ael()` loads AEL data from a file into a \code{\link[tibble]{tibble}}.
-#' It is essentially a wrapper around \code{\link{load_data}} with defaults
-#' specific to AEL data.
-#'
-#' @inherit load_data params return
-#'
-#' @export
-load_ael <- function(
-  date = Sys.Date(),
-  directory = "V:/EPI DATA ANALYTICS TEAM/AEL DATA/",
-  ext = "xlsx"
-) {
-  message("Loading AEL file:\n")
-  load_data(
-    date = date,
-    directory = directory,
-    ext = ext[[1]],
-    pattern = paste0(".*", date, ".*", ext[[1]])
-  )
-}
-
 #' Load Data from the Integrated Data Tool REDcap Project
 #'
 #' \code{load_integrated_data} loads data from the Integrated Data Tool REDcap

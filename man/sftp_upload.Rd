@@ -7,7 +7,7 @@
 sftp_upload(
   file,
   fromfolder = getwd(),
-  sftp_connection = sftp_con,
+  sftp_connection = get("sftp_con"),
   log_file = NA,
   verbose = TRUE
 )

@@ -7,7 +7,7 @@
 sftp_download(
   file,
   tofolder = getwd(),
-  sftp_connection = sftp_con,
+  sftp_connection = get("sftp_con"),
   verbose = TRUE
 )
 }

@@ -70,12 +70,12 @@ validate_covidata <- function(x) {
     )
   )
 
+  date_stamp <- attr(x, "date_stamp")
+
   assert(
-    !is.null(x, "date_stamp"),
+    !is.null(date_stamp),
     message = "`x` must have a `date_stamp` attribute"
   )
-
-  date_stamp <- attr(x, "date_stamp")
 
   assert(
     lubridate::is.Date(date_stamp),

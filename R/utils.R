@@ -8,21 +8,17 @@ cols_to_keep <- function(data, min_completion_rate) {
     dplyr::across(where(not_factor_date), factor)
   )
 
-  factor_data %>%
+  keep_cols_info <- factor_data %>%
     dplyr::summarize(dplyr::across(dplyr::everything(), skimr::n_unique)) %>%
     tidyr::pivot_longer(cols = dplyr::everything()) %>%
-    dplyr::filter(value < NROW(factor_data)) %>%
-    dplyr::select(name) %>%
-    .[[1]] ->
-    keep_cols_info
+    dplyr::filter(.data[["value"]] < NROW({{ factor_data }})) %>%
+    dplyr::pull("name")
 
-  factor_data %>%
+  keep_cols_missing <- factor_data %>%
     dplyr::summarize(dplyr::across(.fns = skimr::complete_rate)) %>%
     tidyr::pivot_longer(cols = dplyr::everything()) %>%
-    dplyr::filter(value >= min_completion_rate) %>%
-    dplyr::select(name) %>%
-    .[[1]] ->
-    keep_cols_missing
+    dplyr::filter(.data[["value"]] >= {{ min_completion_rate }}) %>%
+    dplyr::pull("name")
 
   list(info = keep_cols_info, missing = keep_cols_missing)
 }
@@ -139,8 +135,8 @@ coalesce_dupes <- function(data, ..., pre_sort = FALSE, post_sort = FALSE) {
 
   # Handle groups with duplicates
   grouped_data %>%
-    dplyr::filter(n > 1) %>%
-    dplyr::select(-n) %>%
+    dplyr::filter(.data[["n"]] > 1) %>%
+    dplyr::select(-"n") %>%
     dplyr::summarize(
       dplyr::across(.fns = coalesce_by_column),
       .groups = "drop"
@@ -149,17 +145,17 @@ coalesce_dupes <- function(data, ..., pre_sort = FALSE, post_sort = FALSE) {
 
   # Handle groups without duplicates
   grouped_data %>%
-    dplyr::filter(n == 1) %>%
-    dplyr::select(-n) %>%
+    dplyr::filter(.data[["n"]] == 1) %>%
+    dplyr::select(-"n") %>%
     dplyr::ungroup() %>%
     # Add coalesced groups back to data
     dplyr::add_row(coalesced_dupes) %>%
     # Either sort by the given variables or by .id, then drop .id
     purrr::when(
       rlang::is_true(post_sort) ~ dplyr::arrange(., ...),
-      ~ dplyr::arrange(., order_id)
+      ~ dplyr::arrange(., .data[["order_id"]])
     ) %>%
-    dplyr::select(-order_id)
+    dplyr::select(-"order_id")
 }
 
 #' Coalesce Rows by Columns in Data Frame
@@ -275,420 +271,6 @@ cols_exist <- function(.data, ..., action = rlang::abort) {
   }
 }
 
-# || By Dataset || #############################################################
-
-# | AEL ########################################################################
-
-#' Add Name Columns to AEL Excel File
-#'
-#' `process_names` creates standardized `PatientLastName`,
-#' `PatientFirstName`, `PatientMiddleName`, and
-#' `PatientMidOthName` columns in AEL data, if they do not already exist.
-#'
-#' `process_names` first checks the input data for the above columns, as
-#' well as any additional `PatientMidOthName` columns. If any of the
-#' standardized columns do not exist, or non-standard \code{Patient...Name}
-#' columns exist, the function deletes any previously created
-#' \code{Patient...Name} columns and adds standardized ones using
-#' \code{\link{split_names}}. If the data contains the standardized columns and
-#' no additional `PatientMidOthName` columns, the data is returned as-is.
-#'
-#' @param data A data frame or tibble containing AEL data from one date
-#'
-#' @param force A logical; if `force = TRUE`, the data is (re-)processed
-#'   regardless of whether it passes the above checks
-#'
-#' @return A tibble containing the input data plus standardized
-#'   `PatientLastName`, `PatientFirstName`, `PatientMiddleName`,
-#'   and `PatientMidOthName` columns
-process_names <- function(data, force = FALSE) {
-
-  # Get column names in data and set reference columns
-  col_names <- colnames(data)
-  ref_cols <- c(
-    "PatientLastName",
-    "PatientFirstName",
-    "PatientMiddleName",
-    "PatientMidOthName"
-  )
-
-  # Check that all standardized columns exist
-  ifelse(ref_cols %in% col_names, yes = TRUE, no = FALSE) %>%
-    all() ->
-    std_exist
-
-  # Check that no more than the standardized columns exist
-  stringr::str_detect(col_names, pattern = "Patient.+Name.*") %>%
-    sum() %>%
-    (function(x) x == 4) ->
-    only_std
-
-  # If the data passes both checks, return as-is (unless force == TRUE)
-  if (std_exist & only_std & !force) {
-    attr(data, which = "modified") <- FALSE
-    return(data)
-  }
-
-  # Find and delete any Patient...Name columns, then create standardized ones
-  # and return the result
-  data %>%
-    dplyr::select(-dplyr::matches("Patient.+Name.*")) %>%
-    split_names() ->
-    new_data
-
-  attr(new_data, which = "modified") <- TRUE
-
-  new_data
-}
-
-
-#' Split Patient Names in AEL Data
-#'
-#' \code{split_names} creates columns for the last, first, first-middle, and
-#' other-middle names of patients in AEL data
-#'
-#' @param .data A data frame or data frame extension (e.g. a
-#'   \code{\link[tibble]{tibble}})
-#'
-#' @return The original data frame, tibble, etc. with character columns for
-#'   `PatientLastName`, `PatientFirstName`, `PatientMiddleName`,
-#'   `PatientMidOthName` inserted after `PatientName` (which is a
-#'   \code{\link[base]{factor}})
-split_names <- function(.data) {
-  # Create character matrix holding last names and first + other names
-  .data$PatientName %>%
-    as.character() %>%
-    stringr::str_split_fixed(pattern = ",", n = 2) ->
-    pt_names
-
-  # Create character matrix holding first, middle, and other middle names
-  pt_names[, 2] %>%
-    stringr::str_split_fixed(
-      pattern = " ",
-      n = 3
-    ) ->
-    pt_other_names
-
-  # Create new columns
-  .data %>%
-    dplyr::transmute(
-      last = pt_names[, 1] %>%
-        as.vector() %>%
-        stringr::str_squish() %>%
-        gsub(pattern = "^$", replacement = NA),
-      first = pt_other_names[, 1] %>%
-        as.vector() %>%
-        stringr::str_squish() %>%
-        gsub(pattern = "^$", replacement = NA),
-      middle = pt_other_names[, 2] %>%
-        as.vector() %>%
-        stringr::str_squish() %>%
-        gsub(pattern = "^$", replacement = NA),
-      other = pt_other_names[, 3] %>%
-        as.vector() %>%
-        stringr::str_squish() %>%
-        gsub(pattern = "^$", replacement = NA)
-    ) ->
-    new_names
-
-  # Add to existing data
-  .data %>%
-    dplyr::mutate(
-      PatientLastName = new_names$last,
-      PatientFirstName = new_names$first,
-      PatientMiddleName = new_names$middle,
-      PatientMidOthName = new_names$other,
-      .after = "PatientName"
-    )
-}
-
-#' Convert Character Strings to Factors
-#'
-#' `str_to_factor` converts a character (string) vector to a factor after
-#' removing extra whitespace, converting to title case, and (optionally)
-#' converting the encoding a specified standard.
-#'
-#' @param string A character vector to convert
-#'
-#' @param encoding A logical indicating whether to convert the character
-#'  encoding, or a string indicating the encoding to convert to. If
-#'  `encoding = TRUE`, then characters are converted to 'UTF-8' encoding.
-#'
-#' @return A factor
-str_to_factor <- function(string, encoding = FALSE) {
-  # Perform conversion without re-encoding
-  if (encoding == FALSE) {
-    string %>%
-      stringr::str_to_title() %>%
-      stringr::str_squish() %>%
-      factor()
-    # Perform conversion with re-encoding
-  } else {
-    if (encoding == TRUE) encoding <- "UTF-8"
-    string %>%
-      stringr::str_conv(encoding = encoding) %>%
-      stringr::str_to_title() %>%
-      stringr::str_squish() %>%
-      factor()
-  }
-}
-
-#' Filter Dataframe from an AEL File to Memphis Area
-#'
-#' `filter_region` takes a data frame from \code{\link{load_ael}} & removes
-#' observations not in the region specified by `states` and `zips`.
-#' The default is to keep Shelby County residents and missing values;
-#' `incl_msr` ensures that the entire Memphis Statistical Region is
-#' included (as well as any other regions specified). Note that `zips`
-#' match to starting values of `PtZipcode`; if a 5-digit code is specified,
-#' this is equivalent to matching an entire ZIP code.
-#'
-#' @param .data A data frame or data frame extension (e.g. a tibble)
-#'
-#' @param states Two-letter codes for the states to include in the output
-#'
-#' @param zips 1-to-5 digit codes matching the ZIP codes to include in the
-#'   output
-#'
-#' @param incl_msr A logical indicating whether to ensure all states/ZIPs in
-#'   the Memphis Statistical Region are included
-#'
-#' @param incl_na A logical indicating whether missing values are included or
-#'   excluded
-#'
-#' @return A data frame, tibble, etc. containing observations from the specified
-#'   region
-filter_region <- function(
-  .data,
-  states = "TN",
-  zips = c("380", "381"),
-  incl_msr = FALSE,
-  incl_na = TRUE
-) {
-
-  # Convert inputs to standardized format
-  states <- stringr::str_to_upper(states)
-  zips <- as.character(zips)
-
-  # Make sure MSR is included, if desired
-  if (incl_msr) {
-    # Check states
-    if (!("MS" %in% states)) states <- append(states, "MS")
-    if (!("AR" %in% states)) states <- append(states, "AR")
-    # Check zip codes
-    if (!("386" %in% zips)) zips <- append(zips, "386")
-    if (!("723" %in% zips)) zips <- append(zips, "723")
-  }
-
-  # Make sure NAs are included, if desired
-  if (incl_na) {
-    if (!any(is.na(states))) states <- append(states, NA)
-    .data %>%
-      dplyr::filter(
-        PtState %in% states &
-          (stringr::str_starts(PtZipcode, pattern = zips) | is.na(PtZipcode))
-      )
-    # Otherwise return matches to states and zips
-  } else {
-    .data %>%
-      dplyr::filter(
-        PtState %in% states &
-          stringr::str_starts(PtZipcode, pattern = zips)
-      )
-  }
-}
-
-# | NBS ########################################################################
-filter_geo <- function(
-  .data,
-  state_col = "patient_state",
-  county_col = "alt_county",
-  zip_col = "patient_zip",
-  states = c("TN", "47"),
-  zips = c("380..", "381.."),
-  counties = "Shelby County",
-  include_na = TRUE
-) {
-
-  state_exists <- any(state_col %in% colnames(.data))
-  county_exists <- any(county_col %in% colnames(.data))
-  zip_exists <- any(zip_col %in% colnames(.data))
-
-  # Filter by state if column exists
-  if (state_exists) {
-    .data %>%
-      dplyr::filter(
-        get(state_col) %>%
-          check_state(states = states, include_na = include_na)
-      ) ->
-      .data
-  }
-
-  # Filter by county if column exists
-  if (county_exists) {
-    .data %>%
-      dplyr::filter(
-        get(county_col) %>%
-          check_county(counties = counties, include_na = include_na)
-      ) ->
-      .data
-  }
-
-  # Filter by ZIP if not NULL
-  if (zip_exists) {
-    .data %>%
-      dplyr::filter(
-        get(zip_col) %>%
-          check_zip(zips = zips, include_na = include_na)
-      ) ->
-      .data
-  }
-
-  if (all(!c(state_exists, county_exists, zip_exists))) {
-    warning("Returning input data; no columns were selected for filtering.")
-  }
-
-  .data
-}
-
-check_state <- function(x, states, include_na) {
-
-  # Make sure both are character vectors & upper case
-  x <- as.character(x) %>% stringr::str_to_upper()
-  states <- as.character(states) %>% stringr::str_to_upper()
-
-  # State codes must be 1 or 2 characters
-  # (If given by FIPS code, [01, ..., 09] will be converted to [1, ..., 9] by R)
-  x[!(stringr::str_length(x) %in% c(1L, 2L))] <- NA
-
-  # Any improperly formatted entries in comparison vector are removed
-  states[!(stringr::str_length(states) %in% c(1L, 2L))] <- NULL
-
-  # Handle NAs separately; shouldn't be in `states`
-  states[is.na(states)] <- NULL
-
-  # Initialize logical vector
-  x_lgl <- vector(length = length(x))
-
-  # Loop through `states` to compare with `x`
-  # Inefficient, but vectorizing would take much of my time
-  for (state in states) {
-    x_lgl <- x_lgl + stringr::str_detect(x, pattern = state)
-  }
-
-  # Add NA if `include_na` == TRUE
-  if (include_na) {
-    x_lgl[is.na(x_lgl)] <- TRUE
-  }
-
-  # Return logical vector
-  as.logical(x_lgl)
-}
-
-check_county <- function(x, counties, include_na) {
-  # Make sure both are character vectors & title case
-  x <- as.character(x) %>% stringr::str_to_title()
-  counties <- as.character(counties) %>% stringr::str_to_title()
-
-  # Handle NAs separately; shouldn't be in `counties`
-  counties[is.na(counties)] <- NULL
-
-  # Initialize logical vector
-  x_lgl <- vector(length = length(x))
-
-  # Loop through `counties` to compare with `x`
-  # Inefficient, but vectorizing would take much of my time
-  for (county in counties) {
-    x_lgl <- x_lgl + stringr::str_detect(x, pattern = county)
-  }
-
-  # Add NA if `include_na` == TRUE
-  if (include_na) {
-    x_lgl[is.na(x_lgl)] <- TRUE
-  }
-
-  # Return logical vector
-  as.logical(x_lgl)
-}
-
-check_zip <- function(x, zips, include_na) {
-  # Make sure both are character vectors
-  x <- as.character(x)
-  zips <- as.character(zips)
-
-  # ZIP codes must be 5 digits
-  x[stringr::str_length(x) != 5] <- NA
-
-  # Any improperly formatted entries in comparison vector are removed
-  zips[stringr::str_length(zips) != 5] <- NULL
-
-  # Handle NAs separately; shouldn't be in `zips`
-  zips[is.na(zips)] <- NULL
-
-  # Initialize logical vector
-  x_lgl <- vector(length = length(x))
-
-  # Loop through `zips` to compare with `x`
-  # Inefficient, but vectorizing would take too long
-  for (zipcode in zips) {
-    x_lgl <- x_lgl + stringr::str_detect(x, pattern = zip)
-  }
-
-  # Add NA if `include_na` == TRUE
-  if (include_na) {
-    x_lgl[is.na(x_lgl)] <- TRUE
-  }
-
-  # Return logical vector
-  as.logical(x_lgl)
-}
-
-# | PCR ########################################################################
-
-relevel_pcr <- function(x) {
-  x %>%
-    as.character() %>%
-    stringr::str_to_lower() %>%
-    stringr::str_replace_all(
-      pattern = ".*indeterminate.*",
-      replacement = "I"
-    ) %>%
-    stringr::str_replace_all(
-      pattern = "negative",
-      replacement = "N"
-    ) %>%
-    stringr::str_replace_all(
-      pattern = ".*presumptive.*",
-      replacement = "P"
-    ) %>%
-    stringr::str_replace_all(
-      pattern = ".*positive.*",
-      replacement = "C"
-    ) %>%
-    forcats::as_factor() %T>%
-    {message("Levels collapsed to 'U' in relevel_labs:")} %T>%
-    {
-      levels(.) %>%
-        stringr::str_subset(pattern = c("C", "P", "N", "I"), negate = TRUE) %>%
-        paste0(collapse = "\t") %>%
-        message()
-    } %>%
-    forcats::fct_expand("S") %>%
-    forcats::fct_collapse(
-      C = "C",
-      P = "P",
-      N = "N",
-      I = "I",
-      S = "S",
-      other_level = "U"
-    ) %>%
-    purrr::when(
-      (!"U" %in% levels(.)) ~ forcats::fct_expand(., "U"),
-      ~ .
-    ) %>%
-    forcats::fct_relevel("C", "P", "N", "I", "S", "U")
-}
-
 # || By Data Type || ###########################################################
 
 # | Timeseries #################################################################
@@ -756,44 +338,10 @@ fill_dates <- function(
     y = dplyr::mutate(data, join_date = !!date_col),
     by = "join_date"
   ) %>%
-    dplyr::mutate(!!date_col := dplyr::coalesce(!!date_col, join_date)) %>%
+    dplyr::mutate(
+      !!date_col := dplyr::coalesce(!!date_col, .data[["join_date"]])
+    ) %>%
     dplyr::select(-dplyr::matches("join_date"))
-}
-
-# | Factor #####################################################################
-denoise_factor <- function(
-  .f,
-  ...,
-  dist = 3,
-  method = "osa",
-  other_level = NULL,
-  na_to_other = FALSE
-) {
-  # Levels to match
-  lvls <- rlang::enexprs(...) %>% purrr::map_chr(rlang::as_string)
-
-  # Create and clean character vector from .f
-  chr <- standardize_string(.f)
-
-  # Find closest match
-  stringdist::amatch(
-    chr,
-    table = lvls,
-    maxDist = dist,
-    method = method,
-    p = 0.1
-  ) %>%
-    purrr::map2_chr(chr, .f = ~ ifelse(is.na(.x), yes = .y, no = lvls[.x])) %>%
-    factor() ->
-    new_f
-
-  new_lvls <- dplyr::intersect(lvls, levels(new_f))
-
-  if (!is.null(other_level)) {
-    forcats::fct_other(new_f, keep = new_lvls, other_level = other_level)
-  } else {
-    new_f
-  }
 }
 
 # | Files ######################################################################
@@ -1111,7 +659,7 @@ trim_backups <- function(
 
   # Get file info
   fs::dir_info(directory, regexp = pattern) %>%
-    dplyr::arrange(dplyr::desc(birth_time)) ->
+    dplyr::arrange(dplyr::desc(.data[["birth_time"]])) ->
   backups
 
   # No files will be deleted if n_recent >= the number of returned files, so
@@ -1123,87 +671,12 @@ trim_backups <- function(
   } else {
     backups %>%
       dplyr::filter(
-        birth_time < birth_time[[min_backups]],
-        lubridate::as_date(birth_time) < min_date
+        .data[["birth_time"]] < .data[["birth_time"]][[min_backups]],
+        lubridate::as_date(.data[["birth_time"]]) < {{ min_date }}
       ) %>%
-      dplyr::pull(path) %>%
+      dplyr::pull("path") %>%
       fs::file_delete()
   }
-}
-
-# | Functions ##################################################################
-assert_dots_used <- function(
-  env = rlang::caller_fn(),
-  fn = NULL,
-  action = rlang::abort
-) {
-
-  objs <- rlang::env_get_list(
-    env = env,
-    nms = rlang::env_names(env),
-    default = rlang::missing_arg()
-  )
-
-  # dots <- rlang::list2()
-  #
-  # dots_names <- rlang::names2(dots)
-  #
-  # dots_used <- dots_names %in% rlang::fn_fmls_names(arg_fn)
-  #
-  # if (any(!dots_used)) {
-  #
-  #   fn_name <- rlang::call_fn(arg_fn) %>% rlang::expr_label()
-  #
-  #   msg = paste0(
-  #     sum(!dots_used), " components of `...` were not used.",
-  #     "\n\n",
-  #     "We detected these problematic arguments:",
-  #     "\n",
-  #     paste0("* `", dots_names[!dots_used], "`", collapse = "\n"),
-  #     "\n\n",
-  #     "Did you misspecify an argument?"
-  #   )
-  #
-  #   .action(message = msg)
-  # }
-}
-
-get_fns <- function(fn, string = "x") {
-
-  name_regex <- "([A-Za-z.]+[A-Za-z0-9._]*)"
-
-  fun_regex <- paste0(name_regex, "[(].*[)]")
-
-  inner_regex <- paste0("[(](?!", name_regex, "[(].*[)])[A-Za-z0-9._]*[)]")
-
-  rlang::fn_body(fn) %>%
-    rlang::expr_text() %>%
-    stringr::str_extract_all(pattern = fun_regex) %>%
-    purrr::flatten_chr()
-    # stringr::str_remove_all(pattern = "[(].*[)]") %>%
-    # unique()
-}
-
-check_suggested <- function(..., msg_end = NULL) {
-  pkgs <- rlang::exprs(...) %>% purrr::map_chr(~ rlang::expr_name(.x))
-
-  installed <- purrr::map_lgl(pkgs, ~ rlang::is_installed(.x))
-
-  if (all(installed)) return(installed)
-
-  is_are <- if (NROW(pkgs[!installed]) <= 1) "is" else "are"
-
-  not_installed <- paste0(pkgs[!installed],  collapse = "', '")
-
-  error_msg <- paste0(
-    "Suggested package(s) '", not_installed, "' ", is_are,
-    " required for this function but not installed.",
-    " Please install these packages to use this function.",
-    if (rlang::is_empty(msg_end)) "" else paste0("\n\n", msg_end)
-  )
-
-  rlang::abort(error_msg)
-
 }
 
 #' Check Whether \strong{R} is Running in Windows
@@ -1213,7 +686,7 @@ check_suggested <- function(..., msg_end = NULL) {
 #'
 #' @keywords internal
 is_windows <- function() {
-  osVersion %>%
-    stringr::str_to_lower() %>%
-    stringr::str_detect("windows|microsoft")
+  Sys.info() %>%
+    extract2("sysname") %>%
+    stringr::str_detect("(?i)windows|microsoft")
 }

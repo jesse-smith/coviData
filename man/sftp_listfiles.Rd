@@ -5,7 +5,7 @@
 \title{List files in an SFTP directory}
 \usage{
 sftp_listfiles(
-  sftp_connection = sftp_con,
+  sftp_connection = get("sftp_con"),
   verbose = TRUE,
   curlPerformVerbose = FALSE,
   recurse = FALSE

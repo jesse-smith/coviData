@@ -36,53 +36,54 @@ process_positive_people <- function(
         dplyr::contains("jurisdiction_nm"),
         ~ stringr::str_detect(.x, "(?i).*Memphis.*Shelby.*County.*")
       ),
-      alt_county %in% c("Shelby County", missings)
+      .data[["alt_county"]] %in% c("Shelby County", {{ missings }})
     ) %>%
     # Filter to patients in our state
     # Note: This gets rid of records missing `alt_county` AND `patient_state`
     tidylog::filter(
       alt_county == "Shelby County" |
-        as.numeric(patient_state) %in% c(47, NA)
+        as.numeric(.data[["patient_state"]]) %in% c(47, NA)
     ) %>%
     dplyr::mutate(
-      patient_last_name = patient_last_name %>%
+      patient_last_name = .data[["patient_last_name"]] %>%
         str_to_ascii() %>%
         stringr::str_to_upper() %>%
         stringr::str_remove_all(pattern = "\\s+"),
-      patient_first_name = patient_first_name %>%
+      patient_first_name = .data[["patient_first_name"]] %>%
         str_to_ascii() %>%
         stringr::str_to_upper() %>%
         stringr::str_remove_all(pattern = "\\s+")
     ) %>%
     dplyr::mutate(
-      patient_street_addr = patient_street_addr_1 %>%
+      patient_street_addr = .data[["patient_street_addr_1"]] %>%
         str_to_ascii() %>%
         stringr::str_to_upper() %>%
         stringr::str_remove_all(pattern = "\\s+"),
-      patient_zip = patient_zip %>%
+      patient_zip = .data[["patient_zip"]] %>%
         str_to_ascii() %>%
         stringr::str_trunc(width = 5, ellipsis = "")
     ) %>%
     # Filter to confirmed and probable cases
-    tidylog::filter(inv_case_status %in% c("C", "P")) %>% # Check that inv_local_id is unique - matches SAS on 2020-11-15
-    dplyr::arrange(inv_local_id) %>%
-    tidylog::distinct(inv_local_id, .keep_all = TRUE) %>%
+    # Check that inv_local_id is unique - matches SAS on 2020-11-15
+    tidylog::filter(.data[["inv_case_status"]] %in% c("C", "P")) %>%
+    dplyr::arrange(.data[["inv_local_id"]]) %>%
+    tidylog::distinct(.data[["inv_local_id"]], .keep_all = TRUE) %>%
     # Filter any non-distinct patient_local_ids - matches SAS on 2020-11-15
-    dplyr::arrange(patient_local_id, inv_case_status) %>%
-    tidylog::distinct(patient_local_id, .keep_all = TRUE) %>%
+    dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
+    tidylog::distinct(.data[["patient_local_id"]], .keep_all = TRUE) %>%
     # Filter non-distinct people based on name and DOB - matches SAS on 2020-11-15
     # SAS code standardizes case and removes whitespace
     # TODO: Switch to `standardize_string()`
     dplyr::arrange(
-      patient_last_name,
-      patient_first_name,
-      patient_dob,
-      inv_case_status
+      .data[["patient_last_name"]],
+      .data[["patient_first_name"]],
+      .data[["patient_dob"]],
+      .data[["inv_case_status"]]
     ) %>%
     tidylog::distinct(
-      patient_last_name,
-      patient_first_name,
-      patient_dob,
+      .data[["patient_last_name"]],
+      .data[["patient_first_name"]],
+      .data[["patient_dob"]],
       .keep_all = TRUE
     )
 }
@@ -90,7 +91,10 @@ process_positive_people <- function(
 #' @rdname process_nbs
 #'
 #' @export
-process_negative_people <- function(data = read_file_delim(path_inv(date)), date = NULL) {
+process_negative_people <- function(
+  data = read_file_delim(path_inv(date)),
+  date = NULL
+) {
 
   missings <- c(NA_character_, "Na", "", " ")
 
@@ -104,13 +108,13 @@ process_negative_people <- function(data = read_file_delim(path_inv(date)), date
         dplyr::contains("jurisdiction_nm"),
         ~ stringr::str_detect(.x, "(?i).*Memphis.*Shelby.*County.*")
       ),
-      alt_county %in% c("Shelby County", missings)
+      .data[["alt_county"]] %in% c("Shelby County", {{ missings }})
     ) %>%
     # Filter to patients in our state
     # Note: This gets rid of records missing `alt_county` AND `patient_state`
     tidylog::filter(
-      alt_county == "Shelby County" |
-        as.numeric(patient_state) %in% c(47, NA)
+      .data[["alt_county"]] == "Shelby County" |
+        as.numeric(.data[["patient_state"]]) %in% c(47, NA)
     ) %>%
     dplyr::mutate(
       .obs_tmp_ = stringr::str_starts(.data[["inv_local_id"]], "(?i)OBS"),
@@ -142,11 +146,11 @@ process_negative_people <- function(data = read_file_delim(path_inv(date)), date
       )
     ) %>%
     dplyr::mutate(
-      patient_street_addr = patient_street_addr_1 %>%
+      patient_street_addr = .data[["patient_street_addr_1"]] %>%
         str_to_ascii() %>%
         stringr::str_to_upper() %>%
         stringr::str_remove_all(pattern = "\\s+"),
-      patient_zip = patient_zip %>%
+      patient_zip = .data[["patient_zip"]] %>%
         str_to_ascii() %>%
         stringr::str_trunc(width = 5, ellipsis = "")
     ) %>%

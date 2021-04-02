@@ -160,13 +160,12 @@ download_servu <- function(
   )
 
   # Get files matching date
-  sftp_listfiles(sftp_connection = sftp_con) %>%
-    dplyr::select(name) %>%
+  filename <- sftp_listfiles(sftp_connection = sftp_con) %>%
+    dplyr::select("name") %>%
     dplyr::filter(
-      stringr::str_detect(name, pattern = as.character(date))
+      stringr::str_detect(.data[["name"]], as.character({{ date }}))
     ) %>%
-    .[[1]] ->
-    filename
+    dplyr::pull(1L)
 
   # Check that exactly one matching file was found and take action
   if (length(filename) == 0L) {

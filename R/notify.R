@@ -61,7 +61,7 @@ notify <- function(
   writeLines(script_contents, con = temp_script)
 
   run_vbs <- rlang::expr({
-    capture.output(system2("cscript.exe", temp_script)) %>%
+    utils::capture.output(system2("cscript.exe", temp_script)) %>%
       stringr::str_remove_all("^\\[[0-9]+\\]") %>%
       stringr::str_flatten("\n") %>%
       rlang::inform(class = "cmd_output")

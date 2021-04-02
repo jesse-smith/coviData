@@ -59,7 +59,7 @@ log_start <- function(
     file(file, open = open, encoding = "UTF-8"),
     error = function(error) {
       if (!file_exists) fs::file_delete(file)
-      rlang::cnd_signal(cnd)
+      rlang::cnd_signal(error)
     }
   )
   # Set `.log_connection` option to handle closing later

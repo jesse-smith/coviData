@@ -5,7 +5,7 @@
 \title{List Files and/or Folders in an SFTP Directory}
 \usage{
 sftp_list(
-  sftp_connection = sftp_con,
+  sftp_connection = get("sftp_con"),
   verbose = TRUE,
   curlPerformVerbose = FALSE,
   encoding = "UTF-8",

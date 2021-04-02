@@ -150,7 +150,7 @@ sftp_connect <- function(server   = "",
 #' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
-sftp_list <- function(sftp_connection = sftp_con,
+sftp_list <- function(sftp_connection = get("sftp_con"),
                       verbose = TRUE,
                       curlPerformVerbose = FALSE,
                       encoding = "UTF-8",
@@ -198,7 +198,7 @@ sftp_list <- function(sftp_connection = sftp_con,
   vector3 <- gsub(";+", ";", vector2)
   df <- data.frame("files" = vector3, stringsAsFactors = F)
   df2 <- df %>% tidyr::separate(
-    files,
+    "files",
     c(
       "rights",
       "links",
@@ -219,7 +219,7 @@ sftp_list <- function(sftp_connection = sftp_con,
   if (recurse) {
     dirs_found <- df2 %>%
       dplyr::filter(type == "dir", !name %in% c(".", "..")) %>%
-      dplyr::pull(name)
+      dplyr::pull("name")
     for (d in dirs_found) {
       d_con <- sftp_connect(server = sftp_connection$server,
                             folder = paste0(sftp_connection$folder, "/", d),
@@ -230,11 +230,11 @@ sftp_list <- function(sftp_connection = sftp_con,
       d_list <- sftp_list(sftp_connection = d_con,
                           recurse = T)
       d_list <- d_list %>%
-        dplyr::filter(!name %in% c(".", "..")) %>%
-        dplyr::mutate(name = paste0(d, "/", name))
+        dplyr::filter(!.data[["name"]] %in% c(".", "..")) %>%
+        dplyr::mutate(name = paste0(d, "/", .data[["name"]]))
 
       df2 <- dplyr::bind_rows(df2, d_list) %>%
-        dplyr::arrange(name)
+        dplyr::arrange(.data[["name"]])
 
     }
   }
@@ -287,7 +287,7 @@ sftp_list <- function(sftp_connection = sftp_con,
 #' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
-sftp_listfiles <- function(sftp_connection = sftp_con,
+sftp_listfiles <- function(sftp_connection = get("sftp_con"),
                            verbose = TRUE,
                            curlPerformVerbose = FALSE,
                            recurse = FALSE) {
@@ -337,7 +337,7 @@ sftp_listfiles <- function(sftp_connection = sftp_con,
 #' @export
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
-sftp_listdirs <- function(sftp_connection = sftp_con,
+sftp_listdirs <- function(sftp_connection = get("sftp_con"),
                           verbose = TRUE,
                           curlPerformVerbose = FALSE,
                           recurse = FALSE) {
@@ -397,7 +397,7 @@ sftp_listdirs <- function(sftp_connection = sftp_con,
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_download <- function(file,
                           tofolder = getwd(),
-                          sftp_connection = sftp_con,
+                          sftp_connection = get("sftp_con"),
                           verbose = TRUE) {
 
   tofolder <- trim_slashes(tofolder)
@@ -493,7 +493,7 @@ sftp_download <- function(file,
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_upload <- function(file,
                         fromfolder = getwd(),
-                        sftp_connection = sftp_con,
+                        sftp_connection = get("sftp_con"),
                         log_file = NA,
                         verbose = TRUE) {
 
@@ -602,7 +602,7 @@ sftp_upload <- function(file,
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_delete <- function(file,
-                        sftp_connection = sftp_con,
+                        sftp_connection = get("sftp_con"),
                         verbose = TRUE,
                         curlPerformVerbose = FALSE) {
 
@@ -620,7 +620,7 @@ sftp_delete <- function(file,
   for (f in file) {
     deletepath <- paste0("'/", sftp_connection$folder, "/", f, "'")
     cond_message(deletepath)
-    curlPerform(url = sftp_connection$url,
+    RCurl::curlPerform(url = sftp_connection$url,
                 port = sftp_connection$port,
                 userpwd = sftp_connection$userpass,
                 verbose = curlPerformVerbose,
@@ -680,7 +680,7 @@ sftp_delete <- function(file,
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_rename <- function(from,
                        to,
-                       sftp_connection = sftp_con,
+                       sftp_connection = get("sftp_con"),
                        verbose = TRUE,
                        curlPerformVerbose = FALSE) {
 
@@ -727,7 +727,7 @@ sftp_rename <- function(from,
   from <- paste0("'/", sftp_connection$folder, "/", from, "'")
   to   <- paste0("'/", sftp_connection$folder, "/", to, "'")
   argument <- paste("rename", from, to)
-  curlPerform(url = sftp_connection$url,
+  RCurl::curlPerform(url = sftp_connection$url,
               port = sftp_connection$port,
               userpwd = sftp_connection$userpass,
               verbose = curlPerformVerbose,
@@ -785,7 +785,7 @@ sftp_rename <- function(from,
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_makedir <- function(foldername,
-                         sftp_connection = sftp_con,
+                         sftp_connection = get("sftp_con"),
                          verbose = TRUE,
                          curlPerformVerbose = FALSE) {
 
@@ -806,7 +806,7 @@ sftp_makedir <- function(foldername,
   cond_message(paste(length(foldername), "folder(s) to create."))
   filecounter <- 0
   for (f in foldername) {
-    curlPerform(
+    RCurl::curlPerform(
       url = sftp_connection$url,
       port = sftp_connection$port,
       userpwd = sftp_connection$userpass,
@@ -869,7 +869,7 @@ sftp_makedir <- function(foldername,
 #'
 #' @author \href{https://github.com/stenevang/sftp}{Theodor Stenevang Klemming}
 sftp_removedir <- function(foldername,
-                           sftp_connection = sftp_con,
+                           sftp_connection = get("sftp_con"),
                            verbose = TRUE,
                            curlPerformVerbose = FALSE) {
 
@@ -890,7 +890,7 @@ sftp_removedir <- function(foldername,
   cond_message(paste(length(foldername), "folder(s) to remove."))
   filecounter <- 0
   for (f in foldername) {
-    curlPerform(
+    RCurl::curlPerform(
       url = sftp_connection$url,
       port = sftp_connection$port,
       userpwd = sftp_connection$userpass,

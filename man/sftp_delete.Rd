@@ -6,7 +6,7 @@
 \usage{
 sftp_delete(
   file,
-  sftp_connection = sftp_con,
+  sftp_connection = get("sftp_con"),
   verbose = TRUE,
   curlPerformVerbose = FALSE
 )

@@ -46,37 +46,3 @@ download_integrated_data <- function(
 
   invisible(path_create(directory, new_file))
 }
-
-#' Download AEL File from Serv-U SFTP Site
-#'
-#' \code{download_ael} finds and download the AEL data for the input date and
-#' saves it to a folder of your choice. To make the best use of this function,
-#' you should save your username and password for Serv-U in a ".Renviron" file;
-#' see
-#'
-#' @param date The creation date of the Serv-U file
-#'
-#' @param usr The username for Serv-U; the default pulls from a ".Renviron" file
-#'   and is the recommended setup
-#'
-#' @param pwd The password for Serv-U; the default pulls from a ".Renviron" file
-#'   and is the recommended setup
-#'
-#' @param directory The directory in which the new file will be saved
-#'
-#' @export
-download_ael <- function(
-  date = Sys.Date(),
-  usr = Sys.getenv("sftp_usr"),
-  pwd = Sys.getenv("sftp_pwd"),
-  directory = "V:/EPI DATA ANALYTICS TEAM/AEL Data/"
-) {
-  download_servu(
-    date = date,
-    usr = usr,
-    pwd = pwd,
-    remote_dir = "AEL",
-    local_dir = directory,
-    new_file  = NULL
-  )
-}

@@ -171,7 +171,7 @@ cnd_notify <- function(cnd) {
 
 
 str_trace <- function(trace) {
-  paste0(capture.output(print(trace)), "\n", collapse = "")
+  paste0(utils::capture.output(print(trace)), "\n", collapse = "")
 }
 
 str_trace_fn <- function(trace) {

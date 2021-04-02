@@ -196,7 +196,7 @@ convert_to_xlsx <- function(file, xlsx_file = NULL) {
   ) %>%
     readr::write_lines(file = temp_script)
 
-  capture.output(system2("cscript.exe", temp_script)) %>%
+  utils::capture.output(system2("cscript.exe", temp_script)) %>%
     stringr::str_remove_all("^\\[[0-9]+\\]") %>%
     stringr::str_flatten("\n") %>%
     rlang::inform(class = "cmd_output")

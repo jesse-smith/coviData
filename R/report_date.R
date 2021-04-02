@@ -106,7 +106,7 @@ archive_report_date <- function(
 to_report_date_fst <- function(path, birth_date, save_as) {
   vroom::vroom(
     file = path,
-    col_select = INV_LOCAL_ID,
+    col_select = "INV_LOCAL_ID",
     col_types = vroom::cols(INV_LOCAL_ID = vroom::col_character())
   ) %>%
     janitor::clean_names() %>%
@@ -145,9 +145,9 @@ coalesce_report_date <- function(
     path_clean() %>%
     fs::dir_ls() %>%
     dplyr::as_tibble() %>%
-    dplyr::rename(path = value) %>%
+    dplyr::rename(path = "value") %>%
     dplyr::filter(
-      path %>%
+      .data[["path"]] %>%
         fs::path_file() %>%
         stringr::str_detect(pattern = "^nbs_data_.*[.]fst$")
     ) ->
@@ -167,16 +167,16 @@ coalesce_report_date <- function(
   # Read fst datasets
   archive_files %>%
     dplyr::transmute(
-      path,
+      .data[["path"]],
       # Birth date of original file - used to sort
-      birth_date = path %>%
+      birth_date = .data[["path"]] %>%
         fs::path_file() %>%
         stringr::str_extract(pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}") %>%
         lubridate::as_date(),
-      fst_data = purrr::map(path, ~ fst::fst(.x))
+      fst_data = purrr::map(.data[["path"]], ~ fst::fst(.x))
     ) %>%
-    dplyr::arrange(dplyr::desc(birth_date)) %>%
-    dplyr::pull(fst_data) ->
+    dplyr::arrange(dplyr::desc(.data[["birth_date"]])) %>%
+    dplyr::pull("fst_data") ->
   fst_data
 
   remove(archive_dir, archive_files)
@@ -190,8 +190,8 @@ coalesce_report_date <- function(
 
   fst_data %>%
     purrr::reduce(reduce_fst_report_dates, .by = id, .pb = pb_reduce) %>%
-    dplyr::mutate(report_date = lubridate::as_date(report_date)) %>%
-    dplyr::arrange(dplyr::desc(report_date)) %>%
+    dplyr::mutate(report_date = lubridate::as_date(.data[["report_date"]])) %>%
+    dplyr::arrange(dplyr::desc(.data[["report_date"]])) %>%
     set_attr("is_report_date", TRUE) %T>%
     {rlang::inform("Done.")}
 
@@ -233,7 +233,10 @@ reduce_fst_report_dates <- function(
   ) %>%
     dplyr::transmute(
       {{ .by }},
-      report_date = dplyr::coalesce(report_date.next, report_date.accumulated)
+      report_date = dplyr::coalesce(
+        .data[["report_date.next"]],
+        .data[["report_date.accumulated"]]
+      )
     ) %T>%
     {if (!rlang::is_null(.pb)) .pb$tick()}
 
