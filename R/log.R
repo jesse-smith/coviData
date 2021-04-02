@@ -1,3 +1,22 @@
+#' Start a Logging Session
+#'
+#' `log_start()` begins diverting message stream (stderr) output to the
+#' specified log file. Only one logging session can be active at a time.
+#'
+#' @param file The log file name. If path components are included they are
+#'   assumed to be relative to `dir`.
+#'
+#' @param dir The log directory. `log_dir()`, the default, returns the current
+#'   log directory, or `NULL` if none is set. The latter case will cause `file`
+#'   to be created in or relative to your current working directory.
+#'
+#' @param append Should an existing file be appended to?
+#'
+#' @param force If `append = FALSE`, should an existing file be overwritten?
+#'
+#' @return The path to the log file (invisibly)
+#'
+#' @export
 log_start <- function(
   file,
   dir = log_dir(),
@@ -63,6 +82,18 @@ log_start <- function(
   invisible(file)
 }
 
+#' End a Logging Session
+#'
+#' `log_end()` ends a logging session by closing both the message sink and the
+#' file connection to the log file.
+#'
+#' @param sink The message sink used to divert stderr output to the log file
+#'
+#' @param con The open file connection to the log file
+#'
+#' @return The path to the log file (invisibly)
+#'
+#' @export
 log_end <- function(
   sink = getOption(".log_sink_"),
   con = getOption(".log_connection_")
