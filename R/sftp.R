@@ -218,7 +218,7 @@ sftp_list <- function(sftp_connection = get("sftp_con"),
 
   if (recurse) {
     dirs_found <- df2 %>%
-      dplyr::filter(type == "dir", !name %in% c(".", "..")) %>%
+      dplyr::filter(type == "dir", !.data[["name"]] %in% c(".", "..")) %>%
       dplyr::pull("name")
     for (d in dirs_found) {
       d_con <- sftp_connect(server = sftp_connection$server,

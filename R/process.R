@@ -41,7 +41,7 @@ process_positive_people <- function(
     # Filter to patients in our state
     # Note: This gets rid of records missing `alt_county` AND `patient_state`
     tidylog::filter(
-      alt_county == "Shelby County" |
+      .data[["alt_county"]] == "Shelby County" |
         as.numeric(.data[["patient_state"]]) %in% c(47, NA)
     ) %>%
     dplyr::mutate(
