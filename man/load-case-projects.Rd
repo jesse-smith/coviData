@@ -30,8 +30,8 @@ multiple
 \description{
 \code{load_nit()} and \code{load_nca()} load the latest data downloaded from the
 respective REDcap project. To find the file paths to these data, use
-\code{\link[coviData:path_nit]{path_nit()}} or
-\code{\link[coviData:path_nit]{path_nca()}}. To download the data, use
+\code{\link[coviData:path_by_date]{path_nit()}} or
+\code{\link[coviData:path_by_date]{path_nca()}}. To download the data, use
 \code{\link[coviData:download_nit]{download_nit()}} or
 \code{\link[coviData:download_nca]{download_nca()}}.
 }
