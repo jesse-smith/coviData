@@ -1,10 +1,30 @@
+#' Start a Logging Session
+#'
+#' `log_start()` begins diverting message stream (stderr) output to the
+#' specified log file. Only one logging session can be active at a time.
+#'
+#' @param file The log file name. If path components are included they are
+#'   assumed to be relative to `dir`.
+#'
+#' @param dir The log directory. `log_dir()`, the default, returns the current
+#'   log directory, or `NULL` if none is set. The latter case will cause `file`
+#'   to be created in or relative to your current working directory.
+#'
+#' @param append Should an existing file be appended to?
+#'
+#' @param force If `append = FALSE`, should an existing file be overwritten?
+#'
+#' @return The path to the log file (invisibly)
+#'
+#' @export
 log_start <- function(
   file,
+  dir = log_dir(),
   append = TRUE,
   force = FALSE
 ) {
   # Check args
-  file <- path_create(file)
+  file <- path_create(dir, file)
   append <- assert_bool(append)
   force <- assert_bool(force)
 
@@ -58,9 +78,22 @@ log_start <- function(
   # Set `.log_sink` option to handle closing later
   options(.log_sink_previous_ = getOption(".log_sink_"))
   options(.log_sink_ = TRUE)
+
+  invisible(file)
 }
 
-
+#' End a Logging Session
+#'
+#' `log_end()` ends a logging session by closing both the message sink and the
+#' file connection to the log file.
+#'
+#' @param sink The message sink used to divert stderr output to the log file
+#'
+#' @param con The open file connection to the log file
+#'
+#' @return The path to the log file (invisibly)
+#'
+#' @export
 log_end <- function(
   sink = getOption(".log_sink_"),
   con = getOption(".log_connection_")
@@ -109,6 +142,9 @@ log_end <- function(
     sink(type = "message")
   }
 
+  # Get path to log file for return value
+  path <- path_create(summary(con)[["description"]])
+
   # Close connection to log file
   tryCatch(
     close(con),
@@ -122,4 +158,52 @@ log_end <- function(
       )
     }
   )
+
+  invisible(path)
+}
+
+#' Set/Get Logging Directory
+#'
+#' `log_dir()` gets and sets the `.log_dir` option and the `coviData_log_dir`
+#' environment variable. The latter can be set persistently on Windows using
+#' `persistent = TRUE`.
+#'
+#' @param dir The path to the log directory. If missing, `log_dir` returns the
+#'   current value of `.log_dir`
+#'
+#' @param persistent Should the `coviData_log_dir` environment variable persist
+#'   after ending the current R session?
+#'
+#' @return The current logging directory if `dir` is missing, or a named list
+#'   of the old logging directory if used to change the logging directory
+#'
+#' @export
+log_dir <- function(dir, persistent = FALSE) {
+  if (rlang::is_missing(dir)) {
+    log_dir <- getOption(".log_dir")
+    coviData_log_dir <- Sys.getenv("coviData_log_dir")
+    if (coviData_log_dir == "") coviData_log_dir <- NULL
+    if (is.null(log_dir)) log_dir <- coviData_log_dir
+    return(log_dir)
+  }
+
+  assert_all(
+    rlang::is_scalar_character(dir),
+    message = "`dir` must be a (scalar) string"
+  )
+  dir <- gsub("/", "\\\\",  path_create(dir))
+
+  if (persistent && is_windows()) {
+    system(paste0('setx coviData_log_dir "', dir, '"'))
+  } else if (persistent) {
+    rlang::warn(
+      paste(
+        "Log directory not set persistently;",
+        "this functionality is currently only available on windows"
+      )
+    )
+  }
+  Sys.setenv(coviData_log_dir = dir)
+
+  invisible(options(.log_dir = path_create(Sys.getenv("coviData_log_dir"))))
 }
