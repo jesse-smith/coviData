@@ -8,15 +8,20 @@
 #'
 #' @param report_id The ID of the report to download
 #'
+#' @param headers Should column headers be raw variable names or labels?
+#'
 #' @keywords internal
 download_interview_report <- function(
   date = Sys.Date(),
   api_token,
   report_id,
+  headers = c("raw", "label"),
   directory,
   new_file,
   force = FALSE
 ) {
+
+  headers <- rlang::arg_match(headers)[[1L]]
 
   # Step 1 - Check directory to make sure file isn't already there
 
@@ -51,7 +56,7 @@ download_interview_report <- function(
     format              = "csv",
     report_id           = report_id,
     rawOrLabel          = "label",
-    rawOrLabelHeaders   = "raw",
+    rawOrLabelHeaders   = headers,
     exportCheckboxLabel = "true",
     returnFormat        = "json"
   )

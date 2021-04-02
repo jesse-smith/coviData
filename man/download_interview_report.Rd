@@ -8,6 +8,7 @@ download_interview_report(
   date = Sys.Date(),
   api_token,
   report_id,
+  headers = c("raw", "label"),
   directory,
   new_file,
   force = FALSE
@@ -21,6 +22,8 @@ project. This should be stored in an \emph{.Renviron} file; see
 \link{env_vars} for details.}
 
 \item{report_id}{The ID of the report to download}
+
+\item{headers}{Should column headers be raw variable names or labels?}
 
 \item{directory}{A string specifying the save directory; this should usually
 be left alone}

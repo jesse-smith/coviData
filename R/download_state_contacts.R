@@ -23,6 +23,7 @@ download_state_contacts <- function(
     date = date,
     api_token = api_token,
     report_id = "176",
+    headers = "label",
     directory = directory,
     new_file  = paste0("state_contact_monitoring_", date, ".csv"),
     force = force
