@@ -72,28 +72,29 @@ ennotify_set_options <- function(
   .inform = TRUE,
   .backtrace = c("full", "collapse", "branch", "reminder")
 ) {
-  to <- try(rlang::flatten_chr(rlang::list2(...)))
-  .backtrace <- try(rlang::arg_match(.backtrace)[[1L]])
-  .inform <- try(assert_bool(.inform))
+  try({
+    to <- try(rlang::flatten_chr(rlang::list2(...)))
+    .backtrace <- try(rlang::arg_match(.backtrace)[[1L]])
 
-  coviData::ennotify_context(
-    paste0("setting `ennotify_inform = ", .inform, "`"),
-    inform = .inform
-  )
-  p_inform <- coviData::ennotify_inform(.inform)
+    coviData::ennotify_context(
+      paste0("setting `ennotify_inform = ", .inform, "`"),
+      inform = .inform
+    )
+    p_inform <- coviData::ennotify_inform(.inform)
 
-  coviData::ennotify_context("setting `ennotify()` as error handler")
-  p_error <- options(error = quote(ennotify()))
+    coviData::ennotify_context("setting `ennotify()` as error handler")
+    p_error <- options(error = quote(coviData::ennotify()))
 
-  coviData::ennotify_context(
-    paste0("setting `rlang_backtrace_on_error = '", .backtrace, "'`")
-  )
-  p_backtrace <- options(rlang_backtrace_on_error = .backtrace)
+    coviData::ennotify_context(
+      paste0("setting `rlang_backtrace_on_error = '", .backtrace, "'`")
+    )
+    p_backtrace <- options(rlang_backtrace_on_error = .backtrace)
 
-  coviData::ennotify_context(paste0("setting `ennotify_to` to: ", to))
-  p_to <- coviData::ennotify_to(...)
+    coviData::ennotify_context(paste0("setting `ennotify_to` to: ", to))
+    p_to <- coviData::ennotify_to(...)
 
-  invisible(try(c(p_backtrace, p_error, p_inform, p_to)))
+    invisible(try(c(p_backtrace, p_error, p_inform, p_to)))
+  })
 }
 
 #' @rdname ennotify
