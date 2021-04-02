@@ -9,6 +9,8 @@
 #'   \item{`path_inv()` returns path(s) to NBS investigations files}
 #'   \item{`path_pcr()` returns path(s) to NBS PCR files}
 #'   \item{`path_vac()` returns path(s) to TennIIS vaccination files}
+#'   \item{`path_nit()` returns path(s) to saved NIT records}
+#'   \item{`path_nca()` returns path(s) to saved NCA records}
 #' }
 #'
 #' This will eventually replace \code{\link[coviData:find_file]{find_file()}}
@@ -178,5 +180,35 @@ path_vac <- function(
     date = date,
     file_regex = paste0("COVID_VACC_MSR_{date}.*[.]", ext),
     type = "file"
+  )
+}
+
+#' @rdname path_by_date
+#'
+#' @export
+path_nit <- function(date = NULL, force_latest = TRUE) {
+  path_by_date(
+    dir ="V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nit/",
+    date_format = "%Y-%m-%d",
+    date_regex = "[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}",
+    date = date,
+    file_regex = ".*/nit_data_{date}[.]csv$",
+    type = "file",
+    force_latest = force_latest
+  )
+}
+
+#' @rdname path_by_date
+#'
+#' @export
+path_nca <- function(date = NULL, force_latest = TRUE) {
+  path_by_date(
+    dir ="V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nca/",
+    date_format = "%Y-%m-%d",
+    date_regex = "[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}",
+    date = date,
+    file_regex = ".*/nca_data_{date}[.]csv$",
+    type = "file",
+    force_latest = force_latest
   )
 }
