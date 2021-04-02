@@ -1099,7 +1099,7 @@ trim_backups <- function(
   )
 
   # Check that min_date is <= Sys.Date()
-  if (min_date <= Sys.Date()) {
+  if (min_date > Sys.Date()) {
     rlang::warn(
       paste0(
         "Setting `min_date` greater than today's date does not make sense.\n",

@@ -83,7 +83,7 @@ str_to_vb_html <- function(string, collapse = NULL) {
     paste0(collapse = collapse) %>%
     stringr::str_replace_all("[\r]?\n", replacement = "<br>") %>%
     stringr::str_replace_all("\t", replacement = "    ") %>%
-    stringr::str_replace_all("\"", replacement = "\"\"")
+    stringr::str_replace_all("[\"]", replacement = "\"\"")
 }
 
 html_to_vb <- function(html, collapse = NULL) {
