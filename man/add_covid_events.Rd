@@ -25,13 +25,18 @@ response to a \code{ggplot} object.
 
 
 \itemize{
-\item 2020-03-24: Safer-at-Home
-\item 2020-05-04: Phase 1 Reopen
-\item 2020-05-18: Phase 2 Reopen
-\item 2020-07-08: Bars Close, Mask Directive
-\item 2020-09-22: Bars Reopen
-\item 2020-09-29: End State Restrictions
-\item 2020-11-23: Emphasize Masking, Reduce Dining Hours & Capacity
+\item{2020-03-24: Safer-at-Home}
+\item{2020-05-04: Phase 1 Reopen}
+\item{2020-05-18: Phase 2 Reopen}
+\item{2020-07-08: Bars Close, Mask Directive}
+\item{2020-09-22: Bars Reopen}
+\item{2020-09-29: End State Restrictions}
+\item{2020-11-23: Face Mask Order 3, Dining Restrictions}
+\item{2020-12-26: Face Mask Order 4, Safer-at-Home}
+\item{2021-01-23: Safer-at-Home Lifted}
+\item{2021-02-20: Broaden Safety Measures}
+\item{2021-03-20: Lift More Restrictions}
+\item{2021-04-17: Emphasize Vaccination}
 }
 }
 
