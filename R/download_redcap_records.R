@@ -179,8 +179,7 @@ download_redcap_records <- function(
   api_params <- list(
     token               = api_token,
     content             = "record",
-    format              = "csv",
-    type                = "flat",
+    format              = "json",
     rawOrLabel          = values,
     rawOrLabelHeaders   = headers,
     exportCheckboxLabel = "true",
@@ -194,10 +193,12 @@ download_redcap_records <- function(
     url = api_url,
     body = api_params,
     encode = "form",
-    httr::progress(),
-    httr::write_disk(path, overwrite = force)
+    httr::progress()
   ) %>%
-    httr::stop_for_status(paste("download REDcap data:", httr::content(.)))
+    httr::stop_for_status(paste("download REDcap data:", httr::content(.))) %>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON() %>%
+    write_file_delim(path = path)
 
   path
 }
