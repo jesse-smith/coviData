@@ -13,7 +13,9 @@ add_event(
   vjust = 0,
   angle = -90,
   face = c("bold", "italic", "bold.italic", "plain"),
-  line = c("dashed", "solid", "blank", "dotted")
+  line = c("dashed", "solid", "blank", "dotted"),
+  color = "grey30",
+  ...
 )
 }
 \arguments{
@@ -36,6 +38,11 @@ most time series plots.}
 \item{face}{The font face of the label text}
 
 \item{line}{The type of vertical line to use}
+
+\item{color}{Line and text color}
+
+\item{...}{Additional arguments to pass to
+\code{\link[ggplot2:geom_text]{geom_text()}}}
 }
 \value{
 The modified \code{ggplot} object

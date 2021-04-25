@@ -4,12 +4,15 @@
 \alias{add_covid_events}
 \title{Add a Set of Events From the Shelby County COVID Response to a Plot}
 \usage{
-add_covid_events(gg_obj, lab_y)
+add_covid_events(gg_obj, lab_y, ...)
 }
 \arguments{
 \item{gg_obj}{A \code{ggplot} object}
 
 \item{lab_y}{The y coordinate of the event label}
+
+\item{...}{Additional arguments to pass to
+\code{\link[coviData:add_event]{add_event()}}}
 }
 \value{
 The modified \code{ggplot} object

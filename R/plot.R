@@ -125,6 +125,11 @@ add_title_caption <- function(
 #'
 #' @param line The type of vertical line to use
 #'
+#' @param color Line and text color
+#'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[ggplot2:geom_text]{geom_text()}}
+#'
 #' @keywords internal
 #'
 #' @export
@@ -137,32 +142,35 @@ add_event <- function(
   vjust = 0,
   angle = -90,
   face = c("bold", "italic", "bold.italic", "plain"),
-  line = c("dashed", "solid", "blank", "dotted")
+  line = c("dashed", "solid", "blank", "dotted"),
+  color = "grey30",
+  ...
 ) {
 
   date <- lubridate::as_date(date)
 
-  face <- rlang::arg_match(face)[[1]]
+  face <- rlang::arg_match(face)[[1L]]
 
-  line <- rlang::arg_match(line)[[1]]
+  line <- rlang::arg_match(line)[[1L]]
 
   gg_obj +
     ggplot2::geom_vline(
       xintercept = date,
       linetype = line,
-      color = "grey30",
-      size = 0.5
+      size = 0.5,
+      color = color,
     ) +
     ggplot2::annotate(
       "text",
-      x = if (hjust <= 0.5) date + 1 else date - 1,
+      x = date + 1,
       y = lab_y,
       label = lab,
       hjust = hjust,
       vjust = vjust,
       angle = angle,
       fontface = face,
-      color = "grey30"
+      color = color,
+      ...
     )
 }
 
@@ -185,33 +193,39 @@ add_event <- function(
 #'
 #' @inherit add_event params return
 #'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[coviData:add_event]{add_event()}}
+#'
 #' @keywords internal
 #'
 #' @export
-add_covid_events <- function(gg_obj, lab_y) {
+add_covid_events <- function(gg_obj, lab_y, ...) {
   gg_obj %>%
-    add_event("2020-03-24", "Safer-at-Home", lab_y = lab_y) %>%
-    add_event("2020-05-04", "Phase 1 Reopen", lab_y = lab_y) %>%
-    add_event("2020-05-18", "Phase 2 Reopen", lab_y = lab_y) %>%
+    add_event("2020-03-24", "Safer-at-Home", lab_y = lab_y, ...) %>%
+    add_event("2020-05-04", "Phase 1 Reopen", lab_y = lab_y, ...) %>%
+    add_event("2020-05-18", "Phase 2 Reopen", lab_y = lab_y, ...) %>%
     add_event(
       "2020-07-08",
       "Face Mask Order 1\nBars Close",
       lab_y = lab_y,
-      vjust = 0.6
+      vjust = 0.6,
+      ...
     ) %>%
-    add_event("2020-09-22", "Bars Reopen", lab_y = lab_y) %>%
-    add_event("2020-09-29", "End State Restrictions", lab_y = lab_y) %>%
+    add_event("2020-09-22", "Bars Reopen", lab_y = lab_y, ...) %>%
+    add_event("2020-09-29", "End State Restrictions", lab_y = lab_y, ...) %>%
     add_event(
       "2020-11-23",
       "Face Mask Order 3\nDining Restrictions",
       lab_y = lab_y,
-      vjust = 0.6
+      vjust = 0.6,
+      ...
     ) %>%
     add_event(
       "2020-12-26",
       "Face Mask Order 4\nSafer-at-Home",
       lab_y = lab_y,
-      vjust = 0.6
+      vjust = 0.6,
+      ...
     ) %>%
     add_event("2021-01-23", "Safer-At-Home Lifted", lab_y = lab_y) %>%
     add_event("2021-02-20", "Broaden Safety Measures", lab_y = lab_y)
