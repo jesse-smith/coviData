@@ -8,6 +8,7 @@ download_state_contacts(
   date = Sys.Date(),
   api_token = Sys.getenv("redcap_NIT_token"),
   directory = "V:/State Contact Monitoring Spreadsheets/REDcap Exports",
+  report_id = "176",
   force = FALSE
 )
 }
