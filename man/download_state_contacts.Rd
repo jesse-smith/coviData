@@ -19,6 +19,8 @@ download_state_contacts(
 
 \item{directory}{Directory to save under; should usually be left alone.}
 
+\item{report_id}{REDcap ID of report}
+
 \item{force}{Should the new file overwrite any existing files?}
 }
 \description{

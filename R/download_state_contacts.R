@@ -10,6 +10,8 @@
 #'
 #' @param directory Directory to save under; should usually be left alone.
 #'
+#' @param report_id REDcap ID of report
+#'
 #' @param force Should the new file overwrite any existing files?
 #'
 #' @export
