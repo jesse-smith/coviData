@@ -2,9 +2,9 @@
 % Please edit documentation in R/notify.R
 \name{notify}
 \alias{notify}
-\title{Send an Email Notification with blastula}
+\title{Send an Email Notification with Outlook}
 \usage{
-notify(to, subject = "", body = "", html = FALSE, fail = FALSE)
+notify(to, subject = "", body = "", html = FALSE, fail = FALSE, attach = NULL)
 }
 \arguments{
 \item{to}{Character. The recipient(s) of the email.}

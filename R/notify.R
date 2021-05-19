@@ -1,4 +1,4 @@
-#' Send an Email Notification with blastula
+#' Send an Email Notification with Outlook
 #'
 #' `notify` sends a notification email using a Visual Basic interface to Outlook
 #'
@@ -22,7 +22,8 @@ notify <- function(
   subject = "",
   body = "",
   html = FALSE,
-  fail = FALSE
+  fail = FALSE,
+  attach = NULL
 ) {
 
   if (!is_windows()) {
@@ -32,6 +33,31 @@ notify <- function(
     )
     rlang::abort(msg)
   }
+
+  # Check arguments
+  coviData::assert(
+    rlang::is_character(to),
+    message = "`to` must be a `character` vector of email addresses"
+  )
+  coviData::assert(
+    rlang::is_string(subject),
+    message = "`subject` must be a string"
+  )
+  coviData::assert(
+    rlang::is_character(body),
+    message = "`body` must be a `character` vector"
+  )
+  coviData::assert_bool(html)
+  coviData::assert_bool(fail)
+
+  attach <- path_create(attach)
+  coviData::assert_all(
+    rlang::is_character(attach),
+    fs::file_exists(attach),
+    message = paste0(
+      "`attach` must be a `character` vector of existing file paths or `NULL`"
+    )
+  )
 
   temp_script <- fs::file_temp("script_", ext = "vbs")
   on.exit(fs::file_delete(temp_script), add = TRUE)
@@ -46,6 +72,16 @@ notify <- function(
 
   mail_body <- stringr::str_glue("mail.HTMLBody = \"{body}\"")
 
+  if (is.null(attach)) {
+    attms_add <- ""
+  } else {
+    attach <- path_create(attach)
+    attms_add <- paste0(
+      "attms.Add \"", path_create(attach), "\"",
+      collapse = "\n  "
+    )
+  }
+
   script_contents <- stringr::str_glue(
     "With CreateObject(\"Outlook.Application\")",
     "  Set mail = .CreateItem(olMailItem)",
@@ -53,6 +89,8 @@ notify <- function(
     "  {mail_to}",
     "  mail.Recipients.ResolveAll()",
     "  {mail_body}",
+    "  Set attms = mail.Attachments",
+    if (!is.null(attach)) "  {attms_add}" else "",
     "  mail.Send()",
     "End With",
     .sep = "\n"
