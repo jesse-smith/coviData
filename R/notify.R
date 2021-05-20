@@ -52,8 +52,8 @@ notify <- function(
 
   attach <- path_create(attach)
   coviData::assert_all(
-    rlang::is_character(attach),
-    fs::file_exists(attach),
+    rlang::is_true(rlang::is_character(attach)),
+    vec_is_empty(attach) || rlang::is_true(fs::file_exists(attach)),
     message = paste0(
       "`attach` must be a `character` vector of existing file paths or `NULL`"
     )
@@ -72,7 +72,7 @@ notify <- function(
 
   mail_body <- stringr::str_glue("mail.HTMLBody = \"{body}\"")
 
-  if (is.null(attach)) {
+  if (vec_is_empty(attach)) {
     attms_add <- ""
   } else {
     attach <- path_create(attach)
