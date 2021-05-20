@@ -53,7 +53,7 @@ notify <- function(
   attach <- path_create(attach)
   coviData::assert_all(
     rlang::is_true(rlang::is_character(attach)),
-    vec_is_empty(attach) || rlang::is_true(fs::file_exists(attach)),
+    vec_is_empty(attach) || rlang::is_true(as.vector(fs::file_exists(attach))),
     message = paste0(
       "`attach` must be a `character` vector of existing file paths or `NULL`"
     )
