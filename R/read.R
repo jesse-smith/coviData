@@ -132,7 +132,7 @@ read_file <- function(
 #' @export
 read_file_delim <- function(
   file,
-  col_select = vroom::everything(),
+  col_select = NULL,
   col_types = vroom::cols(.default = vroom::col_character()),
   na = c("", ".", "NA", "na", "Na", "N/A", "n/a", "N/a",
          "NULL", "null", "Null"),
@@ -140,15 +140,15 @@ read_file_delim <- function(
   delim = NULL,
   ...
 ) {
-    vroom::vroom(
-      file = path_create(file),
-      delim = delim,
-      col_types = col_types,
-      col_select = col_select,
-      na = na,
-      guess_max = guess_max,
-      ...
-    )
+  vroom::vroom(
+    file = path_create(file),
+    delim = delim,
+    col_types = col_types,
+    col_select = if (is.null(col_select)) vroom::everything() else col_select,
+    na = na,
+    guess_max = guess_max,
+    ...
+  )
 }
 
 #' Read Excel Files
@@ -198,6 +198,59 @@ read_file_excel <- function(
     col_types = col_types,
     na = na,
     guess_max = guess_max,
+    ...
+  )
+}
+
+#' Read NBS Files
+#'
+#' @description
+#' `read_inv()` reads investigation data files
+#'
+#' `read_pct()` reads PCR data files
+#'
+#' @param date The download date of the data file to read
+#'
+#' @inheritParams read_file_delim
+#'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[coviData:read_file_delim]{read_file_delim()}}
+#'
+#' @return A `tibble`
+#'
+#' @name read-nbs
+NULL
+
+#' @rdname read-nbs
+#'
+#' @export
+read_inv <- function(
+  date = NULL,
+  col_select = NULL,
+  col_types = vroom::cols(.default = vroom::col_character()),
+  ...
+) {
+  read_file_delim(
+    file = path_inv(date = date),
+    col_select = col_select,
+    col_types = col_types,
+    ...
+  )
+}
+
+#' @rdname read-nbs
+#'
+#' @export
+read_pcr <- function(
+  date = NULL,
+  col_select = NULL,
+  col_types = vroom::cols(.default = vroom::col_character()),
+  ...
+) {
+  read_file_delim(
+    file = path_pcr(date = date),
+    col_select = col_select,
+    col_types = col_types,
     ...
   )
 }

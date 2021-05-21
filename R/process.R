@@ -20,7 +20,7 @@ NULL
 #'
 #' @export
 process_positive_people <- function(
-  data = read_file_delim(path_inv(date)),
+  data = read_inv(date = date),
   date = NULL
 ) {
 
@@ -92,7 +92,7 @@ process_positive_people <- function(
 #'
 #' @export
 process_negative_people <- function(
-  data = read_file_delim(path_inv(date)),
+  data = read_inv(date = date),
   date = NULL
 ) {
 
@@ -175,7 +175,7 @@ process_negative_people <- function(
 #'
 #' @export
 process_positive_tests <- function(
-  data = read_file_delim(path_pcr(date)),
+  data = read_pcr(date = date),
   date = NULL
 ) {
   data %>%
@@ -195,7 +195,7 @@ process_positive_tests <- function(
 #'
 #' @export
 process_negative_tests <- function(
-  data = read_file_delim(path_pcr(date)),
+  data = read_pcr(date = date),
   date = NULL
 ) {
   data %>%
