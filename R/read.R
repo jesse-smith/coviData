@@ -235,7 +235,9 @@ read_inv <- function(
     col_select = col_select,
     col_types = col_types,
     ...
-  )
+  ) %>%
+    janitor::clean_names() %>%
+    set_attr("date", date_inv(date))
 }
 
 #' @rdname read-nbs
@@ -252,5 +254,20 @@ read_pcr <- function(
     col_select = col_select,
     col_types = col_types,
     ...
-  )
+  ) %>%
+    janitor::clean_names() %>%
+    set_attr("date", date_inv(date))
+}
+
+#' Read Investigation ID by Status
+#'
+#' @param date The download date of the data
+#'
+#' @param status Should positive or negative IDs be returned?
+#'
+#' @return A `tibble` with `character` column `inv_local_id`
+#'
+#' @keywords internal
+read_inv_id <- function(date = NULL, status = c("+", "-")) {
+  dplyr::as_tibble(fst::read_fst(path_inv_id(date, status)))
 }
