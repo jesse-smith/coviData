@@ -1,212 +1,196 @@
 #' Run the Cases Workflow for Daily Report
 #'
-#' The `process_*` functions mimic data transformations in the SAS program for
-#' positive/negative people/tests.
+#' @description
+#' The `process_*` functions transform NBS data in preparation for analysis.
+#'
+#' `process_inv()` transforms investigation data.
+#'
+#' `process_pcr()` transforms PCR data.
+#'
+#' `pos()` and `neg()` extract positive or negative data from the result.
+#'
+#' @details
+#' `process_inv()` is special in that it saves records identified as positive
+#' and negative to the `V:` drive as an `fst` file. This allows significant
+#' speedup on subsequent runs, since the only necessary operations are mutating
+#' of key variable prior to filtering.
+#'
+#' `process_pcr()` joins PCR data to the results of `process_inv()`. These
+#' results can be supplied by the `inv` argument; by default, they are
+#' calculated on-the-fly.
+#'
+#' Both functions need the download date of their data.
+#' \code{\link[coviData:read_inv]{read_inv()}} and
+#' \code{\link[coviData:read_pcr]{read_pcr()}} supply this as a `date`
+#' attribute; if this exists in the input data, it is used
+#' (with a warning if it conflicts with the `date` argument). If it does not
+#' exist, the `date` argument defaults to the most recent download date;
+#' in general, the `date` should either be supplied by an attribute (as above)
+#' or explicitly passed to the `date` argument.
+#'
+#' `process_positive_people()`, `process_negative_people()`,
+#' `process_positive_tests()`, and `process_negative_tests()` are deprecated
+#' in favor of `pos(process_inv())`, `neg(process_inv())`, `pos(process_pcr())`,
+#' and `neg(process_pcr())`
 #'
 #' @param data A `tibble`. Input data- either investigations for
-#'   `process_*_people()` functions or PCR tests for `process_*_tests()`
-#'   functions
+#'   `process_inv()` or PCR tests for `process_pcr()`
 #'
-#' @param date The download date of the data file to use if no data is supplied;
-#'   defaults to most recent file
+#' @param date The download date of the data. If the data has a `date`
+#'   attribute, this is used; otherwise, the date must be supplied. See
+#'   `Details` above.
 #'
-#' @return A `tibble` containing the information from the NBS investigations/PCR
-#'   files on positive/negative people/tests
+#' @return A nested 2x2 `tibble` with `logical` column `positive` and
+#'   `list_of<tbl_df>` column `data`; the latter contains the transformed
+#'   positive and negative data
 #'
-#' @name process_nbs
+#' @name process-nbs
 NULL
 
-#' @rdname process_nbs
+#' @rdname process-nbs
+#'
+#' @export
+process_inv <- function(
+  data = read_inv(),
+  date = attr(data, "date"),
+  replace = FALSE,
+  quiet = FALSE
+) {
+
+  if (is_processed(data)) return(data)
+
+  date    <- date_inv(date)
+  data_dt <- attr(data, "date")
+
+  if (rlang::is_true(date != data_dt) && !vec_is_empty(data_dt)) {
+    rlang::warn(paste(
+      "The `date` argument does not match the `date` attribute of `data`;",
+      "the attribute will be used"
+    ))
+    date <- data_dt
+  }
+
+  assert_bool(replace)
+  assert_bool(quiet)
+
+  processed <- !vec_is_empty(path_inv_id(date))
+  if (processed && !replace) {
+    data %>%
+      janitor::clean_names() %>%
+      mutate_inv(date = date, quiet = quiet) %>%
+      join_inv_id(date = date, quiet = quiet) %>%
+      set_attr("date", date)
+  } else {
+    data %>%
+      janitor::clean_names() %>%
+      filter_inv(date = date, quiet = quiet) %>%
+      mutate_inv(date = date, quiet = quiet) %>%
+      nest_inv(date = date) %>%
+      distinct_inv(date = date, quiet = quiet) %>%
+      write_inv_key(date = date) %>%
+      set_attr("date", date)
+  }
+}
+
+#' @rdname process-nbs
+#'
+#' @export
+process_pcr <- function(
+  data = read_pcr(),
+  inv = process_inv(date = date),
+  date = attr(data, "date"),
+  quiet = FALSE
+) {
+
+  if (is_processed(data)) return(data)
+
+  date    <- date_inv(date)
+  data_dt <- attr(data, "date")
+
+  if (rlang::is_true(date != data_dt) && !vec_is_empty(data_dt)) {
+    rlang::warn(paste(
+      "The `date` argument does not match the `date` attribute of `data`;",
+      "the attribute date will be used"
+    ))
+    date <- data_dt
+  }
+
+  inv_is_processed <- all(
+    rlang::is_true(all.equal(c("positive", "data"), colnames(inv))),
+    vec_is(inv[["positive"]], ptype = logical()),
+    rlang::inherits_all(inv[["data"]],c("vctrs_list_of", "vctrs_vctr", "list")),
+    tibble::is_tibble(inv[["data"]][[1L]])
+  )
+
+  if (!inv_is_processed) inv <- process_inv(inv)
+
+  data %>%
+    janitor::clean_names() %>%
+    mutate_pcr() %>%
+    join_pcr_inv(inv = inv)
+}
+
+#' @rdname process-nbs
+#'
+#' @export
+pos <- function(data) pull_processed(data, "+")
+
+#' @rdname process-nbs
+#'
+#' @export
+neg <- function(data) pull_processed(data, "-")
+
+#' @rdname process-nbs
 #'
 #' @export
 process_positive_people <- function(
-  data = read_inv(date = date),
-  date = NULL
+  data = read_inv(date),
+  date = NULL,
+  replace = FALSE
 ) {
-
-  missings <- c(NA_character_, "Na", "", " ")
-
-  data %>%
-    janitor::clean_names() %>%
-    # Filter to only our jurisdiction and county
-    # Jurisdiction should get dropped as a constant during pre-processing, so
-    # handle it flexibly
-    tidylog::filter(
-      dplyr::across(
-        dplyr::contains("jurisdiction_nm"),
-        ~ stringr::str_detect(.x, "(?i).*Memphis.*Shelby.*County.*")
-      ),
-      .data[["alt_county"]] %in% c("Shelby County", {{ missings }})
-    ) %>%
-    # Filter to patients in our state
-    # Note: This gets rid of records missing `alt_county` AND `patient_state`
-    tidylog::filter(
-      .data[["alt_county"]] == "Shelby County" |
-        as.numeric(.data[["patient_state"]]) %in% c(47, NA)
-    ) %>%
-    dplyr::mutate(
-      patient_last_name = .data[["patient_last_name"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+"),
-      patient_first_name = .data[["patient_first_name"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+")
-    ) %>%
-    dplyr::mutate(
-      patient_street_addr = .data[["patient_street_addr_1"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+"),
-      patient_zip = .data[["patient_zip"]] %>%
-        str_to_ascii() %>%
-        stringr::str_trunc(width = 5, ellipsis = "")
-    ) %>%
-    # Filter to confirmed and probable cases
-    # Check that inv_local_id is unique - matches SAS on 2020-11-15
-    tidylog::filter(.data[["inv_case_status"]] %in% c("C", "P")) %>%
-    dplyr::arrange(.data[["inv_local_id"]]) %>%
-    tidylog::distinct(.data[["inv_local_id"]], .keep_all = TRUE) %>%
-    # Filter any non-distinct patient_local_ids - matches SAS on 2020-11-15
-    dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
-    tidylog::distinct(.data[["patient_local_id"]], .keep_all = TRUE) %>%
-    # Filter non-distinct people based on name and DOB - matches SAS on 2020-11-15
-    # SAS code standardizes case and removes whitespace
-    # TODO: Switch to `standardize_string()`
-    dplyr::arrange(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .data[["inv_case_status"]]
-    ) %>%
-    tidylog::distinct(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .keep_all = TRUE
-    )
+  pos(process_inv(
+    data = data,
+    date = if (!vec_is_empty(date)) date else attr(data, "date"),
+    replace = replace
+  ))
 }
 
-#' @rdname process_nbs
+#' @rdname process-nbs
 #'
 #' @export
 process_negative_people <- function(
-  data = read_inv(date = date),
+  data = read_inv(date),
   date = NULL
 ) {
-
-  missings <- c(NA_character_, "Na", "", " ")
-
-  data %>%
-    janitor::clean_names() %>%
-    # Filter to only our jurisdiction and county
-    # Jurisdiction should get dropped as a constant during pre-processing, so
-    # handle it flexibly
-    tidylog::filter(
-      dplyr::across(
-        dplyr::contains("jurisdiction_nm"),
-        ~ stringr::str_detect(.x, "(?i).*Memphis.*Shelby.*County.*")
-      ),
-      .data[["alt_county"]] %in% c("Shelby County", {{ missings }})
-    ) %>%
-    # Filter to patients in our state
-    # Note: This gets rid of records missing `alt_county` AND `patient_state`
-    tidylog::filter(
-      .data[["alt_county"]] == "Shelby County" |
-        as.numeric(.data[["patient_state"]]) %in% c(47, NA)
-    ) %>%
-    dplyr::mutate(
-      .obs_tmp_ = stringr::str_starts(.data[["inv_local_id"]], "(?i)OBS"),
-      .not_pcr_tmp_ = .data[["negative_ig_a"]] %in% "1"
-      | .data[["negative_ig_a"]] %in% "1"
-      | .data[["negative_ig_g"]] %in% "1"
-      | .data[["negative_ig_m"]] %in% "1"
-      | .data[["negative_antigen"]] %in% "1"
-    ) %>%
-    tidylog::filter(!(.data[[".obs_tmp_"]] & .data[[".not_pcr_tmp_"]])) %>%
-    dplyr::select(-c(".obs_tmp_", ".not_pcr_tmp_")) %>%
-    tidylog::filter(.data[["inv_case_status"]] == "N") %>%
-    dplyr::arrange(.data[["patient_local_id"]]) %>%
-    tidylog::distinct(.data[["patient_local_id"]], .keep_all = TRUE) %>%
-    dplyr::mutate(
-      patient_last_name = .data[["patient_last_name"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+"),
-      patient_first_name = .data[["patient_first_name"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+"),
-      patient_dob = std_dates(
-        .data[["patient_dob"]],
-        orders = "ymdT",
-        force = "dt",
-        train = FALSE
-      )
-    ) %>%
-    dplyr::mutate(
-      patient_street_addr = .data[["patient_street_addr_1"]] %>%
-        str_to_ascii() %>%
-        stringr::str_to_upper() %>%
-        stringr::str_remove_all(pattern = "\\s+"),
-      patient_zip = .data[["patient_zip"]] %>%
-        str_to_ascii() %>%
-        stringr::str_trunc(width = 5, ellipsis = "")
-    ) %>%
-    dplyr::arrange(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .data[["patient_street_addr"]],
-      .data[["patient_zip"]]
-    ) %>%
-    tidylog::distinct(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .data[["patient_street_addr"]],
-      .data[["patient_zip"]],
-      .keep_all = TRUE
-    )
+  neg(process_inv(
+    data = data,
+    date = if (!vec_is_empty(date)) date else attr(data, "date"),
+    replace = replace
+  ))
 }
 
-#' @rdname process_nbs
+#' @rdname process-nbs
 #'
 #' @export
 process_positive_tests <- function(
-  data = read_pcr(date = date),
+  data = read_pcr(date),
   date = NULL
 ) {
-  data %>%
-    janitor::clean_names() %>%
-    tidylog::inner_join(
-      process_positive_people(date = date),
-      by = "inv_local_id",
-      suffix = c("", "_inv_")
-    ) %>%
-    dplyr::select(-dplyr::ends_with("_inv_")) %>%
-    tidylog::filter(
-      stringr::str_detect(.data[["lab_result"]], "(?i)positive|presumpt")
-    )
+  pos(process_pcr(
+    data = data,
+    date = if (!vec_is_empty(date)) date else attr(data, "date")
+  ))
 }
 
-#' @rdname process_nbs
+#' @rdname process-nbs
 #'
 #' @export
 process_negative_tests <- function(
-  data = read_pcr(date = date),
+  data = read_pcr(date),
   date = NULL
 ) {
-  data %>%
-    janitor::clean_names() %>%
-    tidylog::inner_join(
-      process_negative_people(date = date),
-      by = "inv_local_id",
-      suffix = c("", "_inv_")
-    ) %>%
-    dplyr::select(-dplyr::ends_with("_inv_")) %>%
-    tidylog::filter(
-      stringr::str_detect(.data[["lab_result"]], "(?i)negative")
-    )
+  neg(process_pcr(
+    data = data,
+    date = if (!vec_is_empty(date)) date else attr(data, "date")
+  ))
 }
