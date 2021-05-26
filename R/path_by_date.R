@@ -212,3 +212,32 @@ path_nca <- function(date = NULL, force_latest = TRUE) {
     force_latest = force_latest
   )
 }
+
+#' Path to Processed Investigation Local IDs
+#'
+#' @inheritParams path_by_date
+#'
+#' @param status Should the path be to `"positive"` or `"negative"` IDs?
+#'
+#' @return An `fs_path`
+#'
+#' @keywords internal
+path_inv_id <- function(
+  date = NULL,
+  status = c("+", "-"),
+  dir = path_create(
+    "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/",
+    "inv_local_id"
+  )
+) {
+  status <- rlang::arg_match(status)[[1L]]
+  flag <- if (status == "+") "pos_" else "neg_"
+  path_by_date(
+    dir = dir,
+    date_format = "%Y-%m-%d",
+    date_regex = "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+    date = date,
+    file_regex = paste0("inv_local_id_", flag, "{date}.fst"),
+    type = "file"
+  )
+}
