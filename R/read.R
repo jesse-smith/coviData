@@ -271,3 +271,60 @@ read_pcr <- function(
 read_inv_id <- function(date = NULL, status = c("+", "-")) {
   dplyr::as_tibble(fst::read_fst(path_inv_id(date, status)))
 }
+
+#' Read Vaccination Data
+#'
+#' @param date The download date of the data
+#'
+#' @inherit read-nbs params return
+#'
+#' @export
+read_vac <- function(
+  date = NULL,
+  col_select = NULL,
+  col_types = vroom::cols(.default = vroom::col_character()),
+  ...
+) {
+  read_file_delim(
+    file = path_vac(date),
+    col_select = col_select,
+    col_types = col_types,
+    ...
+  ) %>%
+    janitor::clean_names() %>%
+    set_attr("date", date_vac(date))
+}
+
+#' Deprecated - Use `read_vac()` (now the backend of this function)
+#'
+#' @param date The download date of the data
+#'
+#' @param ext Deprecated
+#'
+#' @param path Deprecated
+#'
+#' @param ... Additional arguments to pass to
+#'   \code{\link[coviData:read_vac]{read_vac()}}
+#'
+#' @export
+#'
+#' @keywords internal
+vac_load <- function(
+  date = NULL,
+  ext = c("csv", "xlsx"),
+  path = character(),
+  ...
+) {
+  if (!vec_is_empty(path)) {
+    rlang::warn(
+      "`path` is deprecated in `vac_load()`; `date` will be used instead"
+    )
+  }
+  ext <- rlang::arg_match(ext)[[1L]]
+  if (!rlang::is_true(ext == "csv")) {
+    rlang::warn(
+      "`ext` is deprecated in `vac_load()`; the csv file is always read"
+    )
+  }
+  read_vac(date = date, ...)
+}
