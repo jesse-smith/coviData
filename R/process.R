@@ -13,7 +13,7 @@
 #' `process_inv()` is special in that it saves records identified as positive
 #' and negative to the `V:` drive as an `fst` file. This allows significant
 #' speedup on subsequent runs, since the only necessary operations are mutating
-#' of key variable prior to filtering.
+#' of key variables prior to filtering.
 #'
 #' `process_pcr()` joins PCR data to the results of `process_inv()`. These
 #' results can be supplied by the `inv` argument; by default, they are
@@ -160,7 +160,8 @@ process_positive_people <- function(
 #' @export
 process_negative_people <- function(
   data = read_inv(date),
-  date = NULL
+  date = NULL,
+  replace = FALSE
 ) {
   neg(process_inv(
     data = data,

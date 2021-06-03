@@ -32,7 +32,7 @@ neg(data)
 
 process_positive_people(data = read_inv(date), date = NULL, replace = FALSE)
 
-process_negative_people(data = read_inv(date), date = NULL)
+process_negative_people(data = read_inv(date), date = NULL, replace = FALSE)
 
 process_positive_tests(data = read_pcr(date), date = NULL)
 
@@ -64,7 +64,7 @@ The \verb{process_*} functions transform NBS data in preparation for analysis.
 \code{process_inv()} is special in that it saves records identified as positive
 and negative to the \verb{V:} drive as an \code{fst} file. This allows significant
 speedup on subsequent runs, since the only necessary operations are mutating
-of key variable prior to filtering.
+of key variables prior to filtering.
 
 \code{process_pcr()} joins PCR data to the results of \code{process_inv()}. These
 results can be supplied by the \code{inv} argument; by default, they are
