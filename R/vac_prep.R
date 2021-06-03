@@ -11,7 +11,7 @@
 #' }
 #'
 #' @param data Vaccination data, as loaded by
-#'   \code{\link[coviData:vac_load]{vac_load()}}
+#'   \code{\link[coviData:read_vac]{read_vac()}}
 #'
 #' @param distinct Should data be de-duplicated to distinct individuals? The
 #'   latest valid dose will be kept.
@@ -25,7 +25,7 @@
 #'
 #' @export
 vac_prep <- function(
-  data = vac_load(),
+  data = read_vac(),
   distinct = FALSE,
   filter_doses = TRUE,
   filter_residents = TRUE

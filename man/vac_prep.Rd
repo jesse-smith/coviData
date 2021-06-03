@@ -5,7 +5,7 @@
 \title{Prepare Vaccine Data for Analysis}
 \usage{
 vac_prep(
-  data = vac_load(),
+  data = read_vac(),
   distinct = FALSE,
   filter_doses = TRUE,
   filter_residents = TRUE
@@ -13,7 +13,7 @@ vac_prep(
 }
 \arguments{
 \item{data}{Vaccination data, as loaded by
-\code{\link[coviData:vac_load]{vac_load()}}}
+\code{\link[coviData:read_vac]{read_vac()}}}
 
 \item{distinct}{Should data be de-duplicated to distinct individuals? The
 latest valid dose will be kept.}
