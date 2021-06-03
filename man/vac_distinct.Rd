@@ -15,7 +15,7 @@ there are multiple rows for a given combination of inputs, only the first
 row will be preserved. The default de-duplicates by person.}
 
 \item{desc}{Should \code{dose_count} be
-\code{\link[dplyr::arrange]{arrange}}\code{d} in descending order?}
+\code{\link[dplyr:arrange]{arrange}}\code{d} in descending order?}
 }
 \value{
 An object of the same type as \code{data}. The output has the following

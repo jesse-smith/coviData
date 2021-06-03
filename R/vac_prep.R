@@ -114,7 +114,7 @@ vac_filter_residents <- function(data) {
 #'   row will be preserved. The default de-duplicates by person.
 #'
 #' @param desc Should `dose_count` be
-#'   \code{\link[dplyr::arrange]{arrange}}`d` in descending order?
+#'   \code{\link[dplyr:arrange]{arrange}}`d` in descending order?
 #'
 #' @return An object of the same type as `data`. The output has the following
 #'   properties: \itemize{
