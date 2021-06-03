@@ -8,13 +8,13 @@
 \alias{process_negative_tests}
 \title{Run the Cases Workflow for Daily Report}
 \usage{
-process_positive_people(data = read_file_delim(path_inv(date)), date = NULL)
+process_positive_people(data = read_inv(date = date), date = NULL)
 
-process_negative_people(data = read_file_delim(path_inv(date)), date = NULL)
+process_negative_people(data = read_inv(date = date), date = NULL)
 
-process_positive_tests(data = read_file_delim(path_pcr(date)), date = NULL)
+process_positive_tests(data = read_pcr(date = date), date = NULL)
 
-process_negative_tests(data = read_file_delim(path_pcr(date)), date = NULL)
+process_negative_tests(data = read_pcr(date = date), date = NULL)
 }
 \arguments{
 \item{data}{A \code{tibble}. Input data- either investigations for
