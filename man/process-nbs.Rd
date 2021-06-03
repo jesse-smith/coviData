@@ -45,6 +45,14 @@ process_negative_tests(data = read_pcr(date), date = NULL)
 \item{date}{The download date of the data. If the data has a \code{date}
 attribute, this is used; otherwise, the date must be supplied. See
 \code{Details} above.}
+
+\item{replace}{Should the filtering results be recalculated and replace the
+existing results (if any)?}
+
+\item{quiet}{Should intermediate step summaries be output as messages?}
+
+\item{inv}{A \code{tibble}. Input investigation data for \code{process_pcr()}, as
+returned by \code{process_inv()}.}
 }
 \value{
 A nested 2x2 \code{tibble} with \code{logical} column \code{positive} and

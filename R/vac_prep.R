@@ -10,10 +10,16 @@
 #'   \item{Convert `dose_count` to `integer`}
 #' }
 #'
-#' @param .data Vaccination data, as loaded by
+#' @param data Vaccination data, as loaded by
 #'   \code{\link[coviData:vac_load]{vac_load()}}
 #'
-#' @param distinct Should data be de-duplicated to distinct individuals?
+#' @param distinct Should data be de-duplicated to distinct individuals? The
+#'   latest valid dose will be kept.
+#'
+#' @param filter_doses Should invalid doses be removed?
+#'
+#' @param filter_residents Should records for individuals outside of Shelby Co
+#'   be removed? This retains records whose residence is unknown.
 #'
 #' @return A `tibble`
 #'

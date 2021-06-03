@@ -12,10 +12,16 @@ vac_prep(
 )
 }
 \arguments{
-\item{distinct}{Should data be de-duplicated to distinct individuals?}
-
-\item{.data}{Vaccination data, as loaded by
+\item{data}{Vaccination data, as loaded by
 \code{\link[coviData:vac_load]{vac_load()}}}
+
+\item{distinct}{Should data be de-duplicated to distinct individuals? The
+latest valid dose will be kept.}
+
+\item{filter_doses}{Should invalid doses be removed?}
+
+\item{filter_residents}{Should records for individuals outside of Shelby Co
+be removed? This retains records whose residence is unknown.}
 }
 \value{
 A \code{tibble}

@@ -36,9 +36,17 @@
 #' @param data A `tibble`. Input data- either investigations for
 #'   `process_inv()` or PCR tests for `process_pcr()`
 #'
+#' @param inv A `tibble`. Input investigation data for `process_pcr()`, as
+#'   returned by `process_inv()`.
+#'
 #' @param date The download date of the data. If the data has a `date`
 #'   attribute, this is used; otherwise, the date must be supplied. See
 #'   `Details` above.
+#'
+#' @param replace Should the filtering results be recalculated and replace the
+#'   existing results (if any)?
+#'
+#' @param quiet Should intermediate step summaries be output as messages?
 #'
 #' @return A nested 2x2 `tibble` with `logical` column `positive` and
 #'   `list_of<tbl_df>` column `data`; the latter contains the transformed
