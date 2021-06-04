@@ -149,7 +149,9 @@ vac_distinct <- function(
 
   assert_bool(desc)
 
-  cols <- assert_cols(data, {{ cols }})
+
+
+  cols <- select_colnames(data, !!!as.list(cols))
   cols <- rlang::syms(cols)
 
   data %>%
@@ -157,7 +159,7 @@ vac_distinct <- function(
     dplyr::arrange(
       purrr::when(.data[["dose_count"]], desc ~ dplyr::desc(.), ~ .)
     ) %>%
-    dplyr::distinct(., !!!cols) %>%
+    dplyr::distinct(., !!!cols, .keep_all = TRUE) %>%
     dplyr::arrange(.data[[".row_id_tmp_"]]) %>%
     dplyr::select(-".row_id_tmp_")
 }
