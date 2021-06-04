@@ -267,6 +267,8 @@ read_pcr <- function(
 #'
 #' @return A `tibble` with `character` column `inv_local_id`
 #'
+#' @export
+#'
 #' @keywords internal
 read_inv_id <- function(date = NULL, status = c("+", "-")) {
   dplyr::as_tibble(fst::read_fst(path_inv_id(date, status)))
