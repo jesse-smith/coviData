@@ -10,6 +10,10 @@ vac_filter_doses(data)
 \item{data}{Vaccination data with \code{numeric} \code{dose_count} and \code{max_doses}
 columns}
 }
+\value{
+\code{data} filtered to valid doses
+}
 \description{
 Filter to Valid Doses in Vaccination Data
 }
+\keyword{internal}

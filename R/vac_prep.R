@@ -88,6 +88,12 @@ vac_mutate <- function(data) {
 #'
 #' @param data Vaccination data with `numeric` `dose_count` and `max_doses`
 #'   columns
+#'
+#' @return `data` filtered to valid doses
+#'
+#' @export
+#'
+#' @keywords internal
 vac_filter_doses <- function(data) {
   dplyr::filter(
     data,
@@ -101,6 +107,8 @@ vac_filter_doses <- function(data) {
 #' @param data Vaccination data with `logical` `resident` column
 #'
 #' @return `data` filtered to potential residents
+#'
+#' @export
 #'
 #' @keywords internal
 vac_filter_residents <- function(data) {
@@ -129,6 +137,8 @@ vac_filter_residents <- function(data) {
 #'     \item Groups are not modified
 #'     \item Data frame attributes are preserved
 #'   }
+#'
+#' @export
 #'
 #' @keywords internal
 vac_distinct <- function(
