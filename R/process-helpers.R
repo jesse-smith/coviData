@@ -280,7 +280,9 @@ join_pcr_inv <- function(pcr, inv, quiet = FALSE) {
           ) %>%
           join_pcr_inv_(inv = .data[["data"]], quiet = quiet)
       )
-    ) %T>%
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::rowwise(.data[["positive"]]) %T>%
     {gc(verbose = FALSE)}
 }
 
