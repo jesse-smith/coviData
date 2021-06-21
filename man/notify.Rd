@@ -18,6 +18,8 @@ be plain text. If \code{html = TRUE}, this should be HTML text.}
 this argument determines how messages are parsed.}
 
 \item{fail}{Should failure cause an error?}
+
+\item{attach}{Character vector of paths to files (or \code{NULL})}
 }
 \description{
 \code{notify} sends a notification email using a Visual Basic interface to Outlook

@@ -9,10 +9,12 @@
 #' @param body Character. The body of the email. If `html = FALSE`, this should
 #'   be plain text. If `html = TRUE`, this should be HTML text.
 #'
-#' @param fail Should failure cause an error?
-#'
 #' @param html Is the `body` HTML or plain text? All messages are sent in HTML;
 #'   this argument determines how messages are parsed.
+#'
+#' @param fail Should failure cause an error?
+#'
+#' @param attach Character vector of paths to files (or `NULL`)
 #'
 #' @keywords internal
 #'

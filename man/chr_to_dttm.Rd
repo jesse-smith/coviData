@@ -23,8 +23,8 @@ chr_to_dttm(
 \item{orders}{The orders to use when parsing character vector with
 \code{\link[lubridate:parse_date_time]{parse_date_time()}}}
 
-\item{train}{logical, default \code{TRUE}. Whether to train formats on a subset of
-the input vector. The result of this is that supplied orders are sorted
+\item{train}{logical, default \code{TRUE}. Whether to train formats on a subset
+of the input vector. The result of this is that supplied orders are sorted
 according to performance on this training set, which commonly results in
 increased performance. Please note that even when \code{train = FALSE} (and
 \code{exact = FALSE}) guessing of the actual formats is still performed on a

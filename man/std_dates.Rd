@@ -21,8 +21,8 @@ std_dates(
 \item{force}{Whether to force conversion to \code{Date} (\code{force = "dt"}) or
 \code{POSIXct} (\code{force = "dttm"}). The default is no forcing (\code{force = "none"}).}
 
-\item{train}{logical, default \code{TRUE}. Whether to train formats on a subset of
-the input vector. The result of this is that supplied orders are sorted
+\item{train}{logical, default \code{TRUE}. Whether to train formats on a subset
+of the input vector. The result of this is that supplied orders are sorted
 according to performance on this training set, which commonly results in
 increased performance. Please note that even when \code{train = FALSE} (and
 \code{exact = FALSE}) guessing of the actual formats is still performed on a
