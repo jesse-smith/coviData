@@ -481,8 +481,7 @@ download_vaccine_file <- function(
     body = api_params,
     httr::write_disk(file),
     httr::progress(),
-    times = 12L,
-    pause_cap = 300L
+    times = 8L
   ) %>%
     httr::stop_for_status()
 

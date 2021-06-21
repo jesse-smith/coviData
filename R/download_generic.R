@@ -249,8 +249,7 @@ check_date_updated <- function(
       "POST",
       url = api_uri,
       body = api_date_params,
-      times = 12L,
-      pause_cap = 300L
+      times = 8L
     ) %>%
       httr::stop_for_status() %>%
       httr::content(as = "text") %>%
