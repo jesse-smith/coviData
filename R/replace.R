@@ -53,7 +53,7 @@ replace_deaths_id <- function(
       fs::dir_create(fs::path_dir(s_path))
     }
 
-    openxlsx::write.xlsx(data, file = s_path)
+    openxlsx::write.xlsx(data, file = s_path, overwrite = TRUE)
 
     invisible(data)
   }
