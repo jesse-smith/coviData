@@ -42,7 +42,7 @@ load_integrated_data <- function(
 #'
 #' @keywords internal
 load_limited <- function(
-  directory = "C:/Users/Jesse.Smith/Documents/Rt_estimates/data/",
+  directory = "C:/Users/allison.plaxco/Documents/Limited Dataset/",
   file_name = "status.xlsx"
 ) {
   load_data(
