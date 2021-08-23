@@ -237,8 +237,8 @@ add_covid_events <- function(gg_obj, lab_y, ...) {
     add_event("2021-03-20", "Lift More Restrictions", lab_y = lab_y, ...) %>%
     add_event("2021-04-17", "Emphasize Vaccination", lab_y = lab_y, ...) %>%
     add_event("2021-05-15", "Ease Mask Requirements", lab_y = lab_y, ...)%>%
-    add_event("2021-06-12", "Masks Mandatory in Local/State & Federal Building/Public Transportation", lab_y = lab_y, ...) %>%
-    add_event("2021-07-10", "Mask Recomendations for Unvaccinated in Public, Private, and Outdoor Settings", lab_y = lab_y, ...) %>%
+    add_event("2021-06-12", "Masks Mandatory in Government Buildings/Public Transportation", lab_y = lab_y, ...) %>%
+    add_event("2021-07-10", "Mask Recomendations for Unvaccinated People", lab_y = lab_y, ...) %>%
     add_event("2021-08-09", "Masks Mandatory Indoors for Schools", lab_y = lab_y, ...) %>%
     add_event("2021-08-20", "Masks Mandatory for Public Indoor Settings", lab_y = lab_y, ...)
 }
