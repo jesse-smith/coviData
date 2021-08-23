@@ -236,8 +236,9 @@ add_covid_events <- function(gg_obj, lab_y, ...) {
     add_event("2021-02-20", "Broaden Safety Measures", lab_y = lab_y, ...) %>%
     add_event("2021-03-20", "Lift More Restrictions", lab_y = lab_y, ...) %>%
     add_event("2021-04-17", "Emphasize Vaccination", lab_y = lab_y, ...) %>%
-    add_event("2021-05-15", "Ease Mask Requirements", lab_y = lab_y, ...) %>%
-    add_event("2021-06-20", "Mask Requirements Reinstated", lab_y = lab_y, ...)
+    add_event("2021-05-15", "Ease Mask Requirements", lab_y = lab_y, ...)%>%
+    add_event("2021-06-09", "Indoor Mask Requirements for Schools", lab_y = lab_y, ...) %>%
+    add_event("2021-06-20", "Mask Requirements for Public, Indoor Settings", lab_y = lab_y, ...)
 }
 
 #' Add a Marker for Today's Date to a Plot
