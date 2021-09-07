@@ -104,6 +104,7 @@ distinct_inv <- function(
 ) {
   date <- date_inv(date)
   assert_bool(quiet)
+
   data %>%
     janitor::clean_names() %>%
     dplyr::summarize(
@@ -133,13 +134,14 @@ distinct_inv_ <- function(data, is_positive, date, quiet = FALSE) {
 distinct_pos <- function(data, date, quiet = FALSE) {
   date <- date_inv(date)
   distinct <- if (quiet) dplyr::distinct else tidylog::distinct
+
   data %>%
     janitor::clean_names() %>%
     dplyr::arrange(.data[["inv_local_id"]]) %>%
     distinct(.data[["inv_local_id"]], .keep_all = TRUE) %T>%
-    {gc(verbose = FALSE)} %>%
-    dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
-    distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
+    # {gc(verbose = FALSE)} %>%
+    # dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
+    # distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
     {gc(verbose = FALSE)} %>%
     dplyr::arrange(
       .data[["patient_last_name"]],
