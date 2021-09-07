@@ -1,19 +1,20 @@
-write_sas_inv <- function(
-  data = process_inv(),
-  status = c("pos", "neg"),
+#' Write Positive Investigation and PCR Data to XLSX for SAS
+#' @export
+write_sas_pos <- function(
+  data = pos(process_inv()),
+  type = c("inv", "pcr"),
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for SAS",
   date = NULL,
   force = FALSE
 ) {
-  status <- rlang::arg_match(status)[[1L]]
+  type <- rlang::arg_match(type)[[1L]]
   date <- date_inv(date)
   assert_bool(force)
   data %>%
-    purrr::when(status == "pos" ~ pos(.), ~ neg(.)) %>%
     sas_trans_demog() %>%
     sas_std_chr() %>%
     openxlsx::write.xlsx(
-      file = path_create(dir, paste0("inv_", status, "_", date), ext = ".xlsx"),
+      file = path_create(dir, paste0(type, "_pos_", date), ext = ".xlsx"),
       overwrite = force
     )
 }
