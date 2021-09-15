@@ -164,24 +164,28 @@ distinct_neg <- function(data, date, quiet = FALSE) {
   distinct <- if (quiet) dplyr::distinct else tidylog::distinct
   data %>%
     janitor::clean_names() %>%
-    dplyr::arrange(.data[["patient_local_id"]]) %>%
-    distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
-    {gc(verbose = FALSE)} %>%
-    dplyr::arrange(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .data[["patient_street_addr"]],
-      .data[["patient_zip"]]
-    ) %>%
+    dplyr::arrange(.data[["patient_local_id"]],.data[["specimen_coll_dt"]]) %>%
     distinct(
-      .data[["patient_last_name"]],
-      .data[["patient_first_name"]],
-      .data[["patient_dob"]],
-      .data[["patient_street_addr"]],
-      .data[["patient_zip"]],
+      .data[["patient_local_id"]],
+      .data[["specimen_coll_dt"]],
       .keep_all = TRUE
     ) %>%
+    # {gc(verbose = FALSE)} %>%
+    # dplyr::arrange(
+    #   .data[["patient_last_name"]],
+    #   .data[["patient_first_name"]],
+    #   .data[["patient_dob"]],
+    #   .data[["patient_street_addr"]],
+    #   .data[["patient_zip"]]
+    # ) %>%
+    # distinct(
+    #   .data[["patient_last_name"]],
+    #   .data[["patient_first_name"]],
+    #   .data[["patient_dob"]],
+    #   .data[["patient_street_addr"]],
+    #   .data[["patient_zip"]],
+    #   .keep_all = TRUE
+    # ) %>%
     set_attr("date", date) %T>%
     {gc(verbose = FALSE)}
 }
