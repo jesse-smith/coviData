@@ -141,12 +141,16 @@ process_pcr <- function(
 #' @rdname process-nbs
 #'
 #' @export
-pos <- function(data) pull_processed(data, "+")
+pos <- function(data) {
+  pull_processed(data, "+")
+}
 
 #' @rdname process-nbs
 #'
 #' @export
-neg <- function(data) pull_processed(data, "-")
+neg <- function(data) {
+  pull_processed(data, "-")
+}
 
 #' @rdname process-nbs
 #'

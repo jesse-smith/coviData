@@ -342,13 +342,15 @@ col_inv <- function(
 
 pull_processed <- function(data, status = c("+", "-")) {
   status <- rlang::arg_match(status)
+  date   <- attr(data, "date")
   data %>%
     assert_processed() %>%
     dplyr::filter(
       if ({{ status }} == "+") .data[["positive"]] else !.data[["positive"]]
     ) %>%
     dplyr::pull("data") %>%
-    extract2(1L)
+    extract2(1L) %>%
+    set_attr("date", date)
 }
 
 is_processed <- function(data) {
