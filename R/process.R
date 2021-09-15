@@ -94,7 +94,7 @@ process_inv <- function(
       filter_inv(date = date, quiet = quiet) %>%
       mutate_inv(date = date, quiet = quiet) %>%
       nest_inv(date = date) %>%
-      distinct_inv(date = date, quiet = quiet) %>%
+      # distinct_inv(date = date, quiet = quiet) %>%
       write_inv_key(date = date) %>%
       set_attr("date", date)
   }
