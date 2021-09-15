@@ -1,10 +1,10 @@
 #' Separate +/- Investigation/PCR Data Files for SAS
 #' @export
 write_sas_nbs <- function(
-  pcr = process_pcr(inv = inv),
   inv = process_inv(),
+  pcr = process_pcr(inv = inv),
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for SAS",
-  date = attr(pcr, "date"),
+  date = attr(inv, "date"),
   force = FALSE
 ) {
   write_sas_pos(pos(inv), type = "inv", dir = dir, date = date, force = force)
@@ -28,16 +28,10 @@ write_sas_pos <- function(
 
   path <- path_create(dir, paste0(type, "_pos_", date), ext = ".csv")
 
-  if (fs::file_exists(path) && !force) {
-    rlang::abort(
-      "A file already exists at this location; to overwrite, use `force = TRUE`"
-    )
-  }
-
   data %>%
     sas_trans_demog() %>%
     sas_std_chr() %>%
-    write_file_delim(path = path)
+    write_file_delim(path = path, force = force)
 }
 
 #' Write Negative Investigation and PCR Data to CSV for SAS
@@ -53,17 +47,11 @@ write_sas_neg <- function(
   date <- date_inv(date)
   assert_bool(force)
 
-  path <- path_create(dir, paste0(type, "_pos_", date), ext = ".csv")
-
-  if (fs::file_exists(path) && !force) {
-    rlang::abort(
-      "A file already exists at this location; to overwrite, use `force = TRUE`"
-    )
-  }
+  path <- path_create(dir, paste0(type, "_neg_", date), ext = ".csv")
 
   data %>%
     dplyr::select("inv_local_id", "specimen_coll_dt") %>%
-    write_file_delim(path = path)
+    write_file_delim(path = path, force = force)
 }
 
 sas_trans_demog <- function(data) {
