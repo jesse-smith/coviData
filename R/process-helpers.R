@@ -143,9 +143,9 @@ distinct_pos <- function(data, date, quiet = FALSE) {
     janitor::clean_names() %>%
     dplyr::arrange(.data[["inv_local_id"]]) %>%
     distinct(.data[["inv_local_id"]], .keep_all = TRUE) %T>%
-    {gc(verbose = FALSE)} %>%
-    dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
-    distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
+    #{gc(verbose = FALSE)} %>%
+    #dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
+    #distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
     {gc(verbose = FALSE)} %>%
     dplyr::arrange(
       .data[["patient_last_name"]],
