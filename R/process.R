@@ -106,7 +106,7 @@ process_inv <- function(
 #' @export
 process_pcr <- function(
   data = read_pcr(),
-  inv = process_inv(date = date),
+  inv = process_inv(read_inv(date = date)),
   date = attr(data, "date"),
   quiet = FALSE
 ) {
