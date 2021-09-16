@@ -97,6 +97,9 @@ nest_inv <- function(data = mutate_inv(), date = attr(data, "date")) {
     {gc(verbose = FALSE)}
 }
 
+
+#' Get Distinct Investigations
+#' @export
 distinct_inv <- function(
   data = nest_inv(),
   date = attr(data, "date"),
@@ -113,7 +116,7 @@ distinct_inv <- function(
         distinct_inv_(
           .data[["data"]],
           is_positive = .data[["positive"]],
-          date = date,
+          date  = date,
           quiet = quiet
         )
       )
@@ -127,7 +130,8 @@ distinct_inv_ <- function(data, is_positive, date, quiet = FALSE) {
   if (is_positive) {
     distinct_pos(data, date = date, quiet = quiet)
   } else {
-    distinct_neg(data, date = date, quiet = quiet)
+    data
+    # distinct_neg(data, date = date, quiet = quiet)
   }
 }
 

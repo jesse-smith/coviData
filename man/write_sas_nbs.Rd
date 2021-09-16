@@ -5,10 +5,10 @@
 \title{Separate +/- Investigation/PCR Data Files for SAS}
 \usage{
 write_sas_nbs(
-  pcr = process_pcr(inv = inv),
   inv = process_inv(),
+  pcr = process_pcr(inv = inv),
   dir = "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for SAS",
-  date = attr(pcr, "date"),
+  date = attr(inv, "date"),
   force = FALSE
 )
 }

@@ -15,6 +15,7 @@
 process_inv(
   data = read_inv(),
   date = attr(data, "date"),
+  distinct = TRUE,
   replace = FALSE,
   quiet = FALSE
 )
