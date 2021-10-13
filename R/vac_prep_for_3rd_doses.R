@@ -36,8 +36,8 @@ vac_prep_dose3 <- function(
     purrr::when(distinct ~ vac_distinct(.), ~ .)
 
  try1 %>% subset(lubridate::mdy(vacc_date) >= lubridate::ymd("2021-08-13")) %>%
- #restrict to Moderna (207) and Pfizer (208) and other/unspecified (213) only
- subset(cvx_code %in% c("207", "208", "213")) %>%
+ #restrict to Moderna (207) and Pfizer (208) only
+ subset(cvx_code %in% c("207", "208")) %>%
  #restrict to dose = 3
  subset(dose_count %in% "3")
 
