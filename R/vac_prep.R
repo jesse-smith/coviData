@@ -77,7 +77,7 @@ vac_mutate <- function(data) {
     dose_count = as.integer(.data[["dose_count"]]),
     max_doses = dplyr::case_when(
       .data[["cvx_code"]] %in% c("210", "212") ~ 1L,
-      .data[["cvx_code"]] %in% c("207", "208") ~ 2L,
+      .data[["cvx_code"]] %in% c("207", "208", "217", "218") ~ 2L,
       TRUE ~ NA_integer_
     ),
     recip_fully_vacc = .data[["dose_count"]] == .data[["max_doses"]]
