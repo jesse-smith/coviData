@@ -274,8 +274,14 @@ mutate_pcr <- function(data = read_pcr(), date = attr(data, "date")) {
         orders = "ymdT",
         force = "dt",
         train = FALSE
-      )
-    ) %T>%
+      ),
+      patient_dob = std_dates(
+        .data[["patient_dob"]],
+        orders = "ymdT",
+        force = "dt",
+        train = FALSE
+
+    )) %T>%
     {gc(verbose = FALSE)}
 }
 
