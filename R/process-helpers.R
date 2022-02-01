@@ -138,19 +138,43 @@ distinct_inv_ <- function(data, is_positive, date, quiet = FALSE) {
 distinct_pos <- function(data, date, quiet = FALSE) {
   date <- date_inv(date)
   distinct <- if (quiet) dplyr::distinct else tidylog::distinct
+  `%notin%` <- Negate(`%in%`)
 
-  data %>%
+  # data %>%
+  #   janitor::clean_names() %>%
+  #   dplyr::arrange(.data[["inv_local_id"]]) %>%
+  #   distinct(.data[["inv_local_id"]], .keep_all = TRUE) %T>%
+  #   #{gc(verbose = FALSE)} %>%
+  #   #dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
+  #   #distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
+  #   {gc(verbose = FALSE)} %>%
+  #   dplyr::arrange(
+  #     .data[["patient_last_name"]],
+  #     .data[["patient_first_name"]],
+  #     .data[["patient_dob"]],
+  #     .data[["inv_case_status"]]
+  #   ) %>%
+  #   distinct(
+  #     .data[["patient_last_name"]],
+  #     .data[["patient_first_name"]],
+  #     .data[["patient_dob"]],
+  #     .keep_all = TRUE
+  #   )
+
+  pos_inv2 <- data %>%
     janitor::clean_names() %>%
     dplyr::arrange(.data[["inv_local_id"]]) %>%
-    distinct(.data[["inv_local_id"]], .keep_all = TRUE) %T>%
-    #{gc(verbose = FALSE)} %>%
-    #dplyr::arrange(.data[["patient_local_id"]], .data[["inv_case_status"]]) %>%
-    #distinct(.data[["patient_local_id"]], .keep_all = TRUE) %T>%
-    {gc(verbose = FALSE)} %>%
+    distinct(.data[["inv_local_id"]], .keep_all = TRUE)
+
+  #marked as reinfection
+  reinfection <- subset(pos_inv2, covid_reinfection == "Yes")
+
+  no_reinf <- subset(pos_inv2, covid_reinfection %notin% "Yes")%>%
     dplyr::arrange(
       .data[["patient_last_name"]],
       .data[["patient_first_name"]],
       .data[["patient_dob"]],
+      .data[["specimen_coll_dt"]],
       .data[["inv_case_status"]]
     ) %>%
     distinct(
@@ -158,7 +182,10 @@ distinct_pos <- function(data, date, quiet = FALSE) {
       .data[["patient_first_name"]],
       .data[["patient_dob"]],
       .keep_all = TRUE
-    ) %>%
+    )
+
+
+  dplyr::bind_rows(reinfection, no_reinf)%>%
     set_attr("date", date) %T>%
     {gc(verbose = FALSE)}
 }
