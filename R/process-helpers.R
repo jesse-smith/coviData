@@ -171,6 +171,7 @@ distinct_pos <- function(data, date, quiet = FALSE) {
 
   no_reinf <- subset(pos_inv2, covid_reinfection %notin% "Yes")%>%
     dplyr::arrange(
+      .data[["inv_local_id"]],
       .data[["patient_last_name"]],
       .data[["patient_first_name"]],
       .data[["patient_dob"]],
