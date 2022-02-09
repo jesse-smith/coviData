@@ -242,7 +242,9 @@ add_covid_events <- function(gg_obj, lab_y, ...) {
     add_event("2021-08-09", "Masks Mandatory Indoors for Schools", lab_y = lab_y, ...) %>%
     add_event("2021-08-20", "Masks Mandatory for Public Indoor Settings", lab_y = lab_y, ...) %>%
     add_event("2021-10-27", "Masks Mandatory in Schools and Highly Recommended for Public Indoor Settings", lab_y = lab_y, ...)%>%
-    add_event("2021-12-01", "Masks Mandatory for Schools Covered by ADA and Highly Recommended in All Other Schools", lab_y = lab_y, ...)
+    add_event("2021-12-01", "Masks Mandatory for Schools Covered by ADA and Highly Recommended in All Other Schools", lab_y = lab_y, ...)%>%
+    add_event("2022-01-13", "Availability of Locally Purchased Home Test Kits in Shelby County", lab_y = lab_y, ...)%>%
+    add_event("2022-01-19", "Availability of Federally Purchased Home Test Kits", lab_y = lab_y, ...)
 }
 
 #' Add a Marker for Today's Date to a Plot
