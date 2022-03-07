@@ -30,12 +30,87 @@ vac_prep <- function(
   filter_doses = TRUE,
   filter_residents = TRUE
 ) {
-  data %>%
+  vac_third_dose <- coviData:::vac_prep_dose3()%>%
+    janitor::clean_names() %>%
+    vac_mutate()
+
+
+  vac_dose1_2 <- data %>%
     janitor::clean_names() %>%
     vac_mutate() %>%
-    purrr::when(filter_residents ~ vac_filter_residents(.), ~ .) %>%
-    purrr::when(filter_doses ~ vac_filter_doses(.), ~ .) %>%
+    purrr::when(filter_doses ~ vac_filter_doses(.), ~ .)
+
+  vacs <- dplyr::bind_rows(vac_dose1_2, vac_third_dose)%>%
+    purrr::when(filter_residents ~ vac_filter_residents(.), ~ .)
+
+  fully <- dplyr::select(vacs, asiis_pat_id_ptr, dose_count, recip_fully_vacc)%>%
+    dplyr::arrange(asiis_pat_id_ptr, desc(dose_count))%>%
+    dplyr::distinct(asiis_pat_id_ptr, .keep_all = TRUE)
+
+  dose1 <- subset(vacs, dose_count == "1")%>%
+    dplyr::rename(vacc_date1 = vacc_date, cvx_code1 = cvx_code)%>%
+    dplyr::select(asiis_pat_id_ptr, vacc_date1, cvx_code1)
+
+  dose2 <- subset(vacs, dose_count == "2")%>%
+    dplyr::rename(vacc_date2 = vacc_date, cvx_code2 = cvx_code)%>%
+    dplyr::select(asiis_pat_id_ptr, vacc_date2, cvx_code2)
+
+  dose3 <- subset(vacs, dose_count == "3")%>%
+    dplyr::rename(vacc_date3 = vacc_date, cvx_code3 = cvx_code)%>%
+    dplyr::select(asiis_pat_id_ptr, vacc_date3, cvx_code3)
+
+  vac_ind <- dplyr::left_join(dose1, dose2)%>%
+    dplyr::left_join(dose3)%>%
+    dplyr::left_join(fully)%>%
+    dplyr::rename(dose_count_last = dose_count, recip_fully_vacc_last = recip_fully_vacc)
+
+
+  #if fully vac, when was the last dose in their series?
+  vac_ind$cvx_code1 <- dplyr::case_when(vac_ind$cvx_code1 == "213" & (!is.na(vac_ind$cvx_code2) & vac_ind$cvx_code2 != "213") ~ vac_ind$cvx_code2,
+                                        vac_ind$cvx_code1 == "213" & (!is.na(vac_ind$cvx_code3) & vac_ind$cvx_code3 != "213") ~ vac_ind$cvx_code3,
+                                        TRUE~vac_ind$cvx_code1)
+
+
+  #were they moderna.pfizer or not?
+  vac_ind$moderna_pfizer <- dplyr::case_when(
+    vac_ind$cvx_code1 %in% c("210", "212") ~ "No",
+    vac_ind$cvx_code1 %in% c("207", "208", "217", "218") ~ "Yes"
+  )
+
+  #what is their boost date?
+  vac_ind$boost_date <- dplyr::case_when(
+    vac_ind$moderna_pfizer == "Yes" ~ vac_ind$vacc_date3,
+    vac_ind$moderna_pfizer == "No" ~ vac_ind$vacc_date2
+  )
+
+
+
+  vac_ind$status <- dplyr::case_when(
+    !is.na(vac_ind$boost_date) ~ "Up to date",
+    vac_ind$recip_fully_vacc_last == FALSE ~ "Not up to date",
+    vac_ind$moderna_pfizer == "Yes" & lubridate::mdy(vac_ind$vacc_date2) < lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Not up to date",
+    vac_ind$moderna_pfizer == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
+    vac_ind$moderna_pfizer == "No" & lubridate::mdy(vac_ind$vacc_date1) < lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Not up to date",
+    vac_ind$moderna_pfizer == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date"
+  )
+
+  #if they are up to date, do they have a booster?
+
+  vac_ind$up_to_date_with_booster <- dplyr::case_when(
+    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_date) ~ "Yes",
+    vac_ind$status == "Up to date" & is.na(vac_ind$boost_date) ~ "No",
+  )
+
+
+  vac_ind$status <- ifelse(
+    is.na(vac_ind$status), "Undetermined", vac_ind$status
+  )
+
+  vacs_all <- dplyr::left_join(vacs, vac_ind, by = "asiis_pat_id_ptr")
+
+  vacs_all %>%
     purrr::when(distinct ~ vac_distinct(.), ~ .)
+
 }
 
 #' Parse Zip Codes from Vaccination Data
@@ -70,19 +145,39 @@ vac_parse_zip <- function(string) {
 #'
 #' @keywords internal
 vac_mutate <- function(data) {
+
   dplyr::mutate(
     data,
     address_zip = vac_parse_zip(.data[["address_zip"]]),
     resident = .data[["address_zip"]] != "Other",
     dose_count = as.integer(.data[["dose_count"]]),
     max_doses = dplyr::case_when(
-      .data[["cvx_code"]] %in% c("210", "212") ~ 1L,
-      .data[["cvx_code"]] %in% c("207", "208", "217", "218") ~ 2L,
+      .data[["cvx_code"]] %in% c("212") ~ 1L,
+      .data[["cvx_code"]] %in% c("207", "208", "217", "218", "210") ~ 2L,
       TRUE ~ NA_integer_
     ),
-    recip_fully_vacc = .data[["dose_count"]] == .data[["max_doses"]]
+    recip_fully_vacc = .data[["dose_count"]] >= .data[["max_doses"]]
   )
 }
+
+
+
+
+# vac_mutate <- function(data) {
+#   dplyr::mutate(
+#     data,
+#     address_zip = vac_parse_zip(.data[["address_zip"]]),
+#     resident = .data[["address_zip"]] != "Other",
+#     dose_count = as.integer(.data[["dose_count"]]),
+#     max_doses = dplyr::case_when(
+#       .data[["cvx_code"]] %in% c("210", "212") ~ 1L,
+#       .data[["cvx_code"]] %in% c("207", "208", "217", "218") ~ 2L,
+#       TRUE ~ NA_integer_
+#     ),
+#     recip_fully_vacc = .data[["dose_count"]] == .data[["max_doses"]]
+#   )
+# }
+
 
 #' Filter to Valid Doses in Vaccination Data
 #'
