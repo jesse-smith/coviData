@@ -71,27 +71,29 @@ vac_prep <- function(
                                         TRUE~vac_ind$cvx_code1)
 
 
-  #were they moderna.pfizer or not?
-  vac_ind$moderna_pfizer <- dplyr::case_when(
-    vac_ind$cvx_code1 %in% c("210", "212") ~ "No",
-    vac_ind$cvx_code1 %in% c("207", "208", "217", "218") ~ "Yes"
+  #were they a two dose series or not?
+  vac_ind$two_dose_series <- dplyr::case_when(
+    vac_ind$cvx_code1 %in% c("212") ~ "No",
+    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210") ~ "Yes"
   )
 
   #what is their boost date?
   vac_ind$boost_date <- dplyr::case_when(
-    vac_ind$moderna_pfizer == "Yes" ~ vac_ind$vacc_date3,
-    vac_ind$moderna_pfizer == "No" ~ vac_ind$vacc_date2
+    vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date3,
+    vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date2
   )
 
+  vac_ind$boost_date <- lubridate::mdy(vac_ind$boost_date)
 
+  vac_ind$boost_date <- lubridate::as_date(ifelse(vac_ind$boost_date < lubridate::as_date("2021-08-13"), NA, vac_ind$boost_date))
 
   vac_ind$status <- dplyr::case_when(
     !is.na(vac_ind$boost_date) ~ "Up to date",
     vac_ind$recip_fully_vacc_last == FALSE ~ "Not up to date",
-    vac_ind$moderna_pfizer == "Yes" & lubridate::mdy(vac_ind$vacc_date2) < lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Not up to date",
-    vac_ind$moderna_pfizer == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
-    vac_ind$moderna_pfizer == "No" & lubridate::mdy(vac_ind$vacc_date1) < lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Not up to date",
-    vac_ind$moderna_pfizer == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date"
+    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) < lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Not up to date",
+    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
+    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) < lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Not up to date",
+    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date"
   )
 
   #if they are up to date, do they have a booster?
