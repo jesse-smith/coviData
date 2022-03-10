@@ -25,12 +25,16 @@
 #'
 #' @export
 vac_prep <- function(
-  data = read_vac(),
+  data = read_vac(date = date),
   distinct = FALSE,
   filter_doses = TRUE,
-  filter_residents = TRUE
+  filter_residents = TRUE,
+  date = NULL
 ) {
-  vac_third_dose <- coviData:::vac_prep_dose3()%>%
+
+  date <- coviData::date_vac(date)
+
+  vac_third_dose <- coviData:::vac_prep_dose3(data = read_vac(date = date))%>%
     janitor::clean_names() %>%
     vac_mutate()
 
