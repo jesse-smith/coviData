@@ -28,13 +28,13 @@ vac_prep <- function(
   data = read_vac(date = date),
   distinct = FALSE,
   filter_doses = TRUE,
-  filter_residents = TRUE,
+  filter_residents = FALSE,
   date = NULL
 ) {
 
   date <- coviData::date_vac(date)
 
-  vac_third_dose <- coviData:::vac_prep_dose3(data = read_vac(date = date))%>%
+  vac_third_dose <- vac_prep_dose3(data = read_vac(date = date))%>%
     janitor::clean_names() %>%
     vac_mutate()
 
@@ -83,6 +83,7 @@ vac_prep <- function(
 
   #what is their boost date?
   vac_ind$boost_date <- dplyr::case_when(
+    !is.na(vac_ind$vacc_date3) ~ vac_ind$vacc_date3,
     vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date3,
     vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date2
   )
@@ -114,7 +115,7 @@ vac_prep <- function(
 
   vacs_all <- dplyr::left_join(vacs, vac_ind, by = "asiis_pat_id_ptr")
 
-  vacs_all %>%
+ vacs_all %>%
     purrr::when(distinct ~ vac_distinct(.), ~ .)
 
 }
@@ -198,8 +199,8 @@ vac_mutate <- function(data) {
 vac_filter_doses <- function(data) {
   dplyr::filter(
     data,
-    .data[["dose_count"]] <= 2L,
-    .data[["dose_count"]] <= .data[["max_doses"]] | is.na(.data[["max_doses"]])
+    .data[["dose_count"]] <= 2L
+   # .data[["dose_count"]] <= .data[["max_doses"]] | is.na(.data[["max_doses"]])
   )
 }
 

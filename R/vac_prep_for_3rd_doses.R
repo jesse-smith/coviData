@@ -26,7 +26,7 @@
 vac_prep_dose3 <- function(
   data = read_vac(),
   distinct = FALSE,
-  filter_residents = TRUE
+  filter_residents = FALSE
 ) {
  try1 <- data %>%
     janitor::clean_names() %>%
