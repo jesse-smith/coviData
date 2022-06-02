@@ -34,6 +34,24 @@ vac_prep <- function(
 
   date <- coviData::date_vac(date)
 
+  #add fourth doses 05/25
+
+  unprocessed_vac <- read_vac(date = date)
+
+  dose4 <- subset(unprocessed_vac, dose_count == 4)%>%
+    dplyr::distinct(asiis_pat_id_ptr, .keep_all = TRUE)%>%
+    janitor::clean_names() %>%
+    vac_mutate()
+
+  dose4$vacc_date <- lubridate::mdy(dose4$vacc_date)
+  #should just keep doses as of FDA approval of second booster dose, which was 3/29/22
+  dose4 <- subset(dose4, vacc_date >= lubridate::as_date("2022-03-29"))
+  #transform back to the previous format (character) to combine
+  dose4$vacc_date <- as.character(format(dose4$vacc_date, format = "%m/%d/%Y"))
+
+
+
+
   vac_third_dose <- vac_prep_dose3(data = read_vac(date = date))%>%
     janitor::clean_names() %>%
     vac_mutate()
@@ -44,10 +62,10 @@ vac_prep <- function(
     vac_mutate() %>%
     purrr::when(filter_doses ~ vac_filter_doses(.), ~ .)
 
-  vacs <- dplyr::bind_rows(vac_dose1_2, vac_third_dose)%>%
+  vacs <- dplyr::bind_rows(vac_dose1_2, vac_third_dose, dose4)%>%
     purrr::when(filter_residents ~ vac_filter_residents(.), ~ .)
 
-  fully <- dplyr::select(vacs, asiis_pat_id_ptr, dose_count, recip_fully_vacc)%>%
+  fully <- dplyr::select(vacs, asiis_pat_id_ptr, pat_birth_date, dose_count, recip_fully_vacc)%>%
     dplyr::arrange(asiis_pat_id_ptr, desc(dose_count))%>%
     dplyr::distinct(asiis_pat_id_ptr, .keep_all = TRUE)
 
@@ -63,8 +81,13 @@ vac_prep <- function(
     dplyr::rename(vacc_date3 = vacc_date, cvx_code3 = cvx_code)%>%
     dplyr::select(asiis_pat_id_ptr, vacc_date3, cvx_code3)
 
+  dose4 <- subset(vacs, dose_count == "4")%>%
+    dplyr::rename(vacc_date4 = vacc_date, cvx_code4 = cvx_code)%>%
+    dplyr::select(asiis_pat_id_ptr, vacc_date4, cvx_code4)
+
   vac_ind <- dplyr::left_join(dose1, dose2)%>%
     dplyr::left_join(dose3)%>%
+    dplyr::left_join(dose4)%>%
     dplyr::left_join(fully)%>%
     dplyr::rename(dose_count_last = dose_count, recip_fully_vacc_last = recip_fully_vacc)
 
@@ -78,40 +101,67 @@ vac_prep <- function(
   #were they a two dose series or not?
   vac_ind$two_dose_series <- dplyr::case_when(
     vac_ind$cvx_code1 %in% c("212") ~ "No",
-    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210") ~ "Yes"
+    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210", "219") ~ "Yes"
   )
 
-  #what is their boost date?
-  vac_ind$boost_date <- dplyr::case_when(
-    !is.na(vac_ind$vacc_date3) ~ vac_ind$vacc_date3,
+  #what is their first and second boost date?
+
+  vac_ind$boost_dose1 <- dplyr::case_when(
     vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date3,
     vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date2
   )
 
-  vac_ind$boost_date <- lubridate::mdy(vac_ind$boost_date)
-
-  vac_ind$boost_date <- lubridate::as_date(ifelse(vac_ind$boost_date < lubridate::as_date("2021-08-13"), NA, vac_ind$boost_date))
-
-  vac_ind$status <- dplyr::case_when(
-    !is.na(vac_ind$boost_date) ~ "Up to date",
-    vac_ind$recip_fully_vacc_last == FALSE ~ "Not up to date",
-    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) < lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Not up to date",
-    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
-    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) < lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Not up to date",
-    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date"
+  vac_ind$boost_dose2 <- dplyr::case_when(
+    vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date4,
+    vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date3
   )
+
+
+  vac_ind$dose_date_last <- dplyr::coalesce(vac_ind$vacc_date4, vac_ind$vacc_date3, vac_ind$vacc_date2, vac_ind$vacc_date1)
+
+
+
+  #what is their age at their last dose?
+
+  vac_ind$pat_birth_date <- lubridate::mdy(vac_ind$pat_birth_date)
+  vac_ind$dose_date_last <- lubridate::mdy(vac_ind$dose_date_last)
+
+  vac_ind$age_last_dose <- as.numeric((vac_ind$dose_date_last - vac_ind$pat_birth_date)/365.25)
+
+  #what is their status based on age and initial series??
+  vac_ind$status <- dplyr::case_when(
+
+    vac_ind$recip_fully_vacc_last == FALSE ~ "Not up to date",
+
+    !is.na(vac_ind$boost_dose2) ~ "Up to date",
+    vac_ind$age_last_dose < 50 & !is.na(vac_ind$boost_dose1) ~ "Up to date",
+    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
+    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date",
+
+    vac_ind$age_last_dose >= 50 & vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date3) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
+    vac_ind$age_last_dose >= 50 & vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
+
+    TRUE ~ "Not up to date"
+    )
+
+
 
   #if they are up to date, do they have a booster?
 
   vac_ind$up_to_date_with_booster <- dplyr::case_when(
-    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_date) ~ "Yes",
-    vac_ind$status == "Up to date" & is.na(vac_ind$boost_date) ~ "No",
+    vac_ind$status == "Up to date" & (!is.na(vac_ind$boost_dose2) | !is.na(vac_ind$boost_dose1)) ~ "Yes",
+    vac_ind$status == "Up to date" & (is.na(vac_ind$boost_dose2) & is.na(vac_ind$boost_dose1)) ~ "No",
   )
 
 
-  vac_ind$status <- ifelse(
-    is.na(vac_ind$status), "Undetermined", vac_ind$status
+  #if they are up to date, how many boosters do they have?
+
+  vac_ind$up_to_date_booster_count <- dplyr::case_when(
+    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_dose2) ~ "Two",
+    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_dose1) ~ "One",
+    vac_ind$status == "Up to date" & (is.na(vac_ind$boost_dose2) & is.na(vac_ind$boost_dose1)) ~ "None",
   )
+
 
   vacs_all <- dplyr::left_join(vacs, vac_ind, by = "asiis_pat_id_ptr")
 
