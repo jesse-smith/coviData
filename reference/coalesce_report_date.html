@@ -52,24 +52,29 @@ a <code>tibble</code>. Internally, this is a series of join-then-coalesce operat
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">coalesce_report_date</span><span class="op">(</span>
-  archive_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Report Date Linelist/archive/"</span><span class="op">)</span>,
-  id <span class="op">=</span> <span class="st">"inv_local_id"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">coalesce_report_date</span><span class="op">(</span></span>
+<span>  archive_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Report Date Linelist/archive/"</span><span class="op">)</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"inv_local_id"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>archive_dir</dt>
 <dd><p>The location of the archive directory</p></dd>
+
+
 <dt>id</dt>
 <dd><p>The name of the column to use when joining data; defaults to
 "inv_local_id"</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> containing the <code>id</code> column and a <code>report_date</code> column</p>
+    
+
+<p>A <code>tibble</code> containing the <code>id</code> column and a <code>report_date</code> column</p>
     </div>
 
   </div>
@@ -84,7 +89,7 @@ a <code>tibble</code>. Internally, this is a series of join-then-coalesce operat
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

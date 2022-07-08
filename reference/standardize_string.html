@@ -60,23 +60,32 @@ any characters could not be converted to <code>UTF-8</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">standardize_string</span><span class="op">(</span><span class="va">string</span>, case_fn <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="va"><a href="https://stringr.tidyverse.org/reference/case.html" class="external-link">str_to_title</a></span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">standardize_string</span><span class="op">(</span><span class="va">string</span>, case_fn <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="va"><a href="https://stringr.tidyverse.org/reference/case.html" class="external-link">str_to_title</a></span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>string</dt>
 <dd><p>The string or character vector to standardize</p></dd>
+
+
 <dt>case_fn</dt>
 <dd><p>A function for converting to the desired case. Note that
 <code>case_fn</code> is simply the last transformation applied to <code>string</code>
 and may technically perform operations other than case conversion.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters to pass to <code>case_fn</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A character vector of the same length as <code>string</code></p>
+    
+
+<p>A character vector of the same length as <code>string</code></p>
+
+
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -98,7 +107,7 @@ type, see the <a href="https://tazinho.github.io/snakecase/" class="external-lin
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -52,7 +52,7 @@ specified log file. Only one logging session can be active at a time.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">log_start</span><span class="op">(</span><span class="va">file</span>, dir <span class="op">=</span> <span class="fu"><a href="log_dir.html">log_dir</a></span><span class="op">(</span><span class="op">)</span>, append <span class="op">=</span> <span class="cn">TRUE</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">log_start</span><span class="op">(</span><span class="va">file</span>, dir <span class="op">=</span> <span class="fu"><a href="log_dir.html">log_dir</a></span><span class="op">(</span><span class="op">)</span>, append <span class="op">=</span> <span class="cn">TRUE</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -60,18 +60,27 @@ specified log file. Only one logging session can be active at a time.</p>
     <dl><dt>file</dt>
 <dd><p>The log file name. If path components are included they are
 assumed to be relative to <code>dir</code>.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p>The log directory. <code><a href="log_dir.html">log_dir()</a></code>, the default, returns the current
 log directory, or <code>NULL</code> if none is set. The latter case will cause <code>file</code>
 to be created in or relative to your current working directory.</p></dd>
+
+
 <dt>append</dt>
 <dd><p>Should an existing file be appended to?</p></dd>
+
+
 <dt>force</dt>
 <dd><p>If <code>append = FALSE</code>, should an existing file be overwritten?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The path to the log file (invisibly)</p>
+    
+
+<p>The path to the log file (invisibly)</p>
     </div>
 
   </div>
@@ -86,7 +95,7 @@ to be created in or relative to your current working directory.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

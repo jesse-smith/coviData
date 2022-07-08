@@ -76,78 +76,91 @@ snapshot files.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_nbs_snapshot</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  redcap_file <span class="op">=</span> <span class="st">"nbs_daily_upload"</span>,
-  directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,
-  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">" Final Data Pull.csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">download_pcr_snapshot</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  redcap_file <span class="op">=</span> <span class="st">"lab_pcr"</span>,
-  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
-  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All PCRs_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">download_antigen_snapshot</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  redcap_file <span class="op">=</span> <span class="st">"lab_antigen"</span>,
-  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR ANTIGEN/"</span>,
-  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All Antigens_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">download_serology_snapshot</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  redcap_file <span class="op">=</span> <span class="st">"lab_serology"</span>,
-  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR SEROLOGY/"</span>,
-  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All Serologies_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">download_vaccine_snapshot</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  redcap_file <span class="op">=</span> <span class="st">"covid_vaccine_data"</span>,
-  directory <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"</span><span class="op">)</span>,
-  new_file <span class="op">=</span> <span class="fu">name_vac_file</span><span class="op">(</span><span class="va">date</span>, redcap_file <span class="op">=</span> <span class="va">redcap_file</span>, api_token <span class="op">=</span> <span class="va">api_token</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_nbs_snapshot</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  redcap_file <span class="op">=</span> <span class="st">"nbs_daily_upload"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">" Final Data Pull.csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download_pcr_snapshot</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  redcap_file <span class="op">=</span> <span class="st">"lab_pcr"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All PCRs_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download_antigen_snapshot</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  redcap_file <span class="op">=</span> <span class="st">"lab_antigen"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR ANTIGEN/"</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All Antigens_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download_serology_snapshot</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  redcap_file <span class="op">=</span> <span class="st">"lab_serology"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR SEROLOGY/"</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MSR - All Serologies_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%m%d%Y"</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download_vaccine_snapshot</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  redcap_file <span class="op">=</span> <span class="st">"covid_vaccine_data"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"COVID-19 Vaccine Reporting/data/COVID-19 Vaccine data pull/"</span><span class="op">)</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="fu">name_vac_file</span><span class="op">(</span><span class="va">date</span>, redcap_file <span class="op">=</span> <span class="va">redcap_file</span>, api_token <span class="op">=</span> <span class="va">api_token</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>date</dt>
 <dd><p>A <code>Date</code> indicating the date of the file to download</p></dd>
+
+
 <dt>api_token</dt>
 <dd><p>The API token for accessing the Data for Regions REDcap
 project. This should be stored in an <em>.Renviron</em> file; see
 <a href="env_vars.html">env_vars</a> for details.</p></dd>
+
+
 <dt>redcap_file</dt>
 <dd><p>A string indicating the name of the file to download from
 REDcap</p></dd>
+
+
 <dt>directory</dt>
 <dd><p>A string specifying the save directory; this should usually
 be left alone</p></dd>
+
+
 <dt>new_file</dt>
 <dd><p>A string specifying the save file name; this should always
 end in <em>.csv</em> and should usually be left alone</p></dd>
+
+
 <dt>force</dt>
 <dd><p>A logical indicating whether to ignore any existing files
 matching <code>date</code> and <code>directory</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly returns the path to the new data file</p>
+    
+
+<p>Invisibly returns the path to the new data file</p>
     </div>
 
   </div>
@@ -162,7 +175,7 @@ matching <code>date</code> and <code>directory</code></p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

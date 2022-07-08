@@ -52,25 +52,25 @@ download_nca() downloads records from the New Case Assignment (NCA) project"><me
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_nit</span><span class="op">(</span>
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_NIT_token"</span><span class="op">)</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  filter <span class="op">=</span> <span class="cn">NULL</span>,
-  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nit/"</span>,
-  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"nit_data_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">download_nca</span><span class="op">(</span>
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_NCA_token"</span><span class="op">)</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  filter <span class="op">=</span> <span class="cn">NULL</span>,
-  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nca/"</span>,
-  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"nca_data_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_nit</span><span class="op">(</span></span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_NIT_token"</span><span class="op">)</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nit/"</span>,</span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"nit_data_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download_nca</span><span class="op">(</span></span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_NCA_token"</span><span class="op">)</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/Data for R/nca/"</span>,</span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"nca_data_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,55 +80,70 @@ download_nca() downloads records from the New Case Assignment (NCA) project"><me
 programmatically. Best practice is to set as an environment variable and
 retrieve using <code>Sys.getenv("token_environment_variable")</code>. See
 <code><a href="env_vars.html">env_vars</a></code> for more information.</p></dd>
+
+
 <dt>headers</dt>
 <dd><p><code>"raw"</code> or <code>"label"</code>. Should column names ("headers") be
 exported as the raw variable names (<code>"raw"</code>, the default) or the label
 shown in the UI (<code>"label"</code>)?</p></dd>
+
+
 <dt>values</dt>
 <dd><p><code>"raw"</code> or <code>"label"</code>. Should values in multiple-choice and
 checkbox fields be exported as the raw coded value (<code>"raw"</code>, the default)
 or the label for the coded value (<code>"label"</code>)?</p></dd>
+
+
 <dt>filter</dt>
 <dd><p><code>character</code>. REDcap filtering logic to apply prior to download.
 This must be in the REDcap logic syntax.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p><code>character</code>. Directory to save data; this should usually remain
 unchanged.</p></dd>
+
+
 <dt>file</dt>
 <dd><p><code>character</code>. File name for data; this should usually remain
 unchanged. The resulting file will <strong>always</strong> have a "csv" extension; if
 you pass a <code>file</code> name without a "csv" extension, the function will
 replace it with a warning.</p></dd>
+
+
 <dt>force</dt>
 <dd><p>Should the download overwrite an existing file, if one exists?
 The default is <code>FALSE</code>, which errors if an existing file is found.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The path to the data as an <code>fs_path</code> character vector</p>
+    
+
+<p>The path to the data as an <code>fs_path</code> character vector</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="co"># Download the current NIT data</span></span>
-<span class="r-in">  <span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># Download NIT and load immediately</span></span>
-<span class="r-in">  <span class="va">nit_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="load-case-projects.html">load_nit</a></span><span class="op">(</span><span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># Do the same with pipe (`%&gt;%`)</span></span>
-<span class="r-in">  <span class="va">nit_data</span> <span class="op">&lt;-</span> <span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="load-case-projects.html">load_nit</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># Overwrite the previous file</span></span>
-<span class="r-in">  <span class="fu">download_nit</span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># Download NCA data</span></span>
-<span class="r-in">  <span class="fu">download_nca</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># Download NCA and overwrite previous file</span></span>
-<span class="r-in">  <span class="va">nca_data</span> <span class="op">&lt;-</span> <span class="fu">download_nca</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="load-case-projects.html">load_nca</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Download the current NIT data</span></span></span>
+<span class="r-in"><span>  <span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Download NIT and load immediately</span></span></span>
+<span class="r-in"><span>  <span class="va">nit_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="load-case-projects.html">load_nit</a></span><span class="op">(</span><span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Do the same with pipe (`%&gt;%`)</span></span></span>
+<span class="r-in"><span>  <span class="va">nit_data</span> <span class="op">&lt;-</span> <span class="fu">download_nit</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="load-case-projects.html">load_nit</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Overwrite the previous file</span></span></span>
+<span class="r-in"><span>  <span class="fu">download_nit</span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Download NCA data</span></span></span>
+<span class="r-in"><span>  <span class="fu">download_nca</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Download NCA and overwrite previous file</span></span></span>
+<span class="r-in"><span>  <span class="va">nca_data</span> <span class="op">&lt;-</span> <span class="fu">download_nca</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="load-case-projects.html">load_nca</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -143,7 +158,7 @@ The default is <code>FALSE</code>, which errors if an existing file is found.</p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

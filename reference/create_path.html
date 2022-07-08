@@ -54,7 +54,7 @@ an expanded and tidied path.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_path</span><span class="op">(</span><span class="va">directory</span>, file_name <span class="op">=</span> <span class="cn">NULL</span>, ext <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_path</span><span class="op">(</span><span class="va">directory</span>, file_name <span class="op">=</span> <span class="cn">NULL</span>, ext <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,16 +63,23 @@ an expanded and tidied path.</p>
 <dd><p>The path to a directory; optionally, the full path can be
 supplied here, in which case <code>create_path()</code> will simply expand and
 tidy the given file path.</p></dd>
+
+
 <dt>file_name</dt>
 <dd><p>The name of the file of interest; may be left <code>NULL</code> if
 this is included in <code>directory</code></p></dd>
+
+
 <dt>ext</dt>
 <dd><p>The file extension to add to the path; may be left <code>NULL</code> if
 included in <code>file_name</code> or <code>directory</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An <code>fs_path</code>, which is a character vector with additional attributes</p>
+    
+
+<p>An <code>fs_path</code>, which is a character vector with additional attributes</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -95,7 +102,7 @@ combine arbitrary path components given in <code>...</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

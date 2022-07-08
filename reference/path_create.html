@@ -54,7 +54,7 @@ using either the <strong>R</strong> or system definition of the home directory.<
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">path_create</span><span class="op">(</span><span class="va">...</span>, ext <span class="op">=</span> <span class="cn">NULL</span>, home <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"user"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">path_create</span><span class="op">(</span><span class="va">...</span>, ext <span class="op">=</span> <span class="cn">NULL</span>, home <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"user"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,18 +63,27 @@ using either the <strong>R</strong> or system definition of the home directory.<
 <dd><p>character vectors, if any values are NA, the result will also be
 NA. The paths follow the recycling rules used in the tibble package,
 namely that only length 1 arguments are recycled.</p></dd>
+
+
 <dt>ext</dt>
 <dd><p>An optional extension to append to the generated path.</p></dd>
+
+
 <dt>home</dt>
 <dd><p>The home directory definition to use when expanding a path. The
 default is to use <strong>R</strong>'s definition, but the system definition of the
 user's home directory can also be used. These are equivalent to calling
 <code>path_expand_r()</code> or <code>path_expand()</code>, respectively.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The combined and cleaned path in an <code>fs_path</code> object, which is a
+    
+
+<p>The combined and cleaned path in an <code>fs_path</code> object, which is a
 character vector that also has class <code>fs_path</code></p>
+
+
     </div>
 
   </div>
@@ -89,7 +98,7 @@ character vector that also has class <code>fs_path</code></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -61,12 +61,12 @@ following steps:</p><ul><li><p>Standardize variable names</p></li>
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vac_prep</span><span class="op">(</span>
-  data <span class="op">=</span> <span class="fu"><a href="read_vac.html">read_vac</a></span><span class="op">(</span><span class="op">)</span>,
-  distinct <span class="op">=</span> <span class="cn">FALSE</span>,
-  filter_doses <span class="op">=</span> <span class="cn">TRUE</span>,
-  filter_residents <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vac_prep</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="read_vac.html">read_vac</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  distinct <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  filter_doses <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  filter_residents <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,18 +74,29 @@ following steps:</p><ul><li><p>Standardize variable names</p></li>
     <dl><dt>data</dt>
 <dd><p>Vaccination data, as loaded by
 <code><a href="read_vac.html">read_vac()</a></code></p></dd>
+
+
 <dt>distinct</dt>
 <dd><p>Should data be de-duplicated to distinct individuals? The
 latest valid dose will be kept.</p></dd>
+
+
 <dt>filter_doses</dt>
 <dd><p>Should invalid doses be removed?</p></dd>
+
+
 <dt>filter_residents</dt>
 <dd><p>Should records for individuals outside of Shelby Co
 be removed? This retains records whose residence is unknown.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code></p>
+    
+
+<p>A <code>tibble</code></p>
+
+
     </div>
 
   </div>
@@ -100,7 +111,7 @@ be removed? This retains records whose residence is unknown.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

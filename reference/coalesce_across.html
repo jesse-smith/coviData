@@ -54,7 +54,7 @@ finds the first non-missing value at each position.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">coalesce_across</span><span class="op">(</span><span class="va">.cols</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">coalesce_across</span><span class="op">(</span><span class="va">.cols</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,10 +63,13 @@ finds the first non-missing value at each position.</p>
 <dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; Columns to transform.
 Because <code>across()</code> is used within functions like <code>summarise()</code> and
 <code>mutate()</code>, you can't select or compute upon grouping variables.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A vector the same length as the first <code>...</code> argument with
+    
+
+<p>A vector the same length as the first <code>...</code> argument with
 missing values replaced by the first non-missing value.</p>
     </div>
     <div id="details">
@@ -90,7 +93,7 @@ inside <strong>dplyr</strong> verbs. In other cases, just use <code>coalesce()</
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

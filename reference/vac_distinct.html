@@ -52,25 +52,32 @@ distinct()."><meta property="og:image" content="https://jesse-smith.github.io/co
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vac_distinct</span><span class="op">(</span><span class="va">data</span>, cols <span class="op">=</span> <span class="st">"asiis_pat_id_ptr"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vac_distinct</span><span class="op">(</span><span class="va">data</span>, cols <span class="op">=</span> <span class="st">"asiis_pat_id_ptr"</span>, desc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Vaccination data</p></dd>
+
+
 <dt>cols</dt>
 <dd><p><code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">&lt;data masking&gt;</a></code>
 <code>character</code> vector of variables to use when determining uniqueness. If
 there are multiple rows for a given combination of inputs, only the first
 row will be preserved. The default de-duplicates by person.</p></dd>
+
+
 <dt>desc</dt>
 <dd><p>Should <code>dose_count</code> be
 <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></code><code>d</code> in descending order?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of the same type as <code>data</code>. The output has the following
+    
+
+<p>An object of the same type as <code>data</code>. The output has the following
 properties:</p><ul><li><p>Rows are a subset of the input but appear in the same order</p></li>
 <li><p>Columns are not modified</p></li>
 <li><p>Groups are not modified</p></li>
@@ -89,7 +96,7 @@ properties:</p><ul><li><p>Rows are a subset of the input but appear in the same 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

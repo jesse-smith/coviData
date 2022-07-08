@@ -54,7 +54,7 @@ specified columns exist in the input data. It is inspired by
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cols_exist</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, action <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cols_exist</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span>, action <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -62,20 +62,27 @@ specified columns exist in the input data. It is inspired by
     <dl><dt>.data</dt>
 <dd><p>A data frame or data frame extension (e.g. a
 <code><a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble</a></code>)</p></dd>
+
+
 <dt>...</dt>
 <dd><p><code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">&lt;tidy-select&gt;</a></code> One or more
 columns from the data, separated by commas. These can be specified as
 unquoted names or using tidy selection helpers; if the latter,
 <code>cols_exist()</code> will check that <em>at least one</em> column matches each
 provided <code>&lt;tidy-select&gt;</code> expression.</p></dd>
+
+
 <dt>action</dt>
 <dd><p>The action to perform if one or more columns do not exist; one
 of <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort()</a></code> (the default),
 <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">warn()</a></code>, or <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">inform()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The input data frame</p>
+    
+
+<p>The input data frame</p>
     </div>
 
   </div>
@@ -90,7 +97,7 @@ of <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

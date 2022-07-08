@@ -58,12 +58,12 @@ the connection list object.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_download</span><span class="op">(</span>
-  <span class="va">file</span>,
-  tofolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
-  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_download</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  tofolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -72,19 +72,28 @@ the connection list object.</p>
 <dd><p>A character vector of file names. If the wildcard "*" is used,
 then all files on the SFTP url will be downloaded. NOTE! Folders
 (directories) will not be downloaded.</p></dd>
+
+
 <dt>tofolder</dt>
 <dd><p>A string containing a valid path - relative or absolute - to
 the folder where the files will be saved. Default is the working directory.
 If the folder does not exist it will be created.</p></dd>
+
+
 <dt>sftp_connection</dt>
 <dd><p>A list object created with <code><a href="sftp_connect.html">sftp_connect</a></code>.
 Default is 'sftp_con'.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is TRUE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function returns the number of files downloaded, following
+    
+
+<p>The function returns the number of files downloaded, following
 successful download.</p>
     </div>
     <div id="see-also">
@@ -109,18 +118,18 @@ successful download.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - take all files on the SFTP url and save in the working directory</span></span>
-<span class="r-in"><span class="fu">sftp_download</span><span class="op">(</span><span class="st">"*"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># take a vector of file names from a dataframe</span></span>
-<span class="r-in"><span class="fu">sftp_download</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span>, tofolder <span class="op">=</span> <span class="st">"my/relative/path"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># take one specific file name from a vector from a dataframe</span></span>
-<span class="r-in"><span class="fu">sftp_download</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, tofolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - take all files on the SFTP url and save in the working directory</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_download</span><span class="op">(</span><span class="st">"*"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># take a vector of file names from a dataframe</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_download</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span>, tofolder <span class="op">=</span> <span class="st">"my/relative/path"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># take one specific file name from a vector from a dataframe</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_download</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, tofolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -135,7 +144,7 @@ successful download.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

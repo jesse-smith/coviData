@@ -64,31 +64,40 @@ the past 7 days are kept.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">trim_backups</span><span class="op">(</span>
-  <span class="va">directory</span>,
-  pattern <span class="op">=</span> <span class="cn">NULL</span>,
-  min_backups <span class="op">=</span> <span class="fl">7</span>,
-  min_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">min_backups</span> <span class="op">+</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trim_backups</span><span class="op">(</span></span>
+<span>  <span class="va">directory</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  min_backups <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  min_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">min_backups</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>directory</dt>
 <dd><p>The path to the backup directory</p></dd>
+
+
 <dt>pattern</dt>
 <dd><p>The naming pattern of the backup files, as a regular
 expression. This allows maintenance of backups when other files are also
 present in the <code>directory</code> (though this is not recommended).</p></dd>
+
+
 <dt>min_backups</dt>
 <dd><p>The minimum number of backups to keep</p></dd>
+
+
 <dt>min_date</dt>
 <dd><p>The date after which to keep all backups. The default is set
 to keep files for <code>min_backups</code> days.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The deleted paths (invisibly)</p>
+    
+
+<p>The deleted paths (invisibly)</p>
     </div>
 
   </div>
@@ -103,7 +112,7 @@ to keep files for <code>min_backups</code> days.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

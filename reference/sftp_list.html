@@ -56,14 +56,14 @@ and <code><a href="sftp_listdirs.html">sftp_listdirs</a></code></p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_list</span><span class="op">(</span>
-  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  encoding <span class="op">=</span> <span class="st">"UTF-8"</span>,
-  type <span class="op">=</span> <span class="st">"all"</span>,
-  recurse <span class="op">=</span> <span class="cn">F</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_list</span><span class="op">(</span></span>
+<span>  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  encoding <span class="op">=</span> <span class="st">"UTF-8"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  recurse <span class="op">=</span> <span class="cn">F</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -71,26 +71,41 @@ and <code><a href="sftp_listdirs.html">sftp_listdirs</a></code></p>
     <dl><dt>sftp_connection</dt>
 <dd><p>A list created by calling <code><a href="sftp_connect.html">sftp_connect</a></code>;
 default value is <code>sftp_con</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is <code>TRUE</code>.</p></dd>
+
+
 <dt>curlPerformVerbose</dt>
 <dd><p>Logical. Turn on messages to console from
 <code><a href="https://rdrr.io/pkg/RCurl/man/curlPerform.html" class="external-link">RCurl::curlPerform</a></code>.
 Default is <code>FALSE</code>.</p></dd>
+
+
 <dt>encoding</dt>
 <dd><p>Explicitly identifies the encoding of the content that is
 returned by the server in its response. Possible values are <code>"UTF-8"</code>
 or <code>"ISO-8859-1"</code>. Default is <code>"UTF-8"</code>.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>One of <code>"f"</code>, code"file" for listing files; <code>"d"</code>,
 <code>"dir"</code>, <code>"directory"</code> for listing directories; or <code>"all"</code>
 for both files and directories, the default.</p></dd>
+
+
 <dt>recurse</dt>
 <dd><p>Logical. Recurse directories? Default is <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code></p>
+    
+
+<p>A <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code></p>
+
+
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -114,18 +129,18 @@ for both files and directories, the default.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - rely on defaults</span></span>
-<span class="r-in"><span class="va">files_and_folders</span> <span class="op">&lt;-</span> <span class="fu">sftp_list</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># explicit</span></span>
-<span class="r-in"><span class="va">files_and_folders</span> <span class="op">&lt;-</span> <span class="fu">sftp_list</span><span class="op">(</span>sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span>
-<span class="r-in">                               verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">                               curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">                               type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - rely on defaults</span></span></span>
+<span class="r-in"><span><span class="va">files_and_folders</span> <span class="op">&lt;-</span> <span class="fu">sftp_list</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># explicit</span></span></span>
+<span class="r-in"><span><span class="va">files_and_folders</span> <span class="op">&lt;-</span> <span class="fu">sftp_list</span><span class="op">(</span>sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span></span>
+<span class="r-in"><span>                               verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                               curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                               type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +155,7 @@ for both files and directories, the default.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -54,24 +54,29 @@ dates in <code>archive_dir</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">archive_report_date</span><span class="op">(</span>
-  data_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,
-  archive_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Report Date Linelist/archive/"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">archive_report_date</span><span class="op">(</span></span>
+<span>  data_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,</span>
+<span>  archive_dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Report Date Linelist/archive/"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data_dir</dt>
 <dd><p>The directory containing the NBS data files to archive</p></dd>
+
+
 <dt>archive_dir</dt>
 <dd><p>The location of the archive directory</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> containing the data files paths, creation (birth) date,
+    
+
+<p>A <code>tibble</code> containing the data files paths, creation (birth) date,
 and archive file paths for newly created archive data</p>
     </div>
 
@@ -87,7 +92,7 @@ and archive file paths for newly created archive data</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

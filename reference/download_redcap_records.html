@@ -50,15 +50,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_redcap_records</span><span class="op">(</span>
-  <span class="va">api_token</span>,
-  <span class="va">dir</span>,
-  <span class="va">file</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  filter <span class="op">=</span> <span class="cn">NULL</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_redcap_records</span><span class="op">(</span></span>
+<span>  <span class="va">api_token</span>,</span>
+<span>  <span class="va">dir</span>,</span>
+<span>  <span class="va">file</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,32 +68,47 @@
 programmatically. Best practice is to set as an environment variable and
 retrieve using <code>Sys.getenv("token_environment_variable")</code>. See
 <code><a href="env_vars.html">env_vars</a></code> for more information.</p></dd>
+
+
 <dt>dir</dt>
 <dd><p><code>character</code>. Directory to save data; this should usually remain
 unchanged.</p></dd>
+
+
 <dt>file</dt>
 <dd><p><code>character</code>. File name for data; this should usually remain
 unchanged. The resulting file will <strong>always</strong> have a "csv" extension; if
 you pass a <code>file</code> name without a "csv" extension, the function will
 replace it with a warning.</p></dd>
+
+
 <dt>headers</dt>
 <dd><p><code>"raw"</code> or <code>"label"</code>. Should column names ("headers") be
 exported as the raw variable names (<code>"raw"</code>, the default) or the label
 shown in the UI (<code>"label"</code>)?</p></dd>
+
+
 <dt>values</dt>
 <dd><p><code>"raw"</code> or <code>"label"</code>. Should values in multiple-choice and
 checkbox fields be exported as the raw coded value (<code>"raw"</code>, the default)
 or the label for the coded value (<code>"label"</code>)?</p></dd>
+
+
 <dt>filter</dt>
 <dd><p><code>character</code>. REDcap filtering logic to apply prior to download.
 This must be in the REDcap logic syntax.</p></dd>
+
+
 <dt>force</dt>
 <dd><p>Should the download overwrite an existing file, if one exists?
 The default is <code>FALSE</code>, which errors if an existing file is found.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The path to the data as an <code>fs_path</code> character vector</p>
+    
+
+<p>The path to the data as an <code>fs_path</code> character vector</p>
     </div>
 
   </div>
@@ -108,7 +123,7 @@ The default is <code>FALSE</code>, which errors if an existing file is found.</p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

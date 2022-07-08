@@ -58,39 +58,41 @@ system benefits of <code><a href="https://rlang.r-lib.org/reference/abort.html" 
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">assert</span><span class="op">(</span>
-  <span class="va">...</span>,
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  trace <span class="op">=</span> <span class="cn">NULL</span>,
-  parent <span class="op">=</span> <span class="cn">NULL</span>,
-  reduce <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span>
-<span class="op">)</span>
-
-<span class="fu">assert_all</span><span class="op">(</span>
-  <span class="va">...</span>,
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  trace <span class="op">=</span> <span class="cn">NULL</span>,
-  parent <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">assert_any</span><span class="op">(</span>
-  <span class="va">...</span>,
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  trace <span class="op">=</span> <span class="cn">NULL</span>,
-  parent <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assert</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parent <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  reduce <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">assert_all</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parent <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">assert_any</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parent <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Unnamed expressions that describe the conditions to be tested</p></dd>
+
+
 <dt>message</dt>
 <dd><p>The message to display. Character vectors are
 formatted with <code><a href="https://rlang.r-lib.org/reference/format_error_bullets.html" class="external-link">format_error_bullets()</a></code>. The first element
@@ -103,25 +105,38 @@ generated lazily through <a href="https://rlang.r-lib.org/reference/cnd_message.
 that case, <code>class</code> must be supplied. Only <code>inform()</code> allows empty
 messages as it is occasionally useful to build user output
 incrementally.</p></dd>
+
+
 <dt>class</dt>
 <dd><p>Subclass of the condition. This allows your users
 to selectively handle the conditions signalled by your functions.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>Additional data to be stored in the condition object</p></dd>
+
+
 <dt>trace</dt>
 <dd><p>A <code>trace</code> object created by <code><a href="https://rlang.r-lib.org/reference/trace_back.html" class="external-link">trace_back()</a></code>.</p></dd>
+
+
 <dt>parent</dt>
 <dd><p>A parent condition object created by <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort()</a></code>.</p></dd>
+
+
 <dt>reduce</dt>
 <dd><p>A function that takes a vector of logical values as an argument
 and returns a single logical value. <code>reduce</code> is given the results of the
 expressions in <code>...</code> and decides whether the assertion passed or failed.
 The default is <code><a href="https://rdrr.io/r/base/all.html" class="external-link">all()</a></code> (i.e. all expressions must
 be <code>TRUE</code>), but any function that meets the criteria above is acceptable.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>TRUE</code> if the assertions evaluate to <code>TRUE</code>, otherwise an error
+    
+
+<p><code>TRUE</code> if the assertions evaluate to <code>TRUE</code>, otherwise an error
 condition</p>
     </div>
     <div id="details">
@@ -144,7 +159,7 @@ conditioning system benefits of <code><a href="https://rlang.r-lib.org/reference
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -54,29 +54,38 @@ saves the result in the file specified in <code>save_as</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">replace_deaths_id</span><span class="op">(</span>
-  file <span class="op">=</span> <span class="st">"Working Copy Death  Epi.xlsx"</span>,
-  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/"</span>,
-  id <span class="op">=</span> <span class="cn">NULL</span>,
-  save_as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"sas_data/cleaned_surveillance_copy.xlsx"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">replace_deaths_id</span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="st">"Working Copy Death  Epi.xlsx"</span>,</span>
+<span>  directory <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/MORTALITY DATA/"</span>,</span>
+<span>  id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"sas_data/cleaned_surveillance_copy.xlsx"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>The name of the surveillance linelist file</p></dd>
+
+
 <dt>directory</dt>
 <dd><p>The directory containing the linelist</p></dd>
+
+
 <dt>id</dt>
 <dd><p>The name of the column specifying the NBS ID in the linelist; if
 <code>NULL</code>, assumes that this is the first column</p></dd>
+
+
 <dt>save_as</dt>
 <dd><p>The file path specifying where to save the results</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The cleaned data as a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> (invisibly)</p>
+    
+
+<p>The cleaned data as a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> (invisibly)</p>
     </div>
 
   </div>
@@ -91,7 +100,7 @@ saves the result in the file specified in <code>save_as</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

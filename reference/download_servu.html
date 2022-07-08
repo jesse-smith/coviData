@@ -50,35 +50,46 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_servu</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  usr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"sftp_usr"</span><span class="op">)</span>,
-  pwd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"sftp_pwd"</span><span class="op">)</span>,
-  <span class="va">remote_dir</span>,
-  local_dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/AEL Data/"</span>,
-  new_file <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_servu</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  usr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"sftp_usr"</span><span class="op">)</span>,</span>
+<span>  pwd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"sftp_pwd"</span><span class="op">)</span>,</span>
+<span>  <span class="va">remote_dir</span>,</span>
+<span>  local_dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/AEL Data/"</span>,</span>
+<span>  new_file <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>date</dt>
 <dd><p>A <code>date</code> indicating the date of the file to download</p></dd>
+
+
 <dt>usr</dt>
 <dd><p>The username to pass to the SFTP site. Ideally, this should be
 stored in an Renviron file and not in a script.</p></dd>
+
+
 <dt>pwd</dt>
 <dd><p>The password to pass to the SFTP site. Ideally, this should be
 stored in an Renviron file and not in a script.</p></dd>
+
+
 <dt>remote_dir</dt>
 <dd><p>A string indicating the directory on Serv-U that should
 contain the file</p></dd>
+
+
 <dt>local_dir</dt>
 <dd><p>A string indicating the directory on the local system in
 which to save the file</p></dd>
+
+
 <dt>new_file</dt>
 <dd><p>A string indicating the new file name to save the data under.
 Currently not used.</p></dd>
+
 </dl></div>
 
   </div>
@@ -93,7 +104,7 @@ Currently not used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

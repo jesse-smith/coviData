@@ -58,13 +58,13 @@ the connection list object.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_upload</span><span class="op">(</span>
-  <span class="va">file</span>,
-  fromfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
-  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,
-  log_file <span class="op">=</span> <span class="cn">NA</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_upload</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  fromfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,</span>
+<span>  log_file <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,22 +74,33 @@ the connection list object.</p>
 then all files in <code>fromfolder</code> will be uploaded. NOTE! Names of folders
 (directories) cannot be part of <code>file</code>. To create folders on the SFTP
 server, please see <code><a href="sftp_makedir.html">sftp_makedir</a></code>.</p></dd>
+
+
 <dt>fromfolder</dt>
 <dd><p>A string containing a valid path - relative or absolute -
 to the folder where the files in <code>file</code> can be found. Default is the
 working directory.</p></dd>
+
+
 <dt>sftp_connection</dt>
 <dd><p>A list object created with <code>link{sftp_connect}</code>.
 Default is <code>"sftp_con"</code>.</p></dd>
+
+
 <dt>log_file</dt>
 <dd><p>Valid path to a text file (.txt, .csv, .log etc) including
 filename and file extension.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is TRUE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function returns the number of files uploaded, following
+    
+
+<p>The function returns the number of files uploaded, following
 successful upload.</p>
     </div>
     <div id="see-also">
@@ -114,19 +125,19 @@ successful upload.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - upload all files in the current working directory</span></span>
-<span class="r-in"><span class="fu">sftp_upload</span><span class="op">(</span><span class="st">"*"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># take a vector of file names from a dataframe</span></span>
-<span class="r-in"><span class="fu">sftp_upload</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span>, fromfolder <span class="op">=</span> <span class="st">"my/relative/path/"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># take one specific file name from a vector from a dataframe</span></span>
-<span class="r-in"><span class="fu">sftp_upload</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, fromfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - upload all files in the current working directory</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_upload</span><span class="op">(</span><span class="st">"*"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># take a vector of file names from a dataframe</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_upload</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span>, fromfolder <span class="op">=</span> <span class="st">"my/relative/path/"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># take one specific file name from a vector from a dataframe</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_upload</span><span class="op">(</span>file <span class="op">=</span> <span class="va">files</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, fromfolder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -141,7 +152,7 @@ successful upload.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

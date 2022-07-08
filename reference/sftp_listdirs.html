@@ -50,12 +50,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_listdirs</span><span class="op">(</span>
-  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  recurse <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_listdirs</span><span class="op">(</span></span>
+<span>  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  recurse <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,17 +63,28 @@
     <dl><dt>sftp_connection</dt>
 <dd><p>A list created by calling <a href="sftp_connect.html">sftp_connect</a>
 Default value is <code>sftp_con</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is TRUE.</p></dd>
+
+
 <dt>curlPerformVerbose</dt>
 <dd><p>Logical. Turn on messages to console from
 <code><a href="https://rdrr.io/pkg/RCurl/man/curlPerform.html" class="external-link">curlPerform</a></code>. Default is FALSE.</p></dd>
+
+
 <dt>recurse</dt>
 <dd><p>Logical. Recurse directories? Default is FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code></p>
+    
+
+<p>A <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code></p>
+
+
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -97,17 +108,17 @@ Default value is <code>sftp_con</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - rely on defaults</span></span>
-<span class="r-in"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">sftp_listdirs</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># explicit</span></span>
-<span class="r-in"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">sftp_listdirs</span><span class="op">(</span>sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span>
-<span class="r-in">                       verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">                       curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - rely on defaults</span></span></span>
+<span class="r-in"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">sftp_listdirs</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># explicit</span></span></span>
+<span class="r-in"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">sftp_listdirs</span><span class="op">(</span>sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span></span>
+<span class="r-in"><span>                       verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                       curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -122,7 +133,7 @@ Default value is <code>sftp_con</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -58,23 +58,30 @@ normalizes the given path(s).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">path_clean</span><span class="op">(</span><span class="va">path</span>, home <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"user"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">path_clean</span><span class="op">(</span><span class="va">path</span>, home <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"r"</span>, <span class="st">"user"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>path</dt>
 <dd><p>A character vector of one or more paths.</p></dd>
+
+
 <dt>home</dt>
 <dd><p>The home directory definition to use when expanding a path. The
 default is to use <strong>R</strong>'s definition, but the system definition of the
 user's home directory can also be used. These are equivalent to calling
 <code>path_expand_r()</code> or <code>path_expand()</code>, respectively.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The cleaned path(s) in an <code>fs_path</code> object, which is a character
+    
+
+<p>The cleaned path(s) in an <code>fs_path</code> object, which is a character
 vector that also has class <code>fs_path</code></p>
+
+
     </div>
 
   </div>
@@ -89,7 +96,7 @@ vector that also has class <code>fs_path</code></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

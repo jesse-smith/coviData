@@ -56,73 +56,90 @@ returns path that contain a specified date given additional parameters.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">path_by_date</span><span class="op">(</span>
-  <span class="va">dir</span>,
-  <span class="va">date_format</span>,
-  <span class="va">date_regex</span>,
-  date <span class="op">=</span> <span class="cn">NULL</span>,
-  file_regex <span class="op">=</span> <span class="st">".*{date}.*"</span>,
-  type <span class="op">=</span> <span class="st">"any"</span>,
-  force_latest <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">path_inv</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="cn">NULL</span>,
-  dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,
-  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">path_pcr</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="cn">NULL</span>,
-  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,
-  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">path_vac</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="cn">NULL</span>,
-  dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"</span><span class="op">)</span>,
-  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">path_nit</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, force_latest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">path_nca</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, force_latest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">path_by_date</span><span class="op">(</span></span>
+<span>  <span class="va">dir</span>,</span>
+<span>  <span class="va">date_format</span>,</span>
+<span>  <span class="va">date_regex</span>,</span>
+<span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  file_regex <span class="op">=</span> <span class="st">".*{date}.*"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"any"</span>,</span>
+<span>  force_latest <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">path_inv</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Sandbox data pull Final/"</span><span class="op">)</span>,</span>
+<span>  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">path_pcr</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dir <span class="op">=</span> <span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/MSR PCR/"</span>,</span>
+<span>  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">path_vac</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"COVID-19 Vaccine Reporting/data/COVID-19 vaccine data pull/"</span><span class="op">)</span>,</span>
+<span>  ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"xlsx"</span>, <span class="st">"fst"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">path_nit</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, force_latest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">path_nca</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, force_latest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dir</dt>
 <dd><p>The directory holding the files of interest</p></dd>
+
+
 <dt>date_format</dt>
 <dd><p>The format of the date in the file name; see
 <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code> for more information</p></dd>
+
+
 <dt>date_regex</dt>
 <dd><p>A regular expression matching the date in the file name.
 This will hopefully be deprecated in the future, but is currently needed
 for extracting dates from the file path strings.</p></dd>
+
+
 <dt>date</dt>
 <dd><p>A <code>Date</code> or string in the format "YYYY-MM-DD"</p></dd>
+
+
 <dt>file_regex</dt>
 <dd><p>A regular expression matching the file names of interest.
 The location of the date in the file name is specified using <code>"{date}"</code>, as
 in the glue package.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>The file type(s) to return, one or more of <code>"any"</code>, <code>"file"</code>,
 <code>"directory"</code>, <code>"symlink"</code>, <code>"FIFO"</code>, <code>"socket"</code>, <code>"character_device"</code> or
 <code>"block_device"</code>.</p></dd>
+
+
 <dt>force_latest</dt>
 <dd><p>If multiple files with the given <code>date</code> are found,
 should the function return only the file with the latest creation date
 (<code>TRUE</code>, the default), or should it return all file paths (<code>FALSE</code>)?</p></dd>
+
+
 <dt>ext</dt>
 <dd><p>The file type to return. Files may be saved as "fst", "csv", or
 "xlsx".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An <code>fs_path</code> character vector</p>
+    
+
+<p>An <code>fs_path</code> character vector</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -148,7 +165,7 @@ for finding specific files.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

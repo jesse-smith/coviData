@@ -58,11 +58,11 @@ can only be used with the output of <code><a href="coalesce_report_date.html">co
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">save_report_date</span><span class="op">(</span>
-  <span class="va">.data</span>,
-  save_as <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,
-    <span class="st">"Report Date Linelist/report_date_linelist"</span>, ext <span class="op">=</span> <span class="st">"fst"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_report_date</span><span class="op">(</span></span>
+<span>  <span class="va">.data</span>,</span>
+<span>  save_as <span class="op">=</span> <span class="fu"><a href="path_create.html">path_create</a></span><span class="op">(</span><span class="st">"V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/"</span>,</span>
+<span>    <span class="st">"Report Date Linelist/report_date_linelist"</span>, ext <span class="op">=</span> <span class="st">"fst"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,12 +70,17 @@ can only be used with the output of <code><a href="coalesce_report_date.html">co
     <dl><dt>.data</dt>
 <dd><p>A <code>tibble</code> returned from <code><a href="coalesce_report_date.html">coalesce_report_date()</a></code> or
 <code><a href="add_collection_date.html">add_collection_date()</a></code></p></dd>
+
+
 <dt>save_as</dt>
 <dd><p>The write path to the new <code>fst</code> file</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The input data (invisibly)</p>
+    
+
+<p>The input data (invisibly)</p>
     </div>
 
   </div>
@@ -90,7 +95,7 @@ can only be used with the output of <code><a href="coalesce_report_date.html">co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

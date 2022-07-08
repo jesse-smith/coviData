@@ -54,14 +54,14 @@ region in the Data for Regions REDcap project.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">check_date_updated</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,
-  region <span class="op">=</span> <span class="st">"MSR"</span>,
-  date_updated <span class="op">=</span> <span class="st">"date_updated"</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  vac <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_date_updated</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  api_token <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"redcap_DFR_token"</span><span class="op">)</span>,</span>
+<span>  region <span class="op">=</span> <span class="st">"MSR"</span>,</span>
+<span>  date_updated <span class="op">=</span> <span class="st">"date_updated"</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  vac <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,27 +69,40 @@ region in the Data for Regions REDcap project.</p>
     <dl><dt>date</dt>
 <dd><p>The date to check against; defaults to <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date()</a></code>, which is
 probably what you want</p></dd>
+
+
 <dt>api_token</dt>
 <dd><p>The API token for accessing the Data for Regions REDcap
 project. This should be stored in an <em>.Renviron</em> file; see
 <a href="env_vars.html">env_vars</a> for details.</p></dd>
+
+
 <dt>region</dt>
 <dd><p>The region to check for; exists to aid internal implementation
 and should probably not be changed from default</p></dd>
+
+
 <dt>date_updated</dt>
 <dd><p>The name of the record containing the date updated in
 REDcap; this exists to aid internal implementation and should probably not
 be changed from default</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>By default, warnings are issued if date does not match, and a
 message is issued if it does; should these be silenced?</p></dd>
+
+
 <dt>vac</dt>
 <dd><p>Should vaccination data be checked (<code>TRUE</code>), or NBS data
 (<code>FALSE</code>, the default)?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>TRUE</code> if dates match, <code>FALSE</code> otherwise</p>
+    
+
+<p><code>TRUE</code> if dates match, <code>FALSE</code> otherwise</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -108,7 +121,7 @@ message is issued if it does; should these be silenced?</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

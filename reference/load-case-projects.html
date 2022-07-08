@@ -60,9 +60,9 @@ respective REDcap project. To find the file paths to these data, use
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">load_nit</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="fu"><a href="path_by_date.html">path_nit</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>, clean_names <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">load_nca</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="fu"><a href="path_by_date.html">path_nca</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>, clean_names <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_nit</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="fu"><a href="path_by_date.html">path_nit</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>, clean_names <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">load_nca</span><span class="op">(</span>date <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="fu"><a href="path_by_date.html">path_nca</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span>, clean_names <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,19 +70,28 @@ respective REDcap project. To find the file paths to these data, use
     <dl><dt>date</dt>
 <dd><p>The download date of the file to read; the default (<code>NULL</code>) will
 read the most recent file</p></dd>
+
+
 <dt>path</dt>
 <dd><p>The path to the file to read; if supplied, the function will read
 this file instead</p></dd>
+
+
 <dt>clean_names</dt>
 <dd><p>Should column names be cleaned by
 <code><a href="https://rdrr.io/pkg/janitor/man/clean_names.html" class="external-link">clean_names()</a></code>?</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters to pass to
 <code><a href="read_file_delim.html">read_file_delim()</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> if reading one file; a list of <code>tibble</code>s if reading
+    
+
+<p>A <code>tibble</code> if reading one file; a list of <code>tibble</code>s if reading
 multiple</p>
     </div>
 
@@ -98,7 +107,7 @@ multiple</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -54,12 +54,12 @@ created by calling <a href="sftp_connect.html">sftp_connect</a>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_removedir</span><span class="op">(</span>
-  <span class="va">foldername</span>,
-  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_removedir</span><span class="op">(</span></span>
+<span>  <span class="va">foldername</span>,</span>
+<span>  sftp_connection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="st">"sftp_con"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,18 +73,27 @@ subfolder (or a sub-subfolder, etc.) can be removed in one single operation
 by supplying a path, like "folder1/folder2/folder3". That will remove the
 last folder in the path, in this case "folder3". NOTE! Non-empty
 directories cannot be removed.</p></dd>
+
+
 <dt>sftp_connection</dt>
 <dd><p>A list object created  by calling <a href="sftp_connect.html">sftp_connect</a>.
 Default is <code>sftp_con</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is TRUE</p></dd>
+
+
 <dt>curlPerformVerbose</dt>
 <dd><p>Logical. Turn on messages to console form
 curlPerform. Default is FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function returns the number folders deleted.</p>
+    
+
+<p>The function returns the number folders deleted.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -108,21 +117,21 @@ curlPerform. Default is FALSE.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - remove one folder, rely on defaults</span></span>
-<span class="r-in"><span class="fu">sftp_removedir</span><span class="op">(</span><span class="st">"this_folder_is_bad"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># explicit - remove a directory at the end of a multi-level path</span></span>
-<span class="r-in"><span class="fu">sftp_removedir</span><span class="op">(</span>foldername <span class="op">=</span> <span class="st">"level1/folder2/directory3"</span>,</span>
-<span class="r-in">             sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span>
-<span class="r-in">             verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">             curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># remove several folders as specified in a vector of names</span></span>
-<span class="r-in"><span class="fu">sftp_removedir</span><span class="op">(</span><span class="va">removefolders</span><span class="op">$</span><span class="va">names</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - remove one folder, rely on defaults</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_removedir</span><span class="op">(</span><span class="st">"this_folder_is_bad"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># explicit - remove a directory at the end of a multi-level path</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_removedir</span><span class="op">(</span>foldername <span class="op">=</span> <span class="st">"level1/folder2/directory3"</span>,</span></span>
+<span class="r-in"><span>             sftp_connection <span class="op">=</span> <span class="va">sftp_con</span>,</span></span>
+<span class="r-in"><span>             verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>             curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># remove several folders as specified in a vector of names</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_removedir</span><span class="op">(</span><span class="va">removefolders</span><span class="op">$</span><span class="va">names</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -137,7 +146,7 @@ curlPerform. Default is FALSE.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

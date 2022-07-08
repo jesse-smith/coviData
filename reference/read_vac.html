@@ -50,22 +50,26 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_vac</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="cn">NULL</span>,
-  col_select <span class="op">=</span> <span class="cn">NULL</span>,
-  col_types <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span>.default <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/cols.html" class="external-link">col_character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_vac</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_select <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col_types <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span>.default <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/cols.html" class="external-link">col_character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>date</dt>
 <dd><p>The download date of the data</p></dd>
+
+
 <dt>col_select</dt>
 <dd><p>One or more selection expressions, like in
 <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code>. Use <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> or <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> to use more than one expression.
 See <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">?dplyr::select</a></code> for details on available selection options.</p></dd>
+
+
 <dt>col_types</dt>
 <dd><p>One of <code>NULL</code>, a <code><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols()</a></code> specification, or
 a string. See <code>vignette("readr")</code> for more details.</p>
@@ -92,13 +96,20 @@ character represents one column:</p><ul><li><p>c = character</p></li>
 message showing what <code>readr</code> guessed they were. To remove this message,
 set <code>show_col_types = FALSE</code> or set `options(readr.show_col_types = FALSE).</p></li>
 </ul></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments to pass to
 <code><a href="read_file_delim.html">read_file_delim()</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code></p>
+    
+
+<p>A <code>tibble</code></p>
+
+
     </div>
 
   </div>
@@ -113,7 +124,7 @@ set <code>show_col_types = FALSE</code> or set `options(readr.show_col_types = F
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

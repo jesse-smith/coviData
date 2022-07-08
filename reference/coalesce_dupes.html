@@ -52,7 +52,7 @@ information in duplicate rows.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">coalesce_dupes</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, pre_sort <span class="op">=</span> <span class="cn">FALSE</span>, post_sort <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">coalesce_dupes</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, pre_sort <span class="op">=</span> <span class="cn">FALSE</span>, post_sort <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -60,19 +60,26 @@ information in duplicate rows.</p>
     <dl><dt>data</dt>
 <dd><p>A data frame, data frame extension (e.g. a tibble), or a lazy
 data frame (e.g. from dbplyr or dtplyr)</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Variables to use for sorting and determining uniqueness. If there
 are multiple rows for a given combination of inputs, only the first row
 will be preserved. If omitted, simply calls <code>distinct()</code> with
 <code>.keep_all = TRUE</code>.</p></dd>
+
+
 <dt>pre_sort</dt>
 <dd><p>A logical indicating whether to sort using the input
 variables prior to coalescing. If no input variables are given, no sorting
 is performed, and this parameter is ignored.</p></dd>
+
+
 <dt>post_sort</dt>
 <dd><p>A logical indicating whether to sort using the input
 variables after coalescing. If no input variables are given, no sorting
 is performed, and this parameter is ignored.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -97,7 +104,7 @@ the first non-missing values in any duplicate rows using a modification of
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

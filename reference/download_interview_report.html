@@ -54,42 +54,57 @@ to use this function.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_interview_report</span><span class="op">(</span>
-  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">api_token</span>,
-  <span class="va">report_id</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,
-  <span class="va">directory</span>,
-  <span class="va">new_file</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_interview_report</span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">api_token</span>,</span>
+<span>  <span class="va">report_id</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"label"</span><span class="op">)</span>,</span>
+<span>  <span class="va">directory</span>,</span>
+<span>  <span class="va">new_file</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>date</dt>
 <dd><p>A <code>Date</code> indicating the date of the file to download</p></dd>
+
+
 <dt>api_token</dt>
 <dd><p>The API token for accessing the Data for Regions REDcap
 project. This should be stored in an <em>.Renviron</em> file; see
 <a href="env_vars.html">env_vars</a> for details.</p></dd>
+
+
 <dt>report_id</dt>
 <dd><p>The ID of the report to download</p></dd>
+
+
 <dt>headers</dt>
 <dd><p>Should column headers be raw variable names or labels?</p></dd>
+
+
 <dt>directory</dt>
 <dd><p>A string specifying the save directory; this should usually
 be left alone</p></dd>
+
+
 <dt>new_file</dt>
 <dd><p>A string specifying the save file name; this should always
 end in <em>.csv</em> and should usually be left alone</p></dd>
+
+
 <dt>force</dt>
 <dd><p>A logical indicating whether to ignore any existing files
 matching <code>date</code> and <code>directory</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly returns the path to the new data file</p>
+    
+
+<p>Invisibly returns the path to the new data file</p>
     </div>
 
   </div>
@@ -104,7 +119,7 @@ matching <code>date</code> and <code>directory</code></p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -54,25 +54,29 @@ available in the data.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">std_dates</span><span class="op">(</span>
-  <span class="va">x</span>,
-  force <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"dt"</span>, <span class="st">"dttm"</span><span class="op">)</span>,
-  train <span class="op">=</span> <span class="cn">TRUE</span>,
-  orders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mdy"</span>, <span class="st">"dmy"</span>, <span class="st">"ymd"</span>, <span class="st">"mdyT"</span>, <span class="st">"dmyT"</span>, <span class="st">"ymdT"</span>, <span class="st">"mdyR"</span>, <span class="st">"dmyR"</span>, <span class="st">"ymdR"</span>,
-    <span class="st">"mdyr"</span>, <span class="st">"dmyr"</span>, <span class="st">"ymdr"</span>, <span class="st">"mdyTz"</span>, <span class="st">"dmyTz"</span>, <span class="st">"ymdTz"</span>, <span class="st">"Tmdyz"</span>, <span class="st">"Tdmyz"</span>, <span class="st">"Tymdz"</span>,
-    <span class="st">"mdyRz"</span>, <span class="st">"dmyRz"</span>, <span class="st">"ymdRz"</span>, <span class="st">"mdyrz"</span>, <span class="st">"dmyrz"</span>, <span class="st">"ymdrz"</span>, <span class="st">"Tmdy"</span>, <span class="st">"Tdmy"</span>, <span class="st">"Tymd"</span>,
-    <span class="st">"Tmdyz"</span>, <span class="st">"Tdmyz"</span>, <span class="st">"Tymdz"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">std_dates</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  force <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"dt"</span>, <span class="st">"dttm"</span><span class="op">)</span>,</span>
+<span>  train <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  orders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mdy"</span>, <span class="st">"dmy"</span>, <span class="st">"ymd"</span>, <span class="st">"mdyT"</span>, <span class="st">"dmyT"</span>, <span class="st">"ymdT"</span>, <span class="st">"mdyR"</span>, <span class="st">"dmyR"</span>, <span class="st">"ymdR"</span>,</span>
+<span>    <span class="st">"mdyr"</span>, <span class="st">"dmyr"</span>, <span class="st">"ymdr"</span>, <span class="st">"mdyTz"</span>, <span class="st">"dmyTz"</span>, <span class="st">"ymdTz"</span>, <span class="st">"Tmdyz"</span>, <span class="st">"Tdmyz"</span>, <span class="st">"Tymdz"</span>,</span>
+<span>    <span class="st">"mdyRz"</span>, <span class="st">"dmyRz"</span>, <span class="st">"ymdRz"</span>, <span class="st">"mdyrz"</span>, <span class="st">"dmyrz"</span>, <span class="st">"ymdrz"</span>, <span class="st">"Tmdy"</span>, <span class="st">"Tdmy"</span>, <span class="st">"Tymd"</span>,</span>
+<span>    <span class="st">"Tmdyz"</span>, <span class="st">"Tdmyz"</span>, <span class="st">"Tymdz"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A vector of character dates</p></dd>
+
+
 <dt>force</dt>
 <dd><p>Whether to force conversion to <code>Date</code> (<code>force = "dt"</code>) or
 <code>POSIXct</code> (<code>force = "dttm"</code>). The default is no forcing (<code>force = "none"</code>).</p></dd>
+
+
 <dt>train</dt>
 <dd><p>logical, default <code>TRUE</code>. Whether to train formats on a subset
 of the input vector. The result of this is that supplied orders are sorted
@@ -81,9 +85,13 @@ increased performance. Please note that even when <code>train = FALSE</code> (an
 <code>exact = FALSE</code>) guessing of the actual formats is still performed on a
 pseudo-random subset of the original input vector. This might result in
 <code>All formats failed to parse</code> error. See notes below.</p></dd>
+
+
 <dt>orders</dt>
 <dd><p>The orders to use when parsing character vector with
 <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html" class="external-link">parse_date_time()</a></code></p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments to pass to
 <code><a href="https://rdrr.io/pkg/janitor/man/convert_to_date.html" class="external-link">convert_to_datetime()</a></code>. These
@@ -91,10 +99,13 @@ will, in turn, be passed to further methods, including
 <code><a href="https://rdrr.io/pkg/janitor/man/excel_numeric_to_date.html" class="external-link">excel_numeric_to_date()</a></code>,
 <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html" class="external-link">parse_date_time()</a></code>, and
 <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>Date</code> or <code>POSIXct</code> vector</p>
+    
+
+<p>A <code>Date</code> or <code>POSIXct</code> vector</p>
     </div>
 
   </div>
@@ -109,7 +120,7 @@ will, in turn, be passed to further methods, including
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

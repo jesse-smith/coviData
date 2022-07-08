@@ -62,7 +62,7 @@ observations).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">randomize</span><span class="op">(</span><span class="va">.data</span>, n <span class="op">=</span> <span class="cn">NULL</span>, .groups <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">randomize</span><span class="op">(</span><span class="va">.data</span>, n <span class="op">=</span> <span class="cn">NULL</span>, .groups <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,17 +70,24 @@ observations).</p>
     <dl><dt>.data</dt>
 <dd><p>A data frame or data frame extension (e.g. a
 <code><a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble</a></code>)</p></dd>
+
+
 <dt>n</dt>
 <dd><p>The desired number of observations in the returned dataset; the
 default is the number of observations in the input</p></dd>
+
+
 <dt>.groups</dt>
 <dd><p>How to handle grouping variables; see the <code>.groups</code> parameter
 documentation in <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize()</a></code> for more
 information</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> containing the randomized test data</p>
+    
+
+<p>A <code>tibble</code> containing the randomized test data</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -114,7 +121,7 @@ both <em>within and between</em> grouping variables <em>will not be modified</em
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

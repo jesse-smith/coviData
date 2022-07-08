@@ -60,7 +60,7 @@ returned by <code><a href="https://rdrr.io/pkg/curl/man/curl.html" class="extern
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_dir_info</span><span class="op">(</span><span class="va">sftp_connection</span>, regexp <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_dir_info</span><span class="op">(</span><span class="va">sftp_connection</span>, regexp <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,10 +68,13 @@ returned by <code><a href="https://rdrr.io/pkg/curl/man/curl.html" class="extern
     <dl><dt>sftp_connection</dt>
 <dd><p>A list of connection parameters as created by
 <code><a href="sftp_connect.html">sftp_connect()</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> containing the <code>path</code>, <code>size</code>, <code>permissions</code>,
+    
+
+<p>A <code>tibble</code> containing the <code>path</code>, <code>size</code>, <code>permissions</code>,
 <code>modification_time</code>, and <code>hard_links</code> of each file in the directory</p>
     </div>
 
@@ -87,7 +90,7 @@ returned by <code><a href="https://rdrr.io/pkg/curl/man/curl.html" class="extern
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -54,12 +54,12 @@ files is <code><a href="https://readxl.tidyverse.org/reference/read_excel.html" 
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_file</span><span class="op">(</span>
-  <span class="va">path</span>,
-  file_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"delimited"</span>, <span class="st">"excel"</span><span class="op">)</span>,
-  type_convert <span class="op">=</span> <span class="cn">TRUE</span>,
-  msg <span class="op">=</span> <span class="st">"Reading file..."</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_file</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  file_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"delimited"</span>, <span class="st">"excel"</span><span class="op">)</span>,</span>
+<span>  type_convert <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  msg <span class="op">=</span> <span class="st">"Reading file..."</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -67,22 +67,31 @@ files is <code><a href="https://readxl.tidyverse.org/reference/read_excel.html" 
     <dl><dt>path</dt>
 <dd><p>A string indicating the path to the data file; will be expanded
 if necessary</p></dd>
+
+
 <dt>file_type</dt>
 <dd><p>A string indicating the type of file to read; only
 "delimited" and "excel" files are supported. The default is "auto", which
 determines the file type from the file extension.</p></dd>
+
+
 <dt>type_convert</dt>
 <dd><p>Should <code>read_file()</code> attempt to guess the data type of
 the columns after reading?</p>
 <p><em>Note: The default is <code>TRUE</code> for compatibility; want to transition to
 <code><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom::vroom()</a></code> as backend and swap default to <code>FALSE</code>.</em></p></dd>
+
+
 <dt>msg</dt>
 <dd><p>A message to be displayed prior to beginning a file read; for use
 inside other functions</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble containing the read data</p>
+    
+
+<p>A tibble containing the read data</p>
     </div>
 
   </div>
@@ -97,7 +106,7 @@ inside other functions</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

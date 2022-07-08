@@ -54,12 +54,12 @@ created by calling <a href="sftp_connect.html">sftp_connect</a>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sftp_changedir</span><span class="op">(</span>
-  <span class="va">tofolder</span>,
-  current_connection_name <span class="op">=</span> <span class="st">"sftp_con"</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sftp_changedir</span><span class="op">(</span></span>
+<span>  <span class="va">tofolder</span>,</span>
+<span>  current_connection_name <span class="op">=</span> <span class="st">"sftp_con"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -72,19 +72,28 @@ list object you are using (default 'stfp_con'). A subfolder (or a
 sub-subfolder, etc.) can be specified in one single operation by supplying
 a path, like "folder1/folder2/folder3". To move up one level in the folder
 hierarchy, use <code>"../"</code>. To go to the root folder, use "root".</p></dd>
+
+
 <dt>current_connection_name</dt>
 <dd><p>A string giving the name of the SFTP
 connection list object currently used, created  by calling
 <code><a href="sftp_connect.html">sftp_connect</a></code>. Default is <code>"sftp_con"</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Logical. Turn on messages to console. Default is TRUE</p></dd>
+
+
 <dt>curlPerformVerbose</dt>
 <dd><p>Logical. Turn on messages to console form
 curlPerform. Default is FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function returns TRUE after successful change of directory.</p>
+    
+
+<p>The function returns TRUE after successful change of directory.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -108,21 +117,21 @@ curlPerform. Default is FALSE.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># minimal - move up one level, rely on defaults</span></span>
-<span class="r-in"><span class="fu">sftp_changedir</span><span class="op">(</span><span class="st">".."</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># minimal - to to root, rely on defaults</span></span>
-<span class="r-in"><span class="fu">sftp_changedir</span><span class="op">(</span><span class="st">"root"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># explicit - change to a directory at the end of a multi-level path</span></span>
-<span class="r-in"><span class="fu">sftp_changedir</span><span class="op">(</span>tofolder <span class="op">=</span> <span class="st">"level1/folder2/directory3"</span>,</span>
-<span class="r-in">               current_connection_name <span class="op">=</span> <span class="st">"sftp_con"</span>,</span>
-<span class="r-in">               verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">               curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># minimal - move up one level, rely on defaults</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_changedir</span><span class="op">(</span><span class="st">".."</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># minimal - to to root, rely on defaults</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_changedir</span><span class="op">(</span><span class="st">"root"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># explicit - change to a directory at the end of a multi-level path</span></span></span>
+<span class="r-in"><span><span class="fu">sftp_changedir</span><span class="op">(</span>tofolder <span class="op">=</span> <span class="st">"level1/folder2/directory3"</span>,</span></span>
+<span class="r-in"><span>               current_connection_name <span class="op">=</span> <span class="st">"sftp_con"</span>,</span></span>
+<span class="r-in"><span>               verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>               curlPerformVerbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -137,7 +146,7 @@ curlPerform. Default is FALSE.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

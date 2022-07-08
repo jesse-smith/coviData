@@ -50,36 +50,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">save_plot</span><span class="op">(</span>
-  gg_obj <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/last_plot.html" class="external-link">last_plot</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">path</span>,
-  ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">9</span><span class="op">)</span>,
-  size <span class="op">=</span> <span class="fl">0.75</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_plot</span><span class="op">(</span></span>
+<span>  gg_obj <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/last_plot.html" class="external-link">last_plot</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">path</span>,</span>
+<span>  ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">9</span><span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>gg_obj</dt>
 <dd><p>A <code>ggplot</code> object</p></dd>
+
+
 <dt>path</dt>
 <dd><p>The location and file for saving the plot. The image type is
 inferred from the file extension.</p></dd>
+
+
 <dt>ratio</dt>
 <dd><p>The aspect ratio of the figure; defaults to <code>c(16, 9)</code></p></dd>
+
+
 <dt>size</dt>
 <dd><p>The relative size of the figure; defaults to <code>0.75</code>, meaning that
 the figure width will be <code>0.75 * ratio[[1]]</code>, and the figure height will be
 <code>0.75 * ratio[[2]]</code>. Useful for scaling an aspect ratio without calculating
 the precise dimensions.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments to pass to
 <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The <code>ggplot</code> object (invisibly)</p>
+    
+
+<p>The <code>ggplot</code> object (invisibly)</p>
     </div>
 
   </div>
@@ -94,7 +105,7 @@ the precise dimensions.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
