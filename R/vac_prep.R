@@ -99,21 +99,23 @@ vac_prep <- function(
 
 
   #were they a two dose series or not?
-  vac_ind$two_dose_series <- dplyr::case_when(
-    vac_ind$cvx_code1 %in% c("212") ~ "No",
-    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210", "219") ~ "Yes"
+  vac_ind$doses_in_series <- dplyr::case_when(
+    vac_ind$cvx_code1 %in% c("219") ~ "3",
+    vac_ind$cvx_code1 %in% c("212") ~ "1",
+    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210", "219", "221", "228") ~ "2"
   )
 
   #what is their first and second boost date?
 
   vac_ind$boost_dose1 <- dplyr::case_when(
-    vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date3,
-    vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date2
+    vac_ind$doses_in_series == "3" ~ vac_ind$vacc_date4,
+    vac_ind$doses_in_series == "2" ~ vac_ind$vacc_date3,
+    vac_ind$doses_in_series == "1" ~ vac_ind$vacc_date2
   )
 
   vac_ind$boost_dose2 <- dplyr::case_when(
-    vac_ind$two_dose_series == "Yes" ~ vac_ind$vacc_date4,
-    vac_ind$two_dose_series == "No" ~ vac_ind$vacc_date3
+    vac_ind$doses_in_series == "2" ~ vac_ind$vacc_date4,
+    vac_ind$doses_in_series == "1" ~ vac_ind$vacc_date3
   )
 
 
@@ -135,11 +137,15 @@ vac_prep <- function(
 
     !is.na(vac_ind$boost_dose2) ~ "Up to date",
     vac_ind$age_last_dose < 50 & !is.na(vac_ind$boost_dose1) ~ "Up to date",
-    vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
-    vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date",
 
-    vac_ind$age_last_dose >= 50 & vac_ind$two_dose_series == "Yes" & lubridate::mdy(vac_ind$vacc_date3) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
-    vac_ind$age_last_dose >= 50 & vac_ind$two_dose_series == "No" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
+    #fully vaccinated is up to date for those who are under 5 (no booster required)
+    vac_ind$age_last_dose < 5 & vac_ind$recip_fully_vacc_last == TRUE ~ "Up to date",
+
+    vac_ind$doses_in_series == "2" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
+    vac_ind$doses_in_series == "1" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date",
+
+    vac_ind$age_last_dose >= 50 & vac_ind$doses_in_series == "2" & lubridate::mdy(vac_ind$vacc_date3) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
+    vac_ind$age_last_dose >= 50 & vac_ind$doses_in_series == "1" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
 
     TRUE ~ "Not up to date"
     )
@@ -209,8 +215,9 @@ vac_mutate <- function(data) {
     resident = .data[["address_zip"]] != "Other",
     dose_count = as.integer(.data[["dose_count"]]),
     max_doses = dplyr::case_when(
+      .data[["cvx_code"]] %in% c("219") ~ 3L, #this is pfizer's 3-dose vaccine for those under 5
       .data[["cvx_code"]] %in% c("212") ~ 1L,
-      .data[["cvx_code"]] %in% c("207", "208", "217", "218", "210") ~ 2L,
+      .data[["cvx_code"]] %in% c("207", "208", "217", "218", "210", "221", "228") ~ 2L,
       TRUE ~ NA_integer_
     ),
     recip_fully_vacc = .data[["dose_count"]] >= .data[["max_doses"]]
