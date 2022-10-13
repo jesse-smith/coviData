@@ -46,7 +46,7 @@ download_nbs_snapshot <- function(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
     "Sandbox data pull Final/"
   ),
-  new_file = paste0(date, " Final Data Pull.csv"),
+  new_file = paste0(date, " Final Data Pull_part1.csv"),
   force = FALSE
 ) {
   message("Starting NBS snapshot download...\n")
