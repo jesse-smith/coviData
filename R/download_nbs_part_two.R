@@ -29,7 +29,7 @@ NULL
 download_extra_case_file <- function(
   date = Sys.Date(),
   api_token = Sys.getenv("redcap_DFR_token"),
-  redcap_file = "al_upload2",
+  redcap_file = "alt_upload2",
   #redcap_file = "alt_upload_2",
   directory = paste0(
     "V:/EPI DATA ANALYTICS TEAM/COVID SANDBOX REDCAP DATA/",
