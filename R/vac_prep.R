@@ -27,152 +27,55 @@
 vac_prep <- function(
   data = read_vac(date = date),
   distinct = FALSE,
-  filter_doses = TRUE,
+  filter_doses = FALSE,
   filter_residents = FALSE,
   date = NULL
 ) {
 
   date <- coviData::date_vac(date)
 
-  #add fourth doses 05/25
 
-  unprocessed_vac <- read_vac(date = date)
-
-  dose4 <- subset(unprocessed_vac, dose_count == 4)%>%
-    dplyr::distinct(asiis_pat_id_ptr, .keep_all = TRUE)%>%
-    janitor::clean_names() %>%
-    vac_mutate()
-
-  dose4$vacc_date <- lubridate::mdy(dose4$vacc_date)
-  #should just keep doses as of FDA approval of second booster dose, which was 3/29/22
-  dose4 <- subset(dose4, vacc_date >= lubridate::as_date("2022-03-29"))
-  #transform back to the previous format (character) to combine
-  dose4$vacc_date <- as.character(format(dose4$vacc_date, format = "%m/%d/%Y"))
-
-
-
-
-  vac_third_dose <- vac_prep_dose3(data = read_vac(date = date))%>%
+  vacs <- data %>%
     janitor::clean_names() %>%
     vac_mutate()
 
 
-  vac_dose1_2 <- data %>%
-    janitor::clean_names() %>%
-    vac_mutate() %>%
-    purrr::when(filter_doses ~ vac_filter_doses(.), ~ .)
 
-  vacs <- dplyr::bind_rows(vac_dose1_2, vac_third_dose, dose4)%>%
-    purrr::when(filter_residents ~ vac_filter_residents(.), ~ .)
-
-  fully <- dplyr::select(vacs, asiis_pat_id_ptr, pat_birth_date, dose_count, recip_fully_vacc)%>%
-    dplyr::arrange(asiis_pat_id_ptr, desc(dose_count))%>%
-    dplyr::distinct(asiis_pat_id_ptr, .keep_all = TRUE)
-
-  dose1 <- subset(vacs, dose_count == "1")%>%
-    dplyr::rename(vacc_date1 = vacc_date, cvx_code1 = cvx_code)%>%
-    dplyr::select(asiis_pat_id_ptr, vacc_date1, cvx_code1)
-
-  dose2 <- subset(vacs, dose_count == "2")%>%
-    dplyr::rename(vacc_date2 = vacc_date, cvx_code2 = cvx_code)%>%
-    dplyr::select(asiis_pat_id_ptr, vacc_date2, cvx_code2)
-
-  dose3 <- subset(vacs, dose_count == "3")%>%
-    dplyr::rename(vacc_date3 = vacc_date, cvx_code3 = cvx_code)%>%
-    dplyr::select(asiis_pat_id_ptr, vacc_date3, cvx_code3)
-
-  dose4 <- subset(vacs, dose_count == "4")%>%
-    dplyr::rename(vacc_date4 = vacc_date, cvx_code4 = cvx_code)%>%
-    dplyr::select(asiis_pat_id_ptr, vacc_date4, cvx_code4)
-
-  vac_ind <- dplyr::left_join(dose1, dose2)%>%
-    dplyr::left_join(dose3)%>%
-    dplyr::left_join(dose4)%>%
-    dplyr::left_join(fully)%>%
-    dplyr::rename(dose_count_last = dose_count, recip_fully_vacc_last = recip_fully_vacc)
-
-
-  #if fully vac, when was the last dose in their series?
-  vac_ind$cvx_code1 <- dplyr::case_when(vac_ind$cvx_code1 == "213" & (!is.na(vac_ind$cvx_code2) & vac_ind$cvx_code2 != "213") ~ vac_ind$cvx_code2,
-                                        vac_ind$cvx_code1 == "213" & (!is.na(vac_ind$cvx_code3) & vac_ind$cvx_code3 != "213") ~ vac_ind$cvx_code3,
-                                        TRUE~vac_ind$cvx_code1)
-
-
-  #were they a two dose series or not?
-  vac_ind$doses_in_series <- dplyr::case_when(
-    vac_ind$cvx_code1 %in% c("219") ~ "3",
-    vac_ind$cvx_code1 %in% c("212") ~ "1",
-    vac_ind$cvx_code1 %in% c("207", "208", "217", "218", "210", "219", "221", "228") ~ "2"
-  )
-
-  #what is their first and second boost date?
-
-  vac_ind$boost_dose1 <- dplyr::case_when(
-    vac_ind$doses_in_series == "3" ~ vac_ind$vacc_date4,
-    vac_ind$doses_in_series == "2" ~ vac_ind$vacc_date3,
-    vac_ind$doses_in_series == "1" ~ vac_ind$vacc_date2
-  )
-
-  vac_ind$boost_dose2 <- dplyr::case_when(
-    vac_ind$doses_in_series == "2" ~ vac_ind$vacc_date4,
-    vac_ind$doses_in_series == "1" ~ vac_ind$vacc_date3
+  vacs$status <- dplyr::case_when(
+    vacs$cvx_code %in% c("300", "229", "301", "230", "302") ~ "Bivalent Booster",
+    is.na(vacs$recip_fully_vacc) ~ "Initiated",
+    vacs$recip_fully_vacc == FALSE ~ "Initiated",
+    vacs$recip_fully_vacc == TRUE ~ "Completed/Monovalent Booster"
   )
 
 
-  vac_ind$dose_date_last <- dplyr::coalesce(vac_ind$vacc_date4, vac_ind$vacc_date3, vac_ind$vacc_date2, vac_ind$vacc_date1)
+  #some people have a bivalent dose and a different dose after that.
+  #we want to delineate based on if they have a bivalent dose or not.
+  #may a dummy variable to note a higher dose count for those who have a bivalent dose, so we can keep them in the distinct filtering instead of their non-bivalent dose
+  vacs$dose_count_real <- vacs$dose_count
 
-
-
-  #what is their age at their last dose?
-
-  vac_ind$pat_birth_date <- lubridate::mdy(vac_ind$pat_birth_date)
-  vac_ind$dose_date_last <- lubridate::mdy(vac_ind$dose_date_last)
-
-  vac_ind$age_last_dose <- as.numeric((vac_ind$dose_date_last - vac_ind$pat_birth_date)/365.25)
-
-  #what is their status based on age and initial series??
-  vac_ind$status <- dplyr::case_when(
-
-    vac_ind$recip_fully_vacc_last == FALSE ~ "Not up to date",
-
-    !is.na(vac_ind$boost_dose2) ~ "Up to date",
-    vac_ind$age_last_dose < 50 & !is.na(vac_ind$boost_dose1) ~ "Up to date",
-
-    #fully vaccinated is up to date for those who are under 5 (no booster required)
-    vac_ind$age_last_dose < 5 & vac_ind$recip_fully_vacc_last == TRUE ~ "Up to date",
-
-    vac_ind$doses_in_series == "2" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-5)) ~ "Up to date",
-    vac_ind$doses_in_series == "1" & lubridate::mdy(vac_ind$vacc_date1) >= lubridate::add_with_rollback(Sys.Date(), months(-2)) ~ "Up to date",
-
-    vac_ind$age_last_dose >= 50 & vac_ind$doses_in_series == "2" & lubridate::mdy(vac_ind$vacc_date3) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
-    vac_ind$age_last_dose >= 50 & vac_ind$doses_in_series == "1" & lubridate::mdy(vac_ind$vacc_date2) >= lubridate::add_with_rollback(Sys.Date(), months(-4)) ~ "Up to date",
-
-    TRUE ~ "Not up to date"
-    )
-
-
-
-  #if they are up to date, do they have a booster?
-
-  vac_ind$up_to_date_with_booster <- dplyr::case_when(
-    vac_ind$status == "Up to date" & (!is.na(vac_ind$boost_dose2) | !is.na(vac_ind$boost_dose1)) ~ "Yes",
-    vac_ind$status == "Up to date" & (is.na(vac_ind$boost_dose2) & is.na(vac_ind$boost_dose1)) ~ "No",
+  vacs$dose_count <- dplyr::case_when(
+    vacs$status == "Bivalent Booster" ~ as.integer(100 + vacs$dose_count_real),
+    TRUE ~ vacs$dose_count_real
   )
 
 
-  #if they are up to date, how many boosters do they have?
-
-  vac_ind$up_to_date_booster_count <- dplyr::case_when(
-    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_dose2) ~ "Two",
-    vac_ind$status == "Up to date" & !is.na(vac_ind$boost_dose1) ~ "One",
-    vac_ind$status == "Up to date" & (is.na(vac_ind$boost_dose2) & is.na(vac_ind$boost_dose1)) ~ "None",
+  #if their bivalent dose is their second or later dose, count as fully vaccinated.  If it is their first dose, count at initiated
+  vacs$recip_fully_vacc <- dplyr::case_when(
+    vacs$status == "Bivalent Booster" & vacs$dose_count_real > 1 ~ TRUE,
+    vacs$status == "Bivalent Booster" & vacs$dose_count_real == 1 ~ FALSE,
+    TRUE ~ vacs$recip_fully_vacc
   )
 
 
-  vacs_all <- dplyr::left_join(vacs, vac_ind, by = "asiis_pat_id_ptr")
-
- vacs_all %>%
+  vacs <- vacs %>%
     purrr::when(distinct ~ vac_distinct(.), ~ .)
+
+  vacs$dose_count <- vacs$dose_count_real
+
+  vacs <- vacs %>% dplyr::select(-dose_count_real)
+
+  return(vacs)
 
 }
 
@@ -217,7 +120,7 @@ vac_mutate <- function(data) {
     max_doses = dplyr::case_when(
       .data[["cvx_code"]] %in% c("219") ~ 3L, #this is pfizer's 3-dose vaccine for those under 5
       .data[["cvx_code"]] %in% c("212") ~ 1L,
-      .data[["cvx_code"]] %in% c("207", "208", "217", "218", "210", "221", "228") ~ 2L,
+      .data[["cvx_code"]] %in% c("207", "208", "217", "218", "210", "221", "228", "211") ~ 2L,
       TRUE ~ NA_integer_
     ),
     recip_fully_vacc = .data[["dose_count"]] >= .data[["max_doses"]]
