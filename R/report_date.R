@@ -30,8 +30,11 @@ archive_report_date <- function(
     fs::dir_info() %>%
     dplyr::filter(stringr::str_ends(.data[["path"]], ".csv")) %>%
     dplyr::transmute(
+      .data[["path"]]
+    ) %>%
+    dplyr::transmute(
       .data[["path"]],
-      birth_date = lubridate::as_date(.data[["birth_time"]])
+           birth_date = as.Date(substr(.data[["path"]], 78, 87), format = "%Y-%m-%d")
     ) %>%
     dplyr::arrange(dplyr::desc(.data[["birth_date"]])) %>%
     coalesce_dupes(.data[["birth_date"]]) %>%
@@ -63,6 +66,7 @@ archive_report_date <- function(
   # Only process new files
   new_files <- dplyr::anti_join(data_files, archive_files, by = "birth_date")
 
+
   if (vec_is_empty(new_files)) {
 
     # Do nothing if no new files
@@ -75,11 +79,15 @@ archive_report_date <- function(
 
     # Archive new files
     rlang::inform("Archiving new data...")
-    new_files %>%
+     for (i in nrow(new_files):1) {
+     new_files[i,] %>%
       purrr::transpose() %>%
       purrr::walk(~ to_report_date_fst(.x$path, .x$birth_date, .x$save_as))
     rlang::inform("Done.")
+    }
   }
+
+
 
   invisible(new_files)
 
